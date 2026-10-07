@@ -1,1 +1,8 @@
 *.docx
+/.claude
+
+# provas e respostas: nunca no repositorio publico
+aula-06-revisao/prova.md
+aula-06-revisao/prova.txt
+aula-06-revisao/revisao-parcial.md
+aula-06-revisao/questoes-dissertativas-tf.md

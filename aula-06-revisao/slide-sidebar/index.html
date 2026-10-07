@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 06 — Revisão</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">06</span> - Revisão</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="frente 1 · wsl">
+    <h2>WSL: <span class="accent">um Linux dentro do Windows</span></h2>
+    <p class="body-text">Virtualização roda um sistema operacional
+    inteiro dentro de outro. Precisa de hypervisor ativo, e o hypervisor
+    precisa de suporte de virtualização habilitado na BIOS —
+    <code>VT-x</code> na Intel, <code>SVM Mode</code> na AMD.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">PowerShell (Administrador)</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># instala o WSL 2 já com Ubuntu -- depois, reiniciar o PC</div>
+        <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">wsl --install</span></div>
+        <div class="term-line comment"># confere a instalação e a versão</div>
+        <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">wsl --list --verbose</span></div>
+      </div>
+    </div>
+    <p class="payoff">Usuário e senha do Ubuntu são exclusivos do Linux —
+    sem relação com o login do Windows.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="binário · fundamentos">
+    <h2>Bit, byte e <span class="accent">256 combinações</span></h2>
+    <p class="body-text">O processador só distingue com segurança dois
+    estados elétricos: passa corrente ou não passa. Cada estado vira um
+    <strong>bit</strong> (0 ou 1). Um conjunto de 8 bits forma um
+    <strong>byte</strong> — sinônimo de <em>octeto</em>.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">quantas combinações cabem em 8 bits?</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># n = 2 valores por bit, p = 8 bits -> n elevado a p</div>
+        <div class="term-line out">2⁸ = 256 combinações possíveis</div>
+        <div class="term-line out hl">contando do zero: de 0 até 255</div>
+      </div>
+    </div>
+    <p class="payoff">O maior número com n bits é sempre 2ⁿ − 1 — com 8
+    bits, 255 = <code>11111111</code>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="binário · a tabela da prova">
+    <h2>A tabela de <span class="accent">posições</span></h2>
+    <p class="lede">Igual ao decimal (cada posição é uma potência de
+    10), o binário é posicional em base 2 — só que cada posição vale uma
+    potência de 2, começando da direita.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">tabela de posições de um byte</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out">posição   2⁷   2⁶   2⁵   2⁴   2³   2²   2¹   2⁰</div>
+        <div class="term-line out hl">valor     128  64   32   16   8    4    2    1</div>
+      </div>
+    </div>
+    <p class="payoff">Pra montar de cabeça: começa com 1 na posição mais
+    à direita e vai dobrando a cada posição pra esquerda.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="binário · conversão">
+    <h2>Binário → <span class="accent">decimal</span></h2>
+    <p class="body-text">Alinha os dígitos pela direita, embaixo da
+    tabela, e soma só as posições onde o dígito é 1.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">convertendo 101101</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out">valor     32   16   8    4    2    1</div>
+        <div class="term-line out hl">dígito    1    0    1    1    0    1</div>
+        <div class="term-line comment"># soma só onde o dígito é 1</div>
+        <div class="term-line out hl">32 + 8 + 4 + 1 = 45</div>
+      </div>
+    </div>
+    <p class="payoff">Erro mais comum: alinhar pela esquerda. O último
+    dígito da direita vale sempre 1, não importa o tamanho do número.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="binário · conversão">
+    <h2>Decimal → binário: <span class="accent">divisões sucessivas</span></h2>
+    <p class="body-text">Divide por 2, anota o resto (0 ou 1), repete com
+    o quociente até chegar a zero — o binário é a leitura dos restos de
+    baixo pra cima.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">convertendo 45</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out">45 ÷ 2 = 22  resto 1</div>
+        <div class="term-line out">22 ÷ 2 = 11  resto 0</div>
+        <div class="term-line out">11 ÷ 2 = 5   resto 1</div>
+        <div class="term-line out">5  ÷ 2 = 2   resto 1</div>
+        <div class="term-line out">2  ÷ 2 = 1   resto 0</div>
+        <div class="term-line out">1  ÷ 2 = 0   resto 1</div>
+        <div class="term-line comment"># lendo os restos de baixo pra cima</div>
+        <div class="term-line out hl">101101</div>
+      </div>
+    </div>
+    <p class="payoff">Mesmo número do slide anterior — confirma a conta.
+    Erro mais comum: ler os restos de cima pra baixo, o que inverte o número.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="binário · atalho">
+    <h2>Hexadecimal: <span class="accent">encurtando a leitura do binário</span></h2>
+    <p class="body-text">Escrever binário longo é cansativo e propenso a
+    erro. O hexadecimal (base 16) existe justamente pra encurtar essa
+    leitura: como 16 é 2⁴, cada dígito hexadecimal representa exatamente
+    4 bits (um <em>nibble</em>) — um byte inteiro sempre cabe em só
+    <strong>2 dígitos hexadecimais</strong>, em vez de 8 dígitos binários.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">convertendo o byte 01000001</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out">nibbles:   0100    0001</div>
+        <div class="term-line out hl">hex:        4       1   -&gt; 41</div>
+        <div class="term-line comment"># 41 em hex = 65 em decimal = "A" na tabela ASCII</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="binário · no dia a dia">
+    <h2>Hex no dia a dia: <span class="accent">cor RGB</span></h2>
+    <p class="body-text">Uma cor em código, como <code>#FF0000</code>
+    (vermelho puro), é só 3 bytes escritos em hexadecimal — um byte pra
+    cada canal de cor, red, green e blue, cada um indo de 0 a 255.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">#FF0000</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out hl">FF -&gt; 11111111 -&gt; 255  (canal R)</div>
+        <div class="term-line out">00 -&gt; 00000000 -&gt; 0    (canal G)</div>
+        <div class="term-line out">00 -&gt; 00000000 -&gt; 0    (canal B)</div>
+      </div>
+    </div>
+    <p class="payoff">6 caracteres em hex, em vez de 24 dígitos binários
+    — a mesma informação, só mais compacta e fiel, sem perder nada.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="frente 2 · binários instalados">
+    <h2>Binários: <span class="accent">instalados nos dois lados</span></h2>
+    <p class="body-text">Todo comando de terminal é a busca por um
+    arquivo binário com aquele nome — exceto <code>cd</code>, embutido no
+    shell. Como o WSL é isolado, cada ferramenta precisa ser instalada
+    <strong>nos dois ambientes</strong>.</p>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># VS Code -- Windows (GUI)</span><br>
+        instalador gráfico<br>
+        <span class="dim"># chamado de dentro do WSL:</span><br>
+        code .
+      </div>
+      <div class="tree">
+        <span class="dim"># Git -- Windows e WSL</span><br>
+        Windows: git-scm.com<br>
+        <span class="dim"># WSL, via apt:</span><br>
+        sudo apt install git -y
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="frente 2 · cheat sheet">
+    <h2>Comandos do terminal: <span class="accent">o essencial</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># navegar e listar</span><br>
+        pwd · ls · ls -la<br>
+        cd nome/ · cd .. · cd
+      </div>
+      <div class="tree">
+        <span class="dim"># criar e manipular</span><br>
+        mkdir · mkdir -p<br>
+        touch · cat · cp · mv
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><code>rm</code> sozinho não apaga diretórios — dá erro de
+      propósito. É preciso <code>rm -r</code> (recursivo), que apaga de
+      dentro pra fora, sem lixeira de segurança.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="frente 3 · o fluxo local">
+    <h2>Git local: <span class="accent">a linha do tempo de commits</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~/projeto</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># cria o repositório .git nesta pasta</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git init</span></div>
+        <div class="term-line comment"># raio-x: o que mudou, o que é novo, o que já está pronto</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git status</span></div>
+        <div class="term-line comment"># separa o que vai entrar na próxima fotografia</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git add .</span></div>
+        <div class="term-line comment"># tira a fotografia, com uma mensagem explicando o que mudou</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git commit -m "Cria anotacoes.txt..."</span></div>
+        <div class="term-line comment"># mostra a linha do tempo inteira</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git log</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="frente 3 · voltando no tempo">
+    <h2><code>HEAD</code>: <span class="accent">soft x hard delete</span></h2>
+    <p class="body-text"><code>HEAD</code> aponta pro commit em que você
+    está "parado" agora. <code>HEAD~1</code> é um commit antes, sem
+    precisar decorar nenhum hash.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~/projeto</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># soft: desfaz o commit, mas mantém o trabalho pra recommitar</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git reset --soft HEAD~1</span></div>
+        <div class="term-line comment"># hard: desfaz o commit E descarta o trabalho, sem rastro</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git reset --hard HEAD~1</span></div>
+      </div>
+    </div>
+    <p class="payoff">A mesma dupla soft/hard delete reaparece em Banco
+    de Dados: soft marca como removido, hard apaga a linha de vez.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="por dentro do .git · remote">
+    <h2><code>HEAD</code> é ponteiro, <span class="accent">remote é config</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~/projeto</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat .git/HEAD</span></div>
+        <div class="term-line out hl">ref: refs/heads/main</div>
+        <div class="term-line comment"># cadastrando um remote:</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git remote add origin git@github.com:usuario/repo.git</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat .git/config</span></div>
+        <div class="term-line out hl">[remote "origin"]</div>
+        <div class="term-line out hl">    url = git@github.com:usuario/repo.git</div>
+      </div>
+    </div>
+    <p class="payoff"><code>HEAD</code> aponta pra outro arquivo, que
+    guarda o hash. <code>git remote add</code> só escreveu duas linhas no
+    <code>config</code> — nenhuma mágica de rede.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="frente 3 · sincronizando">
+    <h2><code>clone</code>, <code>push</code> e <code>pull</code></h2>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># baixar (1ª vez)</span><br>
+        git clone &lt;url&gt;
+      </div>
+      <div class="tree">
+        <span class="dim"># enviar</span><br>
+        git push -u origin main
+      </div>
+      <div class="tree">
+        <span class="dim"># receber</span><br>
+        git pull
+      </div>
+    </div>
+    <p class="payoff"><code>clone</code> é usado uma vez, quando o
+    repositório local ainda não existe. <code>push</code> e
+    <code>pull</code> são o dia a dia depois disso.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="frente 3 · autenticação">
+    <h2>Chave SSH: <span class="accent">pública x privada</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">ssh-keygen -t ed25519 -C "voce@email.com"</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat ~/.ssh/id_ed25519.pub</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">ssh -T git@github.com</span></div>
+        <div class="term-line out hl">Hi usuario! You've successfully authenticated...</div>
+      </div>
+    </div>
+    <p class="payoff">A pública é o cadeado que vai pro GitHub, a
+    privada nunca sai da máquina. Com isso, fecha a base da primeira
+    parte do ano — a seguir, Python e orientação a objetos.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 06 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 06: <span class="accent">questões dissertativas</span></h2>
+    <p class="lede">5 questões dissertativas cobrindo os três blocos de
+    hoje — duas de conta binária, uma de navegação e filesystem, uma de
+    binários instalados, e uma de Git.</p>
+    <p class="body-text">Respondam com o raciocínio completo, não só o
+    resultado final — nas contas de binário, o desenvolvimento vale tanto
+    quanto a resposta.</p>
+    <p class="body-text">Entrega pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScIz4IGfxjIzloZdC6YOZb2bUa9gC8ztZUFPnRg8ewdWYeNOw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLScIz4IGfxjIzloZdC6YOZb2bUa9gC8ztZUFPnRg8ewdWYeNOw/viewform</code></a></p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">16</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+<script src="../../assets/slide.js"></script>
+</body>
+</html>

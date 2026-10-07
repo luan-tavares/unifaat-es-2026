@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 01 — SO, CLI e GUI</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">01</span> - SO, CLI e GUI</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="avisos">
+    <h2>Avisos/Disclaimers</h2>
+    <ul class="points">
+      <li>Meta-aprendizagem (Aprendendo a aprender)</li>
+      <li>Não se aprende apenas em sala de aula.</li>
+      <li>Usem IA com uma base sólida!</li>
+      <li>2 prova teóricas</li>
+      <li>TA/TF peso 2 na média. Duas piores notas descartadas!</li>
+      <li>Professor também disponível fora do horário de aula (chama no zap)</li>
+      <li>Aula mais teórica</li>
+    </ul>
+    <p class="payoff">Favor, conversa paralela fora da sala! Bora lá!</p>
+  </section>
+
+  <section class="slide" data-eyebrow="cronograma">
+    <h2>Cronograma <span class="accent">das aulas</span></h2>
+    <img class="fig" src="img/cronograma-aulas.png" alt="Tabela do cronograma do semestre: aulas 1 a 14 com data e conteúdo, de Sistema Operacional (GUI e CLI) em 19/ago até Revisão em 25/nov, com Prova do 1º Bimestre em 30/set, Prova do 2º Bimestre em 02/dez, Prova SUB em 09/dez e Exame em 16/dez">
+  </section>
+
+  <section class="slide" data-eyebrow="por que engenharia?">
+    <h1>Engenharia de Software</h1>
+    <p class="lede">Por que não chamamos simplesmente de "Programação"?</p>
+    <p class="payoff">Uma pergunta que define tudo.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="programar ≠ engenharia">
+    <h2>Programar <span class="accent">≠ Engenharia</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># Programar</span><br>
+        Habilidade individual de escrever instruções que o computador executa.<br><br>
+        Qualquer pessoa aprende a somar dois números em horas.
+      </div>
+      <div class="tree">
+        <span class="dim"># Engenharia</span><br>
+        Construir coisas que continuam funcionando quando:<br>
+        • Outras pessoas mexem nelas<br>
+        • O sistema cresce<br>
+        • Coisas dão errado
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="1968">
+    <h2>1968 — <span class="accent">A Crise do Software</span></h2>
+    <div class="callout">
+      <span class="mark">?</span>
+      <p>Se existe rigor técnico para construir uma ponte, por que não deveria
+      existir rigor equivalente para construir software?</p>
+    </div>
+    <p class="body-text">Conferência organizada pela <strong>OTAN</strong>
+    cunhou oficialmente o termo <em>Engenharia de Software</em>.</p>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># ⏱ Prazos</span><br>
+        Estourados
+      </div>
+      <div class="tree">
+        <span class="dim"># 💰 Orçamentos</span><br>
+        Ultrapassados
+      </div>
+      <div class="tree">
+        <span class="dim"># ❌ Entrega</span><br>
+        Não funcionava
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="o curso">
+    <h2>Como o Curso <span class="accent">se Organiza</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># 1 · 1º Semestre</span><br>
+        <em>Onde o código roda?</em><br><br>
+        SO · Terminal · Linux/WSL · Git/GitHub
+      </div>
+      <div class="tree">
+        <span class="dim"># 2 · 2º Semestre</span><br>
+        <em>Como organizar o que se constrói?</em><br><br>
+        Python · Orientação a Objetos · Boas práticas
+      </div>
+    </div>
+    <p class="payoff">Cada ferramenta abre um caminho novo na carreira de quem programa.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="sistema operacional">
+    <h2>O que é um <span class="accent">Sistema Operacional?</span></h2>
+    <p class="lede">O <strong>SO</strong> é o tradutor entre você e o hardware da máquina.</p>
+    <div class="two-col">
+      <ul class="points">
+        <li><strong>Gerenciar memória</strong> — o que cada programa pode usar</li>
+        <li><strong>Gerenciar processos</strong> — o que roda e quando</li>
+        <li><strong>Gerenciar arquivos</strong> — o que está salvo e onde</li>
+      </ul>
+      <img class="fig" src="img/so-hardware-voce-programas.png" alt="Diagrama com o Sistema Operacional no centro, ligado a três círculos: Hardware (processador, memória, disco), Você (cliques, teclado, janelas) e Programas (aplicativos que você usa)">
+    </div>
+    <div class="callout">
+      <span class="mark">i</span>
+      <p>Sem SO, cada programa teria que reinventar do zero como falar com o hardware.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="windows · macos · linux">
+    <h2>Windows · macOS · <span class="accent">Linux</span></h2>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># Windows</span><br>
+        Mais comum em PCs e empresas. Kernel fechado pela Microsoft.
+      </div>
+      <div class="tree">
+        <span class="dim"># macOS</span><br>
+        Exclusivo da Apple. Kernel Darwin, design integrado e polido.
+      </div>
+      <div class="tree">
+        <span class="dim"># Linux</span><br>
+        Move a maior parte da internet. Servidores, nuvem, infraestrutura.
+      </div>
+    </div>
+    <p class="payoff">Ao longo do ano, vamos trabalhar principalmente com <strong>Linux</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="camadas do so">
+    <h2>Camadas de um <span class="accent">Sistema Operacional</span></h2>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># 1 · GUI</span><br>
+        Janelas, ícones, botões. Intuitiva, mas com custo de memória e processamento.
+      </div>
+      <div class="tree">
+        <span class="dim"># 2 · Distro (Linux)</span><br>
+        Pacote montado sobre o kernel: Ubuntu, Debian, Fedora. Mesma base, experiências diferentes.
+      </div>
+      <div class="tree">
+        <span class="dim"># 3 · Kernel</span><br>
+        Núcleo do SO — gerencia memória, processos e dispositivos. Invisível, mas sustenta tudo.
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="gui vs. cli">
+    <h2>GUI <span class="accent">vs. CLI</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># GUI · Interface Gráfica</span><br>
+        Janelas, ícones, mouse. Intuitiva, mas consome memória e processamento só para existir.
+      </div>
+      <div class="tree">
+        <span class="dim"># CLI · Linha de Comando</span><br>
+        Texto puro, direto ao sistema. Mais leve, mais rápido — e automatizável.
+      </div>
+    </div>
+    <p class="payoff">Um clique de mouse não pode ser salvo e reexecutado mil vezes. Um comando de terminal, sim.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="o terminal">
+    <h2>Por que o Terminal <span class="accent">Importa?</span></h2>
+    <img class="fig" src="img/terminal-tres-pilares.png" alt="Três círculos: Automatização (comandos repetíveis e facilmente automatizáveis), Acesso Direto (fala direto com o sistema sem camadas) e Padrão do Mercado (usado em servidores, Git e serviços na nuvem)">
+    <p class="payoff">É o que separa <strong>usar um computador</strong> de <strong>programar de verdade</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="o terminal que vamos usar">
+    <h2>O Terminal que <span class="accent">Vamos Usar</span></h2>
+    <p class="lede"><strong>Não será o CMD nem o PowerShell.</strong> Vamos trabalhar
+    com um <strong>terminal Linux</strong> — o ambiente padrão do mercado.</p>
+    <div class="two-col">
+      <div>
+        <ul class="points">
+          <li>Usado em servidores e nuvem</li>
+          <li>Onde Git e GitHub funcionam de forma direta</li>
+          <li>Padronizado e amplamente documentado</li>
+        </ul>
+        <div class="callout">
+          <span class="mark">i</span>
+          <p>Sem trocar de sistema operacional — graças à <strong>virtualização</strong>.</p>
+        </div>
+      </div>
+      <ul class="points">
+        <li><strong>01 · Entender virtualização</strong> — Rodar um SO dentro de outro</li>
+        <li><strong>02 · Configurar WSL</strong> — Linux rodando dentro do Windows</li>
+        <li><strong>03 · Dominar comandos básicos</strong> — Navegar, criar, manipular arquivos</li>
+        <li><strong>04 · Aprender Git e GitHub</strong> — Rastrear a evolução do projeto</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="o mapa do ano">
+    <h2>O Mapa <span class="accent">do Ano</span></h2>
+    <div class="two-col" style="grid-template-columns: repeat(5, 1fr);">
+      <div class="tree">
+        <span class="dim"># 1 · Agora</span><br>
+        SO, terminal, camadas do sistema
+      </div>
+      <div class="tree">
+        <span class="dim"># 2 · Próxima aula</span><br>
+        Virtualização e WSL
+      </div>
+      <div class="tree">
+        <span class="dim"># 3 · 1º Bimestre</span><br>
+        Linux, Git e GitHub
+      </div>
+      <div class="tree">
+        <span class="dim"># 4 · 2º Bimestre</span><br>
+        Python e orientação a objetos
+      </div>
+      <div class="tree">
+        <span class="dim"># 5 · Fim do ano</span><br>
+        Caminhos na carreira
+      </div>
+    </div>
+    <p class="payoff">Cada etapa constrói sobre a anterior. A fundação começa aqui.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="a provocação de 1968">
+    <p class="eyebrow">A Provocação de 1968 ainda vale</p>
+    <h2>Programar sozinho <span class="accent">não é suficiente.</span></h2>
+    <p class="lede">É preciso saber onde o código roda, como rastrear sua
+    evolução, e como organizá-lo para sobreviver ao tempo.</p>
+    <p class="payoff">Isso é Engenharia de Software.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 01 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 01: <span class="accent">formulário de entrega</span></h2>
+    <p class="body-text">Entrega pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScq0MkifWyBa3OgjgM5ICrstr3pogEFaMnp87ds9g5Sn6rGFQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLScq0MkifWyBa3OgjgM5ICrstr3pogEFaMnp87ds9g5Sn6rGFQ/viewform</code></a></p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">16</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+<script src="../../assets/slide.js"></script>
+</body>
+</html>

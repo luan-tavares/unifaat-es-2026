@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 04 — Versionamento e Git</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">04</span> - Versionamento e Git</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="cronograma">
+    <img class="fig" src="img/cronograma-aulas.png" alt="Cronograma da disciplina: aulas 1 a 14 com datas e conteúdos, de 19/AGO a 25/NOV, mais prova do 1º bimestre (30/SET), prova do 2º bimestre (02/DEZ), prova SUB (09/DEZ) e exame (16/DEZ). A aula 4, Versionamento e Git (09/SET), está destacada em amarelo.">
+  </section>
+
+  <section class="slide" data-eyebrow="wsl e windows">
+    <h2>WSL e Windows: <span class="accent">o Filesystem Compartilhado</span></h2>
+    <p class="lede">Os dois sistemas parecem isolados, mas compartilham o mesmo disco físico.</p>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># Windows</span><br>
+        Gerencia arquivos, janelas e hardware
+      </div>
+      <div class="tree">
+        <span class="dim"># Ponte WSL</span><br>
+        Traduz caminhos entre os dois mundos
+      </div>
+      <div class="tree">
+        <span class="dim"># Ubuntu (WSL)</span><br>
+        Acessa disco Windows via <code>/mnt/c/</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="paths">
+    <h2>O que é um <span class="accent">Path?</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="lede"><strong>Endereço de um arquivo no sistema.</strong> Sequência de diretórios até o destino — como um endereço postal, só que com pastas.</p>
+        <p class="body-text"><strong>Mesmo lugar, dois endereços.</strong> Desktop da usuária <strong>maria</strong>:</p>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">paths</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line comment"># Windows</div>
+            <div class="term-line out">C:\Users\maria\Desktop</div>
+            <div class="term-line comment"># WSL</div>
+            <div class="term-line out">/mnt/c/Users/maria/Desktop</div>
+          </div>
+        </div>
+      </div>
+      <img class="fig" src="img/path-windows-wsl.png" alt="Diagrama: o Windows path C:\Users\maria\Desktop e o WSL path /mnt/c/Users/maria/Desktop apontam para a mesma pasta, Desktop folder.">
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="navegando">
+    <h2>Navegando com <span class="accent">.</span> e <span class="accent">..</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># . (ponto)</span><br>
+        Diretório atual — onde você está agora
+      </div>
+      <div class="tree">
+        <span class="dim"># .. (dois pontos)</span><br>
+        Diretório pai — um nível acima na estrutura
+      </div>
+    </div>
+    <p class="payoff">Existem em Linux e Windows — essenciais para navegar e instalar ferramentas.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="binários">
+    <h2>Binários e <span class="accent">Ambientes Isolados</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="lede"><strong>Cada ambiente tem seus próprios binários.</strong> Instalar o Git no Windows <strong>não</strong> o instala no WSL — e vice-versa.</p>
+        <ul class="points">
+          <li><code>mkdir</code>, <code>ls</code>, <code>cd</code> — já vêm instalados no Linux</li>
+          <li>Git e VS Code precisam ser instalados manualmente</li>
+          <li>Cada máquina exige seu próprio processo</li>
+        </ul>
+      </div>
+      <img class="fig" src="img/binarios-isolados.png" alt="Diagrama: o Windows tem binários próprios (VS Code e Git); o WSL Ubuntu tem binários próprios (Git e system tools). Os dois ambientes são separados por uma linha tracejada.">
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="vim">
+    <h2>Vim: <span class="accent">Editor de Texto no CLI</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text"><strong>O que é o Vim?</strong> Editor de texto no terminal CLI, <strong>sem interface gráfica</strong>. Nativo do Linux/Unix — não existe no Windows nativamente.</p>
+        <div class="two-col">
+          <div class="tree">
+            <span class="dim"># Nativo do Linux</span><br>
+            Só funciona via WSL no Windows.
+          </div>
+          <div class="tree">
+            <span class="dim"># Abrindo um arquivo</span><br>
+            <code>vim arquivo.txt</code>
+          </div>
+        </div>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><code>:q!</code> → sair <strong>sem salvar</strong><br><code>:wq</code> → salvar <strong>e</strong> sair</p>
+    </div>
+      </div>
+      <div>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">Ubuntu/WSL</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line comment"># Instalando no Ubuntu/WSL</div>
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">sudo apt install vim -y</span></div>
+          </div>
+        </div>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">comandos essenciais</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line out">i      Inserir</div>
+            <div class="term-line out">Esc    Modo normal</div>
+            <div class="term-line out">:wq    Salvar e sair</div>
+            <div class="term-line out">:q!    Sair sem salvar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="ide · vs code">
+    <h2>IDE: <span class="accent">Por que o VS Code Importa</span></h2>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># Editor inteligente</span><br>
+        Destaque de sintaxe, sugestões e detecção de erros
+      </div>
+      <div class="tree">
+        <span class="dim"># Terminal integrado</span><br>
+        Tudo no mesmo programa, sem alternar janelas
+      </div>
+      <div class="tree">
+        <span class="dim"># Integração com Git</span><br>
+        Controle de versão diretamente na interface
+      </div>
+    </div>
+    <p class="payoff">Instalado no Windows — é ele quem gerencia tela e janelas.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="o problema">
+    <h2>O Problema sem <span class="accent">Controle de Versão</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out">projeto_final_v2_agora_vai</div>
+      </div>
+    </div>
+    <p class="lede">Cópias manuais, incompletas, sem histórico real.</p>
+    <p class="body-text"><strong>O risco do "salvar como"</strong></p>
+    <ul class="points">
+      <li>Impossível saber o que mudou entre versões</li>
+      <li>Sem como voltar para um estado específico</li>
+      <li>Qualquer mudança pode quebrar tudo</li>
+    </ul>
+    <p class="payoff">O Git resolve exatamente esse caos — de forma elegante e rastreável.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="instalando o git">
+    <h2>Instalando o <span class="accent">Git</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text"><strong>No Windows:</strong> baixar instalador em <strong>git-scm.com</strong> e seguir o assistente gráfico.</p>
+        <p class="body-text"><strong>No WSL (Ubuntu):</strong></p>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">Ubuntu/WSL</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">sudo apt update</span></div>
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">sudo apt install git -y</span></div>
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">git --version</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="body-text"><strong>Por que instalar nos dois?</strong> Cada ambiente é isolado. O Git do Windows não existe dentro do WSL.</p>
+        <p class="body-text"><strong>Bônus: VS Code no WSL.</strong> Após instalar o VS Code no Windows, abra qualquer pasta Linux com:</p>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">pasta-linux/</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">code .</span></div>
+          </div>
+        </div>
+        <p class="body-text">O <code>.</code> aponta para a pasta atual.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="como o git funciona">
+    <h2>Como o <span class="accent">Git Funciona</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="lede"><strong>Pense em fotografias.</strong> Cada <strong>commit</strong> é um retrato completo de todos os arquivos do projeto naquele instante.</p>
+        <ul class="points">
+          <li>Tem data, autor e mensagem explicativa</li>
+          <li>Pode ser revisitado a qualquer momento</li>
+          <li>A sequência forma a linha do tempo do projeto</li>
+        </ul>
+      </div>
+      <img class="fig" src="img/commits-linha-do-tempo.png" alt="Estrada sinuosa com quatro marcos: Início (criação do repositório e setup inicial), Primeiro arquivo (adicionar arquivo inicial ao projeto), Funcionalidade (implementar recurso principal) e Bug corrigido (resolver falha e commitar correção).">
+    </div>
+    <p class="payoff">Por ora: linha única, sem ramificações. <em>Branches</em> ficam para outra disciplina.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="fluxo básico">
+    <h2>Fluxo Básico <span class="accent">do Git</span></h2>
+    <img class="fig" src="img/fluxo-add-commit-log.png" alt="Três círculos encadeados representando as etapas git add (ícone de arquivo), git commit (ícone de câmera) e git log (ícone de livro com globo).">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git init</span></div>
+        <div class="term-line comment"># Cria o repositório na pasta atual</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git branch -M main</span></div>
+        <div class="term-line comment"># Renomeia a branch padrão para main</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git status</span></div>
+        <div class="term-line comment"># Raio-x do momento atual (nunca altera nada)</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git add .</span></div>
+        <div class="term-line comment"># Prepara todos os arquivos modificados</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git commit -m &quot;mensagem clara do que mudou&quot;</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git log</span></div>
+        <div class="term-line comment"># Exibe a linha do tempo de commits</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="configurando o git">
+    <h2>Configurando <span class="accent">o Git</span></h2>
+    <p class="lede">Antes de fazer qualquer commit, o Git precisa saber quem você é. Esses dados aparecem em cada commit registrado no histórico do projeto.</p>
+    <div class="two-col" style="grid-template-columns:1fr; max-width:none">
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-path">definindo nome e e-mail</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">git config --global user.name &quot;Seu Nome&quot;</span></div>
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">git config --global user.email &quot;seu@email.com&quot;</span></div>
+        </div>
+      </div>
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-path">verificando as configurações salvas</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">git config --global user.name</span></div>
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">git config --global user.email</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="payoff"><code>--global</code> aplica a configuração para todos os repositórios da sua máquina. Você só precisa fazer isso uma vez por computador.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="recuperando o passado">
+    <h2>Recuperando <span class="accent">o Passado</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text"><strong><code>git checkout</code></strong> — restaura um arquivo para como estava em um commit específico.</p>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">projeto/</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">git checkout a1b2c3d -- anotacoes.txt</span></div>
+          </div>
+        </div>
+        <p class="body-text"><strong><code>git diff</code></strong> — mostra linha a linha o que mudou desde o último commit — antes de decidir o que registrar.</p>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">projeto/</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">git diff</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="body-text"><strong>O histórico vive na pasta <code>.git</code>.</strong> Criada pelo <code>git init</code>, guarda todos os commits localmente.</p>
+    <div class="callout">
+      <span class="mark">i</span>
+      <p>Ainda não existe cópia em outro lugar. Isso é tarefa do GitHub — próxima aula.</p>
+    </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="head">
+    <h2>HEAD: <span class="accent">o Marcador de Página</span></h2>
+    <img class="fig" src="img/head-marcador.png" alt="Linha do tempo de commits representados por cubos; os três últimos estão marcados como HEAD~2, HEAD~1 e HEAD, da esquerda para a direita.">
+    <p class="body-text"><strong>O que é HEAD?</strong> Referência automática do Git que aponta sempre para o <strong>commit atual</strong> — sem precisar copiar nenhum hash.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># Restaura arquivo ao estado atual</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git checkout HEAD -- anotacoes.txt</span></div>
+        <div class="term-line comment"># Um commit antes do atual</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git checkout HEAD~1 -- anotacoes.txt</span></div>
+        <div class="term-line comment"># Dois commits antes</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git checkout HEAD~2 -- anotacoes.txt</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="soft vs hard delete">
+    <h2>Soft Delete <span class="accent">vs. Hard Delete</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="lede"><strong>Soft Delete — <code>--soft</code></strong><br>Move o HEAD para um commit anterior, mas preserva as mudanças nos arquivos.</p>
+        <p class="body-text">Como guardar uma foto numa gaveta — sem rasgar nada.</p>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">projeto/</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">git reset --soft HEAD~1</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="lede"><strong>Hard Delete — <code>--hard</code></strong><br>Move o HEAD para trás e descarta definitivamente todas as mudanças posteriores.</p>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p>Sem segunda chance. Use com cautela.</p>
+    </div>
+        <div class="term">
+          <div class="term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-path">projeto/</span>
+          </div>
+          <div class="term-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">git reset --hard HEAD~1</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="fim · resumo">
+    <h2>Soft e Hard Delete <span class="accent">além do Git</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text"><strong>Um conceito que se repete.</strong> A mesma lógica aparece em Banco de Dados:</p>
+        <ul class="points">
+          <li><strong>Soft delete:</strong> marcar registro com flag <code>deletado=true</code> — dado continua na tabela, recuperável</li>
+          <li><strong>Hard delete:</strong> comando <code>DELETE</code> — linha removida definitivamente</li>
+        </ul>
+        <p class="payoff">Reconhecer padrões que se repetem entre disciplinas é pensar como engenheiro de software.</p>
+      </div>
+      <div>
+        <p class="body-text"><strong>Resumo da aula</strong></p>
+        <ul class="points">
+          <li>Filesystem compartilhado WSL ↔ Windows</li>
+          <li>Paths e a ponte <code>/mnt/c/</code></li>
+          <li>Instalação de VS Code e Git</li>
+          <li>Commits como linha do tempo</li>
+          <li>HEAD, soft e hard delete</li>
+        </ul>
+        <p class="body-text"><strong>Próxima aula:</strong> GitHub — compartilhar o histórico com o mundo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 04 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 04</h2>
+    <p class="body-text"><a href="https://docs.google.com/forms/d/e/1FAIpQLScq8Jid2BV3f8Ngbmh0XDYsnez7BO_mlcSeTf7Ku5XuB2LDxg/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLScq8Jid2BV3f8Ngbmh0XDYsnez7BO_mlcSeTf7Ku5XuB2LDxg/viewform</code></a></p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">18</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+<script src="../../assets/slide.js"></script>
+</body>
+</html>

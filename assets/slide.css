@@ -757,3 +757,6 @@
     .data-table{ font-size: 0.85rem; }
     .data-table th, .data-table td{ padding: 4px 10px; }
   }
+
+  /* figura com fundo próprio (ex.: diagrama escuro): tamanho natural, centralizada, sem fundo branco */
+  .fig.solta{ align-self: center; background: transparent; }

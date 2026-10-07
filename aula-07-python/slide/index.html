@@ -365,17 +365,7 @@
       <li><strong>Dividir:</strong> corta a lista ao meio, e cada metade ao meio de novo, até sobrar 1 item (1 item já está ordenado)</li>
       <li><strong>Conquistar:</strong> junta (intercala) as metades de volta, sempre em ordem</li>
     </ul>
-    <div class="tree">
-      <span class="dim"># dividir</span><br>
-      [7, 3, 9, 1, 5, 8, 2, 6]<br>
-      [7, 3, 9, 1] &nbsp; [5, 8, 2, 6]<br>
-      [7, 3] [9, 1] &nbsp; [5, 8] [2, 6]<br>
-      [7] [3] [9] [1] &nbsp; [5] [8] [2] [6]<br>
-      <span class="dim"># conquistar</span><br>
-      [3, 7] [1, 9] &nbsp; [5, 8] [2, 6]<br>
-      [1, 3, 7, 9] &nbsp; [2, 5, 6, 8]<br>
-      <strong>[1, 2, 3, 5, 6, 7, 8, 9]</strong>
-    </div>
+    <img class="fig solta" src="img/merge-sort.png" alt="Merge sort da lista 38 27 43 3 9 82 10 15: a lista é dividida ao meio até sobrar um número em cada caixa, depois as metades são intercaladas em ordem até formar 3 9 10 15 27 38 43 82">
     <p class="payoff">8 itens → 3 divisões por 2 (2³ = 8). A mesma divisão
     por 2 do binário, agora aplicada a uma lista.</p>
   </section>
@@ -437,18 +427,18 @@
 
   <section class="slide" data-eyebrow="tf 07 · entrega">
     <span class="kicker-badge">tarefa</span>
-    <h2>TF 07: <span class="accent">mais dois algoritmos de ordenação</span></h2>
+    <h2>TF 07: <span class="accent">quick sort</span></h2>
     <p class="lede">Num repositório novo <code>tf-07</code>, com venv e
     <code>.gitignore</code>, implementar num <code>ordenacao.py</code>:</p>
     <ul class="points">
-      <li><code>insertion_sort(valores)</code>: cada item é inserido na posição
-      certa da parte da esquerda, que já está ordenada</li>
-      <li><code>quick_sort(valores)</code>: escolhe um pivô, separa menores,
-      iguais e maiores, e ordena as partes chamando a si mesma</li>
-      <li>Testar imprimindo as duas com uma lista fora de ordem:
+      <li><code>quick_sort(valores)</code>: escolhe um item como <strong>pivô</strong>
+      (por exemplo, o do meio), separa em menores, iguais e maiores que ele, e
+      ordena os menores e os maiores chamando a si mesma</li>
+      <li>Resultado: menores ordenados + iguais + maiores ordenados</li>
+      <li>Testar imprimindo com uma lista fora de ordem:
       <code>print(quick_sort([7, 3, 9, 1, 5]))</code></li>
       <li>Sem <code>else</code>, sem <code>sorted()</code>/<code>.sort()</code>,
-      comentários com as próprias palavras, 3+ commits, <code>.venv</code> fora
+      comentários com as próprias palavras, 2+ commits, <code>.venv</code> fora
       do repositório</li>
     </ul>
     <p class="body-text">Entrega: link do repositório público no GitHub,

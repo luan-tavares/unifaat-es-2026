@@ -1,0 +1,107 @@
+CONTEXTO
+
+Na Aula 07 instalamos o Python no WSL e no Windows, criamos um ambiente virtual (venv), revisamos os tipos basicos e transformamos em codigo dois algoritmos: a conversao de decimal para binario (a divisao sucessiva por 2 feita no quadro) e a ordenacao. Vimos o bubble sort, que compara vizinhos e troca, e o merge sort, que divide a lista por 2 ate sobrar um item e depois intercala as metades -- a estrategia de dividir para conquistar.
+
+Agora e a vez de voces implementarem mais dois algoritmos de ordenacao: o quick sort, que tambem divide para conquistar, e o insertion sort, que e o algoritmo que o Timsort (o sorted() do Python) usa junto com o merge sort.
+
+O QUE VOCES PRECISAM FAZER
+
+Preparar o projeto Dentro do terminal do WSL, crie um diretorio chamado tf-07 e entre nele. Transforme a pasta em um repositorio Git e crie o ambiente virtual do projeto:
+
+mkdir tf-07
+cd tf-07
+git init
+python3 -m venv .venv
+source .venv/bin/activate
+
+Antes de qualquer git add, crie o .gitignore, para que o ambiente virtual nunca seja commitado:
+
+touch .gitignore
+code .
+
+No VS Code, dentro de .gitignore, escrever:
+
+.venv/
+__pycache__/
+
+Implementar o insertion sort Crie o arquivo ordenacao.py e, dentro dele, a funcao insertion_sort(valores). A ideia do algoritmo:
+
+- A parte da esquerda da lista vai ficando ordenada, um item de cada vez;
+- Pega-se o proximo item e ele e "inserido" na posicao certa dessa parte ordenada, deslocando para a direita os itens maiores que ele;
+- Repete-se ate o ultimo item.
+
+Exemplo com [7, 3, 9, 1]: o 3 entra antes do 7 -> [3, 7, 9, 1]; o 9 ja esta no lugar -> [3, 7, 9, 1]; o 1 entra no comeco -> [1, 3, 7, 9].
+
+Quando terminar, faca um commit:
+
+git add .
+git commit -m "Implementa insertion sort"
+
+Implementar o quick sort No mesmo arquivo ordenacao.py, crie a funcao quick_sort(valores). A ideia do algoritmo:
+
+- Se a lista tem 0 ou 1 item, ela ja esta ordenada (caso base, como no merge sort);
+- Escolhe-se um item da lista como pivo (por exemplo, o do meio);
+- Separa-se o resto em tres listas: menores que o pivo, iguais ao pivo e maiores que o pivo;
+- Ordena-se, chamando a propria funcao quick_sort, a lista dos menores e a dos maiores;
+- O resultado e: menores ordenados + iguais + maiores ordenados.
+
+Diferente do merge sort, aqui a lista nao e dividida sempre ao meio: o tamanho de cada parte depende do pivo escolhido.
+
+Quando terminar, faca outro commit:
+
+git add .
+git commit -m "Implementa quick sort"
+
+Testar os dois algoritmos No fim do ordenacao.py, chame as duas funcoes com uma lista fora de ordem e imprima o resultado:
+
+print(insertion_sort([7, 3, 9, 1, 5]))
+print(quick_sort([7, 3, 9, 1, 5]))
+
+Rode no terminal e confira se as duas linhas mostram [1, 3, 5, 7, 9]:
+
+python3 ordenacao.py
+
+Commit:
+
+git add .
+git commit -m "Testa os dois algoritmos"
+
+Criar o repositorio no GitHub e enviar o historico No site do GitHub, crie um repositorio Public chamado tf-07, sem README. Copie a URL SSH (botao verde Code, aba SSH) e, no terminal, dentro de tf-07:
+
+git remote add origin <URL copiada>
+git push -u origin main
+
+Conferir no proprio GitHub Abram o repositorio no navegador e confirmem: ordenacao.py e .gitignore aparecem; a pasta .venv NAO aparece.
+
+Ao final, a pasta tf-07 (local) deve estar assim:
+tf-07/
+├── .git/
+├── .venv/
+├── .gitignore
+└── ordenacao.py
+
+REGRAS
+
+Nao usar sorted() nem .sort(): a ordenacao tem que ser feita pelo algoritmo de voces.
+As duas funcoes devem devolver uma lista nova, sem alterar a lista recebida.
+Nada de else (nem elif): usar retorno antecipado, continue ou valor padrao, como em aula.
+Cada funcao deve ter comentarios explicando, com as proprias palavras, como o algoritmo funciona.
+Pelo menos 3 commits, na ordem do roteiro.
+A pasta .venv nao pode aparecer no repositorio.
+O repositorio no GitHub deve estar Public, pra que o codigo possa ser conferido pelo link enviado.
+Trabalho individual: codigos identicos entre colegas serao considerados copia e zerados para todos os envolvidos.
+Todo o trabalho deve ser feito dentro do ambiente Linux do WSL.
+
+REPOSITORIO BASE
+
+O codigo visto em aula (pasta src/) esta no repositorio base da disciplina: https://github.com/luan-tavares/unifaat-es-2026
+
+Usem ele como base e referencia, mas o repositorio entregue e o de cada um: criem o SEU repositorio tf-07, PUBLICO, no seu proprio GitHub. O link do repositorio base nao vale como entrega.
+
+ENTREGA
+
+Enviar o link do repositorio no GitHub (publico), junto com nome e RA, pelo formulario:
+
+https://docs.google.com/forms/d/e/1FAIpQLSdhAbpphs3ipl7--2EHyuzWIsQKm24xJ_siqw3VGYNdNIuRPw/viewform?usp=publish-editor
+
+2026-10-14T23:59:59

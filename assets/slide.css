@@ -69,7 +69,7 @@
   .deck{
     position:relative;
     z-index:1;
-    max-width: 1220px;
+    max-width: none;
     margin: 0 auto;
     padding: clamp(20px, 4vw, 56px) 32px 110px;
   }
@@ -134,7 +134,7 @@
     font-size: clamp(1.7rem, 3vw, 2.1rem);
     line-height: 1.6;
     color: var(--muted);
-    max-width: 72ch;
+    max-width: none;
   }
 
   .lede strong{ color: var(--ink); font-weight: 600; }
@@ -143,7 +143,7 @@
     font-size: 1.85rem;
     line-height: 1.6;
     color: var(--ink);
-    max-width: 76ch;
+    max-width: none;
   }
   p.body-text.muted{ color: var(--muted); }
 
@@ -151,7 +151,7 @@
     list-style: none;
     margin: 0; padding: 0;
     display:flex; flex-direction:column; gap: 14px;
-    max-width: 76ch;
+    max-width: none;
   }
   ul.points li{
     position: relative;
@@ -202,7 +202,7 @@
     overflow: hidden;
     box-shadow: 0 14px 34px var(--shadow);
     width: 100%;
-    max-width: 100ch;
+    max-width: none;
   }
   .term-bar{
     display:flex; align-items:center; gap:8px;
@@ -242,7 +242,7 @@
     border-left: 4px solid var(--warn);
     border-radius: 8px;
     padding: 16px 18px;
-    max-width: 74ch;
+    max-width: none;
   }
   .callout .mark{
     font-family: var(--font-mono);
@@ -257,14 +257,14 @@
     color: var(--accent);
     border-top: 1px dashed var(--rule);
     padding-top: 16px;
-    max-width: 72ch;
+    max-width: none;
   }
 
   .two-col{
     display:grid;
     grid-template-columns: 1fr 1fr;
     gap: 22px;
-    max-width: 88ch;
+    max-width: none;
   }
   @media (max-width: 640px){
     .two-col{ grid-template-columns: 1fr; }
@@ -279,7 +279,7 @@
     border: 1px solid var(--rule);
     border-radius: 8px;
     padding: 16px 18px;
-    max-width: 48ch;
+    max-width: none;
   }
   .tree .dim{ color: var(--muted-2); }
 
@@ -422,7 +422,7 @@
   }
 
   .deck{ margin-left: var(--sidebar-w); max-width: none; }
-  .deck > .slide{ max-width: 1220px; margin: 0 auto; width: 100%; }
+  .deck > .slide{ max-width: none; margin: 0 auto; width: 100%; }
   .hud{ left: var(--sidebar-w); }
 
   @media (max-width: 719px){
@@ -460,7 +460,7 @@
     margin: 0;
     padding-top: 22px;
     border-top: 3px solid var(--ink);
-    max-width: 112ch;
+    max-width: none;
   }
 
   /* título da capa: sem balanceamento, vai até o fim da linha e quebra sozinho */
@@ -616,7 +616,7 @@
     border: 1px solid var(--rule);
     border-radius: 10px;
     padding: 1em 1.2em;
-    max-width: 76ch;
+    max-width: none;
     text-decoration: none;
     white-space: normal;
     overflow-wrap: anywhere;
@@ -652,10 +652,10 @@
   body.prova .slide h2, body.prova .slide h3{ font-family: var(--font-mono); line-height: 1.15; margin: 0; text-wrap: balance; }
   body.prova .slide h3{ font-weight: 600; font-size: clamp(2.2rem, 4.6vw, 3.2rem); }
   body.prova .slide h4{ font-family: var(--font-mono); font-size: 2rem; margin: 18px 0 0; color: var(--accent); }
-  body.prova .slide p{ font-size: 1.95rem; line-height: 1.6; margin: 0; max-width: 78ch; overflow-wrap: anywhere; }
+  body.prova .slide p{ font-size: 1.95rem; line-height: 1.6; margin: 0; max-width: none; overflow-wrap: anywhere; }
   body.prova .slide strong{ font-weight: 700; }
   body.prova .slide em{ color: var(--muted); }
-  body.prova .slide ul, body.prova .slide ol{ margin: 0; padding: 0; list-style: none; display:flex; flex-direction:column; gap: 14px; max-width: 80ch; counter-reset: n; }
+  body.prova .slide ul, body.prova .slide ol{ margin: 0; padding: 0; list-style: none; display:flex; flex-direction:column; gap: 14px; max-width: none; counter-reset: n; }
   body.prova .slide li{ position: relative; padding-left: 40px; font-size: 1.95rem; line-height: 1.55; overflow-wrap: anywhere; }
   body.prova .slide ul > li::before{ content:"→"; position:absolute; left:0; color: var(--accent-2); font-family: var(--font-mono); }
   body.prova .slide ol > li{ counter-increment: n; }
@@ -665,12 +665,12 @@
   body.prova .slide pre{ margin: 0; }
   body.prova .term-body{ font-size: 1.55rem; }
   body.prova .slide blockquote{
-    margin: 0; padding: 18px 22px; max-width: 80ch;
+    margin: 0; padding: 18px 22px; max-width: none;
     background: var(--warn-bg); border: 1px solid var(--warn-border); border-left: 4px solid var(--warn); border-radius: 8px;
   }
   body.prova .slide blockquote p{ font-size: 1.75rem; }
   body.prova .tbl-wrap{ overflow-x: auto; max-width: 100%; }
-  body.prova .slide table{ border-collapse: collapse; width: 100%; max-width: 1100px; font-size: 1.6rem; line-height: 1.45; }
+  body.prova .slide table{ border-collapse: collapse; width: 100%; max-width: none; font-size: 1.6rem; line-height: 1.45; }
   body.prova .slide th{ text-align: left; font-family: var(--font-mono); background: var(--bg-chrome); color: var(--on-chrome); padding: 12px 16px; }
   body.prova .slide td{ padding: 12px 16px; border-bottom: 1px solid var(--rule); vertical-align: top; background: var(--surface); }
   body.prova .slide td code, body.prova .slide li code, body.prova .slide p code{ white-space: normal; }
@@ -682,12 +682,12 @@
     body.prova .slide table{ font-size: 0.95rem; }
     body.prova .term-body{ font-size: 0.95rem; }
   }
-  /* slides mais largos (o padrão de 1220px fica estreito pra tanto texto) */
-  body.prova .deck > .slide{ max-width: 1680px; }
-  body.prova .slide p, body.prova .slide ul, body.prova .slide ol, body.prova .slide blockquote, body.prova .lede, body.prova p.body-text{ max-width: 120ch; }
+  /* modo prova: tudo ocupa a largura toda do slide */
+  body.prova .deck > .slide{ max-width: none; }
+  body.prova .slide p, body.prova .slide ul, body.prova .slide ol, body.prova .slide blockquote, body.prova .lede, body.prova p.body-text{ max-width: none; }
   body.prova .term{ max-width: 100%; }
-  body.prova .slide table{ max-width: 1500px; }
-  body.prova .two-col{ max-width: 140ch; }
+  body.prova .slide table{ max-width: none; }
+  body.prova .two-col{ max-width: none; }
   body.prova .deck{ padding-left: 48px; padding-right: 48px; }
 
   /* botão "Voltar": mesmo estilo em slide, briefing, raio-x e índices */
@@ -733,3 +733,27 @@
   }
   .swipe-tip.on{ opacity: .95; }
   @media print{ .swipe-tip{ display: none; } }
+
+  /* tabela de dados (rastreio de algoritmo, comparações) */
+  .data-table{
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 1.45rem;
+    background: var(--surface);
+    width: 100%;
+  }
+  .data-table th, .data-table td{
+    border: 1px solid var(--rule);
+    padding: 8px 16px;
+    text-align: left;
+  }
+  .data-table th{
+    background: var(--bg-raised);
+    color: var(--accent-2);
+    font-weight: 600;
+  }
+  .data-table td.hl{ color: var(--accent); font-weight: 600; }
+  @media print{
+    .data-table{ font-size: 0.85rem; }
+    .data-table th, .data-table td{ padding: 4px 10px; }
+  }

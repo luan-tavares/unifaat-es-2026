@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 07 — Introdução ao Python</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">07</span> - Introdução ao Python</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="recado · chave ssh (aula 05)">
+    <h2>Chave SSH: <span class="accent">um par por máquina</span></h2>
+    <p class="body-text">Cada ambiente gera o seu próprio par de chaves. O
+    WSL guarda o dele em <code>~/.ssh/</code> e o Windows em
+    <code>C:\Users\NOME\.ssh\</code>: no mesmo notebook, são <strong>dois
+    pares diferentes</strong>, um pro Linux do WSL e outro pro Windows —
+    ambientes isolados, como na Aula 02.</p>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># máquina pessoal</span><br>
+        chave pública <strong>da conta</strong><br>
+        foto de perfil → Settings → SSH and GPG keys<br>
+        <span class="dim">acesso a todos os seus repositórios</span>
+      </div>
+      <div class="tree">
+        <span class="dim"># máquina da faculdade</span><br>
+        chave <strong>só do repositório</strong><br>
+        repositório → Settings → Deploy keys<br>
+        <span class="dim">marcar "Allow write access" pra poder dar push</span>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p>Uma chave pública só pode ser cadastrada <strong>uma vez em todo o
+      GitHub</strong>: se ela já está numa conta ou em outro repositório, o
+      GitHub recusa com <code>Key is already in use</code>. Na faculdade,
+      cada repositório precisa da sua própria chave.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="o fim e o meio">
+    <h2>Python é o <span class="accent">meio</span>, não o fim</h2>
+    <p class="lede">O que importa no curso, e o que vai junto pra qualquer
+    linguagem, são quatro coisas:</p>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># o fim</span><br>
+        <strong>algoritmos</strong><br>
+        <strong>estruturas de dados</strong><br>
+        <strong>orientação a objetos</strong><br>
+        <strong>boas práticas</strong>
+      </div>
+      <div class="tree">
+        <span class="dim"># o meio</span><br>
+        <strong>Python</strong>, neste ano<br>
+        <span class="dim">nas próximas disciplinas a linguagem muda:<br>
+        Desenvolvimento Web e Frontend usam JavaScript e TypeScript</span>
+      </div>
+    </div>
+    <p class="payoff">A linguagem é só a ferramenta. Quem domina os quatro
+    conceitos troca de linguagem aprendendo apenas a sintaxe nova.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="interpretador">
+    <h2>Python é um <span class="accent">binário que lê texto</span></h2>
+    <p class="body-text">Como <code>ls</code> e <code>git</code>,
+    <code>python3</code> é um binário (escrito em C). Ele lê um arquivo
+    <code>.py</code>, que é texto puro, e executa: por isso o Python é uma
+    linguagem <strong>interpretada</strong>.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># onde está o binário que o terminal vai executar?</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">which python3</span></div>
+        <div class="term-line out hl">/usr/bin/python3</div>
+        <div class="term-line comment"># o binário lê o arquivo de texto e executa</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">python3 ola.py</span></div>
+        <div class="term-line out">Olá, mundo!</div>
+      </div>
+    </div>
+    <p class="payoff">Por que <code>python3</code> e não <code>python</code>?
+    Em 2008 o Python 3 quebrou a compatibilidade com o 2, e as duas versões
+    conviveram até 2020 — cada uma com o seu binário.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="instalação">
+    <h2>Instalando no <span class="accent">WSL e no Windows</span></h2>
+    <p class="lede">Ambientes isolados (Aula 02): <strong>cada lado precisa
+    do seu binário</strong>. Dá pra usar Python nos dois.</p>
+    <div class="two-col">
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-path">Ubuntu (WSL)</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line comment"># o Ubuntu já traz o python3</div>
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">python3 --version</span></div>
+          <div class="term-line comment"># faltam o pip e o venv</div>
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">sudo apt update</span></div>
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">sudo apt install python3-pip python3-venv</span></div>
+        </div>
+      </div>
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-path">PowerShell (Windows)</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line comment"># instalador do python.org,</div>
+          <div class="term-line comment"># marcando "Add python.exe to PATH"</div>
+          <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">python --version</span></div>
+          <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">where.exe python</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="body-text">Download: <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer"><code>https://www.python.org/downloads/</code></a></p>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p>No Windows, digitou <code>python</code> e abriu a Microsoft Store?
+      O Python ainda não está instalado, ou a caixa do PATH ficou desmarcada.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="dependências · venv">
+    <h2>Dependências, <span class="accent">venv</span> e Git</h2>
+    <ul class="points">
+      <li><strong>Dependência:</strong> biblioteca de terceiros, instalada com <code>pip</code> a partir do PyPI</li>
+      <li>Projetos pedem versões diferentes da mesma biblioteca; o Ubuntu nem deixa instalar no Python do sistema (<code>externally-managed-environment</code>)</li>
+      <li><strong>venv:</strong> uma pasta com um Python só do projeto. <code>.venv/</code> vai no <strong>.gitignore</strong>; <code>requirements.txt</code> vai pro <strong>repositório</strong></li>
+    </ul>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">meu-projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># cria o ambiente na pasta oculta .venv</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">python3 -m venv .venv</span></div>
+        <div class="term-line comment"># ativa (Windows: .venv\Scripts\Activate.ps1)</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">source .venv/bin/activate</span></div>
+        <div class="term-line comment"># instala só dentro deste projeto</div>
+        <div class="term-line"><span class="prompt">(.venv) $</span> <span class="cmd">pip install requests</span></div>
+        <div class="term-line comment"># lista as bibliotecas e versões / recria em outra máquina</div>
+        <div class="term-line"><span class="prompt">(.venv) $</span> <span class="cmd">pip freeze &gt; requirements.txt</span></div>
+        <div class="term-line"><span class="prompt">(.venv) $</span> <span class="cmd">pip install -r requirements.txt</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="tipos básicos">
+    <h2>Tipos <span class="accent">básicos</span></h2>
+    <p class="body-text">No Python, o tipo pertence ao valor, não à variável:
+    não se declara nada, e <code>type()</code> mostra qual é.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">python3</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">type(45), type(7.5), type(True), type("Ana")</span></div>
+        <div class="term-line out">(&lt;class 'int'&gt;, &lt;class 'float'&gt;, &lt;class 'bool'&gt;, &lt;class 'str'&gt;)</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">2 ** 100</span>  <span class="comment"># int não para no 255</span></div>
+        <div class="term-line out">1267650600228229401496703205376</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">0.1 + 0.2</span>  <span class="comment"># float: imprecisão da representação binária</span></div>
+        <div class="term-line out hl">0.30000000000000004</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">True + True</span>  <span class="comment"># bool: True vale 1, False vale 0</span></div>
+        <div class="term-line out hl">2</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">ord("A"), chr(65)</span>  <span class="comment"># str: cada caractere é um número (ASCII, Aula 03)</span></div>
+        <div class="term-line out hl">(65, 'A')</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">45 // 2, 45 % 2</span>  <span class="comment"># quociente e resto</span></div>
+        <div class="term-line out hl">(22, 1)</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="list · tuple · dict">
+    <h2>Guardando <span class="accent">mais de um valor</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">python3</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># list: o "array" do Python — ordenada, índice desde 0, mutável</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">notas = [7, 3, 9]; notas.append(5); notas[0]</span></div>
+        <div class="term-line out">7</div>
+        <div class="term-line comment"># tuple: imutável, valores que andam juntos (e desempacotam)</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">quociente, resto = divmod(45, 2)</span></div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">a, b = 1, 2; a, b = b, a; a, b</span></div>
+        <div class="term-line out">(2, 1)</div>
+        <div class="term-line comment"># dict: busca por chave</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">ascii_parcial = {"A": 65, "a": 97, "0": 48}</span></div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">ascii_parcial["A"]</span></div>
+        <div class="term-line out hl">65</div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><code>b = a</code> com listas <strong>não copia</strong>: cria um
+      segundo nome pro mesmo objeto. Pra copiar: <code>a.copy()</code>.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="algoritmos">
+    <h2>Algoritmo: <span class="accent">passos finitos e sem dúvida</span></h2>
+    <p class="body-text">A palavra vem de <strong>al-Khwarizmi</strong>,
+    matemático persa do século IX. Algoritmos são bem mais velhos que
+    computadores — e vocês já executaram um no quadro:</p>
+    <div class="two-col">
+      <div class="tree">
+        1. divide por 2, anota o resto<br>
+        2. troca o número pelo quociente<br>
+        3. repete até o quociente ser 0<br>
+        4. lê os restos de baixo pra cima
+      </div>
+      <table class="data-table">
+        <thead><tr><th>n</th><th>n % 2</th><th>n // 2</th><th>binário</th></tr></thead>
+        <tbody>
+          <tr><td>45</td><td>1</td><td>22</td><td>1</td></tr>
+          <tr><td>22</td><td>0</td><td>11</td><td>01</td></tr>
+          <tr><td>11</td><td>1</td><td>5</td><td>101</td></tr>
+          <tr><td>5</td><td>1</td><td>2</td><td>1101</td></tr>
+          <tr><td>2</td><td>0</td><td>1</td><td>01101</td></tr>
+          <tr><td>1</td><td>1</td><td>0</td><td class="hl">101101</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="payoff">O mesmo 45 da revisão (Aula 06). Agora, em código.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="do quadro para o código">
+    <h2>Decimal → <span class="accent">binário</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">binario.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">def decimal_para_binario(numero):</span></div>
+        <div class="term-line"><span class="cmd">    </span><span class="comment"># caso de borda: no quadro ninguém converte o zero</span></div>
+        <div class="term-line"><span class="cmd">    if numero == 0:</span></div>
+        <div class="term-line"><span class="cmd">        return "0"</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    binario = ""</span></div>
+        <div class="term-line"><span class="cmd">    while numero &gt; 0:</span></div>
+        <div class="term-line"><span class="cmd">        resto = numero </span><span class="hl">% 2</span></div>
+        <div class="term-line"><span class="cmd">        </span><span class="comment"># resto novo vai NA FRENTE: é o "ler de baixo pra cima"</span></div>
+        <div class="term-line"><span class="cmd">        binario = </span><span class="hl">str(resto) + binario</span></div>
+        <div class="term-line"><span class="cmd">        numero = numero </span><span class="hl">// 2</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    return binario</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">print(decimal_para_binario(45))</span>  <span class="out"># 101101</span></div>
+        <div class="term-line"><span class="cmd">print(decimal_para_binario(65))</span>  <span class="out"># 1000001 -> o "A"</span></div>
+      </div>
+    </div>
+    <p class="payoff">Trocar pra <code>binario + str(resto)</code> inverte o
+    resultado — o mesmo erro do quadro, agora em código.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="conferindo o algoritmo">
+    <h2>Testando <span class="accent">os 256 valores</span> de um byte</h2>
+    <p class="body-text">Testar alguns números à mão é um começo. Um
+    engenheiro compara com uma referência confiável — em muitos casos de uma
+    vez. O <code>bin()</code> do Python é a referência; o <code>assert</code>
+    para tudo se a comparação falhar.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">binario.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">print(bin(45))</span>  <span class="out"># 0b101101 (o "0b" é só o prefixo)</span></div>
+        <div class="term-line"><span class="cmd">print(int("101101", 2))</span>  <span class="out"># 45 -> o caminho de volta</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">for n in range(256):</span></div>
+        <div class="term-line"><span class="cmd">    assert decimal_para_binario(n) == bin(n)[2:]</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">print("Os 256 valores de um byte conferem!")</span></div>
+      </div>
+    </div>
+    <p class="payoff">Três linhas conferem o byte inteiro. É o embrião dos
+    testes automatizados.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="ordenação">
+    <h2>Bubble sort: <span class="accent">compara vizinhos e troca</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">ordenacao.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">def bubble_sort(valores):</span></div>
+        <div class="term-line"><span class="cmd">    lista = valores.copy()</span>  <span class="out"># não mexe na lista de quem chamou</span></div>
+        <div class="term-line"><span class="cmd">    n = len(lista)</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    for passada in range(n - 1):</span></div>
+        <div class="term-line"><span class="cmd">        trocou = False</span></div>
+        <div class="term-line"><span class="cmd">        for i in range(n - 1 - passada):</span></div>
+        <div class="term-line"><span class="cmd">            if lista[i] &lt;= lista[i + 1]:</span></div>
+        <div class="term-line"><span class="hl">                continue</span>  <span class="out"># já em ordem: sem else</span></div>
+        <div class="term-line"><span class="hl">            lista[i], lista[i + 1] = lista[i + 1], lista[i]</span>  <span class="out"># troca via tupla</span></div>
+        <div class="term-line"><span class="cmd">            trocou = True</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">        if not trocou:</span></div>
+        <div class="term-line"><span class="cmd">            break</span>  <span class="out"># passada sem troca: pronto</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    return lista</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="ordenação · passo a passo">
+    <h2>Passada a passada</h2>
+    <table class="data-table">
+      <thead><tr><th>passada</th><th>lista no fim da passada</th><th>o que aconteceu</th></tr></thead>
+      <tbody>
+        <tr><td>início</td><td>[7, 3, 9, 1, 5]</td><td>—</td></tr>
+        <tr><td>1</td><td>[3, 7, 1, 5, <strong>9</strong>]</td><td>o 9 chegou ao fim</td></tr>
+        <tr><td>2</td><td>[3, 1, 5, <strong>7, 9</strong>]</td><td>o 7 chegou ao lugar</td></tr>
+        <tr><td>3</td><td>[1, 3, 5, 7, 9]</td><td>3 e 1 trocaram</td></tr>
+        <tr><td>4</td><td class="hl">[1, 3, 5, 7, 9]</td><td>nenhuma troca: para</td></tr>
+      </tbody>
+    </table>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">python3</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># só usa &lt;= ... então ordena strings também</div>
+        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">bubble_sort(["Carla", "ana", "Bruno"])</span></div>
+        <div class="term-line out hl">['Bruno', 'Carla', 'ana']</div>
+      </div>
+    </div>
+    <p class="payoff">"ana" foi pro fim: pro computador, "a" é 97 e "C" é 67.
+    A tabela da Aula 03, de novo.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="dividir para conquistar">
+    <h2>Merge sort: <span class="accent">dividir por 2</span> até não dar mais</h2>
+    <ul class="points">
+      <li><strong>Dividir:</strong> corta a lista ao meio, e cada metade ao meio de novo, até sobrar 1 item (1 item já está ordenado)</li>
+      <li><strong>Conquistar:</strong> junta (intercala) as metades de volta, sempre em ordem</li>
+    </ul>
+    <div class="tree">
+      <span class="dim"># dividir</span><br>
+      [7, 3, 9, 1, 5, 8, 2, 6]<br>
+      [7, 3, 9, 1] &nbsp; [5, 8, 2, 6]<br>
+      [7, 3] [9, 1] &nbsp; [5, 8] [2, 6]<br>
+      [7] [3] [9] [1] &nbsp; [5] [8] [2] [6]<br>
+      <span class="dim"># conquistar</span><br>
+      [3, 7] [1, 9] &nbsp; [5, 8] [2, 6]<br>
+      [1, 3, 7, 9] &nbsp; [2, 5, 6, 8]<br>
+      <strong>[1, 2, 3, 5, 6, 7, 8, 9]</strong>
+    </div>
+    <p class="payoff">8 itens → 3 divisões por 2 (2³ = 8). A mesma divisão
+    por 2 do binário, agora aplicada a uma lista.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="dividir para conquistar · código">
+    <h2>Merge sort <span class="accent">em Python</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">ordenacao.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">def merge_sort(lista):</span></div>
+        <div class="term-line"><span class="cmd">    if len(lista) &lt;= 1:</span>  <span class="out"># caso base: 1 item já está ordenado</span></div>
+        <div class="term-line"><span class="cmd">        return lista</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    meio = len(lista) </span><span class="hl">// 2</span>  <span class="out"># dividir por 2</span></div>
+        <div class="term-line"><span class="cmd">    esquerda = </span><span class="hl">merge_sort(lista[:meio])</span>  <span class="out"># a função chama a si mesma</span></div>
+        <div class="term-line"><span class="cmd">    direita = </span><span class="hl">merge_sort(lista[meio:])</span></div>
+        <div class="term-line"><span class="cmd">    return intercalar(esquerda, direita)</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">def intercalar(esquerda, direita):</span></div>
+        <div class="term-line"><span class="cmd">    resultado = []</span></div>
+        <div class="term-line"><span class="cmd">    i = 0</span></div>
+        <div class="term-line"><span class="cmd">    j = 0</span></div>
+        <div class="term-line"><span class="cmd">    while i &lt; len(esquerda) and j &lt; len(direita):</span></div>
+        <div class="term-line"><span class="cmd">        if esquerda[i] &lt;= direita[j]:</span></div>
+        <div class="term-line"><span class="cmd">            resultado.append(esquerda[i])</span></div>
+        <div class="term-line"><span class="cmd">            i += 1</span></div>
+        <div class="term-line"><span class="hl">            continue</span>  <span class="out"># sem else</span></div>
+        <div class="term-line"><span class="cmd">        resultado.append(direita[j])</span></div>
+        <div class="term-line"><span class="cmd">        j += 1</span></div>
+        <div class="term-line"><span class="cmd">    resultado.extend(esquerda[i:])</span>  <span class="out"># o que sobrou de um dos lados</span></div>
+        <div class="term-line"><span class="cmd">    resultado.extend(direita[j:])</span></div>
+        <div class="term-line"><span class="cmd">    return resultado</span></div>
+      </div>
+    </div>
+    <p class="payoff">Uma função que chama a si mesma em partes menores é
+    <strong>recursiva</strong> — o mesmo conceito do <code>rm -r</code> da Aula 03.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="custo">
+    <h2>Por que <span class="accent">dividir por 2</span> importa</h2>
+    <p class="body-text">Quantas vezes dá pra dividir 1.000 por 2 até chegar
+    em 1? Umas <strong>10</strong> — a mesma quantidade de dígitos de 1.000 em
+    binário (<code>1111101000</code>). O merge sort faz ~10 rodadas de
+    intercalação; o bubble sort compara quase todo mundo com todo mundo.</p>
+    <table class="data-table">
+      <thead><tr><th>itens</th><th>bubble sort (pior caso)</th><th>merge sort</th></tr></thead>
+      <tbody>
+        <tr><td>1.000</td><td>~500 mil comparações</td><td class="hl">~10 mil</td></tr>
+        <tr><td>1.000.000</td><td>~500 bilhões</td><td class="hl">~20 milhões</td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">O <code>sorted()</code> do Python usa o Timsort, que é
+    construído em cima do merge sort. Dividir por 2 vai voltar muito nas
+    próximas aulas.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 07 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 07: <span class="accent">mais dois algoritmos de ordenação</span></h2>
+    <p class="lede">Num repositório novo <code>tf-07</code>, com venv e
+    <code>.gitignore</code>, implementar num <code>ordenacao.py</code>:</p>
+    <ul class="points">
+      <li><code>insertion_sort(valores)</code>: cada item é inserido na posição
+      certa da parte da esquerda, que já está ordenada</li>
+      <li><code>quick_sort(valores)</code>: escolhe um pivô, separa menores,
+      iguais e maiores, e ordena as partes chamando a si mesma</li>
+      <li>Testar imprimindo as duas com uma lista fora de ordem:
+      <code>print(quick_sort([7, 3, 9, 1, 5]))</code></li>
+      <li>Sem <code>else</code>, sem <code>sorted()</code>/<code>.sort()</code>,
+      comentários com as próprias palavras, 3+ commits, <code>.venv</code> fora
+      do repositório</li>
+    </ul>
+    <p class="body-text">Entrega: link do repositório público no GitHub,
+    pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdhAbpphs3ipl7--2EHyuzWIsQKm24xJ_siqw3VGYNdNIuRPw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLSdhAbpphs3ipl7--2EHyuzWIsQKm24xJ_siqw3VGYNdNIuRPw/viewform</code></a>
+    </p>
+    <p class="body-text">Repositório base da disciplina (o <code>src/</code> visto em aula):
+    <a href="https://github.com/luan-tavares/unifaat-es-2026" target="_blank" rel="noopener noreferrer"><code>https://github.com/luan-tavares/unifaat-es-2026</code></a></p>
+    <p class="payoff">Prazo: <strong>14/10, até 23:59</strong>.</p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">17</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+<script src="../../assets/slide.js"></script>
+</body>
+</html>

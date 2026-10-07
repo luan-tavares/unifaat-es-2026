@@ -113,6 +113,7 @@
     margin: 0 0 40px;
   }
   .meta strong{ color: var(--ink); font-weight: 600; }
+  .meta a{ color: var(--accent-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
 
   .legend{
     display:flex; flex-wrap:wrap; gap: 10px 18px;
@@ -217,8 +218,8 @@
 
   .chip{
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 600;
+    font-size: 0.82rem;
+    font-weight: 700;
     white-space: nowrap;
     padding: 5px 11px;
     border-radius: 999px;
@@ -227,7 +228,7 @@
     background: transparent;
   }
   .row.done .chip{ color: var(--accent-2); border-color: var(--accent-2); }
-  .row.next .chip{ color: var(--on-solid); background: var(--accent); border-color: var(--accent); }
+  .row.next span.chip{ color: var(--on-solid); background: var(--accent); border-color: var(--accent); }
   .row.exam .chip{ color: var(--warn); border-color: var(--warn-border-2); }
 
   .chips{ display:flex; flex-direction:column; align-items:stretch; gap:6px; }
@@ -235,7 +236,12 @@
   a.chip:hover{ border-color: var(--accent-2); color: var(--accent-2); }
   .row .chips a.chip.primary{ color: var(--on-solid); background: var(--accent-2); border-color: var(--accent-2); }
   .row .chips a.chip.primary:hover{ color: var(--on-solid); filter: brightness(1.15); }
-  .row.next .chips .chip{ color: var(--muted-2); }
+  /* botões secundários (briefing, raio-x): letra no tom mais forte do tema, fundo e borda marcados */
+  .row .chips a.chip:not(.primary){ color: var(--ink); background: var(--bg-raised); border: 1.5px solid var(--accent-2); }
+  .row .chips a.chip:not(.primary):hover{ color: var(--on-solid); background: var(--accent-2); }
+  /* botão do TF: laranja sólido, pra se destacar dos slides (verde) e dos secundários */
+  .row .chips a.chip.tf{ color: var(--on-solid); background: var(--accent); border: 1.5px solid var(--accent); }
+  .row .chips a.chip.tf:hover{ color: var(--on-solid); background: var(--accent); filter: brightness(1.15); }
   @media (max-width: 560px){ .chips{ grid-column: 2; flex-direction:row; flex-wrap:wrap; } }
   .row.now .dot{ box-shadow: 0 0 0 5px var(--glow-warn); }
   .row.now .card{ border-color: var(--warn); }

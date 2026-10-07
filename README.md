@@ -15,14 +15,7 @@ Tudo pelo terminal do **WSL (Ubuntu)**.
    cd ~
    ```
 
-2. Baixe o repositório com o `git clone`. Se você já cadastrou a sua chave SSH no
-   GitHub (Aula 05), use o endereço SSH:
-
-   ```bash
-   git clone git@github.com:luan-tavares/unifaat-es-2026.git
-   ```
-
-   Sem chave SSH, o endereço HTTPS também funciona para baixar:
+2. Baixe o repositório com o `git clone`:
 
    ```bash
    git clone https://github.com/luan-tavares/unifaat-es-2026.git

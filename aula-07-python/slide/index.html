@@ -279,86 +279,6 @@
     resultado — o mesmo erro do quadro, agora em código.</p>
   </section>
 
-  <section class="slide" data-eyebrow="conferindo o algoritmo">
-    <h2>Testando <span class="accent">os 256 valores</span> de um byte</h2>
-    <p class="body-text">Testar alguns números à mão é um começo. Um
-    engenheiro compara com uma referência confiável — em muitos casos de uma
-    vez. O <code>bin()</code> do Python é a referência; o <code>assert</code>
-    para tudo se a comparação falhar.</p>
-    <div class="term">
-      <div class="term-bar">
-        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
-        <span class="term-path">binario.py</span>
-      </div>
-      <div class="term-body">
-        <div class="term-line"><span class="cmd">print(bin(45))</span>  <span class="out"># 0b101101 (o "0b" é só o prefixo)</span></div>
-        <div class="term-line"><span class="cmd">print(int("101101", 2))</span>  <span class="out"># 45 -> o caminho de volta</span></div>
-        <div class="term-line"><span class="cmd"> </span></div>
-        <div class="term-line"><span class="cmd">for n in range(256):</span></div>
-        <div class="term-line"><span class="cmd">    assert decimal_para_binario(n) == bin(n)[2:]</span></div>
-        <div class="term-line"><span class="cmd"> </span></div>
-        <div class="term-line"><span class="cmd">print("Os 256 valores de um byte conferem!")</span></div>
-      </div>
-    </div>
-    <p class="payoff">Três linhas conferem o byte inteiro. É o embrião dos
-    testes automatizados.</p>
-  </section>
-
-  <section class="slide" data-eyebrow="ordenação">
-    <h2>Bubble sort: <span class="accent">compara vizinhos e troca</span></h2>
-    <div class="term">
-      <div class="term-bar">
-        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
-        <span class="term-path">ordenacao.py</span>
-      </div>
-      <div class="term-body">
-        <div class="term-line"><span class="cmd">def bubble_sort(valores):</span></div>
-        <div class="term-line"><span class="cmd">    lista = valores.copy()</span>  <span class="out"># não mexe na lista de quem chamou</span></div>
-        <div class="term-line"><span class="cmd">    n = len(lista)</span></div>
-        <div class="term-line"><span class="cmd"> </span></div>
-        <div class="term-line"><span class="cmd">    for passada in range(n - 1):</span></div>
-        <div class="term-line"><span class="cmd">        trocou = False</span></div>
-        <div class="term-line"><span class="cmd">        for i in range(n - 1 - passada):</span></div>
-        <div class="term-line"><span class="cmd">            if lista[i] &lt;= lista[i + 1]:</span></div>
-        <div class="term-line"><span class="hl">                continue</span>  <span class="out"># já em ordem: sem else</span></div>
-        <div class="term-line"><span class="hl">            lista[i], lista[i + 1] = lista[i + 1], lista[i]</span>  <span class="out"># troca via tupla</span></div>
-        <div class="term-line"><span class="cmd">            trocou = True</span></div>
-        <div class="term-line"><span class="cmd"> </span></div>
-        <div class="term-line"><span class="cmd">        if not trocou:</span></div>
-        <div class="term-line"><span class="cmd">            break</span>  <span class="out"># passada sem troca: pronto</span></div>
-        <div class="term-line"><span class="cmd"> </span></div>
-        <div class="term-line"><span class="cmd">    return lista</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="slide" data-eyebrow="ordenação · passo a passo">
-    <h2>Passada a passada</h2>
-    <table class="data-table">
-      <thead><tr><th>passada</th><th>lista no fim da passada</th><th>o que aconteceu</th></tr></thead>
-      <tbody>
-        <tr><td>início</td><td>[7, 3, 9, 1, 5]</td><td>—</td></tr>
-        <tr><td>1</td><td>[3, 7, 1, 5, <strong>9</strong>]</td><td>o 9 chegou ao fim</td></tr>
-        <tr><td>2</td><td>[3, 1, 5, <strong>7, 9</strong>]</td><td>o 7 chegou ao lugar</td></tr>
-        <tr><td>3</td><td>[1, 3, 5, 7, 9]</td><td>3 e 1 trocaram</td></tr>
-        <tr><td>4</td><td class="hl">[1, 3, 5, 7, 9]</td><td>nenhuma troca: para</td></tr>
-      </tbody>
-    </table>
-    <div class="term">
-      <div class="term-bar">
-        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
-        <span class="term-path">python3</span>
-      </div>
-      <div class="term-body">
-        <div class="term-line comment"># só usa &lt;= ... então ordena strings também</div>
-        <div class="term-line"><span class="prompt">&gt;&gt;&gt;</span> <span class="cmd">bubble_sort(["Carla", "ana", "Bruno"])</span></div>
-        <div class="term-line out hl">['Bruno', 'Carla', 'ana']</div>
-      </div>
-    </div>
-    <p class="payoff">"ana" foi pro fim: pro computador, "a" é 97 e "C" é 67.
-    A tabela da Aula 03, de novo.</p>
-  </section>
-
   <section class="slide" data-eyebrow="dividir para conquistar">
     <h2>Merge sort: <span class="accent">dividir por 2</span> até não dar mais</h2>
     <ul class="points">
@@ -407,22 +327,57 @@
     <strong>recursiva</strong> — o mesmo conceito do <code>rm -r</code> da Aula 03.</p>
   </section>
 
+  <section class="slide" data-eyebrow="quick sort · a ideia do tf">
+    <h2>Quick sort: <span class="accent">tudo gira em torno do pivô</span></h2>
+    <ul class="points">
+      <li>Escolhe um item da lista como <strong>pivô</strong> (aqui, o do meio)</li>
+      <li>Separa o resto em três listas: <strong>menores</strong>, <strong>iguais</strong> e <strong>maiores</strong> que o pivô</li>
+      <li>Ordena os menores e os maiores chamando a si mesmo (recursão), até sobrar 0 ou 1 item</li>
+      <li>Junta: menores ordenados + iguais + maiores ordenados</li>
+    </ul>
+    <div class="tree">
+      <span class="dim"># [7, 3, 9, 1, 5, 8, 2, 6] → pivô 5</span><br>
+      menores [3, 1, 2] &nbsp; iguais [5] &nbsp; maiores [7, 9, 8, 6]<br>
+      <span class="dim"># [3, 1, 2] → pivô 1</span> &nbsp; [] + [1] + [3, 2]<br>
+      <span class="dim"># [3, 2] → pivô 2</span> &nbsp; [] + [2] + [3]<br>
+      <span class="dim"># [7, 9, 8, 6] → pivô 8</span> &nbsp; [7, 6] + [8] + [9]<br>
+      <span class="dim"># [7, 6] → pivô 6</span> &nbsp; [] + [6] + [7]<br>
+      <strong>[1, 2, 3] + [5] + [6, 7, 8, 9] = [1, 2, 3, 5, 6, 7, 8, 9]</strong>
+    </div>
+    <p class="payoff">Também divide para conquistar, mas não sempre ao meio:
+    o tamanho de cada parte depende do pivô. O código é o TF 07.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="merge sort × quick sort">
+    <h2>Merge × quick: <span class="accent">a vantagem de cada um</span></h2>
+    <table class="data-table">
+      <thead><tr><th></th><th>merge sort</th><th>quick sort</th></tr></thead>
+      <tbody>
+        <tr><td>como divide</td><td>sempre ao meio</td><td>em volta do pivô</td></tr>
+        <tr><td>onde está o trabalho</td><td>no conquistar (intercalar)</td><td>no dividir (separar pelo pivô)</td></tr>
+        <tr><td>vantagem</td><td class="hl">custo previsível: divide ao meio em qualquer lista, até no pior caso</td><td class="hl">na prática costuma ser o mais rápido; a versão clássica troca os itens dentro da própria lista e quase não gasta memória</td></tr>
+        <tr><td>desvantagem</td><td>precisa de listas extras (memória) para intercalar</td><td>pivô ruim (sempre o menor ou o maior) divide mal e fica lento</td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">Os dois são usados de verdade: o <code>sorted()</code> do
+    Python (Timsort) é construído em cima do merge sort; muitas outras
+    linguagens ordenam com variações do quick sort.</p>
+  </section>
+
   <section class="slide" data-eyebrow="custo">
     <h2>Por que <span class="accent">dividir por 2</span> importa</h2>
     <p class="body-text">Quantas vezes dá pra dividir 1.000 por 2 até chegar
     em 1? Umas <strong>10</strong> — a mesma quantidade de dígitos de 1.000 em
-    binário (<code>1111101000</code>). O merge sort faz ~10 rodadas de
-    intercalação; o bubble sort compara quase todo mundo com todo mundo.</p>
+    binário (<code>1111101000</code>). Dividindo por 2, são ~10 rodadas; sem
+    dividir, a ordenação ingênua compara quase todo mundo com todo mundo.</p>
     <table class="data-table">
-      <thead><tr><th>itens</th><th>bubble sort (pior caso)</th><th>merge sort</th></tr></thead>
+      <thead><tr><th>itens</th><th>comparando todo mundo com todo mundo</th><th>dividindo por 2 (merge, quick com bom pivô)</th></tr></thead>
       <tbody>
         <tr><td>1.000</td><td>~500 mil comparações</td><td class="hl">~10 mil</td></tr>
         <tr><td>1.000.000</td><td>~500 bilhões</td><td class="hl">~20 milhões</td></tr>
       </tbody>
     </table>
-    <p class="payoff">O <code>sorted()</code> do Python usa o Timsort, que é
-    construído em cima do merge sort. Dividir por 2 vai voltar muito nas
-    próximas aulas.</p>
+    <p class="payoff">Dividir por 2 vai voltar muito nas próximas aulas, a começar pelas estruturas de dados.</p>
   </section>
 
   <section class="slide" data-eyebrow="tf 07 · entrega">
@@ -457,7 +412,7 @@
   <div class="hud-mid">
     <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
     <div class="hud-meta">
-      <span><span id="counterCurrent">01</span> / <span id="counterTotal">17</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">16</span> — <span id="eyebrowLabel">abertura</span></span>
       <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
     </div>
   </div>

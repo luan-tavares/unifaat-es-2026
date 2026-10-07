@@ -5,18 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aula 05 — Git e GitHub</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="../../assets/slide.css">
+<script src="../../assets/tema.js"></script>
 </head>
 <body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
 
 <div class="deck" id="deck">
 
   <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
     <!-- imagem: img/capa.png — ver imagens-aula-05.md #1 -->
-    <p class="eyebrow">Engenharia de Software · Bimestre 01</p>
-    <h1>Git &amp; GitHub<br>na prática</h1>
-    <p class="lede">Aula 05. Hoje a gente abre a pasta <code>.git</code> de
-    verdade — e conecta o projeto de vocês ao GitHub.</p>
+    <h1><span class="cover-num">05</span> - Git &amp; GitHub na prática</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
   </section>
 
   <section class="slide" data-eyebrow="revisão · aula 04">
@@ -72,12 +79,52 @@
         <div class="term-line"><span class="prompt">$</span> <span class="cmd">ls /mnt/c/Users/</span></div>
         <div class="term-line comment"># entra na Área de Trabalho desse usuário</div>
         <div class="term-line"><span class="prompt">$</span> <span class="cmd">cd /mnt/c/Users/<span class="hl">NOME</span>/Desktop</span></div>
-        <div class="term-line comment"># cria a pasta do projeto</div>
-        <div class="term-line"><span class="prompt">$</span> <span class="cmd">mkdir es-aula-05</span></div>
-        <div class="term-line comment"># entra na pasta recém-criada</div>
-        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cd es-aula-05</span></div>
       </div>
     </div>
+  </section>
+
+  <section class="slide" data-eyebrow="passo 2 · baixando o material">
+    <h2>Baixando o <span class="accent">.git</span> pronto</h2>
+    <p class="lede">O material desta aula já é um único arquivo
+    <code>.zip</code>, com a pasta <code>.git</code> pronta lá dentro,
+    disponível num link do Google Drive.</p>
+    <ul class="points">
+      <li>Abra o link no navegador (pode ser no Windows mesmo, fora do WSL):<br>
+      <a href="https://drive.google.com/file/d/1LgCeesIrCrYMg-vnU2Hn95rlCTEcH5Ey/view?usp=sharing" target="_blank" rel="noopener noreferrer"><code>drive.google.com/file/d/1LgCeesIrCrYMg-vnU2Hn95rlCTEcH5Ey/view</code></a></li>
+      <li>Clica no ícone de <strong>download</strong> (a setinha, no canto
+      superior direito da prévia do arquivo)</li>
+      <li>O navegador baixa o <code>.zip</code> — por padrão, ele cai na
+      pasta <strong>Downloads</strong>, não na Área de Trabalho</li>
+    </ul>
+    <p class="body-text">Pra extrair o <code>.zip</code>, tanto faz usar o
+    terminal do WSL ou o Explorador de Arquivos do Windows — escolham o que
+    for mais confortável:</p>
+    <div class="two-col">
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-path">Desktop/</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line comment"># pelo WSL: cria e extrai tudo numa pasta nova</div>
+          <div class="term-line comment"># ajuste NOME ao nome real do arquivo</div>
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">unzip /mnt/c/Users/<span class="hl">NOME</span>/Downloads/*.zip \</span></div>
+          <div class="term-line"><span class="cmd">    -d es-aula-05</span></div>
+          <div class="term-line"><span class="prompt">$</span> <span class="cmd">cd es-aula-05</span></div>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Pelo Explorador de Arquivos:</strong> vai em
+        <strong>Downloads</strong>, botão direito no <code>.zip</code> →
+        <strong>Extrair tudo...</strong>, escolhe a Área de Trabalho como
+        destino e renomeia a pasta pra <code>es-aula-05</code>.</p>
+      </div>
+    </div>
+    <p class="payoff">Pelo WSL, não precisou de <code>mkdir</code> — o
+    <code>-d</code> do <code>unzip</code> já cria a pasta <code>es-aula-05</code>
+    sozinho. É o mesmo resultado dos dois jeitos: uma pasta <code>es-aula-05</code>
+    na Área de Trabalho, com o <code>.git</code> lá dentro.</p>
   </section>
 
   <section class="slide" data-eyebrow="a pegadinha de hoje">
@@ -97,11 +144,16 @@
     </div>
     <p class="lede">Nenhum <code>index.html</code>. Nenhum <code>css/</code>. Só a pasta oculta.
     O projeto inteiro vai "aparecer" a partir dela.</p>
-    <p class="payoff">Não vê a pasta <code>.git</code> no VS Code? A causa (e o
-    ajuste) tão no fim da aula, no troubleshooting.</p>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p>Não vê a pasta <code>.git</code> no Explorador de Arquivos nem no
+      VS Code? Normal — pastas com <code>.</code> na frente ficam ocultas
+      por padrão. No VS Code: <code>Ctrl</code> + <code>,</code> → busca
+      <code>files.exclude</code> → desmarca <code>**/.git</code>.</p>
+    </div>
   </section>
 
-  <section class="slide" data-eyebrow="passo 2 · a mágica">
+  <section class="slide" data-eyebrow="passo 3 · a mágica">
     <h2>Some. <span class="accent">E volta.</span></h2>
     <div class="term">
       <div class="term-bar">
@@ -111,19 +163,52 @@
       <div class="term-body">
         <div class="term-line comment"># mostra o que mudou em relação ao último commit</div>
         <div class="term-line"><span class="prompt">$</span> <span class="cmd">git status</span></div>
-        <div class="term-line out">deleted:    index.html</div>
-        <div class="term-line out">deleted:    css/style.css</div>
+        <div class="term-line out">deleted:    .gitignore</div>
+        <div class="term-line out">deleted:    aula-05-git-github/briefing-aula-05.md</div>
+        <div class="term-line out">deleted:    aula-05-git-github/roteiro-aula-05.md</div>
+        <div class="term-line out">deleted:    aula-05-git-github/slide/index.html</div>
+        <div class="term-line comment"># (+ 5 outros arquivos, todos dentro de aula-05-git-github/)</div>
         <div class="term-line comment"># traz de volta os arquivos apagados, usando o que já foi commitado</div>
         <div class="term-line"><span class="prompt">$</span> <span class="cmd">git restore .</span></div>
         <div class="term-line"><span class="prompt">$</span> <span class="cmd">ls -la</span></div>
-        <div class="term-line out hl">css  index.html  sobre</div>
+        <div class="term-line out hl">.gitignore  aula-05-git-github</div>
       </div>
     </div>
     <p class="lede">"Deletados"? Vocês nunca chegaram a ter esses arquivos —
-    e um único comando trouxe tudo de volta.</p>
+    e um único comando trouxe tudo de volta. Reparem: é o próprio material
+    desta disciplina que está sendo reconstruído.</p>
     <p class="payoff">Só o que foi commitado mora dentro do <code>.git</code>
-    — o que está no <code>.gitignore</code> nunca chega a existir ali, e por
-    isso nunca volta.</p>
+    — e existe um jeito de garantir que um arquivo nunca chegue a ser
+    commitado. Isso é assunto do próximo slide.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="a exceção">
+    <h2><code>.gitignore</code>: <span class="accent">o que nunca chega a existir</span></h2>
+    <p class="body-text"><code>.gitignore</code> é um arquivo de texto comum,
+    na raiz do projeto, com uma lista de padrões de nomes de arquivo. Tudo
+    que casa com esses padrões o Git passa a ignorar por completo — nunca
+    aparece no <code>git status</code>, nunca entra num <code>git add</code>,
+    nunca vira commit.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">es-aula-05/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># o .gitignore deste próprio repositório da disciplina</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat .gitignore</span></div>
+        <div class="term-line out hl">*.docx</div>
+      </div>
+    </div>
+    <p class="body-text">Um exemplo real: o briefing desta aula também
+    existe como <code>briefing-aula-05.docx</code>, gerado pra facilitar a
+    revisão fora do terminal. Mas como <code>*.docx</code> está no
+    <code>.gitignore</code>, esse arquivo nunca foi commitado — ele mora só
+    no disco, nunca dentro do <code>.git</code>.</p>
+    <p class="payoff">Por isso não existe um "restaurar o .docx": ele nunca
+    teve um snapshot salvo. A lição do dia, em uma frase: <strong>só o que
+    foi commitado mora dentro do <code>.git</code></strong> — o resto é só
+    arquivo solto no disco, ignorado de propósito ou não.</p>
   </section>
 
   <section class="slide" data-eyebrow="por dentro do .git">
@@ -200,17 +285,33 @@
     o GitHub, do mesmo jeito que trafegariam entre duas máquinas quaisquer.</p>
   </section>
 
-  <section class="slide" data-eyebrow="remote · criando o repo">
+  <section class="slide" data-eyebrow="remote · criando e cadastrando">
     <h2>Criando o repositório no GitHub</h2>
     <ul class="points">
       <li>Em <code>github.com</code>, clica no <code>+</code> (canto superior direito) → <code>New repository</code></li>
       <li>Dá um nome e escolhe <code>Public</code> ou <code>Private</code></li>
       <li>Não marca <code>Add a README</code> — o repo tem que nascer vazio</li>
       <li>Confirma em <code>Create repository</code></li>
+      <li>Na página do repo recém-criado: botão verde <code>Code</code> →
+      aba <code>SSH</code> → copia a URL</li>
     </ul>
-    <p class="body-text">Na página do repo recém-criado: botão verde
-    <code>Code</code> → aba <code>SSH</code> → copia a URL. É o que entra no
-    próximo comando.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">es-aula-05/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># cadastra o endereço remoto com o apelido "origin"</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git remote add origin git@github.com:usuario/repo.git</span></div>
+        <div class="term-line comment"># confirma que o endereço foi salvo no config</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat .git/config</span></div>
+        <div class="term-line out">[core] ...</div>
+        <div class="term-line out hl">[remote "origin"]</div>
+        <div class="term-line out hl">    url = git@github.com:usuario/repo.git</div>
+      </div>
+    </div>
+    <p class="payoff"><code>git remote add</code> não fez mágica de rede —
+    só escreveu duas linhas num arquivo texto.</p>
   </section>
 
   <section class="slide" data-eyebrow="autenticação">
@@ -246,26 +347,6 @@
     o próximo <code>git push</code> não vai pedir senha nenhuma.</p>
   </section>
 
-  <section class="slide" data-eyebrow="remote · na prática">
-    <h2>Cadastrando o remote</h2>
-    <div class="term">
-      <div class="term-bar">
-        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
-        <span class="term-path">es-aula-05/</span>
-      </div>
-      <div class="term-body">
-        <div class="term-line comment"># cadastra o endereço remoto com o apelido "origin"</div>
-        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git remote add origin git@github.com:usuario/repo.git</span></div>
-        <div class="term-line comment"># confirma que o endereço foi salvo no config</div>
-        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat .git/config</span></div>
-        <div class="term-line out">[core] ...</div>
-        <div class="term-line out hl">[remote "origin"]</div>
-        <div class="term-line out hl">    url = git@github.com:usuario/repo.git</div>
-      </div>
-    </div>
-    <p class="payoff"><code>git remote add</code> não fez mágica de rede —
-    só escreveu duas linhas num arquivo texto.</p>
-  </section>
 
   <section class="slide" data-eyebrow="remote · sincronizando">
     <h2><code>clone</code>, <code>push</code> e <code>pull</code></h2>
@@ -275,11 +356,11 @@
         git clone &lt;url&gt;
       </div>
       <div class="tree">
-        <span class="dim"># enviar</span><br>
+        <span class="dim"># enviar — flexão</span><br>
         git push -u origin main
       </div>
       <div class="tree">
-        <span class="dim"># receber</span><br>
+        <span class="dim"># receber — barra</span><br>
         git pull
       </div>
     </div>
@@ -293,27 +374,42 @@
     <code>-u</code> marca os dois como o padrão — só precisa na primeira vez.
     Depois disso, <code>git push</code> e <code>git pull</code> sozinhos já
     sabem pra onde ir.</p>
+    <p class="body-text">Pensa em calistenia: <code>push</code> é
+    <strong>flexão</strong> — você empurra o peso (o código) pra longe do
+    corpo, pro GitHub. <code>pull</code> é <strong>barra</strong> — você
+    puxa o peso pra perto, do GitHub pra sua máquina.</p>
     <p class="payoff"><code>clone</code> é usado uma vez, quando o
     repositório local ainda não existe. <code>push</code> e <code>pull</code>
     são o dia a dia depois disso: flexão pra empurrar o que é seu pra fora,
     barra pra puxar o que tá lá fora pra perto de você.</p>
   </section>
 
-  <section class="slide" data-eyebrow="troubleshooting">
-    <span class="kicker-badge">troubleshooting</span>
-    <h2>Cadê o <code>.git</code> no VS Code?</h2>
-    <ul class="points">
-      <li><code>Ctrl</code> + <code>,</code> abre as Settings</li>
-      <li>Buscar <code>files.exclude</code></li>
-      <li>Desmarcar a entrada <code>**/.git</code></li>
-    </ul>
-    <div class="tree">{<br>&nbsp;&nbsp;"files.exclude": {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">"**/.git"</span>: false<br>&nbsp;&nbsp;}<br>}</div>
-  </section>
-
   <section class="slide" data-eyebrow="fim da aula 05">
     <h2>SO, terminal, WSL, Git, GitHub.</h2>
     <p class="lede">A base da primeira parte do ano está fechada. A seguir:
     organizar o que se constrói — Python e orientação a objetos.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 05 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 05: <span class="accent">Git do zero até o GitHub</span></h2>
+    <p class="lede">Criar um repositório novo, garantir que um arquivo
+    secreto nunca seja commitado, e subir tudo pra um repositório no
+    GitHub.</p>
+    <ul class="points">
+      <li><code>git init</code> num diretório novo (<code>tf-05</code>)</li>
+      <li><code>segredo.txt</code> na raiz, listado no <code>.gitignore</code>
+      antes do primeiro commit</li>
+      <li>Pelo menos 2 commits com arquivos reais (<code>sobre-mim.txt</code>,
+      <code>anotacoes-aula-05.txt</code>)</li>
+      <li>Repositório criado no GitHub, conectado com <code>git remote add</code>
+      e enviado com <code>git push</code></li>
+    </ul>
+    <p class="body-text">Entrega: link do repositório no GitHub, enviado pelo
+    formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd-NZVE4P9hfsKsxjiwlJG33FCE5JyUjbcEubCpCP7lX1OEPA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLSd-NZVE4P9hfsKsxjiwlJG33FCE5JyUjbcEubCpCP7lX1OEPA/viewform</code></a>
+    </p>
+    <p class="payoff">Prazo: <strong>23/09, até 23:59</strong>.</p>
   </section>
 
 </div>
@@ -324,11 +420,11 @@
     <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
     <div class="hud-meta">
       <span><span id="counterCurrent">01</span> / <span id="counterTotal">16</span> — <span id="eyebrowLabel">abertura</span></span>
-      <span class="hint">use ← → ou espaço</span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
     </div>
   </div>
   <button id="nextBtn" aria-label="Próximo slide">›</button>
 </nav>
-<script src="js/slide.js"></script>
+<script src="../../assets/slide.js"></script>
 </body>
 </html>

@@ -1,0 +1,87 @@
+CONTEXTO
+
+Na Aula 05 vimos o que existe de verdade dentro da pasta .git (HEAD, refs, config), o que e um repositorio, e como conectar um repositorio local a um repositorio remoto no GitHub, usando remote, push, pull e clone, autenticado por chave SSH.
+
+Agora e a vez de fechar o ciclo completo: criar um repositorio do zero, versionar alguns arquivos, garantir que um arquivo sensivel nunca seja versionado, e subir esse historico pra um repositorio remoto no GitHub.
+
+O QUE VOCES PRECISAM FAZER
+
+Criar o diretorio do projeto Dentro do terminal do WSL, crie um diretorio chamado tf-05 e entre nele. Dentro dele, transforme a pasta em um repositorio Git com o comando git init.
+
+Criar um arquivo secreto na raiz do projeto Ainda no terminal, dentro de tf-05:
+
+touch segredo.txt
+code .
+
+No VS Code, dentro de segredo.txt, escrever qualquer conteudo fake que simule uma informacao sensivel (uma senha, uma chave de API, o que preferir -- nao precisa ser real).
+
+Esse arquivo nao pode nunca ser commitado. Antes de qualquer git add, criem um arquivo .gitignore na raiz do projeto e coloquem segredo.txt dentro dele:
+
+touch .gitignore
+code .
+
+No VS Code, dentro de .gitignore, escrever:
+
+segredo.txt
+
+Roteirizar alguns commits Ainda dentro de tf-05, com o .gitignore ja criado e configurado:
+
+# criar um arquivo de apresentacao
+touch sobre-mim.txt
+code .
+
+# No VS Code, dentro de sobre-mim.txt, escrever seu nome
+# completo e o curso (ADS). Depois, voltar ao terminal:
+git add .
+git commit -m "Cria sobre-mim.txt e adiciona .gitignore"
+
+# criar mais um arquivo, de anotacoes
+touch anotacoes-aula-05.txt
+
+# No VS Code, dentro de anotacoes-aula-05.txt, escrever com
+# suas proprias palavras o que voces entenderam sobre o que
+# existe dentro da pasta .git (HEAD, refs, config). Depois,
+# voltar ao terminal:
+git add .
+git commit -m "Cria anotacoes-aula-05.txt"
+
+Conferir que o segredo nunca foi rastreado No mesmo terminal, dentro de tf-05, rode:
+
+git status
+git log --oneline
+
+O segredo.txt nao pode aparecer em nenhum dos dois -- nem como arquivo modificado, nem dentro de nenhum commit.
+
+Criar o repositorio no GitHub No site do GitHub, clique no + (canto superior direito) e depois em New repository. De um nome ao repositorio (pode ser tf-05) e deixe como Public. Nao marque Add a README -- o repositorio precisa nascer vazio. Confirme em Create repository.
+
+Conectar o repositorio local ao GitHub e enviar o historico Na pagina do repositorio recem-criado, copie a URL SSH (botao verde Code, aba SSH). De volta ao terminal, dentro de tf-05:
+
+git remote add origin <URL copiada>
+git push -u origin main
+
+Se o terminal pedir usuario e senha, e porque falta cadastrar a chave SSH de voces no GitHub (Settings > SSH and GPG keys, visto em aula).
+
+Conferir no proprio GitHub Abram o repositorio no navegador e confirmem: sobre-mim.txt e anotacoes-aula-05.txt aparecem no repositorio; .gitignore tambem aparece; segredo.txt NAO aparece em lugar nenhum.
+
+Ao final deste passo, a pasta tf-05 (local) deve estar assim:
+tf-05/
+├── .git/
+├── .gitignore
+├── segredo.txt
+├── sobre-mim.txt
+└── anotacoes-aula-05.txt
+
+REGRAS
+
+segredo.txt nao pode aparecer em nenhum commit, nem no historico, nem no repositorio remoto -- se aparecer, o jeito e recomecar num repositorio novo, porque remover um arquivo de um commit ja enviado ao GitHub nao e trivial.
+O repositorio no GitHub deve estar Public, pra que o conteudo possa ser conferido pelo link enviado.
+Os nomes de arquivos devem seguir exatamente o roteiro (segredo.txt, .gitignore, sobre-mim.txt, anotacoes-aula-05.txt).
+O conteudo de cada arquivo deve ser escrito com as proprias palavras de cada um.
+Trabalho individual: repositorios e conteudos identicos entre colegas serao considerados copia e zerados para todos os envolvidos.
+Todo o trabalho deve ser feito dentro do ambiente Linux do WSL, usando o Git instalado la, e nao pelo Windows.
+
+ENTREGA
+
+Enviar o link do repositorio no GitHub diretamente na atividade do portal/AVA da disciplina.
+
+2026-09-23T23:59:59

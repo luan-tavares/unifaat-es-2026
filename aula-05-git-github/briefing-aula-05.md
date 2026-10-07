@@ -1,3 +1,5 @@
+# Briefing — Aula 05: Git e GitHub na prática
+
 1 - Introdução
 
 Na aula passada, fechamos o fluxo básico do Git: `init`, `status`,

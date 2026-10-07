@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 03 — Terminal e Linguagem de Máquina</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">03</span> - Terminal e Linguagem de Máquina</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="cronograma">
+    <h2>Cronograma <span class="accent">do semestre</span></h2>
+    <img class="fig" src="img/cronograma-semestre.jpg" alt="Tabela do cronograma do semestre com aula, data e conteúdo: 1 (19/AGO) Sistema Operacional - GUI e CLI; 2 (26/AGO) WSL 2 - Virtualização Linux; 3 (02/SET) Terminal e Linguagem da Máquina, destacada; 4 (09/SET) Versionamento e Git; 5 (16/SET) Git e GitHub; 6 (23/SET) Revisão; 30/SET Prova 1º Bimestre; 7 (07/OUT) Fundamentos de Python; 8 (14/OUT) Estrutura de Dados; 9 (21/OUT) Paradigma Orientado a Objetos; 10 (28/OUT) OOP - Os 3 Pilares; 11 (04/NOV) Object Calisthenics; 12 (11/NOV) Arquitetura de Código; 13 (18/NOV) Ramificação de Carreira; 14 (25/NOV) Revisão; 02/DEZ Prova 2º Bimestre; 09/DEZ Prova Sub; 16/DEZ Exame.">
+  </section>
+
+  <section class="slide" data-eyebrow="roteiro">
+    <h2>Bits, Bytes e <span class="accent">o Terminal Linux</span></h2>
+    <p class="lede">O que o computador realmente enxerga — e como navegar nele pelo terminal.</p>
+    <img class="fig" src="img/trilha-da-aula.png" alt="Trilha em quatro etapas, em zigue-zague: Fundamentos (bits, bytes e representação), Hex e ASCII (codificação e conversão), Navegar (cd, ls e caminhos) e Gerir arquivos (touch, mkdir, rm).">
+  </section>
+
+  <section class="slide" data-eyebrow="fundamentos · bits">
+    <h2>Por que tudo vira <span class="accent">0 e 1?</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># Física do processador</span><br>
+        Um processador é um circuito elétrico. Só dois estados são possíveis:<br>
+        Ligado → 1<br>
+        Desligado → 0
+      </div>
+      <div class="tree">
+        <span class="dim"># Consequência direta</span><br>
+        Texto, imagem, som, programa — tudo precisa ser traduzido para sequências de 0s e 1s.
+      </div>
+    </div>
+    <p class="payoff">Esse sistema se chama <strong>sistema binário</strong>. Cada estado individual é um <strong>bit</strong> — contração de <em>binary digit</em>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="fundamentos · bit, byte, octeto">
+    <h2>Bit, Byte e <span class="accent">Octeto</span></h2>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># Bit</span><br>
+        A menor unidade de informação. Vale 0 ou 1, nunca outra coisa.
+      </div>
+      <div class="tree">
+        <span class="dim"># Byte</span><br>
+        Conjunto de 8 bits tratados como uma única unidade. O bloco fundamental do armazenamento.
+      </div>
+      <div class="tree">
+        <span class="dim"># Octeto</span><br>
+        Sinônimo formal de byte, muito usado em redes (ex.: cada número de um IPv4 é um octeto).
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="fundamentos · conversão">
+    <h2>Convertendo <span class="accent">Binário ↔ Decimal</span></h2>
+    <p class="body-text">Cada posição de um byte representa uma potência de 2. Some apenas as posições onde o bit vale <strong>1</strong>:</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">tabela de posições</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out">Posição    2⁷   2⁶   2⁵   2⁴   2³   2²   2¹   2⁰</div>
+        <div class="term-line out">Valor      128  64   32   16   8    4    2    1    —</div>
+        <div class="term-line out hl">00001010   0    0    0    0    1    0    1    0    10</div>
+      </div>
+    </div>
+    <p class="payoff">8 + 2 = <strong>10 em decimal</strong>. O caminho inverso: encaixe as maiores potências de 2 possíveis até sobrar zero.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="hex e ascii · hexadecimal">
+    <h2>Hexadecimal: <span class="accent">Atalho para o Binário</span></h2>
+    <div class="two-col" style="grid-template-columns:1fr; max-width:none">
+      <div class="tree">
+        <span class="dim"># Por que base 16?</span><br>
+        16 = 2⁴ → cada dígito hex representa exatamente <strong>4 bits</strong> (um nibble).<br>
+        0–9 cobrem as dez primeiras combinações<br>
+        A–F cobrem as seis restantes (A=10 … F=15)<br>
+        Um byte inteiro cabe em <strong>dois dígitos hex</strong>
+      </div>
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-path">nibbles</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line out">Representação  1º Nibble  2º Nibble</div>
+          <div class="term-line out hl">Binário         0100       0001</div>
+          <div class="term-line out hl">Hexadecimal     4          1</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">i</span>
+      <p><strong>Exemplo:</strong> <code>01000001</code> em binário = <code>41</code> em hex = <code>65</code> em decimal = letra "A"</p>
+    </div>
+    <p class="body-text">Cores em CSS usam hex: <code>#FF0000</code> é vermelho puro — dois dígitos por canal R, G, B.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="fundamentos · 256 valores">
+    <h2>Por que 256 valores <span class="accent">em um byte?</span></h2>
+    <p class="body-text"><strong>Análise Combinatória</strong> — quantas sequências diferentes é possível formar com <strong>p</strong> posições, cada uma com <strong>n</strong> opções?</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">n^p</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out hl">nᵖ = 2⁸ = 256</div>
+      </div>
+    </div>
+    <ul class="points">
+      <li>A contagem começa em <strong>0</strong> (<code>00000000</code> já é válido)</li>
+      <li>Logo o intervalo vai de <strong>0 a 255</strong>, não de 1 a 256</li>
+    </ul>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># bits por byte</span><br>
+        8
+      </div>
+      <div class="tree">
+        <span class="dim"># combinações possíveis</span><br>
+        256
+      </div>
+      <div class="tree">
+        <span class="dim"># intervalo de um byte</span><br>
+        0–255
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="hex e ascii · tabela ascii">
+    <h2>A Tabela <span class="accent">ASCII</span></h2>
+    <p class="lede">O mesmo byte pode ter significados diferentes — depende de como o programa o <strong>interpreta</strong>.</p>
+    <div class="two-col" style="grid-template-columns:1fr; max-width:none">
+      <div class="tree">
+        <span class="dim"># Como funciona</span><br>
+        ASCII define qual caractere corresponde a cada valor de 0 a 255. O byte <code>01000001</code> pode ser:<br>
+        O número <strong>65</strong> (decimal)<br>
+        A letra <strong>A</strong> (caractere)
+      </div>
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-path">ascii</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line out">Caractere  Decimal  Binário</div>
+          <div class="term-line out hl">A          65       01000001</div>
+          <div class="term-line out hl">a          97       01100001</div>
+          <div class="term-line out hl">0          48       00110000</div>
+          <div class="term-line out hl">espaço     32       00100000</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">i</span>
+      <p>A diferença entre "A" (65) e "a" (97) é exatamente <strong>32</strong> — padrão da tabela ASCII, explorável em código.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="fundamentos · múltiplos">
+    <h2>De Byte <span class="accent">a Gigabyte</span></h2>
+    <p class="lede">Os múltiplos seguem potências de 2 — por isso um "GB" computacional não é exatamente 1 bilhão de bytes.</p>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">unidades</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line out">Unidade       Equivalência   Em bytes</div>
+        <div class="term-line out hl">1 Byte        8 bits         1</div>
+        <div class="term-line out hl">1 Kilobyte    1.024 bytes    2¹⁰</div>
+        <div class="term-line out hl">1 Megabyte    1.024 KB       2²⁰ = 1.048.576</div>
+        <div class="term-line out hl">1 Gigabyte    1.024 MB       2³⁰ = 1.073.741.824</div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p>Pen drive "de 16 GB" mostra menos no sistema: fabricante usa base 10; o SO usa base 2.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="do binário ao terminal">
+    <h2>Do Binário <span class="accent">ao Terminal</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># Diretório vs. Pasta</span><br>
+        <strong>Diretório</strong> é o nome técnico de "pasta" no mundo Linux. Mesma coisa — só vocabulário diferente.
+      </div>
+      <div class="tree">
+        <span class="dim"># Cada comando é um binário</span><br>
+        Ao digitar <code>ls</code> ou <code>mkdir</code>, o terminal localiza e executa um <strong>arquivo binário compilado</strong> com aquele nome.
+      </div>
+      <div class="tree">
+        <span class="dim"># Recursividade</span><br>
+        Uma operação <strong>recursiva</strong> se aplica a algo e se repete em cada parte menor, descendo nível por nível — até não sobrar nada.
+      </div>
+    <div class="callout">
+      <span class="mark">i</span>
+      <p><code>cd</code> é exceção: é um comando <em>built-in</em> do shell, pois precisa alterar o estado do próprio terminal.</p>
+    </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="terminal · navegando">
+    <h2>Navegando <span class="accent">pelo Terminal</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># pwd: mostra o caminho completo do diretório atual. Primeiro comando para "se situar".</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">pwd</span></div>
+        <div class="term-line comment"># -l mostra detalhes; -a inclui arquivos ocultos (começam com .).</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">ls</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">ls -la</span></div>
+        <div class="term-line comment"># entra no diretório</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cd nome</span></div>
+        <div class="term-line comment"># sobe um nível</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cd ..</span></div>
+        <div class="term-line comment"># sozinho, vai para o home</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cd</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="terminal · arquivos">
+    <h2>Criando <span class="accent">e Lendo Arquivos</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># cria um diretório</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">mkdir nome</span></div>
+        <div class="term-line comment"># com -p, cria toda a estrutura aninhada de uma vez</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">mkdir -p projeto/src/utils</span></div>
+        <div class="term-line comment"># cria um arquivo vazio; se já existir, apenas atualiza a data de modificação</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">touch arquivo.txt</span></div>
+        <div class="term-line comment"># exibe o conteúdo de um arquivo diretamente no terminal — ideal para leitura rápida</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat arquivo.txt</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="terminal · remoção">
+    <h2>Removendo com Cuidado: <code>rm</code></h2>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><strong>Sem lixeira.</strong> O terminal <strong>não pergunta "tem certeza?"</strong> e não usa lixeira — o arquivo some definitivamente. <code>rm -r</code> pode apagar centenas de arquivos em silêncio. Use com atenção redobrada.</p>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">rm arquivo.txt</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">rm diretório</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">rm -r diretório</span></div>
+      </div>
+    </div>
+    <p class="payoff">Isso é consequência direta de o terminal falar direto com o sistema, sem a camada extra da GUI.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="terminal · outros comandos">
+    <h2>Outros Comandos <span class="accent">Essenciais</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">~</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># copia um arquivo ou diretório, mantendo o original intacto</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cp origem destino</span></div>
+        <div class="term-line comment"># move ou renomeia um arquivo — renomear é tecnicamente mover para o mesmo lugar com outro nome</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">mv antigo novo</span></div>
+        <div class="term-line comment"># abre o manual oficial de qualquer comando diretamente no terminal. A melhor documentação disponível</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">man comando</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 03 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 03</h2>
+    <p class="body-text">Entrega pelo formulário:
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd8cZIMKwLPuqLB0EddWjUKr6epZg-_vFB6D3TdShuhFSMp5Q/viewform?usp=dialog" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLSd8cZIMKwLPuqLB0EddWjUKr6epZg-_vFB6D3TdShuhFSMp5Q/viewform</code></a></p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">16</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+<script src="../../assets/slide.js"></script>
+</body>
+</html>

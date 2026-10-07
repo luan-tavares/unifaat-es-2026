@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Briefing · Aula 02 — WSL 2 — Virtualização Linux</title>
+<link rel="stylesheet" href="../../assets/briefing.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="back" href="../../index.html">← Voltar</a>
+    <details class="toc" open><summary>Nesta página</summary><ol><li class="l1"><a href="#topo">02 - WSL 2 — Virtualização Linux</a></li><li class="l2"><a href="#s1-introdução">1 - Introdução</a></li><li class="l2"><a href="#s2-o-que-é-virtualização">2 - O que é virtualização</a></li><li class="l2"><a href="#s3-emulação-um-sistema-fingindo-ser-outro">3 - Emulação: um sistema &quot;fingindo&quot; ser outro</a></li><li class="l2"><a href="#s4-não-pense-a-máquina-como-só-hardware-software">4 - Não pense a máquina como só hardware + software</a></li><li class="l2"><a href="#s5-processos-as-unidades-lógicas-que-fazem-tudo-acontecer">5 - Processos: as unidades lógicas que fazem tudo acontecer</a></li><li class="l2"><a href="#s6-da-isolação-de-processos-ao-conceito-de-máquina-virtual">6 - Da isolação de processos ao conceito de máquina virtual</a></li><li class="l2"><a href="#s7-binários-e-por-que-tudo-precisa-ser-instalado-duas-vezes">7 - Binários e por que tudo precisa ser instalado duas vezes</a></li><li class="l2"><a href="#s8-wsl-virtualização-nativa-do-linux-no-windows">8 - WSL: virtualização nativa do Linux no Windows</a></li><li class="l2"><a href="#s9-hypervisor-e-bios-o-que-precisa-estar-habilitado">9 - Hypervisor e BIOS: o que precisa estar habilitado</a></li><li class="l2"><a href="#s10-passo-a-passo-instalando-o-wsl-e-o-ubuntu">10 - Passo a passo: instalando o WSL e o Ubuntu</a></li><li class="l2"><a href="#s11-conclusão">11 - Conclusão</a></li><li class="l2"><a href="#s12-referências">12 - Referências</a></li><li class="l2"><a href="#questoes">Questões do TA</a></li></ol></details>
+  </aside>
+  <main class="doc">
+    <header class="cover" id="topo">
+      <p class="eyebrow">UNIFAAT · 2026.2 · Briefing para produção de conteúdo</p>
+      <h1><span class="cn">02</span> - WSL 2 — Virtualização Linux</h1>
+      <dl class="ficha">
+        <div><dt>Professor</dt><dd>Luan Tavares Lourenço</dd></div>
+        <div><dt>Disciplina</dt><dd>Engenharia de Software</dd></div>
+        <div><dt>Aula</dt><dd>02</dd></div>
+        
+      </dl>
+    </header>
+<h2 id="s1-introdução"><span class="hn">1</span>Introdução</h2>
+<p>Na aula passada, entendemos o que é um sistema operacional e como ele se organiza em camadas: kernel, distro e GUI. Também vimos por que, ao longo deste ano, vamos trabalhar principalmente pelo terminal, e por que esse terminal será um terminal Linux, mesmo que o notebook de vocês rode Windows. Ficou uma pergunta em aberto: como, exatamente, um computador com Windows vai conseguir rodar um terminal Linux de verdade, sem trocar de sistema operacional?</p>
+<p>A resposta está num conceito chamado virtualização, e é sobre ele que essa aula inteira gira. Antes de instalar qualquer coisa, vamos entender o que acontece "por baixo do capô" quando um sistema operacional roda dentro do outro — porque isso não é mágica, é engenharia. E, para entender isso direito, vamos precisar abrir um conceito que ainda não tínhamos formalizado: o que é um processo.</p>
+<h2 id="s2-o-que-é-virtualização"><span class="hn">2</span>O que é virtualização</h2>
+<p>Virtualização é a técnica que permite rodar um sistema operacional inteiro "dentro" de outro, como se fosse apenas mais um programa. O sistema operacional que já existia na máquina (o que instalou o hardware, por assim dizer) continua no controle total do processador, da memória e do disco. Mas, por cima dele, é possível criar um ambiente separado, com seu próprio sistema operacional completo rodando lá dentro, sem que um interfira diretamente no outro.</p>
+<p>O nome que se dá para esse sistema operacional "de dentro" é máquina virtual (VM, de Virtual Machine). Ela se comporta, para quem está usando, como se fosse um computador de verdade — tem seu próprio sistema de arquivos, sua própria memória, seus próprios programas instalados — mas, fisicamente, está rodando como software dentro do hardware de outra máquina.</p>
+<h2 id="s3-emulação-um-sistema-fingindo-ser-outro"><span class="hn">3</span>Emulação: um sistema "fingindo" ser outro</h2>
+<p>Um primo próximo da virtualização é a emulação, e vale a pena diferenciar os dois rapidamente, porque o conceito ajuda a entender virtualização por contraste. Emulação é quando um sistema simula o comportamento de outro sistema, geralmente com uma arquitetura de hardware diferente da original.</p>
+<p>O exemplo mais fácil de visualizar vem dos videogames: um emulador de Super Nintendo rodando no seu computador não tem, fisicamente, o processador de um Super Nintendo dentro dele. O emulador é um programa que interpreta as instruções feitas para o hardware antigo do console e as traduz, em tempo real, para instruções que o processador do seu computador atual entende. É por isso que emuladores geralmente exigem mais poder de processamento do que o hardware original: cada instrução está sendo "traduzida" na hora.</p>
+<p>Virtualização é parecida na ideia (um sistema rodando dentro de outro), mas geralmente não exige essa tradução pesada, porque tanto a máquina virtual quanto a máquina real usam a mesma arquitetura de processador. Isso torna a virtualização, no geral, mais eficiente que a emulação — e é a técnica que vamos usar para rodar Linux dentro do Windows.</p>
+<h2 id="s4-não-pense-a-máquina-como-só-hardware-software"><span class="hn">4</span>Não pense a máquina como só hardware + software</h2>
+<p>Até aqui, é tentador imaginar um computador como uma equação simples: hardware embaixo, sistema operacional em cima, programas rodando dentro do sistema operacional. Mas essa imagem, embora não esteja errada, é incompleta.</p>
+<p>O que a virtualização nos mostra é que, dentro dessa mesma estrutura, é possível ter outro sistema inteiro isolado rodando ao lado — não como um programa comum, mas como um conjunto próprio de processos, com sua própria memória reservada, se comportando como se tivesse hardware exclusivo, mesmo compartilhando o mesmo hardware físico por baixo. Para entender como esse isolamento é possível, precisamos entender a peça central de tudo isso: o processo.</p>
+<h2 id="s5-processos-as-unidades-lógicas-que-fazem-tudo-acontecer"><span class="hn">5</span>Processos: as unidades lógicas que fazem tudo acontecer</h2>
+<p>Um processo é a unidade lógica de execução de um sistema operacional — basicamente, é um programa em execução, com um espaço de memória próprio, reservado só para ele, e um conjunto de instruções sendo processadas naquele momento. Todo programa que roda em um computador, do navegador que vocês estão usando até o próprio sistema operacional, existe, na prática, como um ou mais processos.</p>
+<p>Processos podem ser efêmeros ou permanentes. Um processo efêmero nasce, executa uma tarefa específica e é encerrado logo em seguida — por exemplo, quando você roda um comando simples no terminal e ele termina em segundos. Um processo permanente, por outro lado, é criado para continuar rodando em segundo plano por longos períodos, às vezes enquanto a máquina estiver ligada, como serviços de sistema ou o próprio processo que sustenta a interface gráfica.</p>
+<p>É o conjunto de processos, orquestrados pelo kernel, que faz o sistema operacional funcionar de fato: cada clique, cada programa aberto, cada tarefa em segundo plano vira, por baixo dos panos, um ou mais processos disputando tempo de processador e espaço de memória, sob a supervisão do sistema operacional.</p>
+<h2 id="s6-da-isolação-de-processos-ao-conceito-de-máquina-virtual"><span class="hn">6</span>Da isolação de processos ao conceito de máquina virtual</h2>
+<p>Agora conseguimos juntar as peças. Quando criamos uma máquina virtual, o que estamos fazendo, na prática, é isolar um conjunto de processos e uma área de memória, de forma que esse conjunto se comporte como se fosse um sistema completo e independente — com seus próprios processos, sua própria gestão de memória, seu próprio sistema de arquivos — mesmo estando fisicamente dentro do mesmo hardware da máquina que já existia.</p>
+<p>É esse isolamento que permite que, no mesmo hardware físico, existam dois conjuntos de binários completamente separados, cada um com sua própria memória e seus próprios processos, sem que um enxergue ou interfira diretamente no outro. Um deles é o sistema operacional "de fora" (no nosso caso, o Windows); o outro é o sistema operacional "de dentro", isolado, rodando como máquina virtual (no nosso caso, o Linux).</p>
+<h2 id="s7-binários-e-por-que-tudo-precisa-ser-instalado-duas-vezes"><span class="hn">7</span>Binários e por que tudo precisa ser instalado duas vezes</h2>
+<p>Uma consequência direta desse isolamento é importante de entender antes de seguirmos: como a máquina virtual tem seus próprios processos e sua própria memória, ela não tem acesso aos programas que já estavam instalados na máquina original. São dois ambientes separados, cada um com seu próprio conjunto de programas instalados.</p>
+<p>Isso significa que, se quisermos usar um programa dentro da máquina virtual Linux, ele precisa estar instalado ali dentro, mesmo que já esteja instalado no Windows por fora. Um exemplo que vocês vão viver na prática logo mais no curso é o Python: ter o Python instalado no Windows não faz com que ele exista dentro do ambiente Linux que vamos configurar — é preciso instalá-lo também lá dentro.</p>
+<p>Esse é um bom gancho para entender um conceito do CLI: o binário. Binário, no contexto de linha de comando, é o arquivo executável de um programa — o resultado final, já compilado, pronto para ser executado pelo sistema operacional. Quando você digita <code>python</code> ou <code>git</code> no terminal, o sistema está procurando, entre as pastas conhecidas da máquina, um arquivo binário com esse nome para executar. Se esse binário não existir naquele ambiente específico (porque ele está isolado em outro, como vimos), o comando simplesmente não funciona — daí a necessidade de instalar cada programa dentro de cada ambiente em que ele será usado.</p>
+<h2 id="s8-wsl-virtualização-nativa-do-linux-no-windows"><span class="hn">8</span>WSL: virtualização nativa do Linux no Windows</h2>
+<p>Existem várias formas de rodar uma máquina virtual, mas a Microsoft criou uma solução pensada especificamente para o problema que estamos resolvendo: rodar Linux de forma prática dentro do Windows. Essa solução se chama WSL — Windows Subsystem for Linux.</p>
+<p>O WSL é uma camada de virtualização construída pela própria Microsoft e integrada ao Windows, que permite rodar uma distro Linux completa (no nosso caso, Ubuntu) de forma leve e integrada ao sistema, sem precisar configurar uma máquina virtual tradicional do zero, com telas de instalação separadas e interfaces gráficas pesadas. É, na prática, a forma mais direta de ter um terminal Linux real funcionando dentro do computador de vocês.</p>
+<h2 id="s9-hypervisor-e-bios-o-que-precisa-estar-habilitado"><span class="hn">9</span>Hypervisor e BIOS: o que precisa estar habilitado</h2>
+<p>Para que qualquer virtualização funcione — seja o WSL, seja outra ferramenta que vocês usarão futuramente, como o Docker (que também roda sobre uma base Linux) — o processador da máquina precisa de uma peça de software especial chamada hypervisor. O hypervisor é o componente responsável por gerenciar e isolar as máquinas virtuais, controlando como cada uma acessa memória e processamento do hardware físico.</p>
+<p>Para o hypervisor funcionar, o processador precisa ter esse suporte de virtualização habilitado na BIOS (a configuração mais baixa do computador, acessada antes mesmo do sistema operacional carregar) — geralmente aparece como "Virtualization Technology (VT-x)" em processadores Intel ou "SVM Mode" em processadores AMD. Em muitos notebooks essa opção já vem habilitada de fábrica, mas em alguns é preciso entrar na BIOS manualmente e ativá-la antes de instalar o WSL.</p>
+<h2 id="s10-passo-a-passo-instalando-o-wsl-e-o-ubuntu"><span class="hn">10</span>Passo a passo: instalando o WSL e o Ubuntu</h2>
+<p>Com o hypervisor habilitado na BIOS, o processo de instalação do WSL é simples e feito quase inteiramente por linha de comando, usando o PowerShell do Windows (o único momento em que ainda vamos usar um terminal do próprio Windows, antes de migrarmos de vez para o terminal Linux).</p>
+<pre class="code"><code># Abra o PowerShell como Administrador (botão direito &gt; Executar como administrador)
+# antes de rodar qualquer um dos comandos abaixo.
+
+# 1. Instala o WSL e já configura a versão 2 (mais performática, baseada em virtualização real)
+#    e a distro Ubuntu como padrão, tudo em um único comando.
+wsl --install
+
+# 2. Reinicie o computador quando o processo pedir.
+#    O reinício é necessário porque o Windows precisa ativar componentes
+#    de virtualização no nível do sistema (o hypervisor do Windows, o Hyper-V).
+
+# 3. Após reiniciar, o Ubuntu deve abrir automaticamente uma janela de terminal
+#    e pedir para você criar um usuário e senha para o ambiente Linux.
+#    Esse usuário é exclusivo do ambiente Linux dentro do WSL -- não é o
+#    mesmo usuário/senha do Windows.
+
+# 4. Para conferir se a instalação funcionou e qual versão do WSL está rodando:
+wsl --list --verbose
+
+# 5. Caso precise instalar o Ubuntu manualmente (por exemplo, se o passo 1
+#    instalou o WSL mas não a distro), o comando abaixo lista as distros
+#    disponíveis na loja da Microsoft:
+wsl --list --online
+
+# 6. E este instala a distro Ubuntu especificamente:
+wsl --install -d Ubuntu</code></pre>
+<p>A partir do momento em que o terminal do Ubuntu abre e pede usuário e senha, vocês já estão, oficialmente, dentro de um sistema operacional Linux completo, rodando como máquina virtual isolada dentro do próprio Windows — com seus próprios processos, sua própria memória e, como vimos, seus próprios binários, que precisarão ser instalados um a um conforme forem sendo necessários ao longo do curso.</p>
+<h2 id="s11-conclusão"><span class="hn">11</span>Conclusão</h2>
+<p>Nesta aula, saímos da teoria geral sobre sistemas operacionais e entramos em um nível mais profundo: entendemos que um computador não precisa ser pensado apenas como hardware mais um sistema operacional, mas pode abrigar outros sistemas inteiros, isolados, rodando como conjuntos independentes de processos e memória — o que chamamos de máquina virtual. Vimos que processos são as unidades lógicas que sustentam tudo o que um sistema operacional faz, podendo ser efêmeros ou permanentes, e que é justamente o isolamento desses processos que torna a virtualização possível.</p>
+<p>Entendemos também por que programas precisam ser instalados separadamente em cada ambiente isolado, o que nos levou ao conceito de binário no terminal, e por que o WSL é a ferramenta que vamos usar para ter um Linux de verdade rodando dentro do Windows, apoiado por um hypervisor habilitado na BIOS da máquina.</p>
+<p>Com o ambiente já instalado, a próxima aula parte para a prática: os comandos básicos do terminal Linux, que vão permitir navegar, criar e manipular arquivos e pastas sem depender de nenhum clique — o primeiro passo real rumo à rotina de quem trabalha por linha de comando no dia a dia.</p>
+<h2 id="s12-referências"><span class="hn">12</span>Referências</h2>
+<p>Microsoft. Documentação oficial do Windows Subsystem for Linux (WSL).</p>
+<p>Canonical. Documentação oficial do Ubuntu para WSL.</p>
+<p>Material de aula anterior: Aula 01 - SO, CLI e GUI.</p>
+<h2 id="questoes"><span class="hn">TA</span>Questões do TA</h2>
+<article class="questao"><h3><span class="qn">Questão 1</span></h3><p>Qual é a principal diferença entre virtualização e emulação?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Virtualização sempre exige tradução de instruções entre arquiteturas diferentes, enquanto emulação nunca exige isso.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">Emulação simula o comportamento de um sistema com arquitetura de hardware diferente, exigindo tradução de instruções em tempo real, enquanto virtualização geralmente usa a mesma arquitetura de processador, sendo mais eficiente.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Não existe diferença prática entre os dois conceitos, são apenas nomes diferentes para a mesma técnica.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Virtualização só funciona em videogames, enquanto emulação só funciona em computadores.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Emulação é mais eficiente que virtualização porque não depende do processador da máquina.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 2</span></h3><p>Sobre processos, de acordo com o briefing, é correto afirmar que:</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Processos são apenas arquivos salvos no disco, sem relação com execução de programas.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Só existem processos permanentes; processos efêmeros não fazem parte de um sistema operacional.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">Um processo é a unidade lógica de execução do sistema, podendo ser efêmero ou permanente, e é o conjunto de processos que sustenta o funcionamento do sistema operacional.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Processos só existem dentro de máquinas virtuais, nunca no sistema operacional principal.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O hypervisor é um tipo de processo efêmero responsável por encerrar programas automaticamente.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 3</span></h3><p>Por que, segundo o briefing, um programa como o Python precisa ser instalado tanto no Windows quanto dentro do ambiente Linux (WSL)?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Porque o Windows não permite a instalação de linguagens de programação.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">Porque a máquina virtual, sendo isolada, tem seus próprios processos e memória, e não tem acesso aos binários instalados no sistema operacional "de fora".</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Porque o Python é incompatível com qualquer sistema Linux.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Porque o hypervisor bloqueia binários duplicados entre os dois ambientes.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Porque o WSL apaga automaticamente os programas instalados no Windows.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 4</span></h3><p>Sobre o hypervisor e a instalação do WSL, o briefing afirma que:</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O hypervisor é dispensável para o WSL, sendo necessário apenas para o Docker.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">O suporte de virtualização deve estar habilitado na BIOS (como VT-x ou SVM Mode) para que o hypervisor funcione corretamente, sendo um pré-requisito para instalar o WSL.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">A BIOS não tem nenhuma relação com a instalação de máquinas virtuais.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">O comando wsl --install deve ser rodado dentro do próprio terminal Linux, após a instalação do Ubuntu.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O hypervisor é a interface gráfica do Ubuntu instalada junto com o WSL.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+  </main>
+</div>
+<script src="../../assets/briefing.js"></script>
+</body>
+</html>

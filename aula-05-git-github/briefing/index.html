@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Briefing · Aula 05 — Git e GitHub</title>
+<link rel="stylesheet" href="../../assets/briefing.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="back" href="../../index.html">← Voltar</a>
+    <details class="toc" open><summary>Nesta página</summary><ol><li class="l1"><a href="#topo">05 - Git e GitHub</a></li><li class="l2"><a href="#s1-introdução">1 - Introdução</a></li><li class="l2"><a href="#s2-por-dentro-da-pasta-git">2 - Por dentro da pasta `.git`</a></li><li class="l3"><a href="#s2-1-head-o-mesmo-ponteiro-visto-por-dentro">2.1 - `HEAD`: o mesmo ponteiro, visto por dentro</a></li><li class="l3"><a href="#s2-2-config-onde-mora-a-configuração-do-repositório">2.2 - `config`: onde mora a configuração do repositório</a></li><li class="l3"><a href="#s2-3-o-que-é-afinal-um-repositório">2.3 - O que é, afinal, um repositório</a></li><li class="l2"><a href="#s3-github-e-o-conceito-de-remote">3 - GitHub e o conceito de remote</a></li><li class="l3"><a href="#s3-1-cadastrando-um-remote">3.1 - Cadastrando um remote</a></li><li class="l3"><a href="#s3-2-enviando-e-recebendo-push-e-pull">3.2 - Enviando e recebendo: `push` e `pull`</a></li><li class="l2"><a href="#s4-autenticação-a-chave-ssh">4 - Autenticação: a chave SSH</a></li><li class="l3"><a href="#s4-1-gerando-o-par-de-chaves">4.1 - Gerando o par de chaves</a></li><li class="l3"><a href="#s4-2-cadastrando-a-chave-pública-no-github">4.2 - Cadastrando a chave pública no GitHub</a></li><li class="l2"><a href="#s5-conclusão">5 - Conclusão</a></li><li class="l2"><a href="#questoes">Questões do TA</a></li></ol></details>
+  </aside>
+  <main class="doc">
+    <header class="cover" id="topo">
+      <p class="eyebrow">UNIFAAT · 2026.2 · Briefing para produção de conteúdo</p>
+      <h1><span class="cn">05</span> - Git e GitHub</h1>
+      <dl class="ficha">
+        <div><dt>Professor</dt><dd>Luan Tavares Lourenço</dd></div>
+        <div><dt>Disciplina</dt><dd>Engenharia de Software</dd></div>
+        <div><dt>Aula</dt><dd>05</dd></div>
+        
+      </dl>
+    </header>
+<h2 id="s1-introdução"><span class="hn">1</span>Introdução</h2>
+<p>Na aula passada, fechamos o fluxo básico do Git: <code>init</code>, <code>status</code>,</p>
+<p><code>add</code>, <code>commit</code>, <code>log</code>, <code>checkout</code> e o par <code>reset --soft</code>/<code>--hard</code>.</p>
+<p>Vimos que o Git organiza o histórico de um projeto como uma linha do</p>
+<p>tempo de commits, cada um uma fotografia completa daquele momento, e</p>
+<p>que <code>HEAD</code> é o ponteiro que marca "estou aqui agora" nessa linha do</p>
+<p>tempo. Mas ficou uma frase pendurada no fim daquela aula, que vale</p>
+<p>reler com atenção: "todo esse histórico de commits vive apenas na</p>
+<p>máquina de cada um, dentro da pasta <code>.git</code>". Nenhuma cópia em outro</p>
+<p>lugar, nenhuma forma de compartilhar esse projeto com mais ninguém.</p>
+<p>É exatamente esse ponto em aberto que esta aula resolve — mas, antes de</p>
+<p>sair conectando o computador de vocês à internet, vale a pena abrir essa</p>
+<p>pasta <code>.git</code> que já vem sendo citada desde a aula passada e enxergar,</p>
+<p>de verdade, o que existe lá dentro. Porque, no fim das contas, tudo o</p>
+<p>que o GitHub vai fazer por vocês — guardar, sincronizar, compartilhar —</p>
+<p>é só mexer nesses mesmos arquivos simples que já estão aí, dentro da</p>
+<p>pasta do projeto, desde o primeiro <code>git init</code>.</p>
+<h2 id="s2-por-dentro-da-pasta-git"><span class="hn">2</span>Por dentro da pasta <code>.git</code></h2>
+<p>Todo repositório Git tem, na raiz do projeto, uma pasta oculta chamada</p>
+<p><code>.git</code> — é ela que o comando <code>git init</code> cria. "Oculta" aqui é literal:</p>
+<p>por convenção, tanto no Linux quanto no Windows, arquivos e pastas cujo</p>
+<p>nome começa com ponto (<code>.</code>) não aparecem por padrão num <code>ls</code> comum nem</p>
+<p>no explorador de arquivos, precisamente pra não poluir a visão do que</p>
+<p>importa no dia a dia — o próprio VS Code segue essa convenção e esconde</p>
+<p>o <code>.git</code> do painel de arquivos, mesmo que ele exista ali.</p>
+<p>Dentro dela, existem vários arquivos e pastas com funções bem</p>
+<p>específicas — <code>objects</code>, <code>refs</code>, <code>hooks</code>, <code>info</code>, entre outros. Esta</p>
+<p>aula não vai abrir todos: o foco recai sobre dois deles, <code>HEAD</code> e</p>
+<p><code>config</code>, porque são os mais simples de ler e os que mais ajudam a</p>
+<p>entender o que vem a seguir.</p>
+<h3 id="s2-1-head-o-mesmo-ponteiro-visto-por-dentro"><span class="hn">2.1</span><code>HEAD</code>: o mesmo ponteiro, visto por dentro</h3>
+<p>Na aula passada, <code>HEAD</code> foi apresentado como o marcador que aponta para</p>
+<p>o commit atual. O que não foi dito é que <code>HEAD</code> não é um conceito</p>
+<p>abstrato — é, literalmente, um arquivo de texto dentro de <code>.git</code>, e dá</p>
+<p>pra lê-lo com qualquer comando que exiba texto:</p>
+<pre class="code"><code># "cat" imprime o conteudo de um arquivo de texto na tela.
+# Aqui, olhamos o conteudo bruto do arquivo HEAD, dentro da
+# pasta oculta .git do projeto.
+cat .git/HEAD</code></pre>
+<p>O resultado costuma ser algo como:</p>
+<pre class="code"><code>ref: refs/heads/main</code></pre>
+<p>Ou seja: <code>HEAD</code> não guarda o hash de um commit diretamente — ele guarda</p>
+<p>uma referência a <strong>outro arquivo</strong>, <code>refs/heads/main</code>, que é quem de</p>
+<p>fato guarda o hash do commit mais recente daquela linha do tempo. Dá</p>
+<p>pra confirmar isso na prática:</p>
+<pre class="code"><code># Mostra o conteudo do arquivo que representa a branch atual (main).
+# Deve ser um unico hash de commit, o mesmo que aparece no topo do
+# "git log".
+cat .git/refs/heads/main</code></pre>
+<p>O valor que aparece é exatamente o mesmo hash que aparece no topo do</p>
+<p><code>git log</code> — o commit mais recente. <code>HEAD</code> aponta pra esse arquivo, e</p>
+<p>esse arquivo aponta pro commit. É por isso que, quando vocês fazem um</p>
+<p>novo commit, é só esse arquivo (<code>refs/heads/main</code>) que muda: ele passa</p>
+<p>a apontar pro hash do commit novo, e <code>HEAD</code>, que só aponta pra ele,</p>
+<p>"anda junto" automaticamente.</p>
+<h3 id="s2-2-config-onde-mora-a-configuração-do-repositório"><span class="hn">2.2</span><code>config</code>: onde mora a configuração do repositório</h3>
+<p>Outro arquivo simples de ler é o <code>config</code>, também dentro de <code>.git</code> —</p>
+<p>ele guarda as configurações daquele repositório especificamente</p>
+<p>(diferente das configurações globais do Git na máquina, como nome e</p>
+<p>e-mail do autor dos commits):</p>
+<pre class="code"><code># Mostra as configuracoes atuais deste repositorio especifico.
+cat .git/config</code></pre>
+<p>Num projeto recém-criado, o conteúdo costuma ser bem enxuto, só com uma</p>
+<p>seção <code>[core]</code> de configuração básica. Vale guardar esse arquivo na</p>
+<p>memória, porque ele vai ganhar uma seção nova já na próxima parte desta</p>
+<p>aula, assim que conectarmos o projeto a um repositório remoto.</p>
+<h3 id="s2-3-o-que-é-afinal-um-repositório"><span class="hn">2.3</span>O que é, afinal, um repositório</h3>
+<p>Depois de abrir a pasta <code>.git</code> e ver que <code>HEAD</code>, <code>refs/heads/main</code> e</p>
+<p><code>config</code> são só arquivos de texto comuns, dá pra responder com precisão</p>
+<p>uma pergunta que ficou implícita desde a aula passada: o que é um</p>
+<p>repositório? No sentido amplo da palavra, repositório é só isso: um</p>
+<p>lugar onde algo fica guardado, armazenado. Não é um conceito exclusivo</p>
+<p>do Git — existe repositório de arquivos, de dados, de peças, de</p>
+<p>documentos; a ideia central é sempre a mesma, um lugar de guarda.</p>
+<p>No universo do Git, o que se guarda dentro desse lugar é justamente o</p>
+<p><code>.git</code> — o histórico completo de versões de um projeto, com seus</p>
+<p><code>objects</code>, <code>refs</code> e <code>HEAD</code>. Os arquivos que vocês editam no dia a dia (o</p>
+<p>código, as páginas, tudo o que aparece fora da pasta oculta) não são o</p>
+<p>conteúdo guardado em si — são só o "retrato" de um ponto daquele</p>
+<p>histórico, extraído pra tela pelo próprio Git. Quem fica guardado de</p>
+<p>forma permanente, dentro do repositório, é o <code>.git</code>.</p>
+<p>E, como qualquer coisa guardada num lugar, esse <code>.git</code> dá pra trafegar</p>
+<p>de um lugar pro outro: copiar, transferir, sincronizar entre máquinas</p>
+<p>diferentes — sem perder nada do que está lá dentro, porque ele é só um</p>
+<p>conjunto de arquivos de texto e binários comuns. Até este ponto da aula,</p>
+<p>porém, o único "lugar" onde esse <code>.git</code> está guardado é uma única</p>
+<p>máquina. E é exatamente aí que mora o problema citado na introdução:</p>
+<p>trocar de computador, formatar o HD, ou simplesmente querer usar o</p>
+<p>projeto em outro lugar significa não ter mais acesso a esse histórico,</p>
+<p>porque ele nunca esteve guardado em nenhum outro lugar.</p>
+<p>A solução não exige nenhum conceito novo de versionamento — só um outro</p>
+<p>lugar pra guardar uma cópia inteira desse mesmo <code>.git</code>, de preferência</p>
+<p>acessível pela internet. Esse outro lugar é o que o Git chama de</p>
+<p>repositório remoto, e é justamente o que o GitHub oferece: um servidor</p>
+<p>que funciona como esse "lugar de guarda" na internet, hospedando o mesmo</p>
+<p><code>.git</code>. A razão de o GitHub conseguir fazer isso é simples — ele entende</p>
+<p>o mesmo formato de arquivos que qualquer <code>.git</code> local usa (os mesmos</p>
+<p><code>objects</code>, <code>refs</code>, hashes de commit). Por "falar a mesma língua" do Git,</p>
+<p>comandos como <code>git clone</code>, <code>git push</code> e <code>git pull</code> trafegam o conteúdo</p>
+<p>do <code>.git</code> com o GitHub do mesmo jeito que trafegariam com o <code>.git</code> de</p>
+<p>qualquer outra máquina — só que agora esse lugar de guarda fica</p>
+<p>disponível o tempo todo, de qualquer lugar, e pode ser acessado de um</p>
+<p>computador diferente sem perder nada do histórico.</p>
+<h2 id="s3-github-e-o-conceito-de-remote"><span class="hn">3</span>GitHub e o conceito de remote</h2>
+<p>GitHub é, antes de tudo, um serviço de hospedagem de repositórios Git na</p>
+<p>internet — não é "o" Git, nem uma versão diferente dele. É perfeitamente</p>
+<pre class="code"><code>possível usar Git a vida inteira sem nunca abrir uma conta no GitHub;
+o que o GitHub resolve é o problema que ficou em aberto no fim da aula
+passada: ter uma cópia do histórico do projeto fora da própria máquina,
+acessível de qualquer lugar, e compartilhável com outras pessoas.
+
+Na linguagem do Git, esse endereço externo — seja o GitHub, seja
+qualquer outro serviço parecido, como GitLab ou Bitbucket — é chamado
+de remote (remoto). Um repositório pode ter nenhum, um ou vários
+remotes cadastrados; o mais comum, quando existe só um, é chamá-lo de
+`origin` — mas isso é só uma convenção de nome, não uma regra do Git.</code></pre>
+<h3 id="s3-1-cadastrando-um-remote"><span class="hn">3.1</span>Cadastrando um remote</h3>
+<p>Depois de criar um repositório vazio no site do GitHub (sem README, pra</p>
+<p>não gerar conflito com o histórico que já existe localmente), o passo</p>
+<p>seguinte é avisar o Git local de que aquele endereço existe:</p>
+<pre class="code"><code># "git remote add" cadastra um novo remote no repositorio local.
+# "origin" e o apelido escolhido para esse remote (poderia ser
+# qualquer outro nome).
+# O endereco depois do apelido e a URL do repositorio no GitHub.
+git remote add origin git@github.com:usuario/repo.git
+
+# "git remote -v" lista os remotes cadastrados, mostrando o apelido
+# e a URL de cada um -- "-v" e de "verbose" (detalhado).
+git remote -v</code></pre>
+<p>Vale reler agora o arquivo <code>config</code>, de novo:</p>
+<pre class="code"><code>cat .git/config</code></pre>
+<p>Uma seção nova apareceu, parecida com isto:</p>
+<pre class="code"><code>[remote "origin"]
+	url = git@github.com:usuario/repo.git
+	fetch = +refs/heads/*:refs/remotes/origin/*</code></pre>
+<p>Isso é o ponto mais importante desta seção: <code>git remote add</code> não fez</p>
+<p>nenhuma mágica de rede nem gerou nenhum arquivo escondido novo — ele só</p>
+<p>escreveu essas duas linhas dentro do mesmo <code>config</code> que já existia. Um</p>
+<p>remote é, fisicamente, só um apelido associado a uma URL, guardado num</p>
+<p>arquivo de texto comum.</p>
+<h3 id="s3-2-enviando-e-recebendo-push-e-pull"><span class="hn">3.2</span>Enviando e recebendo: <code>push</code> e <code>pull</code></h3>
+<p>Com o remote cadastrado, o histórico local pode finalmente ser enviado</p>
+<p>para o GitHub:</p>
+<pre class="code"><code># "git push" envia os commits do branch local para o remote.
+# "-u origin main" (na primeira vez) liga o branch local "main" ao
+# branch "main" do remote "origin" -- depois disso, "git push" e
+# "git pull" sozinhos, sem mais argumentos, ja sabem para onde ir.
+git push -u origin main</code></pre>
+<p>Antes de chegar ao <code>pull</code>, vale parar num comando que resolve um cenário</p>
+<p>diferente: e se o repositório já existe no GitHub, mas ainda não existe</p>
+<p>em lugar nenhum na sua máquina? É exatamente pra isso que serve o</p>
+<p><code>git clone</code> — ele baixa um repositório remoto inteiro (todo o histórico</p>
+<p>de commits, todas as branches, tudo dentro de um <code>.git</code> novinho) e já</p>
+<p>cria a pasta do projeto localmente, pronta pra uso, sem precisar de</p>
+<p><code>git init</code> nem de <code>git remote add</code> na mão:</p>
+<pre class="code"><code># "git clone" baixa uma copia completa de um repositorio remoto,
+# cria a pasta do projeto e ja configura o remote "origin"
+# apontando pra essa URL automaticamente.
+git clone git@github.com:usuario/repo.git</code></pre>
+<p>Depois desse comando, uma pasta chamada <code>repo</code> aparece no diretório</p>
+<p>atual, já com todos os arquivos, todo o <code>git log</code> do projeto, e o</p>
+<p><code>.git/config</code> já com a seção <code>[remote "origin"]</code> preenchida — como se</p>
+<p>vocês tivessem feito <code>git init</code> + <code>git remote add</code> + <code>git pull</code> de uma</p>
+<p>vez só.</p>
+<p><strong>Clone x pull, a diferença:</strong> <code>git clone</code> é o comando de "primeira</p>
+<p>vez" — usado uma única vez por máquina, quando o repositório local</p>
+<p>ainda não existe. <code>git pull</code>, em contraste, é o comando do dia a dia —</p>
+<p>usado repetidas vezes, num repositório que já foi clonado (ou criado)</p>
+<p>antes, só para buscar os commits novos que ainda não chegaram aí. Ou</p>
+<p>seja: primeiro se clona um repositório, e só depois disso passa a fazer</p>
+<p>sentido dar <code>pull</code> nele.</p>
+<p>O caminho inverso do <code>push</code>, para trazer pro computador de vocês</p>
+<p>mudanças que estejam no GitHub (feitas por vocês em outra máquina, ou</p>
+<p>por outra pessoa colaborando no projeto), é o comando <code>pull</code>:</p>
+<pre class="code"><code># "git pull" busca e traz para a maquina local os commits novos
+# que existem no remote e ainda nao existem aqui.
+git pull</code></pre>
+<h2 id="s4-autenticação-a-chave-ssh"><span class="hn">4</span>Autenticação: a chave SSH</h2>
+<p>Pra que o GitHub aceite um <code>git push</code> vindo do computador de vocês, ele</p>
+<p>precisa antes confirmar que quem está mandando aquele comando realmente</p>
+<p>tem permissão sobre aquele repositório. Uma das formas mais comuns de</p>
+<p>fazer essa confirmação, sem precisar digitar usuário e senha toda hora,</p>
+<p>é por meio de um par de chaves SSH.</p>
+<p>Uma chave SSH vem sempre em duas partes, geradas juntas: uma chave</p>
+<p>privada, que nunca sai da máquina de vocês e nunca deve ser</p>
+<p>compartilhada com ninguém, e uma chave pública, feita justamente para</p>
+<p>ser entregue a terceiros — nesse caso, ao GitHub. Uma boa forma de</p>
+<p>pensar nessa dupla é como um cadeado e sua chave: a chave pública é o</p>
+<p>cadeado que vocês entregam para o GitHub guardar; a chave privada é a</p>
+<p>única chave que abre aquele cadeado específico, e ela fica só com</p>
+<p>vocês. Quando o Git tenta se comunicar com o GitHub, é essa combinação</p>
+<p>que prova, sem precisar de senha digitada, que é realmente vocês do</p>
+<p>outro lado.</p>
+<h3 id="s4-1-gerando-o-par-de-chaves"><span class="hn">4.1</span>Gerando o par de chaves</h3>
+<pre class="code"><code># "ssh-keygen" gera um novo par de chaves SSH.
+# "-t ed25519" escolhe o algoritmo usado (ed25519 e um dos mais
+# modernos e recomendados atualmente).
+# "-C" adiciona um comentario a chave, geralmente o proprio e-mail,
+# so para identificar de quem e aquela chave mais tarde.
+ssh-keygen -t ed25519 -C "email-do-aluno@exemplo.com"</code></pre>
+<p>O comando vai perguntar onde salvar a chave (pode aceitar o caminho</p>
+<p>padrão, apertando Enter) e se quer definir uma senha adicional para ela</p>
+<p>(opcional). Ao final, dois arquivos são criados: <code>id_ed25519</code> (a chave</p>
+<p>privada) e <code>id_ed25519.pub</code> (a chave pública).</p>
+<h3 id="s4-2-cadastrando-a-chave-pública-no-github"><span class="hn">4.2</span>Cadastrando a chave pública no GitHub</h3>
+<pre class="code"><code># "cat" imprime o conteudo do arquivo da chave publica na tela,
+# para que possa ser copiado.
+cat ~/.ssh/id_ed25519.pub</code></pre>
+<p>O texto que aparece deve ser copiado e colado no GitHub, em</p>
+<p><strong>Settings → SSH and GPG keys → New SSH key</strong>. Depois disso, é possível</p>
+<p>testar se a autenticação está funcionando:</p>
+<pre class="code"><code># Tenta autenticar no GitHub usando a chave SSH configurada,
+# sem executar nenhuma operacao de fato -- e so um teste de conexao.
+ssh -T git@github.com</code></pre>
+<p>Se tudo estiver certo, o GitHub responde confirmando o nome de usuário</p>
+<p>autenticado.</p>
+<h2 id="s5-conclusão"><span class="hn">5</span>Conclusão</h2>
+<p>Nesta aula, fechamos o ponto que tinha ficado em aberto desde o fim da</p>
+<p>aula passada: como tirar o histórico de um projeto Git de dentro de uma</p>
+<p>única máquina. Para chegar lá, primeiro abrimos a pasta <code>.git</code> que já</p>
+<p>vinha sendo usada desde o <code>git init</code>, e vimos que ela não guarda nenhum</p>
+<p>segredo complexo — <code>HEAD</code> e <code>refs/heads/main</code> são simples arquivos de</p>
+<p>texto com uma referência dentro, e <code>config</code> guarda, também em texto</p>
+<p>puro, as configurações do repositório, incluindo qualquer remote</p>
+<p>cadastrado.</p>
+<p>A partir disso, entendemos o que é um remote, cadastramos o GitHub como</p>
+<p>um usando <code>git remote add</code>, e vimos os comandos <code>push</code> e <code>pull</code> que</p>
+<p>sincronizam o histórico local com essa cópia remota — tudo isso</p>
+<p>autenticado por um par de chaves SSH, gerado uma vez por máquina.</p>
+<p>Com o projeto agora versionado localmente e sincronizado com o GitHub,</p>
+<p>a base prática desta primeira parte do ano está fechada: sistema</p>
+<p>operacional, terminal, WSL e controle de versão. A partir da próxima</p>
+<p>etapa do curso, o foco muda para a organização do próprio código —</p>
+<p>Python e orientação a objetos.</p>
+<h2 id="questoes"><span class="hn">TA</span>Questões do TA</h2>
+<article class="questao"><h3><span class="qn">Questão 1</span></h3><p>Segundo o texto, o que o arquivo <code>HEAD</code>, dentro da pasta <code>.git</code>,</p>
+<p>realmente contém?</p>
+<p>quem de fato guarda o hash do commit mais recente.</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O conteúdo completo de todos os arquivos do projeto.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">Uma referência para outro arquivo (como <code>refs/heads/main</code>), que é</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">A senha usada para autenticar no GitHub.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Uma cópia compactada de todos os commits já feitos no projeto.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O nome de usuário configurado no Git.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 2</span></h3><p>De acordo com o texto, o que acontece, fisicamente, quando se executa</p>
+<p>o comando <code>git remote add origin &lt;url&gt;</code>?</p>
+<p>endereço informado.</p>
+<p>guardar o endereço do remote.</p>
+<p>mesmo arquivo <code>config</code> que já existia no repositório.</p>
+<p>repositório.</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O Git envia imediatamente todo o histórico de commits para o</span></li><li class="alt"><span class="ltr">B</span><span class="txt">É criado um novo arquivo oculto, separado do <code>config</code>, só para</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">O comando apenas escreve uma nova seção (com o apelido e a URL) no</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">O GitHub gera automaticamente uma chave SSH nova para aquele</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O comando substitui o conteúdo do arquivo <code>HEAD</code> pela URL informada.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 3</span></h3><p>Sobre o par de chaves SSH usado para autenticar no GitHub, é correto</p>
+<p>afirmar que:</p>
+<p>se entrega ao GitHub.</p>
+<p>de uso entre elas.</p>
+<p>do usuário; a chave pública é a parte entregue ao GitHub.</p>
+<p>site oficial.</p>
+<p>repositório.</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">A chave pública deve ser mantida em segredo, e a privada é a que</span></li><li class="alt"><span class="ltr">B</span><span class="txt">As duas chaves são idênticas e intercambiáveis; não há diferença</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">A chave privada nunca deve ser compartilhada e permanece na máquina</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Apenas o GitHub consegue gerar esse par de chaves, através do</span></li><li class="alt"><span class="ltr">E</span><span class="txt">A chave SSH substitui a necessidade de um remote cadastrado no</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 4</span></h3><p>Qual é a diferença entre os comandos <code>git push</code> e <code>git pull</code>,</p>
+<p>segundo o texto?</p>
+<p><code>git pull</code> envia mudanças locais para o remote.</p>
+<p>diferentes.</p>
+<p>enquanto <code>git pull</code> busca e traz para a máquina local os commits novos</p>
+<p>que existem no remote.</p>
+<p>funciona depois.</p>
+<p>locais.</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt"><code>git push</code> traz mudanças do remote para a máquina local, enquanto</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Os dois comandos fazem exatamente a mesma coisa, apenas com nomes</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt"><code>git push</code> envia os commits do branch local para o remote,</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt"><code>git pull</code> só funciona antes de um <code>git remote add</code>; <code>git push</code> só</span></li><li class="alt"><span class="ltr">E</span><span class="txt"><code>git push</code> apaga o histórico remoto antes de enviar os commits</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+  </main>
+</div>
+<script src="../../assets/briefing.js"></script>
+</body>
+</html>

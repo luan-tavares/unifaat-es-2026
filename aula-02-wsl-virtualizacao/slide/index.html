@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 02 — WSL 2 e Virtualização</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">02</span> - WSL 2 — Virtualização Linux</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="calendário">
+    <h2>Calendário <span class="accent">das aulas</span></h2>
+    <img class="fig" src="img/calendario-aulas.png" alt="Tabela do calendário do semestre: aulas 1 a 14 com data e conteúdo, de 19/AGO (Sistema Operacional - GUI e CLI) a 25/NOV (Revisão), com a aula 2, 26/AGO, WSL 2 - Virtualização Linux, destacada em amarelo; PROVA 1º BIMESTRE em 30/SET, PROVA 2º BIMESTRE em 02/DEZ, PROVA SUB em 09/DEZ e EXAME em 16/DEZ">
+  </section>
+
+  <section class="slide" data-eyebrow="a pergunta da aula passada">
+    <h2>A pergunta <span class="accent">da aula passada</span></h2>
+    <div class="two-col">
+      <div class="tree"><span class="dim"># Na aula anterior</span><br>
+        Kernel, distro e GUI<br>
+        Por que usar o terminal<br>
+        Por que um terminal Linux</div>
+      <div class="tree"><span class="dim"># Ficou em aberto...</span><br>
+        Como um notebook com Windows vai rodar um terminal Linux de verdade, sem trocar o sistema operacional?</div>
+    </div>
+    <p class="payoff">A resposta: <strong>virtualização</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="conceito · virtualização">
+    <h2>O que é <span class="accent">virtualização?</span></h2>
+    <p class="lede">Rodar um sistema operacional inteiro dentro de outro — como se fosse só mais um programa.</p>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr; max-width: none;">
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Sistema hospedeiro</strong><br>Controla o hardware real: processador, memória, disco</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Máquina Virtual VM</strong><br>Um sistema isolado rodando por cima, com seu próprio SO completo</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Isolamento total</strong><br>Os dois ambientes não interferem diretamente um no outro</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="conceito · virtualização vs. emulação">
+    <h2>Virtualização <span class="accent">vs. Emulação</span></h2>
+    <div class="two-col">
+      <img class="fig" src="img/virtualizacao-vs-emulacao.png" alt="Diagrama comparando Emulação e Virtualização. Emulação: traduz instruções de uma arquitetura diferente em tempo real, mais lento, como emuladores de videogame (mais lento). Virtualização: mesma arquitetura de processador, sem tradução pesada, mais eficiente (mais eficiente)">
+      <div>
+        <p class="body-text"><strong>Por que importa?</strong></p>
+        <p class="body-text">Emulação = <strong>tradução</strong> de instruções em tempo real → mais lento</p>
+        <p class="body-text">Virtualização = mesma arquitetura → <strong>sem tradução</strong> → muito mais eficiente</p>
+        <div class="callout">
+          <span class="mark">i</span>
+          <p>É por isso que vamos usar virtualização, não emulação.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="conceito · processos">
+    <h2>O que é um <span class="accent">processo?</span></h2>
+    <p class="lede">A unidade lógica que faz tudo acontecer</p>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr; max-width: none;">
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Efêmero</strong><br>Nasce, executa uma tarefa e encerra. Ex: um comando simples no terminal</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Permanente</strong><br>Roda em segundo plano enquanto a máquina estiver ligada. Ex: serviços de sistema</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Espaço próprio</strong><br>Cada processo tem sua própria área de memória, reservada exclusivamente para ele</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="conceito · da isolação à VM">
+    <h2>De processos isolados <span class="accent">à máquina virtual</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text">Uma VM é, na essência, um conjunto de processos e uma área de memória <strong>isolados</strong> — que se comportam como se fossem um sistema completo e independente.</p>
+        <p class="body-text">No mesmo hardware físico, dois mundos separados:</p>
+      </div>
+      <img class="fig" src="img/camadas-vm.png" alt="Três círculos concêntricos: o externo é o Hypervisor (camada de virtualização e isolamento), o do meio é o Windows hospedeiro (sistema anfitrião gerenciando recursos) e o interno é o Hardware físico (base física compartilhada)">
+    </div>
+    <div class="two-col">
+      <div class="tree"><strong>Windows (fora)</strong><br>Seus processos, sua memória</div>
+      <div class="tree"><strong>Linux (dentro)</strong><br>Seus processos, sua memória</div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="conceito · binários">
+    <h2>Por que instalar <span class="accent">tudo duas vezes?</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text"><strong>Dois ambientes, dois conjuntos de programas</strong></p>
+        <p class="body-text">A VM Linux não enxerga os programas instalados no Windows. São mundos isolados.</p>
+        <div class="callout">
+          <span class="mark">i</span>
+          <p>Exemplo real do curso: o Python instalado no Windows não existe dentro do WSL. Precisará ser instalado lá dentro também.</p>
+        </div>
+      </div>
+      <div>
+        <p class="body-text"><strong>O conceito de binário</strong></p>
+        <p class="body-text">Quando você digita <code>python</code> no terminal, o sistema busca um arquivo binário com esse nome nas pastas conhecidas.</p>
+        <p class="body-text">Se o binário não existe naquele ambiente isolado → o comando não funciona.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="wsl">
+    <h2>WSL — <span class="accent">Windows Subsystem for Linux</span></h2>
+    <p class="lede">A solução da Microsoft para rodar Linux de verdade dentro do Windows</p>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr; max-width: none;">
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>1 · Integrado ao Windows</strong><br>Criado pela própria Microsoft, sem VM tradicional separada</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>2 · Ubuntu completo</strong><br>Uma distro Linux real, leve, sem interface gráfica pesada</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>3 · Terminal Linux real</strong><br>Processos, memória e binários próprios do Linux</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="hypervisor e bios">
+    <h2>Hypervisor e <span class="accent">BIOS</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text"><strong>O que é o hypervisor?</strong></p>
+        <p class="body-text">O componente que gerencia e isola as máquinas virtuais, controlando acesso ao hardware físico.</p>
+        <p class="body-text">Necessário para o WSL, o Docker e qualquer virtualização futura.</p>
+      </div>
+      <div>
+        <p class="body-text"><strong>O que verificar na BIOS</strong></p>
+        <p class="body-text">Em muitos notebooks já vem <strong>habilitado de fábrica</strong>. Se não, ative antes de instalar o WSL.</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="tree"><strong>Intel</strong><br>Virtualization Technology (VT-x)</div>
+      <div class="tree"><strong>AMD</strong><br>SVM Mode</div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="instalação · passo a passo">
+    <h2>Instalando o WSL <span class="accent">— passo a passo</span></h2>
+    <ul class="points">
+      <li><strong>Abrir PowerShell</strong> — executar como Administrador</li>
+      <li><strong>Instalar WSL</strong> — executar: <code>wsl --install</code></li>
+      <li><strong>Reiniciar</strong> — reinicie o computador</li>
+      <li><strong>Configurar Ubuntu</strong> — criar usuário e senha</li>
+    </ul>
+    <p class="payoff">O único momento em que usaremos o terminal do <strong>Windows</strong> — depois, tudo pelo Linux.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="instalação · comandos">
+    <h2>Os comandos no PowerShell</h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">PowerShell (Administrador)</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># 1. Instala WSL 2 + Ubuntu (tudo em um comando)</div>
+        <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">wsl --install</span></div>
+        <div class="term-line">&nbsp;</div>
+        <div class="term-line comment"># 2. Reinicie o computador quando solicitado</div>
+        <div class="term-line">&nbsp;</div>
+        <div class="term-line comment"># 3. Verifique a instalação após reiniciar</div>
+        <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">wsl --list --verbose</span></div>
+        <div class="term-line">&nbsp;</div>
+        <div class="term-line comment"># 4. Se precisar instalar o Ubuntu manualmente:</div>
+        <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">wsl --list --online</span></div>
+        <div class="term-line"><span class="prompt">PS&gt;</span> <span class="cmd">wsl --install -d Ubuntu</span></div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p>Execute o PowerShell como <strong>Administrador</strong> (botão direito → Executar como administrador) antes de rodar qualquer comando.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="dentro do linux">
+    <h2>Você está <span class="accent">dentro do Linux</span></h2>
+    <p class="lede">Usuário e senha criados?</p>
+    <p class="body-text">A partir desse momento, você está oficialmente dentro de um sistema operacional Linux completo — com seus próprios processos, memória e binários — rodando como VM isolada dentro do Windows.</p>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr; max-width: none;">
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Usuário Linux</strong><br>Exclusivo do WSL — não é o mesmo do Windows</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Ambiente isolado</strong><br>Programas precisam ser instalados aqui dentro</p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Linux de verdade</strong><br>Não emulação, não atalho — virtualização real</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="resumo">
+    <h2>Resumo <span class="accent">da aula</span></h2>
+    <div class="two-col">
+      <div class="callout"><span class="mark">1</span><p><strong>Virtualização</strong><br>Um SO completo rodando isolado dentro de outro, compartilhando o mesmo hardware</p></div>
+      <div class="callout"><span class="mark">2</span><p><strong>Processos</strong><br>Unidades lógicas de execução — é o isolamento deles que torna a VM possível</p></div>
+      <div class="callout"><span class="mark">3</span><p><strong>Binários</strong><br>Cada ambiente isolado precisa dos seus próprios executáveis instalados</p></div>
+      <div class="callout"><span class="mark">4</span><p><strong>WSL + hypervisor</strong><br>A ferramenta que usaremos, apoiada por virtualização habilitada na BIOS</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="próxima aula">
+    <h2>Próxima aula: <span class="accent">comandos básicos do terminal Linux</span></h2>
+    <p class="lede">Navegar, criar e manipular arquivos e pastas — sem nenhum clique.</p>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr; max-width: none;">
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Navegação</strong><br><code>cd</code>, <code>ls</code>, <code>pwd</code></p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Arquivos</strong><br><code>touch</code>, <code>mkdir</code>, <code>rm</code></p>
+      </div>
+      <div class="callout">
+        <span class="mark">i</span>
+        <p><strong>Prática real</strong><br>Dentro do WSL, no ambiente que acabamos de instalar</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 02 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 02</h2>
+    <p class="body-text"><a href="https://docs.google.com/forms/d/e/1FAIpQLScGVevQTqWW4uyv2sFmeQEpzYXrycGzsoIcjXit3PshDAlxOQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLScGVevQTqWW4uyv2sFmeQEpzYXrycGzsoIcjXit3PshDAlxOQ/viewform?usp=publish-editor</code></a></p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">16</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+<script src="../../assets/slide.js"></script>
+</body>
+</html>

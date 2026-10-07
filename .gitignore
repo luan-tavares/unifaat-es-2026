@@ -1,5 +1,7 @@
 *.docx
 /.claude
+__pycache__/
+.venv/
 
 # provas e respostas: nunca no repositorio publico
 aula-06-revisao/prova.md

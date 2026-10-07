@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Código — Aula 07</title>
+<link rel="stylesheet" href="../../assets/raio-x.css">
+<script src="../../assets/tema.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="topbar"><a class="back" href="../../index.html">← Voltar</a></nav>
+
+<header>
+  <span class="kicker">Raio-X do Código · Aula 07 · Timeline</span>
+  <h1>Introdução ao Python: o src/ da disciplina</h1>
+  <p class="meta">
+    <span><i class="fa-solid fa-folder"></i> es-2026/src</span>
+    <span><i class="fa-solid fa-calendar-days"></i> 07/10/2026</span>
+    <span><i class="fa-solid fa-wrench"></i> 5 etapas até agora</span>
+  </p>
+</header>
+
+<main>
+<div class="timeline">
+
+  <!-- ETAPA 1 -->
+  <div class="entry">
+    <div class="entry-dot">1</div>
+    <div class="entry-date">Etapa 1</div>
+    <h2>Criando o <code class="inline">src/</code> na raiz da disciplina</h2>
+    <p class="sub">Um único projeto Python que vai crescer aula a aula, em vez de uma pasta de código por aula.</p>
+
+    <div class="tree">es-2026/
+├── .gitignore            <span class="comment">// + __pycache__/ e .venv/</span>
+├── aula-07-python/       <span class="comment">// briefing, slide, TF e este raio-x</span>
+└── <span class="dir">src/</span>                  <span class="new">← NOVO</span>
+    ├── <span class="new">estruturas.py</span>     <span class="comment">// tipos básicos e estruturas nativas</span>
+    ├── <span class="new">lacos.py</span>          <span class="comment">// for, while, continue, break</span>
+    ├── <span class="new">binario.py</span>        <span class="comment">// decimal ↔ binário</span>
+    └── <span class="new">merge_sort.py</span>     <span class="comment">// dividir para conquistar</span></div>
+
+    <div class="diff">
+      <div class="diff-head">.gitignore (raiz de es-2026)</div>
+      <div class="line ctx">*.docx</div>
+      <div class="line ctx">/.claude</div>
+      <div class="line add">+ __pycache__/</div>
+      <div class="line add">+ .venv/</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Por que na raiz, e não dentro da aula</h4>
+        <p>O <code class="inline">src/</code> é o projeto da disciplina: as próximas aulas (estruturas de dados, orientação a objetos, boas práticas) vão acrescentar arquivos aqui, em vez de recomeçar do zero em cada pasta de aula.</p>
+      </div>
+      <div class="why-card">
+        <h4>Por que ainda não tem venv</h4>
+        <p>Tudo usa só o que já vem com o Python, sem biblioteca de terceiros: não há o que isolar. Quando a primeira dependência entrar, o projeto ganha <code class="inline">.venv/</code> e <code class="inline">requirements.txt</code> — e o <code class="inline">.gitignore</code> já está pronto pra isso.</p>
+      </div>
+      <div class="why-card">
+        <h4>Código curto, comentário longo</h4>
+        <p>Os arquivos são scripts diretos, lidos de cima pra baixo, e o texto fica nos comentários. Sem atalhos da linguagem (fatiamento, desempacotamento, <code class="inline">reversed()</code>): tudo é feito com índice e <code class="inline">append</code>, passo a passo. Função só onde ela é necessária: no merge sort, que chama a si mesmo.</p>
+      </div>
+    </div>
+
+  </div>
+  <!-- ETAPA 2 -->
+  <div class="entry">
+    <div class="entry-dot">2</div>
+    <div class="entry-date">Etapa 2</div>
+    <h2><code class="inline">estruturas.py</code>: tipos básicos e estruturas nativas</h2>
+    <p class="sub">int, float, bool, str, list, tuple, dict e set, um bloco de cada, na ordem da aula.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/estruturas.py (arquivo novo)</div>
+      <div class="line add">+ # Tipos básicos e estruturas de dados nativas do Python.</div>
+      <div class="line add">+ # Rodar no terminal: python3 estruturas.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Tipos básicos -----------------------------------------------------------</div>
+      <div class="line add">+ # Em Python não se declara o tipo: ele pertence ao VALOR, não à variável.</div>
+      <div class="line add">+ idade = 19          # int: número inteiro, sem limite de tamanho</div>
+      <div class="line add">+ media = 7.5         # float: número com casas decimais</div>
+      <div class="line add">+ aprovado = True     # bool: True ou False (por baixo, valem 1 e 0)</div>
+      <div class="line add">+ nome = &quot;Ana&quot;        # str: texto, uma sequência de caracteres</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(type(idade), type(media), type(aprovado), type(nome))</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # O float carrega a imprecisão da representação binária (Aula 03).</div>
+      <div class="line add">+ print(0.1 + 0.2)        # 0.30000000000000004</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # // é a divisão inteira (só o quociente) e % é o resto da divisão.</div>
+      <div class="line add">+ print(45 // 2, 45 % 2)  # 22 1</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- str ---------------------------------------------------------------------</div>
+      <div class="line add">+ # Cada caractere, por baixo, é um número da tabela ASCII / Unicode.</div>
+      <div class="line add">+ print(ord(&quot;A&quot;), chr(65))    # 65 A</div>
+      <div class="line add">+ print(nome[0], len(nome))   # A 3  -&gt; o primeiro caractere fica no índice 0</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- list --------------------------------------------------------------------</div>
+      <div class="line add">+ # Ordenada e mutável: é o &quot;array&quot; do Python.</div>
+      <div class="line add">+ notas = [7, 3, 9]</div>
+      <div class="line add">+ notas.append(5)     # inclui no final</div>
+      <div class="line add">+ notas[0] = 8        # troca o valor da posição 0</div>
+      <div class="line add">+ print(notas)        # [8, 3, 9, 5]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Cuidado: &quot;outra = notas&quot; NÃO copia a lista, só dá outro nome pra ela.</div>
+      <div class="line add">+ # Para copiar de verdade, use .copy().</div>
+      <div class="line add">+ copia = notas.copy()</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- tuple -------------------------------------------------------------------</div>
+      <div class="line add">+ # Parecida com a lista, mas imutável: valores que andam juntos.</div>
+      <div class="line add">+ ponto = (10, 20)</div>
+      <div class="line add">+ x = ponto[0]        # o acesso é por índice, como na lista</div>
+      <div class="line add">+ y = ponto[1]</div>
+      <div class="line add">+ print(x, y)         # 10 20</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- dict --------------------------------------------------------------------</div>
+      <div class="line add">+ # Pares chave -&gt; valor: a busca é pelo nome da chave, não pela posição.</div>
+      <div class="line add">+ aluno = {&quot;nome&quot;: &quot;Ana&quot;, &quot;ra&quot;: 1234, &quot;nota&quot;: 8.5}</div>
+      <div class="line add">+ aluno[&quot;nota&quot;] = 9.0</div>
+      <div class="line add">+ print(aluno[&quot;nome&quot;], aluno[&quot;nota&quot;])     # Ana 9.0</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- set ---------------------------------------------------------------------</div>
+      <div class="line add">+ # Guarda só valores únicos, sem ordem.</div>
+      <div class="line add">+ print(set([1, 1, 2, 3, 3]))     # {1, 2, 3}</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>O tipo pertence ao valor</h4>
+        <p>Nenhuma variável declara tipo: <code class="inline">type()</code> mostra o tipo do valor que ela guarda. É a mesma ideia da Aula 03, em que o mesmo byte pode ser lido como número ou como letra.</p>
+      </div>
+      <div class="why-card">
+        <h4>// e %</h4>
+        <p>Divisão inteira e resto são as duas operações da conversão para binário. Aparecem aqui primeiro, sozinhas, pra serem reconhecidas depois no <code class="inline">binario.py</code>.</p>
+      </div>
+      <div class="why-card">
+        <h4>A cópia da lista</h4>
+        <p><code class="inline">outra = notas</code> não copia: os dois nomes apontam pra mesma lista. <code class="inline">.copy()</code> cria uma lista nova.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 estruturas.py</div>
+      <div class="line ctx">&lt;class &#x27;int&#x27;&gt; &lt;class &#x27;float&#x27;&gt; &lt;class &#x27;bool&#x27;&gt; &lt;class &#x27;str&#x27;&gt;</div>
+      <div class="line ctx">0.30000000000000004</div>
+      <div class="line ctx">22 1</div>
+      <div class="line ctx">65 A</div>
+      <div class="line ctx">A 3</div>
+      <div class="line ctx">[8, 3, 9, 5]</div>
+      <div class="line ctx">10 20</div>
+      <div class="line ctx">Ana 9.0</div>
+      <div class="line ctx">{1, 2, 3}</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 3 -->
+  <div class="entry">
+    <div class="entry-dot">3</div>
+    <div class="entry-date">Etapa 3</div>
+    <h2><code class="inline">lacos.py</code>: for, while, continue e break</h2>
+    <p class="sub">Os laços que a outra disciplina já apresentou, agora com o olhar de algoritmo e sem else.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/lacos.py (arquivo novo)</div>
+      <div class="line add">+ # Laços de repetição: for, while, continue e break.</div>
+      <div class="line add">+ # Rodar no terminal: python3 lacos.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- for ---------------------------------------------------------------------</div>
+      <div class="line add">+ # O for percorre qualquer sequência, um item por volta.</div>
+      <div class="line add">+ # range(5) gera 0, 1, 2, 3, 4 (o 5 não entra).</div>
+      <div class="line add">+ for i in range(5):</div>
+      <div class="line add">+     print(i)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Uma string também é uma sequência: o for anda letra por letra.</div>
+      <div class="line add">+ for letra in &quot;Python&quot;:</div>
+      <div class="line add">+     print(letra)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Num dicionário, o for anda pelas chaves; o valor é buscado pela chave.</div>
+      <div class="line add">+ notas = {&quot;Ana&quot;: 8.5, &quot;Bruno&quot;: 6.0}</div>
+      <div class="line add">+ for nome in notas:</div>
+      <div class="line add">+     nota = notas[nome]</div>
+      <div class="line add">+     print(nome, nota)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- while -------------------------------------------------------------------</div>
+      <div class="line add">+ # O while repete enquanto a condição for verdadeira.</div>
+      <div class="line add">+ # Quantas divisões inteiras por 2 até o 1000 zerar?</div>
+      <div class="line add">+ numero = 1000</div>
+      <div class="line add">+ divisoes = 0</div>
+      <div class="line add">+ while numero &gt; 0:</div>
+      <div class="line add">+     numero = numero // 2</div>
+      <div class="line add">+     divisoes = divisoes + 1</div>
+      <div class="line add">+ print(divisoes)     # 10 -&gt; a mesma quantidade de dígitos de 1000 em binário</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- continue ----------------------------------------------------------------</div>
+      <div class="line add">+ # continue pula direto para a próxima volta.</div>
+      <div class="line add">+ # É o que usamos no lugar do else: se o item não interessa, pula logo no começo.</div>
+      <div class="line add">+ for numero in range(1, 11):</div>
+      <div class="line add">+     if numero % 2 != 0:</div>
+      <div class="line add">+         continue</div>
+      <div class="line add">+     print(numero)   # só os pares chegam aqui</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- break -------------------------------------------------------------------</div>
+      <div class="line add">+ # break interrompe o laço na hora: achou, para de procurar.</div>
+      <div class="line add">+ for nome in [&quot;Ana&quot;, &quot;Bruno&quot;, &quot;Carla&quot;, &quot;Diego&quot;]:</div>
+      <div class="line add">+     if nome == &quot;Carla&quot;:</div>
+      <div class="line add">+         print(&quot;Achei a Carla&quot;)</div>
+      <div class="line add">+         break</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>continue no lugar do else</h4>
+        <p>Se o número é ímpar, o laço pula pra próxima volta logo no começo; o caminho principal (imprimir) fica sem aninhamento.</p>
+      </div>
+      <div class="why-card">
+        <h4>O while que conta divisões</h4>
+        <p>Dividir 1000 por 2 até zerar leva 10 voltas — o mesmo número de dígitos de 1000 em binário (<code class="inline">1111101000</code>). É o gancho pro custo do merge sort.</p>
+      </div>
+      <div class="why-card">
+        <h4>break</h4>
+        <p>Achou o que procurava, não tem por que continuar: o <code class="inline">break</code> encerra o laço na hora.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 lacos.py</div>
+      <div class="line ctx">0</div>
+      <div class="line ctx">1</div>
+      <div class="line ctx">2</div>
+      <div class="line ctx">3</div>
+      <div class="line ctx">4</div>
+      <div class="line ctx">P</div>
+      <div class="line ctx">y</div>
+      <div class="line ctx">t</div>
+      <div class="line ctx">h</div>
+      <div class="line ctx">o</div>
+      <div class="line ctx">n</div>
+      <div class="line ctx">Ana 8.5</div>
+      <div class="line ctx">Bruno 6.0</div>
+      <div class="line ctx">10</div>
+      <div class="line ctx">2</div>
+      <div class="line ctx">4</div>
+      <div class="line ctx">6</div>
+      <div class="line ctx">8</div>
+      <div class="line ctx">10</div>
+      <div class="line ctx">Achei a Carla</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 4 -->
+  <div class="entry">
+    <div class="entry-dot">4</div>
+    <div class="entry-date">Etapa 4</div>
+    <h2><code class="inline">binario.py</code>: decimal ↔ binário</h2>
+    <p class="sub">A divisão sucessiva por 2 do quadro, em código — e o caminho de volta.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/binario.py (arquivo novo)</div>
+      <div class="line add">+ # Conversão decimal -&gt; binário e binário -&gt; decimal.</div>
+      <div class="line add">+ # Rodar no terminal: python3 binario.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Decimal -&gt; binário ------------------------------------------------------</div>
+      <div class="line add">+ # É a divisão sucessiva por 2 feita no quadro:</div>
+      <div class="line add">+ #   1. divide por 2 e anota o resto (só pode ser 0 ou 1)</div>
+      <div class="line add">+ #   2. o número vira o quociente</div>
+      <div class="line add">+ #   3. repete até o número chegar a zero</div>
+      <div class="line add">+ #   4. lê os restos de baixo para cima</div>
+      <div class="line add">+ numero = 45</div>
+      <div class="line add">+ binario = &quot;&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ while numero &gt; 0:</div>
+      <div class="line add">+     resto = numero % 2</div>
+      <div class="line add">+     # O resto novo entra NA FRENTE do que já foi montado: é o &quot;ler de baixo</div>
+      <div class="line add">+     # para cima&quot;. Se fosse binario + str(resto), o número sairia invertido.</div>
+      <div class="line add">+     binario = str(resto) + binario</div>
+      <div class="line add">+     numero = numero // 2</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(binario)      # 101101</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Detalhe: se numero começasse em 0, o while nem rodaria e binario ficaria</div>
+      <div class="line add">+ # vazio. No quadro ninguém converte o zero, mas no código esse caso existe.</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Binário -&gt; decimal ------------------------------------------------------</div>
+      <div class="line add">+ # Cada bit é multiplicado pelo valor da sua posição (uma potência de 2),</div>
+      <div class="line add">+ # começando pela direita, e tudo é somado: 101101 = 32 + 8 + 4 + 1 = 45.</div>
+      <div class="line add">+ binario = &quot;101101&quot;</div>
+      <div class="line add">+ decimal = 0</div>
+      <div class="line add">+ posicao = 0                     # posição do bit: vale 2 elevado a posicao</div>
+      <div class="line add">+ indice = len(binario) - 1       # começa pelo último caractere (o bit da direita)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ while indice &gt;= 0:</div>
+      <div class="line add">+     digito = int(binario[indice])           # &quot;1&quot; vira 1, &quot;0&quot; vira 0</div>
+      <div class="line add">+     decimal = decimal + digito * 2 ** posicao</div>
+      <div class="line add">+     posicao = posicao + 1</div>
+      <div class="line add">+     indice = indice - 1                     # anda um caractere para a esquerda</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(decimal)      # 45</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- O Python já faz isso pronto ----------------------------------------------</div>
+      <div class="line add">+ # bin() e int(texto, 2) fazem as mesmas conversões. Usamos o nosso código pra</div>
+      <div class="line add">+ # entender o que acontece por dentro antes de usar a versão pronta.</div>
+      <div class="line add">+ print(bin(45), int(&quot;101101&quot;, 2))    # 0b101101 45</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Ler de baixo pra cima</h4>
+        <p><code class="inline">binario = str(resto) + binario</code> coloca cada resto novo na frente do que já foi montado. Inverter a ordem reproduz em código o erro mais comum do quadro: o número sai ao contrário.</p>
+      </div>
+      <div class="why-card">
+        <h4>O caso do zero</h4>
+        <p>Se o número começasse em 0, o while nem rodaria e o resultado ficaria vazio. No quadro ninguém converte o zero; no código, esse caso existe.</p>
+      </div>
+      <div class="why-card">
+        <h4>Entender antes de usar</h4>
+        <p><code class="inline">bin()</code> e <code class="inline">int(texto, 2)</code> já fazem as duas conversões. O código serve pra ver o que acontece por dentro antes de usar a versão pronta.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 binario.py</div>
+      <div class="line ctx">101101</div>
+      <div class="line ctx">45</div>
+      <div class="line ctx">0b101101 45</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 5 -->
+  <div class="entry">
+    <div class="entry-dot">5</div>
+    <div class="entry-date">Etapa 5</div>
+    <h2><code class="inline">merge_sort.py</code>: dividir para conquistar</h2>
+    <p class="sub">Divide a lista por 2 até sobrar um item e intercala as metades de volta, sempre em ordem.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/merge_sort.py (arquivo novo)</div>
+      <div class="line add">+ # Merge sort: ordenação por &quot;dividir para conquistar&quot;.</div>
+      <div class="line add">+ # Rodar no terminal: python3 merge_sort.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ #   1. DIVIDIR: corta a lista ao meio, e cada metade ao meio de novo,</div>
+      <div class="line add">+ #      até sobrar 1 item (uma lista de 1 item já está ordenada).</div>
+      <div class="line add">+ #   2. CONQUISTAR: junta (intercala) as metades de volta, sempre em ordem.</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # 8 itens viram 1 em 3 divisões por 2 (2³ = 8): a mesma divisão por 2 da</div>
+      <div class="line add">+ # conversão para binário, agora aplicada a uma lista.</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def intercalar(esquerda, direita):</div>
+      <div class="line add">+     # As duas listas já chegam ordenadas, então basta comparar o item atual</div>
+      <div class="line add">+     # de cada uma e levar o menor para o resultado.</div>
+      <div class="line add">+     resultado = []</div>
+      <div class="line add">+     i = 0   # posição atual na lista da esquerda</div>
+      <div class="line add">+     j = 0   # posição atual na lista da direita</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     while i &lt; len(esquerda) and j &lt; len(direita):</div>
+      <div class="line add">+         if esquerda[i] &lt;= direita[j]:</div>
+      <div class="line add">+             resultado.append(esquerda[i])</div>
+      <div class="line add">+             i = i + 1</div>
+      <div class="line add">+             continue</div>
+      <div class="line add">+         resultado.append(direita[j])</div>
+      <div class="line add">+         j = j + 1</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # Quando um lado acaba, o que sobrou do outro já está em ordem:</div>
+      <div class="line add">+     # é só copiar item por item para o fim do resultado.</div>
+      <div class="line add">+     while i &lt; len(esquerda):</div>
+      <div class="line add">+         resultado.append(esquerda[i])</div>
+      <div class="line add">+         i = i + 1</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     while j &lt; len(direita):</div>
+      <div class="line add">+         resultado.append(direita[j])</div>
+      <div class="line add">+         j = j + 1</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     return resultado</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def merge_sort(lista):</div>
+      <div class="line add">+     # Caso base: com 0 ou 1 item não há o que ordenar. Sem esse ponto de</div>
+      <div class="line add">+     # parada, a função se chamaria para sempre.</div>
+      <div class="line add">+     if len(lista) &lt;= 1:</div>
+      <div class="line add">+         return lista</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     meio = len(lista) // 2      # dividir por 2</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # Monta as duas metades copiando item por item:</div>
+      <div class="line add">+     # da posição 0 até antes do meio vai para a esquerda,</div>
+      <div class="line add">+     # do meio até o fim vai para a direita.</div>
+      <div class="line add">+     esquerda = []</div>
+      <div class="line add">+     for posicao in range(0, meio):</div>
+      <div class="line add">+         esquerda.append(lista[posicao])</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     direita = []</div>
+      <div class="line add">+     for posicao in range(meio, len(lista)):</div>
+      <div class="line add">+         direita.append(lista[posicao])</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # A função chama a si mesma para cada metade: isso é recursão,</div>
+      <div class="line add">+     # o mesmo conceito do rm -r da Aula 03.</div>
+      <div class="line add">+     esquerda = merge_sort(esquerda)</div>
+      <div class="line add">+     direita = merge_sort(direita)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     return intercalar(esquerda, direita)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(merge_sort([7, 3, 9, 1, 5, 8, 2, 6]))     # [1, 2, 3, 5, 6, 7, 8, 9]</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Dividir por 2, de novo</h4>
+        <p><code class="inline">meio = len(lista) // 2</code> é a mesma divisão inteira da conversão pra binário. 8 itens viram 1 em 3 divisões (2³ = 8); 1000 itens, em cerca de 10.</p>
+      </div>
+      <div class="why-card">
+        <h4>Recursão e caso base</h4>
+        <p><code class="inline">merge_sort</code> chama a si mesma pra cada metade — o mesmo conceito do <code class="inline">rm -r</code> da Aula 03. O <code class="inline">if len(lista) &lt;= 1</code> é o ponto de parada.</p>
+      </div>
+      <div class="why-card">
+        <h4>Intercalar sem else</h4>
+        <p>As duas metades já chegam ordenadas: <code class="inline">i</code> e <code class="inline">j</code> marcam o item atual de cada lado, o menor vai pro resultado e o <code class="inline">continue</code> segue. Quando um lado acaba, o que sobrou do outro é copiado item por item.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 merge_sort.py</div>
+      <div class="line ctx">[1, 2, 3, 5, 6, 7, 8, 9]</div>
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer>
+  Aula 07 — Introdução ao Python · Engenharia de Software 2026.2 · Raio-X do Código (timeline viva — novas etapas entram aqui embaixo)
+</footer>
+
+<script src="../../assets/raio-x.js"></script>
+</body>
+</html>

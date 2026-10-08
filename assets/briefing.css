@@ -32,6 +32,12 @@
     --term-accent-2: #9db0ff;
     --term-border: #0a0f1d;
     --term-bar: #182040;
+    /* bloco de código: claro no tema claro, pra não virar mancha preta no projetor */
+    --code-bg: #eef1f8;
+    --code-ink: #0b0f1a;
+    --code-cm: #3a4560;
+    --code-pr: #3a49c7;
+    --code-border: #7f89a8;
     --font-body: 'IBM Plex Sans', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   }
@@ -60,6 +66,11 @@
     --warn-border-2: #6b3a26;
     --term-border: #2b3860;
     --term-bar: #131c36;
+    --code-bg: #0a0f1c;
+    --code-ink: #ffffff;
+    --code-cm: #c4cbe0;
+    --code-pr: #b4c2ff;
+    --code-border: #4a5a8c;
   }
 
   /* "mesa" e "folha": a folha mantém borda aparente, só que fina e arredondada */
@@ -177,22 +188,22 @@
   .code-wrap{ position: relative; margin: 6px 0 24px; max-width: none; }
   .code{
     margin:0; padding: 20px 22px; overflow-x:auto;
-    background: var(--bg-chrome); color: var(--term-ink);
-    border: 1px solid var(--term-border); border-radius: 14px;
-    font-family: var(--font-mono); font-size: .88rem; line-height:1.65; tab-size: 2;
+    background: var(--code-bg); color: var(--code-ink);
+    border: 1.5px solid var(--code-border); border-radius: 14px;
+    font-family: var(--font-mono); font-size: .92rem; font-weight: 500; line-height:1.65; tab-size: 2;
   }
   .code-wrap > .code{ margin:0; }
   .doc > .code{ margin: 6px 0 24px; }
   .code code{ background:none; border:0; padding:0; color: inherit; font-size: inherit; white-space: pre; }
-  .code .cm{ color: var(--term-muted-2); font-style: italic; }
-  .code .pr{ color: var(--term-accent-2); }
+  .code .cm{ color: var(--code-cm); font-style: italic; }
+  .code .pr{ color: var(--code-pr); font-weight: 700; }
   .copy{
     position:absolute; top: 10px; right: 10px; opacity:0; transition: opacity .15s;
-    font-family: var(--font-mono); font-size:.72rem; font-weight:600; color: var(--term-ink);
-    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 8px; padding: 4px 10px; cursor:pointer;
+    font-family: var(--font-mono); font-size:.72rem; font-weight:600; color: var(--code-ink);
+    background: var(--paper); border: 1px solid var(--code-border); border-radius: 8px; padding: 4px 10px; cursor:pointer;
   }
   .code-wrap:hover .copy, .copy:focus-visible{ opacity:1; }
-  .copy:hover{ background: rgba(255,255,255,.2); }
+  .copy:hover{ background: var(--bg-raised); }
 
   /* tabelas */
   .tbl{ overflow-x:auto; margin: 6px 0 26px; border: 1px solid var(--line-strong); border-radius: 14px; }
@@ -217,6 +228,8 @@
   .alt.ok{ background: color-mix(in srgb, var(--accent-2) 12%, transparent); border-color: color-mix(in srgb, var(--accent-2) 55%, transparent); }
   .alt.ok .ltr{ background: var(--accent-2); border-color: var(--accent-2); color: var(--on-solid); }
   .gab{ flex:none; font-family: var(--font-mono); font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color: var(--accent-2); border: 1px solid var(--accent-2); border-radius: 999px; padding: 2px 10px; }
+  .questao > p.coment{ margin: 0; padding: 14px 20px; border-top: 1px solid var(--line); background: var(--bg-raised); line-height: 1.6; }
+  .coment .lbl{ display:inline-block; margin-right: 10px; font-family: var(--font-mono); font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color: var(--accent-2); }
   .mix{ margin: 0 !important; padding: 10px 20px; font-family: var(--font-mono); font-size:.75rem !important; color: var(--muted-2); border-top: 1px solid var(--line); }
 
   .tema-toggle{

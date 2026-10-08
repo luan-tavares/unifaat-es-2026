@@ -5,20 +5,20 @@
   :root{
     color-scheme: light;
     --bg: #f5f7f3;
-    --bg-raised: #e7ebe4;
+    --bg-raised: #e1e6dd;
     --bg-chrome: #12211c;
     --bg-chrome-2: #0d1a16;
     --surface: #ffffff;
     --ink: #000000;
-    --muted: #2a302b;
-    --muted-2: #454d47;
-    --accent: #7a4800;
+    --muted: #1f2420;
+    --muted-2: #383f3a;
+    --accent: #6e4000;
     --accent-ink: #fff6e8;
-    --accent-2: #08624c;
+    --accent-2: #065a45;
     --warn: #8a2c09;
     --warn-bg: #fbeee6;
     --warn-border: #eeccb8;
-    --rule: #d7ddd2;
+    --rule: #c6cec0;
     --shadow: rgba(30,40,32,.14);
     --on-chrome: #fff6e8;
     --term-ink: #ffffff;
@@ -28,6 +28,16 @@
     --term-accent-2: #7dd3b0;
     --term-border: #0a1613;
     --term-bar: #16241e;
+    /* bloco de código: fundo claro e texto escuro, pra não esmaecer no projetor */
+    --code-bg: #ffffff;
+    --code-bar: #e3e9df;
+    --code-border: #6f7d74;
+    --code-ink: #000000;
+    --code-out: #1f2621;
+    --code-comment: #3b4640;
+    --code-prompt: #08624c;
+    --code-hl: #7a4800;
+    --code-path: #1f2621;
     --font-body: 'IBM Plex Sans', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   }
@@ -39,19 +49,28 @@
     --bg-chrome: #0a1411;
     --bg-chrome-2: #070e0b;
     --surface: #16231d;
-    --ink: #eef3ee;
-    --muted: #c3cec6;
-    --muted-2: #93a49a;
-    --accent: #ffb454;
+    --ink: #f4f8f4;
+    --muted: #d0dad3;
+    --muted-2: #a5b5ab;
+    --accent: #ffbd66;
     --accent-ink: #1f1300;
-    --accent-2: #5fd0a8;
+    --accent-2: #6fd9b3;
     --warn: #ff9a6c;
     --warn-bg: #2a1710;
     --warn-border: #5a3322;
-    --rule: #29392f;
+    --rule: #34473b;
     --shadow: rgba(0,0,0,.55);
     --term-border: #2c4137;
     --term-bar: #14231d;
+    --code-bg: #1e2e27;
+    --code-bar: #2a3d34;
+    --code-border: #56705f;
+    --code-ink: #ffffff;
+    --code-out: #e3ebe5;
+    --code-comment: #c8d4cc;
+    --code-prompt: #86e8c4;
+    --code-hl: #ffc878;
+    --code-path: #e3ebe5;
   }
 
   *{ box-sizing:border-box; }
@@ -196,8 +215,8 @@
      página clara, pra manter a personalidade de terminal sem sacrificar
      a leitura na sala de aula com luz acesa */
   .term{
-    background: var(--bg-chrome);
-    border: 1px solid var(--term-border);
+    background: var(--code-bg);
+    border: 2px solid var(--code-border);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 14px 34px var(--shadow);
@@ -207,8 +226,8 @@
   .term-bar{
     display:flex; align-items:center; gap:8px;
     padding: 11px 16px;
-    background: linear-gradient(180deg, var(--term-bar), var(--bg-chrome-2));
-    border-bottom: 1px solid var(--term-border);
+    background: var(--code-bar);
+    border-bottom: 1px solid var(--code-border);
   }
   .term-dot{ width:11px; height:11px; border-radius:50%; }
   .term-dot.r{ background:#ff6b5e; }
@@ -218,7 +237,8 @@
     margin-left: 10px;
     font-family: var(--font-mono);
     font-size: 0.95rem;
-    color: var(--term-muted-2);
+    font-weight: 600;
+    color: var(--code-path);
   }
   .term-body{
     padding: 20px 22px 24px;
@@ -226,13 +246,14 @@
     font-size: 1.6rem;
     line-height: 1.75;
     overflow-x: auto;
-    color: var(--term-ink);
+    color: var(--code-ink);
+    font-weight: 500;
   }
-  .term-body .prompt{ color: var(--term-accent-2); }
-  .term-body .cmd{ color: var(--term-ink); }
-  .term-body .out{ color: var(--term-muted); }
-  .term-body .hl{ color: var(--term-accent); }
-  .term-body .comment{ color: var(--term-muted-2); }
+  .term-body .prompt{ color: var(--code-prompt); font-weight: 700; }
+  .term-body .cmd{ color: var(--code-ink); font-weight: 600; }
+  .term-body .out{ color: var(--code-out); }
+  .term-body .hl{ color: var(--code-hl); font-weight: 700; }
+  .term-body .comment{ color: var(--code-comment); font-style: italic; }
   .term-line{ white-space: pre; }
 
   .callout{

@@ -1,7 +1,7 @@
 # Engenharia de Software — UNIFAAT 2026.2
 
 Repositório base da disciplina de Engenharia de Software (ADS, Prof. Luan Tavares).
-Aqui ficam os slides, os briefings e o código visto em aula, na pasta `src/`.
+Aqui ficam os slides, os briefings e o código visto em aula, na pasta `src/`, com uma subpasta por aula.
 
 Linha do tempo das aulas: abra o arquivo `index.html` no navegador.
 
@@ -63,10 +63,10 @@ aqui, porque são dois ambientes isolados, cada um com o seu binário (Aulas 02 
 
 ## Como executar os arquivos Python
 
-1. Dentro do diretório do repositório (`cd unifaat-es-2026`), entre na pasta `src/`:
+1. Dentro do diretório do repositório (`cd unifaat-es-2026`), entre na pasta da aula, dentro de `src/` (por exemplo, a `07`):
 
    ```bash
-   cd src
+   cd src/07
    ```
 
 2. Rode o arquivo passando o nome dele para o `python3`:
@@ -75,13 +75,15 @@ aqui, porque são dois ambientes isolados, cada um com o seu binário (Aulas 02 
    python3 binario.py
    ```
 
-   O resultado aparece direto no terminal. Para rodar outro arquivo, troque só o nome:
+   O resultado aparece direto no terminal. Para rodar outro arquivo da mesma aula, troque só o nome:
 
    ```bash
    python3 estruturas.py
    python3 lacos.py
    python3 merge_sort.py
    ```
+
+   Para as outras aulas, entre na pasta delas (`cd ../08`) e rode os arquivos de lá.
 
 Para ler e alterar o código, abra o projeto no VS Code de dentro do WSL:
 
@@ -91,6 +93,8 @@ code .
 
 ## O que tem em `src/`
 
+### `src/07/`: Introdução ao Python
+
 | Arquivo | Assunto |
 |---|---|
 | `estruturas.py` | Tipos básicos e estruturas nativas: int, float, bool, str, list, tuple, dict e set |
@@ -98,4 +102,13 @@ code .
 | `binario.py` | Conversão decimal → binário (divisão por 2) e binário → decimal |
 | `merge_sort.py` | Ordenação por dividir para conquistar |
 
-O `src/` cresce a cada aula: novos arquivos entram aqui ao longo do semestre.
+### `src/08/`: Paradigma Orientado a Objetos
+
+| Arquivo | Assunto |
+|---|---|
+| `funcoes.py` | Funções: parâmetros, argumentos, retorno e void (procedure) |
+| `classes.py` | Classe, objeto, propriedades, métodos e o `self` |
+| `construtor.py` | O construtor `__init__` e um objeto dentro de outro |
+| `arvore_arquivos.py` | A classe `Item`: uma árvore de pastas e arquivos, cada item com o seu pai |
+
+O `src/` cresce a cada aula: cada aula nova ganha a sua subpasta (`src/09/`, `src/10/`...), até haver um projeto unificado.

@@ -14,9 +14,9 @@
 
 <header>
   <span class="kicker">Raio-X do Código · Aula 07 · Timeline</span>
-  <h1>Introdução ao Python: o src/ da disciplina</h1>
+  <h1>Introdução ao Python: o src/07 da disciplina</h1>
   <p class="meta">
-    <span><i class="fa-solid fa-folder"></i> es-2026/src</span>
+    <span><i class="fa-solid fa-folder"></i> es-2026/src/07</span>
     <span><i class="fa-solid fa-calendar-days"></i> 07/10/2026</span>
     <span><i class="fa-solid fa-wrench"></i> 5 etapas até agora</span>
   </p>
@@ -29,17 +29,18 @@
   <div class="entry">
     <div class="entry-dot">1</div>
     <div class="entry-date">Etapa 1</div>
-    <h2>Criando o <code class="inline">src/</code> na raiz da disciplina</h2>
-    <p class="sub">Um único projeto Python que vai crescer aula a aula, em vez de uma pasta de código por aula.</p>
+    <h2>Criando o <code class="inline">src/07/</code> na raiz da disciplina</h2>
+    <p class="sub">Uma pasta de código por aula dentro do <code class="inline">src/</code>, já que ainda não existe um projeto unificado.</p>
 
     <div class="tree">es-2026/
 ├── .gitignore            <span class="comment">// + __pycache__/ e .venv/</span>
 ├── aula-07-python/       <span class="comment">// briefing, slide, TF e este raio-x</span>
-└── <span class="dir">src/</span>                  <span class="new">← NOVO</span>
-    ├── <span class="new">estruturas.py</span>     <span class="comment">// tipos básicos e estruturas nativas</span>
-    ├── <span class="new">lacos.py</span>          <span class="comment">// for, while, continue, break</span>
-    ├── <span class="new">binario.py</span>        <span class="comment">// decimal ↔ binário</span>
-    └── <span class="new">merge_sort.py</span>     <span class="comment">// dividir para conquistar</span></div>
+└── <span class="dir">src/</span>
+    └── <span class="dir">07/</span>                   <span class="new">← NOVO</span>
+        ├── <span class="new">estruturas.py</span>     <span class="comment">// tipos básicos e estruturas nativas</span>
+        ├── <span class="new">lacos.py</span>          <span class="comment">// for, while, continue, break</span>
+        ├── <span class="new">binario.py</span>        <span class="comment">// decimal ↔ binário</span>
+        └── <span class="new">merge_sort.py</span>     <span class="comment">// dividir para conquistar</span></div>
 
     <div class="diff">
       <div class="diff-head">.gitignore (raiz de es-2026)</div>
@@ -51,8 +52,8 @@
 
     <div class="why">
       <div class="why-card">
-        <h4>Por que na raiz, e não dentro da aula</h4>
-        <p>O <code class="inline">src/</code> é o projeto da disciplina: as próximas aulas (estruturas de dados, orientação a objetos, boas práticas) vão acrescentar arquivos aqui, em vez de recomeçar do zero em cada pasta de aula.</p>
+        <h4>Por que em src/, e não dentro da aula</h4>
+        <p>O <code class="inline">src/</code> é a pasta de código da disciplina: cada aula ganha a sua subpasta (<code class="inline">07/</code>, <code class="inline">08/</code>...), separada do briefing e do slide. Ainda não há um projeto unificado; quando houver, ele nasce a partir dessas pastas.</p>
       </div>
       <div class="why-card">
         <h4>Por que ainda não tem venv</h4>
@@ -73,7 +74,7 @@
     <p class="sub">int, float, bool, str, list, tuple, dict e set, um bloco de cada, na ordem da aula.</p>
 
     <div class="diff">
-      <div class="diff-head">src/estruturas.py (arquivo novo)</div>
+      <div class="diff-head">src/07/estruturas.py (arquivo novo)</div>
       <div class="line add">+ # Tipos básicos e estruturas de dados nativas do Python.</div>
       <div class="line add">+ # Rodar no terminal: python3 estruturas.py</div>
       <div class="line ctx"></div>
@@ -164,7 +165,7 @@
     <p class="sub">Os laços que a outra disciplina já apresentou, agora com o olhar de algoritmo e sem else.</p>
 
     <div class="diff">
-      <div class="diff-head">src/lacos.py (arquivo novo)</div>
+      <div class="diff-head">src/07/lacos.py (arquivo novo)</div>
       <div class="line add">+ # Laços de repetição: for, while, continue e break.</div>
       <div class="line add">+ # Rodar no terminal: python3 lacos.py</div>
       <div class="line ctx"></div>
@@ -259,7 +260,7 @@
     <p class="sub">A divisão sucessiva por 2 do quadro, em código — e o caminho de volta.</p>
 
     <div class="diff">
-      <div class="diff-head">src/binario.py (arquivo novo)</div>
+      <div class="diff-head">src/07/binario.py (arquivo novo)</div>
       <div class="line add">+ # Conversão decimal -&gt; binário e binário -&gt; decimal.</div>
       <div class="line add">+ # Rodar no terminal: python3 binario.py</div>
       <div class="line ctx"></div>
@@ -338,7 +339,7 @@
     <p class="sub">Divide a lista por 2 até sobrar um item e intercala as metades de volta, sempre em ordem.</p>
 
     <div class="diff">
-      <div class="diff-head">src/merge_sort.py (arquivo novo)</div>
+      <div class="diff-head">src/07/merge_sort.py (arquivo novo)</div>
       <div class="line add">+ # Merge sort: ordenação por &quot;dividir para conquistar&quot;.</div>
       <div class="line add">+ # Rodar no terminal: python3 merge_sort.py</div>
       <div class="line add">+ #</div>

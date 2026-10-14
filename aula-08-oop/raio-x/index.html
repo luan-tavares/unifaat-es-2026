@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Código — Aula 08</title>
+<link rel="stylesheet" href="../../assets/raio-x.css">
+<script src="../../assets/tema.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="topbar"><a class="back" href="../../index.html">← Voltar</a></nav>
+
+<header>
+  <span class="kicker">Raio-X do Código · Aula 08 · Timeline</span>
+  <h1>Paradigma Orientado a Objetos: o src/08 da disciplina</h1>
+  <p class="meta">
+    <span><i class="fa-solid fa-folder"></i> es-2026/src/08</span>
+    <span><i class="fa-solid fa-calendar-days"></i> 14/10/2026</span>
+    <span><i class="fa-solid fa-wrench"></i> 4 etapas até agora</span>
+  </p>
+</header>
+
+<main>
+<div class="timeline">
+
+  <!-- ETAPA 1 -->
+  <div class="entry">
+    <div class="entry-dot">1</div>
+    <div class="entry-date">Etapa 1</div>
+    <h2><code class="inline">funcoes.py</code>: entrada, saída e void</h2>
+    <p class="sub">Um tópico só sobre funções, antes de colocar funções dentro de classes. O código da aula fica em src/08/, separado do src/07/ (ainda não há projeto unificado).</p>
+
+    <div class="tree">es-2026/
+├── aula-08-oop/          <span class="comment">// briefing, slide e este raio-x</span>
+└── <span class="dir">src/</span>
+    ├── <span class="dir">07/</span>                <span class="comment">// estruturas, lacos, binario, merge_sort (aula 07)</span>
+    └── <span class="dir">08/</span>                <span class="new">← NOVO: uma pasta por aula</span>
+        ├── <span class="new">funcoes.py</span>         <span class="comment">// entrada, saída e void</span>
+        ├── <span class="new">classes.py</span>         <span class="comment">// molde, objeto, propriedades, métodos e self</span>
+        ├── <span class="new">construtor.py</span>      <span class="comment">// __init__ e objeto dentro de objeto</span>
+        └── <span class="new">arvore_arquivos.py</span> <span class="comment">// a classe Item: pasta ou arquivo</span></div>
+
+    <div class="diff">
+      <div class="diff-head">src/08/funcoes.py (arquivo novo)</div>
+      <div class="line add">+ # Funções: entrada (parâmetros), processamento e saída (return).</div>
+      <div class="line add">+ # Rodar no terminal: python3 funcoes.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ #   entrada (parâmetros) -&gt; [ corpo da função ] -&gt; saída (return)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Parâmetro e argumento ---------------------------------------------------</div>
+      <div class="line add">+ # PARÂMETRO é o nome que a função declara para receber um valor.</div>
+      <div class="line add">+ # ARGUMENTO é o valor de verdade, passado na hora de chamar.</div>
+      <div class="line add">+ def calcular_media(primeira_nota, segunda_nota):</div>
+      <div class="line add">+     soma = primeira_nota + segunda_nota</div>
+      <div class="line add">+     media = soma / 2</div>
+      <div class="line add">+     return media    # a SAÍDA: devolve o valor para quem chamou</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # 8 e 6 são os argumentos: entram em primeira_nota e segunda_nota.</div>
+      <div class="line add">+ resultado = calcular_media(8, 6)</div>
+      <div class="line add">+ print(resultado)    # 7.0</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Os argumentos também podem ser variáveis, e a ordem importa.</div>
+      <div class="line add">+ nota_a = 9</div>
+      <div class="line add">+ nota_b = 5</div>
+      <div class="line add">+ print(calcular_media(nota_a, nota_b))   # 7.0</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- return x print ----------------------------------------------------------</div>
+      <div class="line add">+ # print só MOSTRA na tela; quem chamou não recebe nada.</div>
+      <div class="line add">+ # return DEVOLVE o valor: dá para guardar numa variável e usar depois.</div>
+      <div class="line add">+ def media_que_so_mostra(primeira_nota, segunda_nota):</div>
+      <div class="line add">+     print((primeira_nota + segunda_nota) / 2)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ valor = media_que_so_mostra(8, 6)   # mostra 7.0 na tela</div>
+      <div class="line add">+ print(valor)                        # None: a função não devolveu nada</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Sem return: o &quot;void&quot; (procedure) ----------------------------------------</div>
+      <div class="line add">+ # Em C, uma função que não devolve nada é void. Em Python, uma função sem</div>
+      <div class="line add">+ # return devolve None, o valor que representa &quot;nada&quot;.</div>
+      <div class="line add">+ # Uma função que só FAZ alguma coisa (mostrar, gravar, enviar) e não devolve</div>
+      <div class="line add">+ # resultado é chamada de procedimento (procedure).</div>
+      <div class="line add">+ def mostrar_boletim(nome, media):</div>
+      <div class="line add">+     print(&quot;Aluno:&quot;, nome, &quot;| Média:&quot;, media)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ mostrar_boletim(&quot;Ana&quot;, 7.0)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Sem parâmetros ----------------------------------------------------------</div>
+      <div class="line add">+ # A entrada é opcional: a função pode não receber nada.</div>
+      <div class="line add">+ def mostrar_cabecalho():</div>
+      <div class="line add">+     print(&quot;=== UNIFAAT 2026.2 ===&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ mostrar_cabecalho()</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Valor padrão ------------------------------------------------------------</div>
+      <div class="line add">+ # Se o argumento não for passado, o parâmetro assume o valor padrão.</div>
+      <div class="line add">+ def aprovado(media, media_minima=7):</div>
+      <div class="line add">+     return media &gt;= media_minima</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(aprovado(8))      # True  (usou a média mínima 7)</div>
+      <div class="line add">+ print(aprovado(6))      # False</div>
+      <div class="line add">+ print(aprovado(6, 5))   # True  (a média mínima passou a ser 5)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Mais de um retorno ------------------------------------------------------</div>
+      <div class="line add">+ # Python devolve uma tupla (Aula 07), e dá para desempacotar na chamada.</div>
+      <div class="line add">+ def menor_e_maior(valores):</div>
+      <div class="line add">+     menor = valores[0]</div>
+      <div class="line add">+     maior = valores[0]</div>
+      <div class="line add">+     for valor in valores:</div>
+      <div class="line add">+         if valor &lt; menor:</div>
+      <div class="line add">+             menor = valor</div>
+      <div class="line add">+         if valor &gt; maior:</div>
+      <div class="line add">+             maior = valor</div>
+      <div class="line add">+     return menor, maior</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ minimo, maximo = menor_e_maior([7, 3, 9, 1, 5])</div>
+      <div class="line add">+ print(minimo, maximo)   # 1 9</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Retorno antecipado ------------------------------------------------------</div>
+      <div class="line add">+ # O return encerra a função na hora: cada condição resolve o seu caso e sai.</div>
+      <div class="line add">+ def situacao(media):</div>
+      <div class="line add">+     if media &gt;= 7:</div>
+      <div class="line add">+         return &quot;Aprovado&quot;</div>
+      <div class="line add">+     if media &gt;= 5:</div>
+      <div class="line add">+         return &quot;Recuperação&quot;</div>
+      <div class="line add">+     return &quot;Reprovado&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(situacao(calcular_media(8, 6)))   # Aprovado</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Parâmetro × argumento</h4>
+        <p>Parâmetro é o nome na declaração (<code class="inline">primeira_nota</code>); argumento é o valor passado na chamada (<code class="inline">calcular_media(8, 6)</code>). A ordem importa.</p>
+      </div>
+      <div class="why-card">
+        <h4>return × print</h4>
+        <p><code class="inline">return</code> devolve o valor e encerra a função; <code class="inline">print</code> só mostra na tela. Por isso <code class="inline">print(valor)</code> imprime <code class="inline">None</code>: a função não devolveu nada.</p>
+      </div>
+      <div class="why-card">
+        <h4>void é procedure</h4>
+        <p>Em C, sem retorno é <code class="inline">void</code>. Em Python não existe a palavra: função sem <code class="inline">return</code> devolve <code class="inline">None</code>. Função que só faz algo (mostrar, gravar) é um procedimento.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 funcoes.py</div>
+      <div class="line ctx">7.0</div>
+      <div class="line ctx">7.0</div>
+      <div class="line ctx">7.0</div>
+      <div class="line ctx">None</div>
+      <div class="line ctx">Aluno: Ana | Média: 7.0</div>
+      <div class="line ctx">=== UNIFAAT 2026.2 ===</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">False</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">1 9</div>
+      <div class="line ctx">Aprovado</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 2 -->
+  <div class="entry">
+    <div class="entry-dot">2</div>
+    <div class="entry-date">Etapa 2</div>
+    <h2><code class="inline">classes.py</code>: molde, objeto e self</h2>
+    <p class="sub">A classe Aluno, dois objetos criados do mesmo molde e o self separando os dados de cada um.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/08/classes.py (arquivo novo)</div>
+      <div class="line add">+ # Classe e objeto: propriedades, métodos e o self.</div>
+      <div class="line add">+ # Rodar no terminal: python3 classes.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # A CLASSE é o molde: descreve quais propriedades e métodos o dado terá.</div>
+      <div class="line add">+ # O OBJETO é o dado criado a partir do molde.</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Em C, a struct só agrupa propriedades. Na classe, o mesmo bloco agrupa</div>
+      <div class="line add">+ # também as funções que trabalham com essas propriedades: os MÉTODOS.</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Aluno:</div>
+      <div class="line add">+     # Método: uma função declarada dentro da classe.</div>
+      <div class="line add">+     # O primeiro parâmetro é sempre o self: o próprio objeto que está</div>
+      <div class="line add">+     # chamando o método. É por ele que o método sabe de QUEM é a nota.</div>
+      <div class="line add">+     def adicionar_nota(self, nota):</div>
+      <div class="line add">+         self.notas.append(nota)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def calcular_media(self):</div>
+      <div class="line add">+         soma = 0</div>
+      <div class="line add">+         for nota in self.notas:</div>
+      <div class="line add">+             soma = soma + nota</div>
+      <div class="line add">+         return soma / len(self.notas)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def situacao(self):</div>
+      <div class="line add">+         media = self.calcular_media()</div>
+      <div class="line add">+         if media &gt;= 7:</div>
+      <div class="line add">+             return &quot;Aprovado&quot;</div>
+      <div class="line add">+         if media &gt;= 5:</div>
+      <div class="line add">+             return &quot;Recuperação&quot;</div>
+      <div class="line add">+         return &quot;Reprovado&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Criando objetos a partir do molde ---------------------------------------</div>
+      <div class="line add">+ # Aluno() cria um objeto novo, vazio. Cada chamada cria um objeto diferente.</div>
+      <div class="line add">+ ana = Aluno()</div>
+      <div class="line add">+ bruno = Aluno()</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Propriedade: um dado que pertence ao objeto. Pode ser de qualquer tipo.</div>
+      <div class="line add">+ # Aqui criamos as propriedades uma a uma, depois que o objeto já existe.</div>
+      <div class="line add">+ ana.nome = &quot;Ana&quot;            # str</div>
+      <div class="line add">+ ana.ra = 1234               # int</div>
+      <div class="line add">+ ana.notas = []              # list</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ bruno.nome = &quot;Bruno&quot;</div>
+      <div class="line add">+ bruno.ra = 5678</div>
+      <div class="line add">+ bruno.notas = []</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Chamando métodos --------------------------------------------------------</div>
+      <div class="line add">+ # Em ana.adicionar_nota(8), o Python passa a ana como self automaticamente.</div>
+      <div class="line add">+ # Dentro do método, self.notas é a lista da ana, e não a do bruno.</div>
+      <div class="line add">+ ana.adicionar_nota(8)</div>
+      <div class="line add">+ ana.adicionar_nota(9)</div>
+      <div class="line add">+ bruno.adicionar_nota(4)</div>
+      <div class="line add">+ bruno.adicionar_nota(6)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(ana.nome, ana.calcular_media(), ana.situacao())       # Ana 8.5 Aprovado</div>
+      <div class="line add">+ print(bruno.nome, bruno.calcular_media(), bruno.situacao()) # Bruno 5.0 Recuperação</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Mesmo molde, objetos independentes --------------------------------------</div>
+      <div class="line add">+ # Mudar um objeto não mexe no outro: cada um guarda os seus próprios dados.</div>
+      <div class="line add">+ print(ana.notas)    # [8, 9]</div>
+      <div class="line add">+ print(bruno.notas)  # [4, 6]</div>
+      <div class="line add">+ print(ana is bruno) # False: são dois objetos diferentes</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Problema deste jeito: se esquecermos de criar a propriedade notas,</div>
+      <div class="line add">+ # o adicionar_nota quebra com AttributeError. O molde deveria garantir que</div>
+      <div class="line add">+ # todo objeto já nasça com as propriedades certas. Isso é o construtor.</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Classe é o molde, objeto é o dado</h4>
+        <p><code class="inline">Aluno</code> descreve como o aluno vai ser. <code class="inline">ana</code> e <code class="inline">bruno</code> são dois objetos diferentes, criados a partir do mesmo molde (<code class="inline">ana is bruno</code> dá <code class="inline">False</code>).</p>
+      </div>
+      <div class="why-card">
+        <h4>Propriedade e método</h4>
+        <p>Propriedade é o que o objeto <strong>tem</strong> (<code class="inline">nome</code>, <code class="inline">ra</code>, <code class="inline">notas</code>: texto, número e lista). Método é o que ele <strong>faz</strong>: uma função declarada dentro da classe.</p>
+      </div>
+      <div class="why-card">
+        <h4>O self</h4>
+        <p>Em <code class="inline">ana.adicionar_nota(8)</code>, o Python entrega a <code class="inline">ana</code> ao parâmetro <code class="inline">self</code>. Dentro do método, <code class="inline">self.notas</code> é a lista da Ana, não a do Bruno: o mesmo código serve a todos os objetos sem perder o dono de cada dado.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 classes.py</div>
+      <div class="line ctx">Ana 8.5 Aprovado</div>
+      <div class="line ctx">Bruno 5.0 Recuperação</div>
+      <div class="line ctx">[8, 9]</div>
+      <div class="line ctx">[4, 6]</div>
+      <div class="line ctx">False</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 3 -->
+  <div class="entry">
+    <div class="entry-dot">3</div>
+    <div class="entry-date">Etapa 3</div>
+    <h2><code class="inline">construtor.py</code>: __init__ e objeto dentro de objeto</h2>
+    <p class="sub">O construtor faz o objeto nascer completo, e a propriedade pode guardar outro objeto.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/08/construtor.py (arquivo novo)</div>
+      <div class="line add">+ # Construtor: __init__ e objeto dentro de outro objeto.</div>
+      <div class="line add">+ # Rodar no terminal: python3 construtor.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- __init__: o construtor --------------------------------------------------</div>
+      <div class="line add">+ # O __init__ é um método especial, chamado automaticamente no instante em que</div>
+      <div class="line add">+ # o objeto é criado. Os argumentos passados em Aluno(...) chegam nele.</div>
+      <div class="line add">+ # Serve para o objeto já nascer com as suas propriedades preenchidas.</div>
+      <div class="line add">+ class Aluno:</div>
+      <div class="line add">+     def __init__(self, nome, ra):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line add">+         self.ra = ra</div>
+      <div class="line add">+         self.notas = []     # toda lista começa vazia, uma para cada objeto</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def adicionar_nota(self, nota):</div>
+      <div class="line add">+         self.notas.append(nota)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def calcular_media(self):</div>
+      <div class="line add">+         soma = 0</div>
+      <div class="line add">+         for nota in self.notas:</div>
+      <div class="line add">+             soma = soma + nota</div>
+      <div class="line add">+         return soma / len(self.notas)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Antes: Aluno() e depois ana.nome = &quot;Ana&quot;, ana.ra = 1234, ana.notas = [].</div>
+      <div class="line add">+ # Agora: uma linha só, e nenhuma propriedade fica faltando.</div>
+      <div class="line add">+ ana = Aluno(&quot;Ana&quot;, 1234)</div>
+      <div class="line add">+ ana.adicionar_nota(8)</div>
+      <div class="line add">+ ana.adicionar_nota(9)</div>
+      <div class="line add">+ print(ana.nome, ana.calcular_media())   # Ana 8.5</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Um objeto dentro de outro objeto ----------------------------------------</div>
+      <div class="line add">+ # A propriedade pode ser qualquer tipo de dado, inclusive OUTRO OBJETO.</div>
+      <div class="line add">+ # O construtor recebe o objeto pronto (injeção) e guarda numa propriedade.</div>
+      <div class="line add">+ class Turma:</div>
+      <div class="line add">+     def __init__(self, nome, professor):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line add">+         self.professor = professor      # outro objeto, criado fora</div>
+      <div class="line add">+         self.alunos = []</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def matricular(self, aluno):</div>
+      <div class="line add">+         self.alunos.append(aluno)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Professor:</div>
+      <div class="line add">+     def __init__(self, nome):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ luan = Professor(&quot;Luan&quot;)</div>
+      <div class="line add">+ turma = Turma(&quot;ADS 2º semestre&quot;, luan)</div>
+      <div class="line add">+ turma.matricular(ana)</div>
+      <div class="line add">+ print(turma.professor.nome)         # Luan</div>
+      <div class="line add">+ print(turma.alunos[0].nome)         # Ana</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Uma linha em vez de cinco</h4>
+        <p>Sem construtor eram <code class="inline">Aluno()</code>, <code class="inline">ana.nome = ...</code>, <code class="inline">ana.ra = ...</code> e <code class="inline">ana.notas = []</code>. Com <code class="inline">__init__</code>, o objeto já nasce com todas as propriedades e nenhuma fica faltando.</p>
+      </div>
+      <div class="why-card">
+        <h4>Objeto dentro de objeto</h4>
+        <p>A propriedade pode ser qualquer tipo, até outro objeto. <code class="inline">Turma</code> recebe o <code class="inline">Professor</code> pronto e guarda uma referência: ela não copia o professor.</p>
+      </div>
+      <div class="why-card">
+        <h4>Por que injetar</h4>
+        <p>Receber o objeto pronto, em vez de criá-lo dentro da classe, deixa a <code class="inline">Turma</code> funcionar com qualquer <code class="inline">Professor</code>. Essa mesma ideia, passar o objeto pai ao construtor, é o que a árvore usa na próxima etapa.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 construtor.py</div>
+      <div class="line ctx">Ana 8.5</div>
+      <div class="line ctx">Luan</div>
+      <div class="line ctx">Ana</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 4 -->
+  <div class="entry">
+    <div class="entry-dot">4</div>
+    <div class="entry-date">Etapa 4</div>
+    <h2><code class="inline">arvore_arquivos.py</code>: a árvore de arquivos</h2>
+    <p class="sub">Uma única classe, Item, que vira pasta ou arquivo, e recebe o pai no construtor.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/08/arvore_arquivos.py (arquivo novo)</div>
+      <div class="line add">+ # Árvore de arquivos: cada item conhece o seu pai.</div>
+      <div class="line add">+ # Rodar no terminal: python3 arvore_arquivos.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Uma pasta contém arquivos e outras pastas; cada item (menos a raiz) tem</div>
+      <div class="line add">+ # exatamente uma pasta pai. Esse encadeamento forma uma árvore, a mesma</div>
+      <div class="line add">+ # estrutura que o terminal mostra com o comando tree (Aula 01).</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Item:</div>
+      <div class="line add">+     # pai é um OBJETO Item (a pasta onde este item está) ou None (a raiz).</div>
+      <div class="line add">+     def __init__(self, nome, eh_pasta, pai=None):</div>
+      <div class="line add">+         # Só pasta pode conter itens: recusa já na criação.</div>
+      <div class="line add">+         if pai is not None and not pai.eh_pasta:</div>
+      <div class="line add">+             raise ValueError(pai.nome + &quot; é um arquivo, não pode conter itens&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line add">+         self.eh_pasta = eh_pasta</div>
+      <div class="line add">+         self.pai = pai</div>
+      <div class="line add">+         self.filhos = []    # um item só tem filhos se for pasta</div>
+      <div class="line ctx"></div>
+      <div class="line add">+         # O item novo se cadastra na lista de filhos do pai.</div>
+      <div class="line add">+         if pai is not None:</div>
+      <div class="line add">+             pai.filhos.append(self)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # Sobe de pai em pai até a raiz, montando o caminho: igual ao pwd.</div>
+      <div class="line add">+     def caminho(self):</div>
+      <div class="line add">+         if self.pai is None:</div>
+      <div class="line add">+             return &quot;/&quot; + self.nome</div>
+      <div class="line add">+         return self.pai.caminho() + &quot;/&quot; + self.nome</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # Quantos pais existem acima deste item. A raiz tem profundidade 0.</div>
+      <div class="line add">+     def profundidade(self):</div>
+      <div class="line add">+         if self.pai is None:</div>
+      <div class="line add">+             return 0</div>
+      <div class="line add">+         return self.pai.profundidade() + 1</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # Mostra o item e, recursivamente, todos os filhos, recuando 4 espaços</div>
+      <div class="line add">+     # por nível de profundidade.</div>
+      <div class="line add">+     def mostrar(self):</div>
+      <div class="line add">+         recuo = &quot;    &quot; * self.profundidade()</div>
+      <div class="line add">+         sufixo = &quot;&quot;</div>
+      <div class="line add">+         if self.eh_pasta:</div>
+      <div class="line add">+             sufixo = &quot;/&quot;</div>
+      <div class="line add">+         print(recuo + self.nome + sufixo)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+         for filho in self.filhos:</div>
+      <div class="line add">+             filho.mostrar()</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Montando a árvore -------------------------------------------------------</div>
+      <div class="line add">+ # Primeiro o pai, depois os filhos: o pai precisa existir para ser injetado.</div>
+      <div class="line add">+ raiz = Item(&quot;var&quot;, True)</div>
+      <div class="line add">+ www = Item(&quot;www&quot;, True, raiz)</div>
+      <div class="line add">+ unifaat = Item(&quot;unifaat&quot;, True, www)</div>
+      <div class="line add">+ src = Item(&quot;src&quot;, True, unifaat)</div>
+      <div class="line add">+ leia_me = Item(&quot;README.md&quot;, False, unifaat)</div>
+      <div class="line add">+ funcoes = Item(&quot;funcoes.py&quot;, False, src)</div>
+      <div class="line add">+ classes = Item(&quot;classes.py&quot;, False, src)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ raiz.mostrar()</div>
+      <div class="line add">+ # var/</div>
+      <div class="line add">+ #     www/</div>
+      <div class="line add">+ #         unifaat/</div>
+      <div class="line add">+ #             src/</div>
+      <div class="line add">+ #                 funcoes.py</div>
+      <div class="line add">+ #                 classes.py</div>
+      <div class="line add">+ #             README.md</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(funcoes.caminho())        # /var/www/unifaat/src/funcoes.py</div>
+      <div class="line add">+ print(funcoes.profundidade())   # 4</div>
+      <div class="line add">+ print(len(src.filhos))          # 2</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Arquivo não aceita filhos: o construtor recusa com ValueError.</div>
+      <div class="line add">+ try:</div>
+      <div class="line add">+     Item(&quot;intruso&quot;, False, funcoes)</div>
+      <div class="line add">+ except ValueError as erro:</div>
+      <div class="line add">+     print(erro)     # funcoes.py é um arquivo, não pode conter itens</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Pai injetado, filhos cadastrados</h4>
+        <p><code class="inline">__init__</code> recebe o objeto pai. Se ele existe, o item novo se cadastra em <code class="inline">pai.filhos</code>, usando o <code class="inline">self</code> para entregar a si mesmo. O pai precisa existir antes do filho.</p>
+      </div>
+      <div class="why-card">
+        <h4>Recursão subindo pelos pais</h4>
+        <p><code class="inline">caminho()</code> e <code class="inline">profundidade()</code> pedem a resposta ao pai e somam. A raiz (<code class="inline">pai is None</code>) é o caso base. É a recursão da Aula 07 e o <code class="inline">pwd</code> da Aula 01, feitos com objetos.</p>
+      </div>
+      <div class="why-card">
+        <h4>Sem else</h4>
+        <p>Cada método trata a raiz com <code class="inline">return</code> antecipado e deixa o caso geral para o final. O <code class="inline">if</code> do construtor também só age quando há pai.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 arvore_arquivos.py</div>
+      <div class="line ctx">var/</div>
+      <div class="line ctx">    www/</div>
+      <div class="line ctx">        unifaat/</div>
+      <div class="line ctx">            src/</div>
+      <div class="line ctx">                funcoes.py</div>
+      <div class="line ctx">                classes.py</div>
+      <div class="line ctx">            README.md</div>
+      <div class="line ctx">/var/www/unifaat/src/funcoes.py</div>
+      <div class="line ctx">4</div>
+      <div class="line ctx">2</div>
+      <div class="line ctx">funcoes.py é um arquivo, não pode conter itens</div>
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer>
+  Aula 08 — Paradigma Orientado a Objetos · Engenharia de Software 2026.2 · Raio-X do Código (timeline viva — novas etapas entram aqui embaixo)
+</footer>
+
+<script src="../../assets/raio-x.js"></script>
+</body>
+</html>

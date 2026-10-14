@@ -165,6 +165,33 @@
     <code>str</code> não sabem nada sobre alunos; o objeto sabe.</p>
   </section>
 
+  <section class="slide" data-eyebrow="orientação a objetos · filosofia">
+    <h2>Orientar a objetos é <span class="accent">mais que classe e objeto</span></h2>
+    <p class="lede">Classe e objeto são a <strong>ferramenta</strong>. Saber usar a
+    ferramenta não basta: orientação a objetos é uma <strong>filosofia</strong> de
+    organizar o código.</p>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># a ferramenta (a sintaxe)</span><br>
+      classe e objeto<br>
+      propriedades e métodos<br>
+      self e construtor<br>
+      <span class="dim">é o que vemos hoje</span>
+    </div>
+    <div class="tree">
+      <span class="dim"># a filosofia (os pilares)</span><br>
+      <strong>abstração</strong><br>
+      <strong>encapsulamento</strong><br>
+      <strong>herança</strong><br>
+      <strong>polimorfismo</strong><br>
+      <span class="dim">são 3 ou 4? o que cada nome seria?</span>
+    </div>
+    </div>
+    <p class="payoff">Escrever uma classe não é orientar a objetos, do mesmo jeito
+    que saber usar o martelo não é saber construir uma casa. Os pilares ficam
+    pra <strong>próxima aula</strong>.</p>
+  </section>
+
   <section class="slide" data-eyebrow="classe e objeto">
     <h2>Onde nasce o objeto: <span class="accent">a classe</span></h2>
     <div class="two-col">
@@ -411,51 +438,16 @@
     <p class="payoff">Cada linha cria um objeto e injeta o pai no construtor.</p>
   </section>
 
-  <section class="slide" data-eyebrow="árvore · caminho">
-    <h2>Caminho: <span class="accent">subir de pai em pai</span></h2>
-    <div class="two-col">
-    <div class="term">
-      <div class="term-bar">
-        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
-        <span class="term-path">src/08/arvore_arquivos.py</span>
-      </div>
-      <div class="term-body">
-        <div class="term-line"><span class="cmd">def caminho(self):</span></div>
-        <div class="term-line"><span class="cmd">    if self.pai is None:</span>  <span class="out"># raiz: caso base</span></div>
-        <div class="term-line"><span class="cmd">        return self.nome</span></div>
-        <div class="term-line"><span class="cmd">    return </span><span class="hl">self.pai.caminho()</span><span class="cmd"> + "/" + self.nome</span></div>
-      </div>
-    </div>
-    <div class="tree">
-      <span class="dim"># tf.caminho()</span><br>
-      pergunta ao pai → trabalhos.caminho()<br>
-      &nbsp;&nbsp;pergunta ao pai → desktop.caminho()<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;pergunta ao pai → usuarios.caminho()<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disco.caminho() → <strong>&quot;C:&quot;</strong><br>
-      <span class="dim"># e a resposta volta somando:</span><br>
-      <strong>C:/Users/Desktop/Trabalhos/tf-08.py</strong>
-    </div>
-    </div>
-    <p class="payoff">A recursão da Aula 07, agora subindo pelos pais: o caminho
-    da barra de endereço do Explorador, feito com objetos.</p>
-  </section>
-
-  <section class="slide" data-eyebrow="fechamento">
-    <h2>O que <span class="accent">levamos</span></h2>
+  <section class="slide" data-eyebrow="tf 08 · próximos passos">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 08: <span class="accent">a definir</span></h2>
+    <p class="body-text">O enunciado, o prazo e o formulário de entrega serão
+    divulgados em breve.</p>
+    <h2>Próximos <span class="accent">passos</span></h2>
     <ul class="points">
-      <li><strong>Função:</strong> parâmetro recebe, argumento é o valor, <code>return</code> devolve; sem retorno é <code>None</code></li>
-      <li><strong>Objeto</strong> é uma coisa do problema: dados e comportamento juntos. <strong>Classe</strong> é o molde que cria objetos, como a <code>struct</code> do C, mas com funções</li>
-      <li><strong>Propriedades</strong> são o que o objeto tem (qualquer tipo); <strong>métodos</strong>, o que ele faz</li>
-      <li><strong>self</strong> mantém a referência de qual objeto é dono de cada dado</li>
-      <li><strong>__init__</strong> faz o objeto nascer completo</li>
-      <li>Um objeto pode guardar outro: é assim que a <strong>árvore</strong> se monta</li>
+      <li>A <strong>filosofia</strong> de orientar a objetos: os pilares</li>
+      <li>Usar <strong>objetos para montar estruturas de dados</strong>: a árvore de arquivos foi só o começo</li>
     </ul>
-    <p class="body-text">O código desta aula está em <code>src/08/</code> no
-    repositório base da disciplina (cada aula tem a sua pasta, <code>src/07/</code>,
-    <code>src/08/</code>...):
-    <a href="https://github.com/luan-tavares/unifaat-es-2026" target="_blank" rel="noopener noreferrer"><code>https://github.com/luan-tavares/unifaat-es-2026</code></a></p>
-    <p class="payoff">Próximos passos: os pilares da orientação a objetos
-    (Aula 10) e, com a ferramenta pronta, as estruturas de dados (Aula 09).</p>
   </section>
 
 </div>

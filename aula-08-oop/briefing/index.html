@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Briefing · Aula 08 — Paradigma Orientado a Objetos</title>
+<link rel="stylesheet" href="../../assets/briefing.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="back" href="../../index.html">← Voltar</a>
+    <details class="toc" open><summary>Nesta página</summary><ol><li class="l1"><a href="#topo">08 - Paradigma Orientado a Objetos</a></li><li class="l2"><a href="#s1-introdução">1 - Introdução</a></li><li class="l2"><a href="#s2-funções-entrada-e-saída">2 - Funções: entrada e saída</a></li><li class="l3"><a href="#s2-1-parâmetros-e-argumentos">2.1 - Parâmetros e argumentos</a></li><li class="l3"><a href="#s2-2-retorno-return-não-é-print">2.2 - Retorno: return não é print</a></li><li class="l3"><a href="#s2-3-sem-retorno-o-void-e-o-procedure">2.3 - Sem retorno: o void e o procedure</a></li><li class="l3"><a href="#s2-4-valor-padrão-e-mais-de-um-retorno">2.4 - Valor padrão e mais de um retorno</a></li><li class="l2"><a href="#s3-da-struct-ao-objeto">3 - Da struct ao objeto</a></li><li class="l3"><a href="#s3-1-o-que-é-um-objeto">3.1 - O que é um objeto</a></li><li class="l3"><a href="#s3-2-o-molde-a-classe">3.2 - O molde: a classe</a></li><li class="l3"><a href="#s3-3-do-molde-ao-objeto">3.3 - Do molde ao objeto</a></li><li class="l3"><a href="#s3-4-propriedades-e-métodos">3.4 - Propriedades e métodos</a></li><li class="l3"><a href="#s3-5-o-self-o-objeto-apontando-para-si-mesmo">3.5 - O self: o objeto apontando para si mesmo</a></li><li class="l2"><a href="#s4-o-construtor">4 - O construtor</a></li><li class="l3"><a href="#s4-1-o-__init__">4.1 - O `__init__`</a></li><li class="l3"><a href="#s4-2-um-objeto-dentro-de-outro">4.2 - Um objeto dentro de outro</a></li><li class="l2"><a href="#s5-árvore-de-arquivos">5 - Árvore de arquivos</a></li><li class="l3"><a href="#s5-1-o-problema">5.1 - O problema</a></li><li class="l3"><a href="#s5-2-a-classe-item">5.2 - A classe Item</a></li><li class="l3"><a href="#s5-3-caminho-profundidade-e-recursão">5.3 - Caminho, profundidade e recursão</a></li><li class="l3"><a href="#s5-4-montando-a-árvore">5.4 - Montando a árvore</a></li><li class="l2"><a href="#s6-conclusão">6 - Conclusão</a></li><li class="l2"><a href="#s7-referências">7 - Referências</a></li><li class="l2"><a href="#questoes">Questões do TA</a></li></ol></details>
+  </aside>
+  <main class="doc">
+    <header class="cover" id="topo">
+      <p class="eyebrow">UNIFAAT · 2026.2 · Briefing para produção de conteúdo</p>
+      <h1><span class="cn">08</span> - Paradigma Orientado a Objetos</h1>
+      <dl class="ficha">
+        <div><dt>Professor</dt><dd>Luan Tavares Lourenço</dd></div>
+        <div><dt>Disciplina</dt><dd>Engenharia de Software</dd></div>
+        <div><dt>Aula</dt><dd>08</dd></div>
+        <div><dt>Opção do TA</dt><dd>Texto</dd></div>
+      </dl>
+    </header>
+<h2 id="s1-introdução"><span class="hn">1</span>Introdução</h2>
+<p>Na Aula 07, o Python entrou no curso como ferramenta, e os algoritmos viraram código: a conversão de decimal para binário e a ordenação com merge sort e quick sort. Todo esse código usou só o que a linguagem já traz pronto: números, textos, listas, tuplas e dicionários. A pergunta desta aula é: <strong>o que fazer quando o dado que o programa precisa não existe pronto?</strong></p>
+<p>Um sistema de verdade não trabalha só com números e textos. Ele trabalha com alunos, pedidos, arquivos, pastas — dados com vários campos e com comportamento próprio. Para criar esse tipo de dado, é preciso poder <strong>desenhar o molde</strong> dele. Esse molde é a <strong>classe</strong>, e o dado criado a partir dele é o <strong>objeto</strong>. O paradigma que organiza o código em torno de objetos se chama <strong>orientação a objetos</strong> (OOP, de <em>Object-Oriented Programming</em>).</p>
+<p>Há também uma razão de planejamento. A ordem original do curso previa estruturas de dados antes da orientação a objetos, mas elas dependem dela: uma árvore, por exemplo, é feita de pedaços que apontam uns para os outros, e cada pedaço é um objeto. Por isso, <strong>a orientação a objetos vem primeiro</strong> e as estruturas de dados vêm logo depois, já com a ferramenta pronta.</p>
+<p>Esta aula se divide em quatro partes. A primeira é um tópico só sobre <strong>funções</strong>: entrada, saída e o que acontece quando não há retorno. A segunda apresenta o <strong>objeto</strong>, a <strong>classe</strong>, as <strong>propriedades</strong>, os <strong>métodos</strong> e o <strong>self</strong>. A terceira explica o <strong>construtor</strong> (<code>__init__</code>) e como um objeto pode guardar outro. A quarta junta tudo numa classe que simula uma <strong>árvore de arquivos</strong>, em que cada item recebe o seu pai no construtor.</p>
+<p>Os quatro pilares da orientação a objetos (abstração, encapsulamento, herança e polimorfismo) ficam para as próximas aulas. Aqui o foco é se acostumar com o Python e com a estrutura de uma classe.</p>
+<h2 id="s2-funções-entrada-e-saída"><span class="hn">2</span>Funções: entrada e saída</h2>
+<h3 id="s2-1-parâmetros-e-argumentos"><span class="hn">2.1</span>Parâmetros e argumentos</h3>
+<p>Uma função é um bloco de código com nome. Pense nela como uma máquina com <strong>entrada</strong> e <strong>saída</strong>: os valores entram, o corpo da função trabalha com eles e um resultado sai. Os dois nomes que costumam ser confundidos:</p>
+<ul><li><strong>Parâmetro:</strong> o nome que a função declara para <strong>receber</strong> um valor. Existe na definição, depois do <code>def</code>;</li><li><strong>Argumento:</strong> o valor de verdade, passado <strong>na hora de chamar</strong> a função.</li></ul>
+<pre class="code"><code>def calcular_media(primeira_nota, segunda_nota):
+    soma = primeira_nota + segunda_nota
+    media = soma / 2
+    return media
+
+
+resultado = calcular_media(8, 6)
+print(resultado)    # 7.0</code></pre>
+<p>Aqui <code>primeira_nota</code> e <code>segunda_nota</code> são os parâmetros; <code>8</code> e <code>6</code> são os argumentos. Na chamada, o primeiro argumento entra no primeiro parâmetro, o segundo no segundo: <strong>a ordem importa</strong>.</p>
+<h3 id="s2-2-retorno-return-não-é-print"><span class="hn">2.2</span>Retorno: return não é print</h3>
+<p>O <strong>return</strong> é a saída da função: ele devolve um valor para quem chamou e encerra a função na hora. Já o <code>print</code> só mostra um texto na tela e não devolve nada. É um erro muito comum de iniciante trocar um pelo outro, e a diferença aparece assim:</p>
+<pre class="code"><code>def media_que_so_mostra(primeira_nota, segunda_nota):
+    print((primeira_nota + segunda_nota) / 2)
+
+
+valor = media_que_so_mostra(8, 6)   # mostra 7.0 na tela
+print(valor)                        # None</code></pre>
+<p>A média foi mostrada, mas <code>valor</code> ficou vazio: a função não devolveu nada. Com <code>return</code>, o resultado pode ser guardado numa variável, somado, comparado ou passado para outra função. Com <code>print</code>, ele só existe na tela.</p>
+<h3 id="s2-3-sem-retorno-o-void-e-o-procedure"><span class="hn">2.3</span>Sem retorno: o void e o procedure</h3>
+<p>Nem toda função precisa devolver um resultado. Em C, uma função que não devolve nada é declarada como <code>void</code>. Uma função que só <strong>faz</strong> alguma coisa (mostrar na tela, gravar num arquivo, enviar uma mensagem) e não produz resultado é chamada de <strong>procedimento</strong> (<em>procedure</em>).</p>
+<p>Em Python não existe uma palavra <code>void</code>: toda função devolve algo, e quando não há <code>return</code>, o que volta é <strong><code>None</code></strong>, o valor que representa "nada". É exatamente o <code>None</code> que apareceu no exemplo anterior.</p>
+<pre class="code"><code>def mostrar_boletim(nome, media):
+    print("Aluno:", nome, "| Média:", media)
+
+
+mostrar_boletim("Ana", 7.0)</code></pre>
+<div class="tbl"><table><thead><tr><th>Tipo</th><th>Tem entrada?</th><th>Tem return?</th><th>Exemplo</th></tr></thead><tbody><tr><td>Função com retorno</td><td>Normalmente sim</td><td>Sim</td><td><code>calcular_media(8, 6)</code> devolve <code>7.0</code></td></tr><tr><td>Procedimento (void)</td><td>Pode ter</td><td>Não: devolve <code>None</code></td><td><code>mostrar_boletim("Ana", 7.0)</code></td></tr><tr><td>Sem parâmetros</td><td>Não</td><td>Pode ter ou não</td><td><code>mostrar_cabecalho()</code></td></tr></tbody></table></div>
+<h3 id="s2-4-valor-padrão-e-mais-de-um-retorno"><span class="hn">2.4</span>Valor padrão e mais de um retorno</h3>
+<p>Dois recursos do Python que vão aparecer nas classes. O primeiro é o <strong>valor padrão</strong>: se o argumento não for passado, o parâmetro assume o valor definido na declaração.</p>
+<pre class="code"><code>def aprovado(media, media_minima=7):
+    return media &gt;= media_minima
+
+
+print(aprovado(8))      # True
+print(aprovado(6))      # False
+print(aprovado(6, 5))   # True</code></pre>
+<p>O segundo é devolver <strong>mais de um valor</strong>: na verdade, o Python devolve uma tupla (Aula 07), e dá para desempacotar na chamada:</p>
+<pre class="code"><code>def menor_e_maior(valores):
+    menor = valores[0]
+    maior = valores[0]
+    for valor in valores:
+        if valor &lt; menor:
+            menor = valor
+        if valor &gt; maior:
+            maior = valor
+    return menor, maior
+
+
+minimo, maximo = menor_e_maior([7, 3, 9, 1, 5])
+print(minimo, maximo)   # 1 9</code></pre>
+<p>E a regra do <strong>sem else</strong> continua valendo: cada condição resolve o seu caso com <code>return</code> e sai, deixando o caso geral para o final, como na função <code>situacao</code> da Aula 07. O código completo está em <code>src/08/funcoes.py</code>.</p>
+<h2 id="s3-da-struct-ao-objeto"><span class="hn">3</span>Da struct ao objeto</h2>
+<h3 id="s3-1-o-que-é-um-objeto"><span class="hn">3.1</span>O que é um objeto</h3>
+<p>Antes de falar em classe, vale entender o que é um <strong>objeto</strong>. Um objeto é a representação, dentro do programa, de <strong>uma coisa do problema</strong> que se quer resolver: um aluno, um pedido, um arquivo, uma pasta. Essa coisa tem duas características:</p>
+<ul><li>ela <strong>tem</strong> dados: o aluno tem nome, RA e notas;</li><li>ela <strong>sabe fazer</strong> coisas com esses dados: o aluno recebe uma nota e calcula a própria média.</li></ul>
+<p>O objeto junta as duas coisas, <strong>os dados e o que se faz com eles, num lugar só</strong>. Até agora era diferente: os dados ficavam soltos (um texto numa variável, uma lista noutra) e as funções ficavam soltas, sem ligação clara com eles. Um <code>int</code> ou uma <code>str</code> não sabem nada sobre alunos. O objeto <code>ana</code>, sim: ele guarda <code>"Ana"</code>, <code>1234</code> e <code>[8, 9]</code>, e sabe calcular a média dessas notas.</p>
+<h3 id="s3-2-o-molde-a-classe"><span class="hn">3.2</span>O molde: a classe</h3>
+<p>Se o objeto é o dado, de onde ele vem? Os tipos básicos (número, texto, booleano) já existem prontos, mas um "aluno" não. Em C, quando o programador precisa de um dado mais rico, ele cria uma <strong>struct</strong>: uma estrutura de dados que ele mesmo desenha, agrupando campos. A <strong>classe</strong> é a mesma ideia, com um acréscimo importante: além dos dados, ela agrupa também as funções que trabalham com eles.</p>
+<p>A classe é um <strong>molde</strong>. Ela não é o dado: ela descreve <strong>como o dado vai ser</strong>. Ninguém come a forma do bolo; a forma serve para fazer quantos bolos forem necessários.</p>
+<h3 id="s3-3-do-molde-ao-objeto"><span class="hn">3.3</span>Do molde ao objeto</h3>
+<p>O objeto é o dado criado a partir do molde (também chamado de <strong>instância</strong> da classe). Do mesmo molde saem quantos objetos quisermos, e cada um tem os seus próprios dados:</p>
+<div class="tbl"><table><thead><tr><th></th><th>O que é</th><th>Analogia em C</th><th>Exemplo</th></tr></thead><tbody><tr><td><strong>Classe</strong></td><td>O molde: define propriedades e métodos</td><td>A declaração da <code>struct</code></td><td><code>Aluno</code></td></tr><tr><td><strong>Objeto</strong></td><td>O dado criado a partir do molde</td><td>A variável do tipo da <code>struct</code></td><td><code>ana</code>, <code>bruno</code></td></tr></tbody></table></div>
+<h3 id="s3-4-propriedades-e-métodos"><span class="hn">3.4</span>Propriedades e métodos</h3>
+<p>Um objeto agrupa duas coisas:</p>
+<ul><li><strong>Propriedades</strong> (ou atributos): os <strong>dados</strong> do objeto. Cada propriedade é uma variável que pertence ao objeto e pode ser <strong>de qualquer tipo</strong>: número, texto, booleano, lista, dicionário e até outro objeto. O aluno tem <code>nome</code> (texto), <code>ra</code> (número) e <code>notas</code> (lista);</li><li><strong>Métodos</strong>: as <strong>funções</strong> que pertencem ao objeto. São as mesmas funções do tópico anterior, com parâmetros, argumentos e retorno, só que declaradas dentro da classe e chamadas a partir de um objeto, como em <code>ana.calcular_media()</code>.</li></ul>
+<p>Uma forma de lembrar: <strong>propriedade é o que o objeto tem; método é o que o objeto faz</strong>.</p>
+<h3 id="s3-5-o-self-o-objeto-apontando-para-si-mesmo"><span class="hn">3.5</span>O self: o objeto apontando para si mesmo</h3>
+<p>Se vários objetos nascem do mesmo molde, os métodos são escritos uma vez só e servem para todos. Surge um problema: quando o método <code>calcular_media</code> roda, <strong>de qual aluno</strong> é a lista de notas que ele deve somar? A resposta é o <strong><code>self</code></strong>.</p>
+<p>O <code>self</code> é o primeiro parâmetro de todo método e aponta para <strong>o próprio objeto que chamou o método</strong>. Em <code>ana.adicionar_nota(8)</code>, o Python entrega a <code>ana</code> ao parâmetro <code>self</code> automaticamente; dentro do método, <code>self.notas</code> é a lista da Ana, e não a do Bruno. Sem o <code>self</code>, o objeto perderia a referência de quem é dono de cada propriedade.</p>
+<pre class="code"><code>class Aluno:
+    def adicionar_nota(self, nota):
+        self.notas.append(nota)
+
+    def calcular_media(self):
+        soma = 0
+        for nota in self.notas:
+            soma = soma + nota
+        return soma / len(self.notas)
+
+    def situacao(self):
+        media = self.calcular_media()
+        if media &gt;= 7:
+            return "Aprovado"
+        if media &gt;= 5:
+            return "Recuperação"
+        return "Reprovado"</code></pre>
+<p>Para usar o molde, chamamos o nome da classe com parênteses, o que cria um objeto novo. As propriedades podem ser criadas uma a uma e os métodos são chamados com um ponto:</p>
+<pre class="code"><code>ana = Aluno()
+bruno = Aluno()
+
+ana.nome = "Ana"
+ana.ra = 1234
+ana.notas = []
+
+bruno.nome = "Bruno"
+bruno.ra = 5678
+bruno.notas = []
+
+ana.adicionar_nota(8)
+ana.adicionar_nota(9)
+bruno.adicionar_nota(4)
+bruno.adicionar_nota(6)
+
+print(ana.nome, ana.calcular_media(), ana.situacao())        # Ana 8.5 Aprovado
+print(bruno.nome, bruno.calcular_media(), bruno.situacao())  # Bruno 5.0 Recuperação
+print(ana.notas)     # [8, 9]
+print(bruno.notas)   # [4, 6]
+print(ana is bruno)  # False</code></pre>
+<p>O mesmo método <code>situacao</code> deu resultados diferentes porque cada chamada usou o <code>self</code> de um objeto diferente. Há, porém, um defeito neste jeito de criar objetos: se alguém esquecer de criar <code>notas</code>, o <code>adicionar_nota</code> quebra com <code>AttributeError</code>. O molde deveria <strong>garantir</strong> que todo objeto já nasça completo. É para isso que serve o construtor. O código completo está em <code>src/08/classes.py</code>.</p>
+<h2 id="s4-o-construtor"><span class="hn">4</span>O construtor</h2>
+<h3 id="s4-1-o-__init__"><span class="hn">4.1</span>O <code>__init__</code></h3>
+<p>O <strong>construtor</strong> é um método especial, chamado automaticamente <strong>no instante em que o objeto é criado</strong>. Em Python, ele se chama <code>__init__</code> (com dois sublinhados de cada lado). Em outras linguagens o nome muda, como <code>constructor</code> em JavaScript ou <code>__construct</code> em PHP, mas o papel é o mesmo: dar ao objeto os seus valores iniciais.</p>
+<p>Os argumentos passados na criação do objeto chegam como parâmetros do <code>__init__</code>:</p>
+<pre class="code"><code>class Aluno:
+    def __init__(self, nome, ra):
+        self.nome = nome
+        self.ra = ra
+        self.notas = []
+
+    def adicionar_nota(self, nota):
+        self.notas.append(nota)
+
+    def calcular_media(self):
+        soma = 0
+        for nota in self.notas:
+            soma = soma + nota
+        return soma / len(self.notas)
+
+
+ana = Aluno("Ana", 1234)
+ana.adicionar_nota(8)
+ana.adicionar_nota(9)
+print(ana.nome, ana.calcular_media())   # Ana 8.5</code></pre>
+<p>Antes eram cinco linhas para montar a Ana; agora é uma, e nenhuma propriedade fica faltando. Repare que <code>self.notas = []</code> está <strong>dentro</strong> do construtor: assim, cada objeto recebe a sua própria lista vazia.</p>
+<h3 id="s4-2-um-objeto-dentro-de-outro"><span class="hn">4.2</span>Um objeto dentro de outro</h3>
+<p>Como a propriedade pode ser de qualquer tipo, ela pode guardar <strong>outro objeto</strong>. O construtor recebe o objeto já pronto como argumento e o guarda numa propriedade. Isso se chama <strong>injetar</strong> o objeto:</p>
+<pre class="code"><code>class Professor:
+    def __init__(self, nome):
+        self.nome = nome
+
+
+class Turma:
+    def __init__(self, nome, professor):
+        self.nome = nome
+        self.professor = professor
+        self.alunos = []
+
+    def matricular(self, aluno):
+        self.alunos.append(aluno)
+
+
+luan = Professor("Luan")
+turma = Turma("ADS 2º semestre", luan)
+turma.matricular(ana)
+print(turma.professor.nome)    # Luan
+print(turma.alunos[0].nome)    # Ana</code></pre>
+<p>A turma não copia o professor: ela guarda uma <strong>referência</strong> ao mesmo objeto <code>luan</code>. É essa ideia, um objeto que conhece outro, que vai montar a árvore da última parte. O código completo desta parte está em <code>src/08/construtor.py</code>.</p>
+<h2 id="s5-árvore-de-arquivos"><span class="hn">5</span>Árvore de arquivos</h2>
+<h3 id="s5-1-o-problema"><span class="hn">5.1</span>O problema</h3>
+<p>Todo sistema de arquivos é uma <strong>árvore</strong>: uma pasta contém arquivos e outras pastas, que por sua vez contêm outras coisas. Cada item, exceto o primeiro (a <strong>raiz</strong>), tem exatamente <strong>uma pasta pai</strong>. O comando <code>tree</code> mostra isso no terminal, e o caminho que o <code>pwd</code> imprime (Aula 01) é a lista de pais, da raiz até o item.</p>
+<pre class="code"><code>var/
+    www/
+        unifaat/
+            src/
+                funcoes.py
+                classes.py
+            README.md</code></pre>
+<p>Para simular isso em Python, não precisamos de duas classes. Uma pasta e um arquivo são o mesmo tipo de dado: ambos têm nome e pai. A única diferença é uma propriedade booleana, <code>eh_pasta</code>.</p>
+<h3 id="s5-2-a-classe-item"><span class="hn">5.2</span>A classe Item</h3>
+<p>O construtor recebe o <code>nome</code>, se é pasta e o <strong>objeto pai</strong>. O pai é opcional (valor padrão <code>None</code>), porque a raiz não tem pai. Quando o pai existe, o item novo se cadastra na lista de filhos dele:</p>
+<pre class="code"><code>class Item:
+    def __init__(self, nome, eh_pasta, pai=None):
+        if pai is not None and not pai.eh_pasta:
+            raise ValueError(pai.nome + " é um arquivo, não pode conter itens")
+
+        self.nome = nome
+        self.eh_pasta = eh_pasta
+        self.pai = pai
+        self.filhos = []
+
+        if pai is not None:
+            pai.filhos.append(self)</code></pre>
+<p>Três detalhes: o <code>raise ValueError</code> recusa a criação de um item dentro de um arquivo (só pasta contém itens); <code>pai.filhos.append(self)</code> usa o <code>self</code> para entregar o próprio objeto novo ao pai; e, como o pai é injetado, ele <strong>precisa existir antes</strong> do filho.</p>
+<h3 id="s5-3-caminho-profundidade-e-recursão"><span class="hn">5.3</span>Caminho, profundidade e recursão</h3>
+<p>Os métodos aproveitam que cada item conhece o seu pai. Para montar o caminho, o item pede ao pai o caminho dele, e assim sobe até a raiz. É a <strong>recursão</strong> da Aula 07: a função chama a si mesma num objeto mais próximo do fim, e a raiz (sem pai) é o <strong>caso base</strong>:</p>
+<pre class="code"><code>    def caminho(self):
+        if self.pai is None:
+            return "/" + self.nome
+        return self.pai.caminho() + "/" + self.nome
+
+    def profundidade(self):
+        if self.pai is None:
+            return 0
+        return self.pai.profundidade() + 1
+
+    def mostrar(self):
+        recuo = "    " * self.profundidade()
+        sufixo = ""
+        if self.eh_pasta:
+            sufixo = "/"
+        print(recuo + self.nome + sufixo)
+
+        for filho in self.filhos:
+            filho.mostrar()</code></pre>
+<p>O <code>caminho</code> e o <code>profundidade</code> sobem pelos pais; o <code>mostrar</code> desce pelos filhos, recuando 4 espaços por nível. Repare que não há <code>else</code>: o <code>return</code> antecipado trata a raiz e o resto fica para o final.</p>
+<h3 id="s5-4-montando-a-árvore"><span class="hn">5.4</span>Montando a árvore</h3>
+<pre class="code"><code>raiz = Item("var", True)
+www = Item("www", True, raiz)
+unifaat = Item("unifaat", True, www)
+src = Item("src", True, unifaat)
+leia_me = Item("README.md", False, unifaat)
+funcoes = Item("funcoes.py", False, src)
+classes = Item("classes.py", False, src)
+
+raiz.mostrar()
+print(funcoes.caminho())        # /var/www/unifaat/src/funcoes.py
+print(funcoes.profundidade())   # 4
+print(len(src.filhos))          # 2</code></pre>
+<p>Cada linha cria um objeto e injeta o pai no construtor. Quando se pede o caminho de <code>funcoes</code>, ele pergunta a <code>src</code>, que pergunta a <code>unifaat</code>, e assim por diante até <code>var</code>. O código completo está em <code>src/08/arvore_arquivos.py</code>, e o passo a passo, no raio-x da aula.</p>
+<p>Essa estrutura, itens que apontam para outros itens, é o que as <strong>estruturas de dados</strong> vão explorar na sequência: a árvore é só uma delas.</p>
+<h2 id="s6-conclusão"><span class="hn">6</span>Conclusão</h2>
+<p>Esta aula começou com uma pergunta: o que fazer quando o dado de que o programa precisa não existe pronto? A resposta foi desenhar o molde. Antes disso, as <strong>funções</strong> foram vistas por inteiro: o parâmetro recebe, o argumento é o valor passado, o <code>return</code> devolve, e a função sem retorno, o procedimento (o <code>void</code> do C), devolve <code>None</code>.</p>
+<p>Com isso, o <strong>objeto</strong> apareceu como uma coisa do problema, com dados e comportamento juntos, e a <strong>classe</strong> como o molde dele, do mesmo jeito que a <code>struct</code> do C, mas agrupando também os métodos. O objeto agrupa <strong>propriedades</strong> (o que ele tem, de qualquer tipo) e <strong>métodos</strong> (o que ele faz). O <strong>self</strong> garante que vários objetos do mesmo molde não percam a referência de quem é dono de cada dado. O <strong>construtor</strong> (<code>__init__</code>) faz o objeto nascer completo, e a propriedade pode guardar outro objeto.</p>
+<p>Por fim, a árvore de arquivos reuniu tudo: uma única classe, <code>Item</code>, em que o construtor recebe o objeto pai e o encadeamento de pais forma a árvore. A mesma ideia sustenta as estruturas de dados, que serão o tema da próxima aula.</p>
+<h2 id="s7-referências"><span class="hn">7</span>Referências</h2>
+<p>Python Software Foundation — Tutorial de Python: Classes (<a href="https://docs.python.org/pt-br/3/tutorial/classes.html" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/tutorial/classes.html</a>)</p>
+<p>Python Software Foundation — Tutorial de Python: Definindo funções (<a href="https://docs.python.org/pt-br/3/tutorial/controlflow.html#defining-functions" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/tutorial/controlflow.html#defining-functions</a>)</p>
+<p>Python Software Foundation — Modelo de dados: object.__init__ (<a href="https://docs.python.org/pt-br/3/reference/datamodel.html#object.__init__" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/reference/datamodel.html#object.__init__</a>)</p>
+<p>Material de aulas anteriores: Aula 01 (SO, CLI e GUI), Aula 03 (Linguagem de Máquina) e Aula 07 (Introdução ao Python).</p>
+<h2 id="questoes"><span class="hn">TA</span>Questões do TA</h2>
+<article class="questao"><h3><span class="qn">Questão 1</span></h3><p>Considere a função abaixo e a sua chamada:</p>
+<pre class="code"><code>def saudar(nome):
+    return "Olá, " + nome
+mensagem = saudar("Ana")</code></pre>
+<p>Segundo o texto, qual afirmação descreve corretamente os termos envolvidos?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">"Ana" é o parâmetro e nome é o argumento.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">nome é o parâmetro, declarado pela função para receber o valor, e "Ana" é o argumento, passado na chamada.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">nome e "Ana" são ambos parâmetros, apenas escritos em lugares diferentes.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">mensagem é o argumento, porque guarda o resultado da função.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">saudar é o parâmetro, porque é o nome que vem depois do def.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 2</span></h3><p>Considere o código abaixo:</p>
+<pre class="code"><code>def dobrar(numero):
+    print(numero * 2)
+resultado = dobrar(4)
+print(resultado)</code></pre>
+<p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Apenas 8</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Apenas None</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Primeiro 4 e depois 8</span></li><li class="alt ok"><span class="ltr">D</span><span class="txt">Primeiro 8 e depois None</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Um erro, porque toda função precisa ter return</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 3</span></h3><p>Segundo o texto, qual é o papel do self nos métodos de uma classe?</p><ol class="alts"><li class="alt ok"><span class="ltr">A</span><span class="txt">Apontar para o próprio objeto que chamou o método, de modo que objetos criados do mesmo molde não percam a referência de quem é dono de cada propriedade.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Apontar para a classe pai, permitindo reaproveitar o código da herança.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Criar uma cópia da classe a cada chamada do método.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Declarar que o método não devolve nenhum valor, como o void do C.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Garantir que todos os objetos da mesma classe compartilhem os mesmos valores nas propriedades.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 4</span></h3><p>Considere o código abaixo:</p>
+<pre class="code"><code>class Contador:
+    def __init__(self):
+        self.valor = 0
+    def somar(self):
+        self.valor = self.valor + 1
+a = Contador()
+b = Contador()
+a.somar()
+a.somar()
+b.somar()
+print(a.valor, b.valor)</code></pre>
+<p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">3 3</span></li><li class="alt"><span class="ltr">B</span><span class="txt">1 2</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">2 1</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">0 0</span></li><li class="alt"><span class="ltr">E</span><span class="txt">3 0</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 5</span></h3><p>Considere a classe Item da árvore de arquivos, vista no texto, e o código abaixo:</p>
+<pre class="code"><code>raiz = Item("var", True)
+www = Item("www", True, raiz)
+arquivo = Item("a.py", False, www)
+print(arquivo.caminho())
+print(arquivo.profundidade())</code></pre>
+<p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">/var/www/a.py e depois 3</span></li><li class="alt"><span class="ltr">B</span><span class="txt">/www/a.py e depois 1</span></li><li class="alt"><span class="ltr">C</span><span class="txt">a.py e depois 0</span></li><li class="alt"><span class="ltr">D</span><span class="txt">/var/www e depois 2</span></li><li class="alt ok"><span class="ltr">E</span><span class="txt">/var/www/a.py e depois 2</span><span class="gab">gabarito</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+  </main>
+</div>
+<script src="../../assets/briefing.js"></script>
+</body>
+</html>

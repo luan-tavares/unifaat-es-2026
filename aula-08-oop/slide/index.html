@@ -438,16 +438,29 @@
     <p class="payoff">Cada linha cria um objeto e injeta o pai no construtor.</p>
   </section>
 
-  <section class="slide" data-eyebrow="tf 08 · próximos passos">
-    <span class="kicker-badge">tarefa</span>
-    <h2>TF 08: <span class="accent">a definir</span></h2>
-    <p class="body-text">O enunciado, o prazo e o formulário de entrega serão
-    divulgados em breve.</p>
+  <section class="slide" data-eyebrow="próximos passos">
     <h2>Próximos <span class="accent">passos</span></h2>
     <ul class="points">
       <li>A <strong>filosofia</strong> de orientar a objetos: os pilares</li>
       <li>Usar <strong>objetos para montar estruturas de dados</strong>: a árvore de arquivos foi só o começo</li>
     </ul>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 08 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 08: <span class="accent">commit e repositório</span></h2>
+    <p class="lede">Num repositório novo <code>tf-08</code>, com venv e
+    <code>.gitignore</code>, criar no <code>commit.py</code> o histórico do Git
+    em objetos:</p>
+    <ul class="points">
+      <li><code>Commit</code>: <code>id</code>, <code>mensagem</code>, <code>autor</code> e <code>pai</code> (o commit anterior); o <code>historico()</code> sobe de pai em pai</li>
+      <li><code>Repositorio</code>: <code>commitar()</code> (um contador gera o <strong>id único</strong>), <code>log()</code> e <code>total_de_commits()</code></li>
+      <li>Autor = <strong>nome e RA</strong> do aluno; 3+ commits com mensagens suas</li>
+      <li>Sem <code>else</code>, <strong>sem <code>import</code></strong>, comentários com as próprias palavras, <code>.venv</code> fora do repositório</li>
+    </ul>
+    <p class="body-text">Entrega: link do repositório público no GitHub, pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSedMOT1GH_eZeXlU-WdvvE8HfQfe2he01c4yeqElX2tvn3jaw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLSedMOT1GH_eZeXlU-WdvvE8HfQfe2he01c4yeqElX2tvn3jaw/viewform</code></a></p>
+    <p class="payoff">Prazo: <strong>21/10, até 23:59</strong>.</p>
   </section>
 
 </div>
@@ -457,7 +470,7 @@
   <div class="hud-mid">
     <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
     <div class="hud-meta">
-      <span><span id="counterCurrent">01</span> / <span id="counterTotal">16</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">17</span> — <span id="eyebrowLabel">abertura</span></span>
       <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
     </div>
   </div>

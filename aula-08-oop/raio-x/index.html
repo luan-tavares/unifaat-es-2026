@@ -373,7 +373,7 @@
       <div class="line add">+ #</div>
       <div class="line add">+ # Uma pasta contém arquivos e outras pastas; cada item (menos a raiz) tem</div>
       <div class="line add">+ # exatamente uma pasta pai. Esse encadeamento forma uma árvore, a mesma</div>
-      <div class="line add">+ # estrutura que o terminal mostra com o comando tree (Aula 01).</div>
+      <div class="line add">+ # estrutura que o Explorador de Arquivos do Windows mostra na tela.</div>
       <div class="line ctx"></div>
       <div class="line ctx"></div>
       <div class="line add">+ class Item:</div>
@@ -392,10 +392,11 @@
       <div class="line add">+         if pai is not None:</div>
       <div class="line add">+             pai.filhos.append(self)</div>
       <div class="line ctx"></div>
-      <div class="line add">+     # Sobe de pai em pai até a raiz, montando o caminho: igual ao pwd.</div>
+      <div class="line add">+     # Sobe de pai em pai até a raiz, montando o caminho, como na barra de</div>
+      <div class="line add">+     # endereço do Explorador (usamos / como separador, o Windows aceita).</div>
       <div class="line add">+     def caminho(self):</div>
       <div class="line add">+         if self.pai is None:</div>
-      <div class="line add">+             return &quot;/&quot; + self.nome</div>
+      <div class="line add">+             return self.nome</div>
       <div class="line add">+         return self.pai.caminho() + &quot;/&quot; + self.nome</div>
       <div class="line ctx"></div>
       <div class="line add">+     # Quantos pais existem acima deste item. A raiz tem profundidade 0.</div>
@@ -419,32 +420,32 @@
       <div class="line ctx"></div>
       <div class="line add">+ # --- Montando a árvore -------------------------------------------------------</div>
       <div class="line add">+ # Primeiro o pai, depois os filhos: o pai precisa existir para ser injetado.</div>
-      <div class="line add">+ raiz = Item(&quot;var&quot;, True)</div>
-      <div class="line add">+ www = Item(&quot;www&quot;, True, raiz)</div>
-      <div class="line add">+ unifaat = Item(&quot;unifaat&quot;, True, www)</div>
-      <div class="line add">+ src = Item(&quot;src&quot;, True, unifaat)</div>
-      <div class="line add">+ leia_me = Item(&quot;README.md&quot;, False, unifaat)</div>
-      <div class="line add">+ funcoes = Item(&quot;funcoes.py&quot;, False, src)</div>
-      <div class="line add">+ classes = Item(&quot;classes.py&quot;, False, src)</div>
+      <div class="line add">+ disco = Item(&quot;C:&quot;, True)</div>
+      <div class="line add">+ usuarios = Item(&quot;Users&quot;, True, disco)</div>
+      <div class="line add">+ desktop = Item(&quot;Desktop&quot;, True, usuarios)</div>
+      <div class="line add">+ trabalhos = Item(&quot;Trabalhos&quot;, True, desktop)</div>
+      <div class="line add">+ notas = Item(&quot;notas.txt&quot;, False, desktop)</div>
+      <div class="line add">+ tf = Item(&quot;tf-08.py&quot;, False, trabalhos)</div>
+      <div class="line add">+ slide = Item(&quot;slide.pdf&quot;, False, trabalhos)</div>
       <div class="line ctx"></div>
-      <div class="line add">+ raiz.mostrar()</div>
-      <div class="line add">+ # var/</div>
-      <div class="line add">+ #     www/</div>
-      <div class="line add">+ #         unifaat/</div>
-      <div class="line add">+ #             src/</div>
-      <div class="line add">+ #                 funcoes.py</div>
-      <div class="line add">+ #                 classes.py</div>
-      <div class="line add">+ #             README.md</div>
+      <div class="line add">+ disco.mostrar()</div>
+      <div class="line add">+ # C:/</div>
+      <div class="line add">+ #     Users/</div>
+      <div class="line add">+ #         Desktop/</div>
+      <div class="line add">+ #             Trabalhos/</div>
+      <div class="line add">+ #                 tf-08.py</div>
+      <div class="line add">+ #                 slide.pdf</div>
+      <div class="line add">+ #             notas.txt</div>
       <div class="line ctx"></div>
-      <div class="line add">+ print(funcoes.caminho())        # /var/www/unifaat/src/funcoes.py</div>
-      <div class="line add">+ print(funcoes.profundidade())   # 4</div>
-      <div class="line add">+ print(len(src.filhos))          # 2</div>
+      <div class="line add">+ print(tf.caminho())             # C:/Users/Desktop/Trabalhos/tf-08.py</div>
+      <div class="line add">+ print(tf.profundidade())        # 4</div>
+      <div class="line add">+ print(len(trabalhos.filhos))    # 2</div>
       <div class="line ctx"></div>
       <div class="line add">+ # Arquivo não aceita filhos: o construtor recusa com ValueError.</div>
       <div class="line add">+ try:</div>
-      <div class="line add">+     Item(&quot;intruso&quot;, False, funcoes)</div>
+      <div class="line add">+     Item(&quot;intruso&quot;, False, tf)</div>
       <div class="line add">+ except ValueError as erro:</div>
-      <div class="line add">+     print(erro)     # funcoes.py é um arquivo, não pode conter itens</div>
+      <div class="line add">+     print(erro)     # tf-08.py é um arquivo, não pode conter itens</div>
     </div>
 
     <div class="why">
@@ -454,7 +455,7 @@
       </div>
       <div class="why-card">
         <h4>Recursão subindo pelos pais</h4>
-        <p><code class="inline">caminho()</code> e <code class="inline">profundidade()</code> pedem a resposta ao pai e somam. A raiz (<code class="inline">pai is None</code>) é o caso base. É a recursão da Aula 07 e o <code class="inline">pwd</code> da Aula 01, feitos com objetos.</p>
+        <p><code class="inline">caminho()</code> e <code class="inline">profundidade()</code> pedem a resposta ao pai e somam. A raiz (<code class="inline">pai is None</code>) é o caso base. É a recursão da Aula 07, feita com objetos, e é o caminho que a barra de endereço do Explorador mostra.</p>
       </div>
       <div class="why-card">
         <h4>Sem else</h4>
@@ -465,17 +466,17 @@
     <div class="diff">
       <div class="diff-head">saída</div>
       <div class="line ctx">$ python3 arvore_arquivos.py</div>
-      <div class="line ctx">var/</div>
-      <div class="line ctx">    www/</div>
-      <div class="line ctx">        unifaat/</div>
-      <div class="line ctx">            src/</div>
-      <div class="line ctx">                funcoes.py</div>
-      <div class="line ctx">                classes.py</div>
-      <div class="line ctx">            README.md</div>
-      <div class="line ctx">/var/www/unifaat/src/funcoes.py</div>
+      <div class="line ctx">C:/</div>
+      <div class="line ctx">    Users/</div>
+      <div class="line ctx">        Desktop/</div>
+      <div class="line ctx">            Trabalhos/</div>
+      <div class="line ctx">                tf-08.py</div>
+      <div class="line ctx">                slide.pdf</div>
+      <div class="line ctx">            notas.txt</div>
+      <div class="line ctx">C:/Users/Desktop/Trabalhos/tf-08.py</div>
       <div class="line ctx">4</div>
       <div class="line ctx">2</div>
-      <div class="line ctx">funcoes.py é um arquivo, não pode conter itens</div>
+      <div class="line ctx">tf-08.py é um arquivo, não pode conter itens</div>
     </div>
 
   </div>

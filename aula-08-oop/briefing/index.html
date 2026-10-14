@@ -193,14 +193,14 @@ print(turma.alunos[0].nome)    # Ana</code></pre>
 <p>A turma não copia o professor: ela guarda uma <strong>referência</strong> ao mesmo objeto <code>luan</code>. É essa ideia, um objeto que conhece outro, que vai montar a árvore da última parte. O código completo desta parte está em <code>src/08/construtor.py</code>.</p>
 <h2 id="s5-árvore-de-arquivos"><span class="hn">5</span>Árvore de arquivos</h2>
 <h3 id="s5-1-o-problema"><span class="hn">5.1</span>O problema</h3>
-<p>Todo sistema de arquivos é uma <strong>árvore</strong>: uma pasta contém arquivos e outras pastas, que por sua vez contêm outras coisas. Cada item, exceto o primeiro (a <strong>raiz</strong>), tem exatamente <strong>uma pasta pai</strong>. O comando <code>tree</code> mostra isso no terminal, e o caminho que o <code>pwd</code> imprime (Aula 01) é a lista de pais, da raiz até o item.</p>
-<pre class="code"><code>var/
-    www/
-        unifaat/
-            src/
-                funcoes.py
-                classes.py
-            README.md</code></pre>
+<p>Todo sistema de arquivos é uma <strong>árvore</strong>: uma pasta contém arquivos e outras pastas, que por sua vez contêm outras coisas. Cada item, exceto o primeiro (a <strong>raiz</strong>), tem exatamente <strong>uma pasta pai</strong>. O Explorador de Arquivos do Windows mostra isso na tela, e o caminho que aparece na barra de endereço, como <code>C:/Users/Desktop</code>, é a lista de pais, da raiz até o item.</p>
+<pre class="code"><code>C:/
+    Users/
+        Desktop/
+            Trabalhos/
+                tf-08.py
+                slide.pdf
+            notas.txt</code></pre>
 <p>Para simular isso em Python, não precisamos de duas classes. Uma pasta e um arquivo são o mesmo tipo de dado: ambos têm nome e pai. A única diferença é uma propriedade booleana, <code>eh_pasta</code>.</p>
 <h3 id="s5-2-a-classe-item"><span class="hn">5.2</span>A classe Item</h3>
 <p>O construtor recebe o <code>nome</code>, se é pasta e o <strong>objeto pai</strong>. O pai é opcional (valor padrão <code>None</code>), porque a raiz não tem pai. Quando o pai existe, o item novo se cadastra na lista de filhos dele:</p>
@@ -221,7 +221,7 @@ print(turma.alunos[0].nome)    # Ana</code></pre>
 <p>Os métodos aproveitam que cada item conhece o seu pai. Para montar o caminho, o item pede ao pai o caminho dele, e assim sobe até a raiz. É a <strong>recursão</strong> da Aula 07: a função chama a si mesma num objeto mais próximo do fim, e a raiz (sem pai) é o <strong>caso base</strong>:</p>
 <pre class="code"><code>    def caminho(self):
         if self.pai is None:
-            return "/" + self.nome
+            return self.nome
         return self.pai.caminho() + "/" + self.nome
 
     def profundidade(self):
@@ -240,19 +240,19 @@ print(turma.alunos[0].nome)    # Ana</code></pre>
             filho.mostrar()</code></pre>
 <p>O <code>caminho</code> e o <code>profundidade</code> sobem pelos pais; o <code>mostrar</code> desce pelos filhos, recuando 4 espaços por nível. Repare que não há <code>else</code>: o <code>return</code> antecipado trata a raiz e o resto fica para o final.</p>
 <h3 id="s5-4-montando-a-árvore"><span class="hn">5.4</span>Montando a árvore</h3>
-<pre class="code"><code>raiz = Item("var", True)
-www = Item("www", True, raiz)
-unifaat = Item("unifaat", True, www)
-src = Item("src", True, unifaat)
-leia_me = Item("README.md", False, unifaat)
-funcoes = Item("funcoes.py", False, src)
-classes = Item("classes.py", False, src)
+<pre class="code"><code>disco = Item("C:", True)
+usuarios = Item("Users", True, disco)
+desktop = Item("Desktop", True, usuarios)
+trabalhos = Item("Trabalhos", True, desktop)
+notas = Item("notas.txt", False, desktop)
+tf = Item("tf-08.py", False, trabalhos)
+slide = Item("slide.pdf", False, trabalhos)
 
-raiz.mostrar()
-print(funcoes.caminho())        # /var/www/unifaat/src/funcoes.py
-print(funcoes.profundidade())   # 4
-print(len(src.filhos))          # 2</code></pre>
-<p>Cada linha cria um objeto e injeta o pai no construtor. Quando se pede o caminho de <code>funcoes</code>, ele pergunta a <code>src</code>, que pergunta a <code>unifaat</code>, e assim por diante até <code>var</code>. O código completo está em <code>src/08/arvore_arquivos.py</code>, e o passo a passo, no raio-x da aula.</p>
+disco.mostrar()
+print(tf.caminho())             # C:/Users/Desktop/Trabalhos/tf-08.py
+print(tf.profundidade())        # 4
+print(len(trabalhos.filhos))    # 2</code></pre>
+<p>Cada linha cria um objeto e injeta o pai no construtor. Quando se pede o caminho de <code>tf</code>, ele pergunta a <code>trabalhos</code>, que pergunta a <code>desktop</code>, e assim por diante até <code>C:</code>. O código completo está em <code>src/08/arvore_arquivos.py</code>, e o passo a passo, no raio-x da aula.</p>
 <p>Essa estrutura, itens que apontam para outros itens, é o que as <strong>estruturas de dados</strong> vão explorar na sequência: a árvore é só uma delas.</p>
 <h2 id="s6-conclusão"><span class="hn">6</span>Conclusão</h2>
 <p>Esta aula começou com uma pergunta: o que fazer quando o dado de que o programa precisa não existe pronto? A resposta foi desenhar o molde. Antes disso, as <strong>funções</strong> foram vistas por inteiro: o parâmetro recebe, o argumento é o valor passado, o <code>return</code> devolve, e a função sem retorno, o procedimento (o <code>void</code> do C), devolve <code>None</code>.</p>
@@ -290,12 +290,12 @@ b.somar()
 print(a.valor, b.valor)</code></pre>
 <p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">3 3</span></li><li class="alt"><span class="ltr">B</span><span class="txt">1 2</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">2 1</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">0 0</span></li><li class="alt"><span class="ltr">E</span><span class="txt">3 0</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
 <article class="questao"><h3><span class="qn">Questão 5</span></h3><p>Considere a classe Item da árvore de arquivos, vista no texto, e o código abaixo:</p>
-<pre class="code"><code>raiz = Item("var", True)
-www = Item("www", True, raiz)
-arquivo = Item("a.py", False, www)
+<pre class="code"><code>raiz = Item("C:", True)
+usuarios = Item("Users", True, raiz)
+arquivo = Item("nota.txt", False, usuarios)
 print(arquivo.caminho())
 print(arquivo.profundidade())</code></pre>
-<p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">/var/www/a.py e depois 3</span></li><li class="alt"><span class="ltr">B</span><span class="txt">/www/a.py e depois 1</span></li><li class="alt"><span class="ltr">C</span><span class="txt">a.py e depois 0</span></li><li class="alt"><span class="ltr">D</span><span class="txt">/var/www e depois 2</span></li><li class="alt ok"><span class="ltr">E</span><span class="txt">/var/www/a.py e depois 2</span><span class="gab">gabarito</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">C:/Users/nota.txt e depois 3</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Users/nota.txt e depois 1</span></li><li class="alt"><span class="ltr">C</span><span class="txt">nota.txt e depois 0</span></li><li class="alt"><span class="ltr">D</span><span class="txt">C:/Users e depois 2</span></li><li class="alt ok"><span class="ltr">E</span><span class="txt">C:/Users/nota.txt e depois 2</span><span class="gab">gabarito</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
   </main>
 </div>
 <script src="../../assets/briefing.js"></script>

@@ -277,16 +277,16 @@ A turma não copia o professor: ela guarda uma **referência** ao mesmo objeto `
 
 5.1 - O problema
 
-Todo sistema de arquivos é uma **árvore**: uma pasta contém arquivos e outras pastas, que por sua vez contêm outras coisas. Cada item, exceto o primeiro (a **raiz**), tem exatamente **uma pasta pai**. O comando `tree` mostra isso no terminal, e o caminho que o `pwd` imprime (Aula 01) é a lista de pais, da raiz até o item.
+Todo sistema de arquivos é uma **árvore**: uma pasta contém arquivos e outras pastas, que por sua vez contêm outras coisas. Cada item, exceto o primeiro (a **raiz**), tem exatamente **uma pasta pai**. O Explorador de Arquivos do Windows mostra isso na tela, e o caminho que aparece na barra de endereço, como `C:/Users/Desktop`, é a lista de pais, da raiz até o item.
 
 ```text
-var/
-    www/
-        unifaat/
-            src/
-                funcoes.py
-                classes.py
-            README.md
+C:/
+    Users/
+        Desktop/
+            Trabalhos/
+                tf-08.py
+                slide.pdf
+            notas.txt
 ```
 
 Para simular isso em Python, não precisamos de duas classes. Uma pasta e um arquivo são o mesmo tipo de dado: ambos têm nome e pai. A única diferença é uma propriedade booleana, `eh_pasta`.
@@ -319,7 +319,7 @@ Os métodos aproveitam que cada item conhece o seu pai. Para montar o caminho, o
 ```python
     def caminho(self):
         if self.pai is None:
-            return "/" + self.nome
+            return self.nome
         return self.pai.caminho() + "/" + self.nome
 
     def profundidade(self):
@@ -343,21 +343,21 @@ O `caminho` e o `profundidade` sobem pelos pais; o `mostrar` desce pelos filhos,
 5.4 - Montando a árvore
 
 ```python
-raiz = Item("var", True)
-www = Item("www", True, raiz)
-unifaat = Item("unifaat", True, www)
-src = Item("src", True, unifaat)
-leia_me = Item("README.md", False, unifaat)
-funcoes = Item("funcoes.py", False, src)
-classes = Item("classes.py", False, src)
+disco = Item("C:", True)
+usuarios = Item("Users", True, disco)
+desktop = Item("Desktop", True, usuarios)
+trabalhos = Item("Trabalhos", True, desktop)
+notas = Item("notas.txt", False, desktop)
+tf = Item("tf-08.py", False, trabalhos)
+slide = Item("slide.pdf", False, trabalhos)
 
-raiz.mostrar()
-print(funcoes.caminho())        # /var/www/unifaat/src/funcoes.py
-print(funcoes.profundidade())   # 4
-print(len(src.filhos))          # 2
+disco.mostrar()
+print(tf.caminho())             # C:/Users/Desktop/Trabalhos/tf-08.py
+print(tf.profundidade())        # 4
+print(len(trabalhos.filhos))    # 2
 ```
 
-Cada linha cria um objeto e injeta o pai no construtor. Quando se pede o caminho de `funcoes`, ele pergunta a `src`, que pergunta a `unifaat`, e assim por diante até `var`. O código completo está em `src/08/arvore_arquivos.py`, e o passo a passo, no raio-x da aula.
+Cada linha cria um objeto e injeta o pai no construtor. Quando se pede o caminho de `tf`, ele pergunta a `trabalhos`, que pergunta a `desktop`, e assim por diante até `C:`. O código completo está em `src/08/arvore_arquivos.py`, e o passo a passo, no raio-x da aula.
 
 Essa estrutura, itens que apontam para outros itens, é o que as **estruturas de dados** vão explorar na sequência: a árvore é só uma delas.
 
@@ -499,9 +499,9 @@ QUESTÃO 5
 Considere a classe Item da árvore de arquivos, vista no texto, e o código abaixo:
 
 ```python
-raiz = Item("var", True)
-www = Item("www", True, raiz)
-arquivo = Item("a.py", False, www)
+raiz = Item("C:", True)
+usuarios = Item("Users", True, raiz)
+arquivo = Item("nota.txt", False, usuarios)
 
 print(arquivo.caminho())
 print(arquivo.profundidade())
@@ -509,15 +509,15 @@ print(arquivo.profundidade())
 
 O que será impresso?
 
-A) /var/www/a.py e depois 3
+A) C:/Users/nota.txt e depois 3
 
-B) /www/a.py e depois 1
+B) Users/nota.txt e depois 1
 
-C) a.py e depois 0
+C) nota.txt e depois 0
 
-D) /var/www e depois 2
+D) C:/Users e depois 2
 
-E) /var/www/a.py e depois 2
+E) C:/Users/nota.txt e depois 2
 
 Gabarito: E)
 

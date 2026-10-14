@@ -3,7 +3,7 @@
 #
 # Uma pasta contém arquivos e outras pastas; cada item (menos a raiz) tem
 # exatamente uma pasta pai. Esse encadeamento forma uma árvore, a mesma
-# estrutura que o terminal mostra com o comando tree (Aula 01).
+# estrutura que o Explorador de Arquivos do Windows mostra na tela.
 
 
 class Item:
@@ -22,10 +22,11 @@ class Item:
         if pai is not None:
             pai.filhos.append(self)
 
-    # Sobe de pai em pai até a raiz, montando o caminho: igual ao pwd.
+    # Sobe de pai em pai até a raiz, montando o caminho, como na barra de
+    # endereço do Explorador (usamos / como separador, o Windows aceita).
     def caminho(self):
         if self.pai is None:
-            return "/" + self.nome
+            return self.nome
         return self.pai.caminho() + "/" + self.nome
 
     # Quantos pais existem acima deste item. A raiz tem profundidade 0.
@@ -49,29 +50,29 @@ class Item:
 
 # --- Montando a árvore -------------------------------------------------------
 # Primeiro o pai, depois os filhos: o pai precisa existir para ser injetado.
-raiz = Item("var", True)
-www = Item("www", True, raiz)
-unifaat = Item("unifaat", True, www)
-src = Item("src", True, unifaat)
-leia_me = Item("README.md", False, unifaat)
-funcoes = Item("funcoes.py", False, src)
-classes = Item("classes.py", False, src)
+disco = Item("C:", True)
+usuarios = Item("Users", True, disco)
+desktop = Item("Desktop", True, usuarios)
+trabalhos = Item("Trabalhos", True, desktop)
+notas = Item("notas.txt", False, desktop)
+tf = Item("tf-08.py", False, trabalhos)
+slide = Item("slide.pdf", False, trabalhos)
 
-raiz.mostrar()
-# var/
-#     www/
-#         unifaat/
-#             src/
-#                 funcoes.py
-#                 classes.py
-#             README.md
+disco.mostrar()
+# C:/
+#     Users/
+#         Desktop/
+#             Trabalhos/
+#                 tf-08.py
+#                 slide.pdf
+#             notas.txt
 
-print(funcoes.caminho())        # /var/www/unifaat/src/funcoes.py
-print(funcoes.profundidade())   # 4
-print(len(src.filhos))          # 2
+print(tf.caminho())             # C:/Users/Desktop/Trabalhos/tf-08.py
+print(tf.profundidade())        # 4
+print(len(trabalhos.filhos))    # 2
 
 # Arquivo não aceita filhos: o construtor recusa com ValueError.
 try:
-    Item("intruso", False, funcoes)
+    Item("intruso", False, tf)
 except ValueError as erro:
-    print(erro)     # funcoes.py é um arquivo, não pode conter itens
+    print(erro)     # tf-08.py é um arquivo, não pode conter itens

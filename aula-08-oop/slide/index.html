@@ -6,6 +6,7 @@
 <title>Aula 08 — Paradigma Orientado a Objetos</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="../../assets/slide.css">
+<link rel="stylesheet" href="../../assets/slide-16x9.css">
 <script src="../../assets/tema.js"></script>
 </head>
 <body>
@@ -324,18 +325,18 @@
     <h2>Árvore de arquivos: <span class="accent">cada item conhece o pai</span></h2>
     <div class="two-col">
     <div class="tree">
-      <span class="dim"># o que o tree mostra</span><br>
-      var/<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;www/<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unifaat/<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src/<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;funcoes.py
+      <span class="dim"># o que o Explorador mostra</span><br>
+      C:/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;Users/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desktop/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trabalhos/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tf-08.py
     </div>
     <div class="tree">
       <span class="dim"># classe Item</span><br>
-      <strong>nome</strong>: &quot;funcoes.py&quot;<br>
+      <strong>nome</strong>: &quot;tf-08.py&quot;<br>
       <strong>eh_pasta</strong>: False<br>
-      <strong>pai</strong>: o objeto <code>src</code><br>
+      <strong>pai</strong>: o objeto <code>trabalhos</code><br>
       <strong>filhos</strong>: [ ] (só pasta tem)
     </div>
     </div>
@@ -379,15 +380,15 @@
         <span class="term-path">src/08/arvore_arquivos.py</span>
       </div>
       <div class="term-body">
-        <div class="term-line"><span class="cmd">raiz = Item("var", True)</span></div>
-        <div class="term-line"><span class="cmd">www = Item("www", True, </span><span class="hl">raiz</span><span class="cmd">)</span></div>
-        <div class="term-line"><span class="cmd">unifaat = Item("unifaat", True, </span><span class="hl">www</span><span class="cmd">)</span></div>
-        <div class="term-line"><span class="cmd">src = Item("src", True, </span><span class="hl">unifaat</span><span class="cmd">)</span></div>
-        <div class="term-line"><span class="cmd">Item("README.md", False, unifaat)</span></div>
-        <div class="term-line"><span class="cmd">funcoes = Item("funcoes.py", False, </span><span class="hl">src</span><span class="cmd">)</span></div>
-        <div class="term-line"><span class="cmd">Item("classes.py", False, src)</span></div>
+        <div class="term-line"><span class="cmd">disco = Item("C:", True)</span></div>
+        <div class="term-line"><span class="cmd">usuarios = Item("Users", True, </span><span class="hl">disco</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">desktop = Item("Desktop", True, </span><span class="hl">usuarios</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">trabalhos = Item("Trabalhos", True, </span><span class="hl">desktop</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">Item("notas.txt", False, desktop)</span></div>
+        <div class="term-line"><span class="cmd">tf = Item("tf-08.py", False, </span><span class="hl">trabalhos</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">Item("slide.pdf", False, trabalhos)</span></div>
         <div class="term-line"><span class="cmd"> </span></div>
-        <div class="term-line"><span class="cmd">raiz.mostrar()</span></div>
+        <div class="term-line"><span class="cmd">disco.mostrar()</span></div>
       </div>
     </div>
     <div class="term">
@@ -397,13 +398,13 @@
       </div>
       <div class="term-body">
 
-        <div class="term-line out hl">var/</div>
-        <div class="term-line out hl">    www/</div>
-        <div class="term-line out hl">        unifaat/</div>
-        <div class="term-line out hl">            src/</div>
-        <div class="term-line out hl">                funcoes.py</div>
-        <div class="term-line out hl">                classes.py</div>
-        <div class="term-line out hl">            README.md</div>
+        <div class="term-line out hl">C:/</div>
+        <div class="term-line out hl">    Users/</div>
+        <div class="term-line out hl">        Desktop/</div>
+        <div class="term-line out hl">            Trabalhos/</div>
+        <div class="term-line out hl">                tf-08.py</div>
+        <div class="term-line out hl">                slide.pdf</div>
+        <div class="term-line out hl">            notas.txt</div>
       </div>
     </div>
     </div>
@@ -421,22 +422,22 @@
       <div class="term-body">
         <div class="term-line"><span class="cmd">def caminho(self):</span></div>
         <div class="term-line"><span class="cmd">    if self.pai is None:</span>  <span class="out"># raiz: caso base</span></div>
-        <div class="term-line"><span class="cmd">        return "/" + self.nome</span></div>
+        <div class="term-line"><span class="cmd">        return self.nome</span></div>
         <div class="term-line"><span class="cmd">    return </span><span class="hl">self.pai.caminho()</span><span class="cmd"> + "/" + self.nome</span></div>
       </div>
     </div>
     <div class="tree">
-      <span class="dim"># funcoes.caminho()</span><br>
-      pergunta ao pai → src.caminho()<br>
-      &nbsp;&nbsp;pergunta ao pai → unifaat.caminho()<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;pergunta ao pai → www.caminho()<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raiz.caminho() → <strong>&quot;/var&quot;</strong><br>
+      <span class="dim"># tf.caminho()</span><br>
+      pergunta ao pai → trabalhos.caminho()<br>
+      &nbsp;&nbsp;pergunta ao pai → desktop.caminho()<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;pergunta ao pai → usuarios.caminho()<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disco.caminho() → <strong>&quot;C:&quot;</strong><br>
       <span class="dim"># e a resposta volta somando:</span><br>
-      <strong>/var/www/unifaat/src/funcoes.py</strong>
+      <strong>C:/Users/Desktop/Trabalhos/tf-08.py</strong>
     </div>
     </div>
-    <p class="payoff">A recursão da Aula 07, agora subindo pelos pais: o
-    <code>pwd</code> do terminal (Aula 01) feito com objetos.</p>
+    <p class="payoff">A recursão da Aula 07, agora subindo pelos pais: o caminho
+    da barra de endereço do Explorador, feito com objetos.</p>
   </section>
 
   <section class="slide" data-eyebrow="fechamento">
@@ -472,5 +473,6 @@
 </nav>
 
 <script src="../../assets/slide.js"></script>
+<script src="../../assets/slide-16x9.js"></script>
 </body>
 </html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilar 1: Encapsulamento</title>
+<link rel="stylesheet" href="../../../assets/modelo.css">
+<script src="../../../assets/tema.js"></script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="topbar"><a class="back" href="../../../index.html">← Voltar</a></nav>
+
+  <p class="eyebrow">Engenharia de Software · 2026.2 · Aula 09 · modelo interativo</p>
+  <h1>Pilar 1: <span class="accent">Encapsulamento</span></h1>
+  <p class="lede">O objeto <code>trabalhos</code> (um <code>Item</code> da árvore de arquivos) recebendo seis tentativas de quem está <b>fora</b> da classe. Alterne entre o <code>Item</code> da Aula 08 (sem cerca) e o da Aula 09 (com cerca) e veja o que cada tentativa faz.</p>
+
+  <div class="controls">
+    <div class="group" role="group" aria-label="Versão da classe"><span class="group-title">Classe</span><span id="modes" class="group"></span></div>
+    <div class="group" role="group" aria-label="Cenários"><span class="group-title">Tentativas</span><span id="scenarios" class="group"></span></div>
+  </div>
+
+  <div class="scroller">
+    <div class="stage" id="stage">
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+    </div>
+  </div>
+
+  <div class="panels">
+    <section class="panel" id="info"></section>
+    <section class="panel" id="scn"></section>
+  </div>
+
+  <div class="legend">
+    <span><i class="lg-pub"></i>porta pública (a interface da classe)</span>
+    <span><i class="lg-priv"></i>privado (só a classe enxerga)</span>
+    <span><i class="lg-ok"></i>passa pela porta</span>
+    <span><i class="lg-bad"></i>barrado (✕) ou estrago sem aviso</span>
+    <span><i class="lg-int"></i>caminho interno, dentro da cápsula</span>
+    <span>a seta sai de quem chama e aponta para o que é usado</span>
+  </div>
+
+</div>
+<script>
+window.MODELO = {
+  W: 1800, H: 980,
+  modes: [
+    { id: 'fechado', label: 'com encapsulamento (Aula 09)' },
+    { id: 'aberto', label: 'sem encapsulamento (Aula 08)' }
+  ],
+  nodes: [
+    { id: 't-fora', cls: 'label static', x: 30, y: 72, w: 470, h: 40, html: 'Código de fora (quem usa a classe)' },
+    { id: 't-obj', cls: 'label right static', x: 900, y: 76, w: 840, h: 40, html: '<span>objeto <code>trabalhos</code> · instância de <code>Item</code></span>' },
+
+    { id: 'c1', cls: 'client', x: 30, y: 130, w: 440, h: 90, html: '<code>trabalhos.nome = ""</code><small>nome vazio</small>' },
+    { id: 'c2', cls: 'client', x: 30, y: 265, w: 440, h: 90, html: '<code>trabalhos.pai = None</code><small>trocar o pai na mão</small>' },
+    { id: 'c3', cls: 'client', x: 30, y: 535, w: 440, h: 90, html: '<code>trabalhos.filhos.append(x)</code><small>mexer na lista por fora</small>' },
+    { id: 'c4', cls: 'client', x: 30, y: 670, w: 440, h: 90, html: '<code>trabalhos.altura = 1.70</code><small>inventar um atributo</small>' },
+    { id: 'c5f', cls: 'client', when: 'fechado', x: 30, y: 400, w: 440, h: 90, html: '<code>trabalhos.mover_para(desktop)</code><small>o caminho certo</small>' },
+    { id: 'c5a', cls: 'client', when: 'aberto', x: 30, y: 400, w: 440, h: 90, html: '<code>desktop.filhos.append(trabalhos)<br>trabalhos.pai = desktop</code><small>mover no braço</small>' },
+    { id: 'c6', cls: 'client', when: 'fechado', x: 30, y: 805, w: 440, h: 90, html: '<code>trabalhos._Item__nome</code><small>burlar a cerca</small>' },
+
+    { id: 'cap', cls: 'frame capsule static', when: 'fechado', x: 600, y: 60, w: 1180, h: 880, html: '' },
+    { id: 'cap-a', cls: 'frame open static', when: 'aberto', x: 600, y: 60, w: 1180, h: 880, html: '' },
+
+    { id: 'd-nome', cls: 'pub', when: 'fechado', x: 520, y: 130, w: 240, h: 90, html: 'nome<small>property: get + set (valida)</small>' },
+    { id: 'd-pai', cls: 'pub', when: 'fechado', x: 520, y: 265, w: 240, h: 90, html: 'pai<small>property: só leitura</small>' },
+    { id: 'd-mover', cls: 'pub', when: 'fechado', x: 520, y: 400, w: 240, h: 90, html: 'mover_para()<small>comportamento</small>' },
+    { id: 'd-filhos', cls: 'pub', when: 'fechado', x: 520, y: 535, w: 240, h: 90, html: 'filhos<small>property: cópia (tupla)</small>' },
+    { id: 'slots', cls: 'wallnode', when: 'fechado', x: 520, y: 670, w: 240, h: 90, html: '__slots__<small>nenhum atributo novo</small>' },
+
+    { id: 'p-validar', cls: 'priv method', when: 'fechado', x: 860, y: 130, w: 330, h: 90, html: '__validar_nome()<small>método privado</small>' },
+    { id: 'p-nome', cls: 'priv', when: 'fechado', x: 1300, y: 130, w: 400, h: 90, html: '__nome<small>"Trabalhos"</small>' },
+    { id: 'p-pai', cls: 'priv', when: 'fechado', x: 1300, y: 265, w: 400, h: 90, html: '__pai<small>objeto Desktop</small>' },
+    { id: 'p-filhos', cls: 'priv', when: 'fechado', x: 1300, y: 535, w: 400, h: 90, html: '__filhos<small>[tf-09.py, slide.pdf]</small>' },
+
+    { id: 'a-nome', cls: 'exposed', when: 'aberto', x: 900, y: 130, w: 500, h: 90, html: 'nome<small>"Trabalhos" · atributo público</small>' },
+    { id: 'a-pai', cls: 'exposed', when: 'aberto', x: 900, y: 265, w: 500, h: 90, html: 'pai<small>objeto Desktop · atributo público</small>' },
+    { id: 'a-filhos', cls: 'exposed', when: 'aberto', x: 900, y: 535, w: 500, h: 90, html: 'filhos<small>[tf-09.py, slide.pdf] · lista pública</small>' },
+    { id: 'a-dict', cls: 'exposed', when: 'aberto', x: 900, y: 670, w: 500, h: 90, html: '__dict__<small>aceita qualquer atributo novo</small>' }
+  ],
+  edges: [
+    /* caminhos internos (com encapsulamento) */
+    { id: 'in-nv', from: 'd-nome', to: 'p-validar', kind: 'int', when: 'fechado' },
+    { id: 'in-vn', from: 'p-validar', to: 'p-nome', kind: 'int', when: 'fechado' },
+    { id: 'in-pp', from: 'd-pai', to: 'p-pai', kind: 'int', when: 'fechado' },
+    { id: 'in-ff', from: 'd-filhos', to: 'p-filhos', kind: 'int', when: 'fechado', label: 'tuple(__filhos)' },
+    { id: 'in-mp', from: 'd-mover', to: 'p-pai', kind: 'int', when: 'fechado' },
+    { id: 'in-mf', from: 'd-mover', to: 'p-filhos', kind: 'int', when: 'fechado' },
+
+    /* tentativas com encapsulamento */
+    { id: 'f1a', from: 'c1', to: 'd-nome', kind: 'ok', when: 'fechado' },
+    { id: 'f1c', from: 'p-validar', to: 'p-nome', kind: 'block', only: true, when: 'fechado' },
+    { id: 'f2', from: 'c2', to: 'd-pai', kind: 'block', when: 'fechado' },
+    { id: 'f3a', from: 'c3', to: 'd-filhos', kind: 'ok', when: 'fechado' },
+    { id: 'f4', from: 'c4', to: 'slots', kind: 'block', when: 'fechado' },
+    { id: 'f5a', from: 'c5f', to: 'd-mover', kind: 'ok', when: 'fechado' },
+    { id: 'f6', from: 'c6', to: 'p-nome', kind: 'warn', when: 'fechado', points: [[1245, 850], [1245, 175]], label: 'contorna a cerca', at: 0.55 },
+
+    /* tentativas sem encapsulamento (tudo passa) */
+    { id: 'a1', from: 'c1', to: 'a-nome', kind: 'bad', when: 'aberto' },
+    { id: 'a2', from: 'c2', to: 'a-pai', kind: 'bad', when: 'aberto' },
+    { id: 'a3', from: 'c3', to: 'a-filhos', kind: 'bad', when: 'aberto' },
+    { id: 'a4', from: 'c4', to: 'a-dict', kind: 'bad', when: 'aberto' },
+    { id: 'a5a', from: 'c5a', to: 'a-filhos', kind: 'bad', when: 'aberto' },
+    { id: 'a5b', from: 'c5a', to: 'a-pai', kind: 'bad', when: 'aberto' }
+  ],
+  info: {
+    c1: { t: 'trabalhos.nome = ""', p: 'Uma escrita de fora. Com a classe aberta ela passa; com a cerca, o setter confere antes de gravar.' },
+    c2: { t: 'trabalhos.pai = None', p: 'Trocar o pai deixaria a árvore inconsistente: a pasta antiga ainda guardaria o item na lista de filhos. Sem a cerca, nada impede.' },
+    c3: { t: 'trabalhos.filhos.append(x)', p: 'Quem recebe a lista pelo getter consegue alterá-la sem passar por regra nenhuma. Encapsular não é só esconder o nome: é não entregar a referência que burla as regras.' },
+    c4: { t: 'trabalhos.altura = 1.70', p: 'Em Python o atributo nasce na atribuição. Sem <code>__slots__</code>, ele entra no <code>__dict__</code> sem reclamar.' },
+    c5f: { t: 'trabalhos.mover_para(desktop)', p: 'O serviço pronto: um passo, e a classe cuida da ordem certa. Quem chama não precisa saber que existe uma lista.' },
+    c5a: { t: 'Mover no braço (Aula 08)', p: 'Quem usa a classe precisa conhecer a lista, o pai e a ordem das operações. Esqueceu um passo, a árvore fica torta.' },
+    c6: { t: 'trabalhos._Item__nome', p: 'O nome renomeado (name mangling). O Python não é cofre: dá para chegar lá, mas agora quem quebra a regra precisou fazer de propósito.' },
+    cap: { t: 'A cápsula (a fronteira da classe)', p: 'Tudo o que está dentro é privado. A única conversa com o mundo de fora é pelas portas verdes, a interface pública.' },
+    'd-nome': { t: 'nome (property com setter)', d: [['leitura', 'devolve <code>__nome</code>'], ['escrita', 'só depois de <code>__validar_nome</code>']], p: 'Leitura e escrita com validação: recusa nome vazio e nome com <code>/</code>.' },
+    'd-pai': { t: 'pai (só getter)', p: 'Somente leitura: <code>trabalhos.pai = x</code> levanta <code>AttributeError</code> (property sem setter). Para mudar o pai existe <code>mover_para()</code>.' },
+    'd-mover': { t: 'mover_para(destino)', p: 'Exponha o que o objeto faz, não o dado cru. Tira o item da pasta antiga, põe na nova, recusa mover pasta para dentro dela mesma e para dentro de arquivo.' },
+    'd-filhos': { t: 'filhos (cópia imutável)', p: 'Devolve <code>tuple(self.__filhos)</code>: tupla não tem <code>append</code>. A lista de verdade fica lá dentro.' },
+    slots: { t: '__slots__', p: 'Lista os únicos atributos permitidos e elimina o <code>__dict__</code>: nada novo nasce.' },
+    'p-validar': { t: '__validar_nome() (método privado)', p: 'Detalhe de implementação. Dois sublinhados: o Python renomeia para <code>_Item__validar_nome</code> e ninguém de fora o chama por engano.' },
+    'p-nome': { t: '__nome (privado)', p: 'O dado de verdade. Só <code>nome</code> (a porta) e os métodos da classe chegam nele.' },
+    'p-pai': { t: '__pai (privado)', p: 'Só o <code>mover_para()</code> muda. Privado é da classe, não do objeto: dentro de <code>Item</code>, um item mexe no <code>__filhos</code> de outro.' },
+    'p-filhos': { t: '__filhos (privado)', p: 'A lista real. Fica protegida da mão de quem está fora.' },
+    'a-nome': { t: 'nome (público)', p: 'Qualquer um escreve qualquer coisa: número, texto vazio, o que quiser.' },
+    'a-pai': { t: 'pai (público)', p: 'Reatribuir sem avisar o pai antigo deixa a árvore torta.' },
+    'a-filhos': { t: 'filhos (lista pública)', p: 'Qualquer um adiciona ou remove, sem regra.' },
+    'a-dict': { t: '__dict__', p: 'O dicionário interno que aceita atributo novo a qualquer momento.' }
+  },
+  scenarios: {
+    nome: { label: '1 · nome vazio', mode: 'fechado', t: 'Escrever um nome inválido (setter valida)', steps: [
+      { title: 'entra pela porta nome', e: ['f1a'], n: ['c1', 'd-nome'], x: 'A escrita entra pela porta <code>nome</code>, que é uma property com setter. A porta existe, mas o setter confere antes de gravar.', code: '@nome.setter\ndef nome(self, novo_nome):\n    self.__validar_nome(novo_nome)\n    self.__nome = novo_nome' },
+      { title: 'chama o método privado', e: ['in-nv'], n: ['p-validar'], x: 'O setter chama o método privado <code>__validar_nome</code>, um detalhe interno que ninguém de fora precisa conhecer.' },
+      { title: 'recusa a gravação', e: ['f1c'], n: ['p-nome'], tags: [{ n: 'p-validar', t: 'ValueError: nome inválido', tone: 'bad' }, { n: 'p-nome', t: 'intacto: "Trabalhos"', tone: 'ok', pos: 'below' }], x: 'A validação falha e o <code>__nome</code> nunca é tocado: o objeto continua consistente. O erro aparece na linha de quem tentou, e não lá na frente.', code: 'def __validar_nome(self, nome):\n    if nome == "" or "/" in nome:\n        raise ValueError("nome inválido: " + repr(nome))' }
+    ]},
+    pai: { label: '2 · trocar o pai', mode: 'fechado', t: 'Reatribuir o pai (só leitura)', steps: [
+      { title: 'tentativa', e: ['f2'], n: ['c2', 'd-pai'], tags: [{ n: 'd-pai', t: 'AttributeError: sem setter', tone: 'bad' }], x: 'A porta <code>pai</code> só tem getter (property sem setter). A escrita é barrada na porta e <code>__pai</code> nem é consultado.', code: '@property\ndef pai(self):\n    return self.__pai' },
+      { title: 'o caminho certo existe', e: ['f2', 'in-mp'], n: ['d-mover', 'p-pai'], tags: [{ n: 'd-pai', t: 'AttributeError: sem setter', tone: 'bad' }], x: 'Para mudar o pai, a classe oferece comportamento: <code>mover_para()</code>, que atualiza as duas pontas (pasta antiga e nova) numa operação só.' }
+    ]},
+    filhos: { label: '3 · mexer na lista', mode: 'fechado', t: 'Alterar a lista de filhos por fora', steps: [
+      { title: 'pede os filhos', e: ['f3a'], n: ['c3', 'd-filhos'], x: 'A porta <code>filhos</code> é um getter: quem pede recebe os filhos.' },
+      { title: 'recebe uma cópia', e: ['in-ff'], n: ['p-filhos'], tags: [{ n: 'd-filhos', t: 'devolve uma tupla (cópia)', tone: 'warn' }], x: 'O getter não entrega a lista de verdade: devolve uma <code>tuple</code>, uma cópia imutável.', code: '@property\ndef filhos(self):\n    return tuple(self.__filhos)' },
+      { title: 'append não existe', e: ['f3a'], n: ['c3'], tags: [{ n: 'c3', t: "AttributeError: 'tuple' sem append", tone: 'bad' }, { n: 'p-filhos', t: 'lista original intacta', tone: 'ok', pos: 'below' }], x: 'Tupla não tem <code>append</code>: a tentativa falha e a lista real, lá dentro, continua intacta.' }
+    ]},
+    slots: { label: '4 · atributo novo', mode: 'fechado', t: 'Inventar um atributo (__slots__)', steps: [
+      { title: 'tentativa', e: ['f4'], n: ['c4', 'slots'], tags: [{ n: 'slots', t: "AttributeError: sem atributo 'altura'", tone: 'bad' }], x: 'O <code>__slots__</code> lista os únicos atributos permitidos e elimina o <code>__dict__</code>: nada novo nasce. Sem ele, <code>altura</code> entraria sem reclamar.', code: '__slots__ = ("__nome", "__eh_pasta", "__pai", "__filhos")' }
+    ]},
+    mover: { label: '5 · mover_para()', mode: 'fechado', t: 'O caminho certo: comportamento no lugar de dado cru', steps: [
+      { title: 'chama o serviço', e: ['f5a'], n: ['c5f', 'd-mover'], x: 'Um único passo, por uma porta pública: <code>mover_para(desktop)</code>.' },
+      { title: 'a classe cuida da ordem', e: ['in-mf', 'in-mp'], n: ['p-pai', 'p-filhos'], tags: [{ n: 'd-mover', t: 'validou e moveu', tone: 'ok' }, { n: 'p-pai', t: 'agora: Desktop', tone: 'ok', pos: 'below' }], x: 'Por dentro, a classe valida, tira o item da lista antiga, põe na nova e atualiza o pai. <b>Quem chama sabe menos</b>, e por isso não tem como errar a ordem.', code: 'def mover_para(self, destino):\n    if not destino.eh_pasta:\n        raise ValueError(destino.nome + " é um arquivo")\n    if self.__pai is not None:\n        self.__pai.__filhos.remove(self)\n    destino.__filhos.append(self)\n    self.__pai = destino' }
+    ]},
+    cofre: { label: '6 · nada é cofre', mode: 'fechado', t: 'Burlar a cerca de propósito', steps: [
+      { title: 'tentativa', e: ['f6'], n: ['c6', 'p-nome'], tags: [{ n: 'p-nome', t: 'funciona: contrato quebrado', tone: 'warn', pos: 'below' }], x: 'O nome privado foi renomeado para <code>_Item__nome</code>, mas continua lá. A proteção do Python é por <b>contrato</b>: deixa o caminho certo óbvio e o errado inconveniente. Quem chega aqui precisou fazer de propósito.', code: 'print(trabalhos._Item__nome)   # Trabalhos' }
+    ]},
+    estragar: { label: 'estragar tudo (4 linhas sem erro)', mode: 'aberto', t: 'Sem encapsulamento: nenhuma linha dá erro', steps: [
+      { title: 'nome vazio', e: ['a1'], n: ['c1'], tags: [{ n: 'a-nome', t: 'nome = ""', tone: 'bad' }], x: 'O nome vira texto vazio e nada reclama.' },
+      { title: 'pai some', e: ['a2'], n: ['c2'], tags: [{ n: 'a-nome', t: 'nome = ""', tone: 'bad' }, { n: 'a-pai', t: 'pai = None: sumiu da árvore', tone: 'bad' }], x: 'O pai vira <code>None</code>: a pasta antiga ainda guarda o item, mas ele já não sabe a quem pertence.' },
+      { title: 'lista alterada', e: ['a3'], n: ['c3'], tags: [{ n: 'a-nome', t: 'nome = ""', tone: 'bad' }, { n: 'a-pai', t: 'pai = None: sumiu da árvore', tone: 'bad' }, { n: 'a-filhos', t: 'lista mudou sem regra', tone: 'bad' }], x: 'Qualquer um adiciona ou remove filhos sem nenhuma validação.' },
+      { title: 'atributo inventado', e: ['a4'], n: ['c4'], tags: [{ n: 'a-nome', t: 'nome = ""', tone: 'bad' }, { n: 'a-pai', t: 'pai = None: sumiu da árvore', tone: 'bad' }, { n: 'a-filhos', t: 'lista mudou sem regra', tone: 'bad' }, { n: 'a-dict', t: 'nasceu "altura"', tone: 'bad' }], x: 'O <code>__dict__</code> aceita a propriedade nova. Quatro linhas, quatro estragos, zero erros: o programa segue com um objeto quebrado.' }
+    ]},
+    braco: { label: 'mover no braço', mode: 'aberto', t: 'Sem encapsulamento: mover é por conta de quem chama', steps: [
+      { title: 'põe na lista nova', e: ['a5a'], n: ['c5a'], x: 'Quem usa a classe precisa conhecer a lista de filhos: <code>desktop.filhos.append(trabalhos)</code>.' },
+      { title: 'troca o pai', e: ['a5a', 'a5b'], n: ['c5a'], tags: [{ n: 'a-filhos', t: 'esqueceu remover da lista antiga!', tone: 'bad' }, { n: 'a-pai', t: 'pai = desktop', tone: 'warn' }], x: 'Depois <code>trabalhos.pai = desktop</code>. Faltou tirar o item da lista da pasta antiga: agora ele aparece em <b>duas</b> pastas. Nada na classe impediu o esquecimento.' }
+    ]}
+  }
+};
+</script>
+<script src="../../../assets/modelo.js"></script>
+</body>
+</html>

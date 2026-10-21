@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilar 2: Herança</title>
+<link rel="stylesheet" href="../../../assets/modelo.css">
+<script src="../../../assets/tema.js"></script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="topbar"><a class="back" href="../../../index.html">← Voltar</a></nav>
+
+  <p class="eyebrow">Engenharia de Software · 2026.2 · Aula 09 · modelo interativo</p>
+  <h1>Pilar 2: <span class="accent">Herança</span></h1>
+  <p class="lede">O <code>Item</code> da Aula 08 tinha um booleano (<code>eh_pasta</code>) e vários <code>if</code>. Aqui ele vira três classes: <code>Item</code> (o geral), <code>Pasta</code> e <code>Arquivo</code> (os específicos). Clique nas classes e nos métodos, ou rode um cenário.</p>
+
+  <div class="controls">
+    <div class="group" role="group" aria-label="Cenários"><span class="group-title">Cenários</span><span id="scenarios" class="group"></span></div>
+  </div>
+
+  <div class="scroller">
+    <div class="stage" id="stage">
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+    </div>
+  </div>
+
+  <div class="panels">
+    <section class="panel" id="info"></section>
+    <section class="panel" id="scn"></section>
+  </div>
+
+  <div class="legend">
+    <span><i class="lg-cls"></i>classe</span>
+    <span><i class="lg-def"></i>definido na própria classe</span>
+    <span><i class="lg-ghost"></i>herdado da mãe (a filha não reescreve)</span>
+    <span><i class="lg-over"></i>sobrescrito / implementado pela filha</span>
+    <span><i class="lg-abs"></i>abstrato (a filha é obrigada a implementar)</span>
+    <span><i class="lg-obj"></i>objeto (instância)</span>
+    <span><i class="lg-tri"></i>▷ "é um" (herança)</span>
+    <span>◇ "tem um" (composição)</span>
+  </div>
+
+</div>
+<script>
+window.MODELO = {
+  W: 1800, H: 1040,
+  nodes: [
+    { id: 'cl1', cls: 'client', x: 30, y: 70, w: 400, h: 80, html: '<code>tf.mover_para(trabalhos)</code><small>destino é uma Pasta</small>' },
+    { id: 'cl2', cls: 'client', x: 30, y: 180, w: 400, h: 80, html: '<code>trabalhos.mover_para(tf)</code><small>destino é um Arquivo</small>' },
+    { id: 'cl3', cls: 'client', x: 30, y: 290, w: 400, h: 80, html: '<code>Arquivo("tf-09.py", 800, trabalhos)</code><small>criar um arquivo</small>' },
+
+    { id: 'Item', cls: 'cls card mother', x: 500, y: 60, w: 800, h: 400, html: '<span>class <b>Item</b>(Medivel)</span><small>a mãe: abstrata, não dá para criar um Item solto</small>' },
+    { id: 'i-init', cls: 'member', x: 540, y: 128, w: 720, h: 42, html: '__init__(nome, pai)' },
+    { id: 'i-props', cls: 'member', x: 540, y: 180, w: 720, h: 42, html: 'nome · pai<small>property (nome tem setter com validação)</small>' },
+    { id: 'i-cam', cls: 'member', x: 540, y: 232, w: 720, h: 42, html: 'caminho() · profundidade()' },
+    { id: 'i-receber', cls: 'member', x: 540, y: 284, w: 720, h: 42, html: '_receber(item)<small>protegido · padrão: recusa (quem não é pasta não contém nada)</small>' },
+    { id: 'i-tam', cls: 'member abstract', x: 540, y: 336, w: 350, h: 42, html: 'tamanho()<small>abstrato</small>' },
+    { id: 'i-mostrar', cls: 'member abstract', x: 910, y: 336, w: 350, h: 42, html: 'mostrar()<small>abstrato</small>' },
+    { id: 'i-mover', cls: 'member', x: 540, y: 388, w: 720, h: 42, html: 'mover_para(destino)' },
+
+    { id: 'Pasta', cls: 'cls card', x: 30, y: 610, w: 700, h: 385, html: '<span>class <b>Pasta</b>(Item)</span><small>acrescenta os filhos</small>' },
+    { id: 'p-ghost', cls: 'member ghost', x: 60, y: 672, w: 640, h: 42, html: 'nome · pai · mover_para() · caminho() · profundidade()<small>herdados de Item</small>' },
+    { id: 'p-init', cls: 'member', x: 60, y: 724, w: 640, h: 42, html: '__init__(nome, pai=None)<small>cria __filhos e chama super().__init__</small>' },
+    { id: 'p-filhos', cls: 'member', x: 60, y: 776, w: 640, h: 42, html: '__filhos · filhos<small>a lista privada e a property que devolve tupla</small>' },
+    { id: 'p-receber', cls: 'member override', x: 60, y: 828, w: 640, h: 42, html: '_receber(item)<small>sobrescreve: a pasta aceita (sem criar ciclo)</small>' },
+    { id: 'p-soltar', cls: 'member', x: 60, y: 880, w: 640, h: 42, html: '_soltar(item)' },
+    { id: 'p-tam', cls: 'member override', x: 60, y: 932, w: 310, h: 42, html: 'tamanho()<small>soma os filhos</small>' },
+    { id: 'p-mostrar', cls: 'member override', x: 390, y: 932, w: 310, h: 42, html: 'mostrar()<small>mostra e desce</small>' },
+
+    { id: 'Arquivo', cls: 'cls card', x: 1070, y: 610, w: 700, h: 385, html: '<span>class <b>Arquivo</b>(Item)</span><small>acrescenta o tamanho em bytes</small>' },
+    { id: 'a-ghost', cls: 'member ghost', x: 1100, y: 672, w: 640, h: 42, html: 'nome · pai · mover_para() · caminho() · profundidade()<small>herdados de Item</small>' },
+    { id: 'a-init', cls: 'member', x: 1100, y: 724, w: 640, h: 42, html: '__init__(nome, tamanho_bytes, pai=None)<small>guarda __bytes e chama super().__init__</small>' },
+    { id: 'a-bytes', cls: 'member', x: 1100, y: 776, w: 640, h: 42, html: '__bytes<small>o dado que só o arquivo tem</small>' },
+    { id: 'a-receber', cls: 'member ghost', x: 1100, y: 828, w: 640, h: 42, html: '_receber(item)<small>herdado: não reescreveu, então recusa</small>' },
+    { id: 'a-tam', cls: 'member override', x: 1100, y: 880, w: 310, h: 42, html: 'tamanho()<small>devolve __bytes</small>' },
+    { id: 'a-mostrar', cls: 'member override', x: 1430, y: 880, w: 310, h: 42, html: 'mostrar()<small>mostra o arquivo</small>' },
+
+    { id: 'trabalhos', cls: 'obj', x: 790, y: 700, w: 220, h: 90, html: 'trabalhos<small>Pasta("Trabalhos")</small>' },
+    { id: 'tf', cls: 'obj file', x: 790, y: 860, w: 220, h: 90, html: 'tf<small>Arquivo("tf-09.py", 800)</small>' }
+  ],
+  edges: [
+    { id: 'inh-pasta', from: 'Pasta', to: 'Item', kind: 'inherit', label: 'é um' },
+    { id: 'inh-arq', from: 'Arquivo', to: 'Item', kind: 'inherit', label: 'é um' },
+    { id: 'inst-t', from: 'trabalhos', to: 'Pasta', kind: 'inst' },
+    { id: 'inst-tf', from: 'tf', to: 'Arquivo', kind: 'inst' },
+    { id: 'has-filhos', from: 'p-filhos', to: 'Item', kind: 'has', only: true, points: [[748, 797], [748, 540]], label: 'tem Itens (composição)', at: 0.55 },
+
+    { id: 'k-mover1', from: 'cl1', to: 'i-mover', kind: 'call', only: true, points: [[470, 110], [470, 409]] },
+    { id: 'k-mover2', from: 'cl2', to: 'i-mover', kind: 'call', only: true, points: [[470, 220], [470, 409]] },
+    { id: 'k-recebe-pasta', from: 'i-mover', to: 'p-receber', kind: 'ok', only: true, points: [[760, 520], [760, 849]], label: 'destino._receber(item)', at: 0.55 },
+    { id: 'k-recebe-arq', from: 'i-mover', to: 'a-receber', kind: 'call', only: true, points: [[1030, 520], [1030, 849]], label: 'destino._receber(item)', at: 0.55 },
+    { id: 'k-sobe', from: 'a-receber', to: 'i-receber', kind: 'block', only: true, points: [[1050, 849], [1050, 540], [1330, 540], [1330, 305]], label: 'não sobrescreveu: sobe para a mãe', at: 0.62 },
+
+    { id: 'k-init-a', from: 'cl3', to: 'a-init', kind: 'call', only: true, points: [[470, 330], [470, 560], [1082, 560], [1082, 745]] },
+    { id: 'k-super', from: 'a-init', to: 'i-init', kind: 'call', only: true, points: [[1090, 745], [1090, 575], [1330, 575], [1330, 149]], label: 'super().__init__(nome, pai)', at: 0.55 },
+    { id: 'k-init-mover', from: 'i-init', to: 'i-mover', kind: 'int', only: true, points: [[520, 149], [520, 409]], label: 'com pai: mover_para', at: 0.5 }
+  ],
+  info: {
+    Item: { t: 'Item (a mãe)', d: [['guarda', 'o que toda pasta e todo arquivo têm: nome e pai'], ['é abstrata', 'não dá para criar um <code>Item</code> solto: faltam <code>tamanho()</code> e <code>mostrar()</code>']], p: 'O <b>geral</b>: tudo o que é comum fica aqui, escrito uma vez só. Pasta e Arquivo recebem de graça.' },
+    Pasta: { t: 'Pasta (filha de Item)', p: 'É um <code>Item</code> (relação "é um") e acrescenta o que só ela tem: a lista de filhos. O <code>__slots__</code> dela lista só <code>__filhos</code>; os campos da mãe vêm do <code>__slots__</code> da mãe.' },
+    Arquivo: { t: 'Arquivo (filha de Item)', p: 'É um <code>Item</code> e acrescenta só o <code>__bytes</code>. Não tem filhos, e por isso nem reescreve o <code>_receber</code>.' },
+    'i-init': { t: 'Item.__init__', p: 'Valida o nome e, se veio um pai, chama <code>mover_para</code>. As filhas reaproveitam isso com <code>super().__init__(...)</code>.' },
+    'i-props': { t: 'nome e pai', p: 'Escritos uma vez na mãe: todo <code>Pasta</code> e todo <code>Arquivo</code> já nascem com eles.' },
+    'i-mover': { t: 'mover_para(destino)', p: 'Vive só na mãe, mas quem executa pode ser Pasta ou Arquivo. Ele pede <code>destino._receber(self)</code> e quem for o destino responde do seu jeito.' },
+    'i-cam': { t: 'caminho() e profundidade()', p: 'Subir pelos pais não depende de ser pasta ou arquivo: ficam na mãe.' },
+    'i-receber': { t: '_receber(item) · protegido', p: 'Um sublinhado: assunto da família. É o que a filha enxerga da mãe, e o gancho que as filhas sobrescrevem. O padrão recusa, porque por padrão um item não contém nada.' },
+    'i-tam': { t: 'tamanho() · abstrato', p: 'A mãe só diz que existe; cada filha é obrigada a implementar. É o contrato que o polimorfismo usa (veja o Pilar 3).' },
+    'i-mostrar': { t: 'mostrar() · abstrato', p: 'Idem: cada filha mostra do seu jeito.' },
+    'p-ghost': { t: 'Herdado de Item', p: 'A <code>Pasta</code> não escreveu nada disso: está tudo na mãe. Mudou na mãe, mudou nas duas filhas (e esse é o acoplamento forte da herança).' },
+    'p-init': { t: 'Pasta.__init__', p: 'Cria o próprio <code>__filhos</code> e chama <code>super().__init__(nome, pai)</code> para a mãe fazer o resto.' },
+    'p-filhos': { t: '__filhos e filhos', p: 'Relação "tem um", não "é um": a pasta <b>tem</b> itens, não é filha deles. Isso é <b>composição</b>.' },
+    'p-receber': { t: '_receber · override', p: 'A pasta sobrescreve o gancho: aceita o item, desde que não crie um ciclo (mover pasta para dentro dela mesma).' },
+    'p-soltar': { t: '_soltar(item)', p: 'O outro lado do <code>mover_para</code>: tira o item da pasta antiga.' },
+    'p-tam': { t: 'Pasta.tamanho()', p: 'Soma o tamanho dos filhos. Implementa o abstrato da mãe.' },
+    'p-mostrar': { t: 'Pasta.mostrar()', p: 'Mostra o nome com <code>/</code> e desce pelos filhos.' },
+    'a-ghost': { t: 'Herdado de Item', p: 'Igual à Pasta: o arquivo reaproveita tudo isso da mãe.' },
+    'a-init': { t: 'Arquivo.__init__', p: 'Guarda o <code>__bytes</code> e chama <code>super().__init__(nome, pai)</code>.' },
+    'a-bytes': { t: '__bytes', p: 'O dado que só o arquivo tem. Pasta não precisa dele.' },
+    'a-receber': { t: '_receber herdado', p: 'O arquivo não reescreveu: usa o padrão da mãe, que recusa. É por isso que arquivo não contém nada.' },
+    'a-tam': { t: 'Arquivo.tamanho()', p: 'Devolve o próprio <code>__bytes</code>. Implementa o abstrato da mãe.' },
+    'a-mostrar': { t: 'Arquivo.mostrar()', p: 'Mostra o nome e o tamanho.' },
+    trabalhos: { t: 'trabalhos (objeto)', p: 'Instância de <code>Pasta</code>: nasceu do molde, e por herança também é um <code>Item</code>.' },
+    tf: { t: 'tf (objeto)', p: 'Instância de <code>Arquivo</code>: também é um <code>Item</code>.' }
+  },
+  scenarios: {
+    herda: { label: 'o que a filha herda', t: 'Reaproveitar a mãe', steps: [
+      { title: 'Arquivo é um Item', e: ['inh-arq'], n: ['a-ghost', 'a-receber'], x: 'O <code>Arquivo</code> declara só o que é dele (<code>__bytes</code>, <code>tamanho()</code>, <code>mostrar()</code>). O resto, os blocos tracejados, vem do <code>Item</code> sem uma linha repetida.', code: 'class Arquivo(Item):\n    __slots__ = ("__bytes",)' },
+      { title: 'Pasta também', e: ['inh-arq', 'inh-pasta'], n: ['a-ghost', 'p-ghost'], x: 'A <code>Pasta</code> herda a mesma base e acrescenta o que é dela. Escrito uma vez, vale para as duas.', code: 'class Pasta(Item):\n    __slots__ = ("__filhos",)' }
+    ]},
+    override: { label: 'override do _receber', t: 'Quem aceita filhos? (herança + sobrescrita)', steps: [
+      { title: 'mover para uma pasta', e: ['k-mover1'], n: ['cl1', 'i-mover'], x: '<code>tf.mover_para(trabalhos)</code>: o método é herdado, vive só no <code>Item</code>. Ele precisa saber se o destino aceita filhos.', code: 'def mover_para(self, destino):\n    destino._receber(self)   # cada tipo decide\n    ...' },
+      { title: 'a Pasta sobrescreve', e: ['k-recebe-pasta'], n: ['p-receber'], tags: [{ n: 'p-receber', t: 'aceita ✓', tone: 'ok' }], x: 'O destino é uma <code>Pasta</code>: o Python executa o <code>_receber</code> <b>dela</b> (override), que aceita o item.', code: '# em Pasta\ndef _receber(self, item):\n    ...\n    self.__filhos.append(item)' },
+      { title: 'mover para um arquivo', e: ['k-mover2'], n: ['cl2', 'i-mover'], x: '<code>trabalhos.mover_para(tf)</code>: o mesmo método herdado, agora com um <code>Arquivo</code> como destino.' },
+      { title: 'o Arquivo não sobrescreveu', e: ['k-recebe-arq'], n: ['a-receber'], x: 'O destino é um <code>Arquivo</code>, que não reescreveu o <code>_receber</code>: o Python sobe a cadeia até achar o da mãe.' },
+      { title: 'cai no padrão da mãe', e: ['k-sobe'], n: ['i-receber'], tags: [{ n: 'i-receber', t: 'ValueError: é um arquivo', tone: 'bad' }], x: 'O padrão do <code>Item</code> recusa. Nenhum <code>if eh_pasta</code> em lugar nenhum: a decisão ficou com quem sabe, a própria classe do destino.', code: '# em Item\ndef _receber(self, item):\n    raise ValueError(self.__nome + " é um arquivo, não pode conter itens")' }
+    ]},
+    super: { label: 'super().__init__', t: 'Construir uma filha reaproveitando o construtor da mãe', steps: [
+      { title: 'cria o arquivo', e: ['k-init-a'], n: ['cl3', 'a-init', 'a-bytes'], tags: [{ n: 'a-bytes', t: '__bytes = 800', tone: 'ok' }], x: 'O <code>Arquivo.__init__</code> guarda primeiro o que só ele tem: o <code>__bytes</code>.', code: 'def __init__(self, nome, tamanho_bytes, pai=None):\n    self.__bytes = tamanho_bytes\n    super().__init__(nome, pai)' },
+      { title: 'chama o construtor da mãe', e: ['k-super'], n: ['i-init'], x: '<code>super().__init__(nome, pai)</code> entrega o resto para a mãe: ela valida o nome e guarda o <code>__nome</code> e o <code>__pai</code>.', code: 'self.__validar_nome(nome)\nself.__nome = nome\nself.__pai = None' },
+      { title: 'e se há um pai', e: ['k-init-mover'], n: ['i-mover'], tags: [{ n: 'i-mover', t: 'tf entra em trabalhos', tone: 'ok' }], x: 'Como veio <code>trabalhos</code> como pai, o construtor da mãe chama <code>mover_para</code>, que pede o <code>_receber</code> da pasta. O arquivo nasce já pendurado na árvore.' }
+    ]},
+    tem: { label: 'é um × tem um', t: 'Herança ou composição?', steps: [
+      { title: 'é um: herança', e: ['inh-pasta', 'inh-arq'], x: '<b>Pasta é um Item</b>, <b>Arquivo é um Item</b>: a relação "é um" pede herança. Qualquer lugar que espera um <code>Item</code> aceita os dois.' },
+      { title: 'tem um: composição', e: ['has-filhos'], n: ['p-filhos'], tags: [{ n: 'p-filhos', t: 'tem, não é', tone: 'warn' }], x: '<b>Pasta tem Itens</b>: a lista <code>__filhos</code> guarda objetos. Pasta não é filha deles, então aqui não se herda: o objeto é <b>guardado dentro</b> do outro. Herança gera acoplamento forte, e só se usa quando o "é um" existe de verdade.' }
+    ]},
+    slots: { label: '__slots__ na herança', t: 'Cada classe lista só o que acrescenta', steps: [
+      { title: 'três listas, uma cerca', e: [], n: ['Item', 'Pasta', 'Arquivo'], tags: [{ n: 'Item', t: '__slots__ = ("__nome", "__pai")', tone: 'ok' }, { n: 'Pasta', t: '__slots__ = ("__filhos",)', tone: 'ok' }, { n: 'Arquivo', t: '__slots__ = ("__bytes",)', tone: 'ok' }], x: 'Cada classe declara no <code>__slots__</code> só o que acrescenta. Pegadinha: se a mãe <b>não</b> tivesse <code>__slots__</code>, as filhas voltariam a ter <code>__dict__</code> e a cerca abriria de novo. Uma filha que não acrescenta nada usa <code>__slots__ = ()</code>.' }
+    ]}
+  }
+};
+</script>
+<script src="../../../assets/modelo.js"></script>
+</body>
+</html>

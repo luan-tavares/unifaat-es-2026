@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 09 — Os 3 Pilares da Orientação a Objetos</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<link rel="stylesheet" href="../../assets/slide-16x9.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">09</span> - Os 3 Pilares da Orientação a Objetos</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="o problema">
+    <h2>O <span class="accent">Item</span> da Aula 08 aceita qualquer coisa</h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">a classe aberta (Aula 08)</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">trabalhos.nome = 1</span>   <span class="out"># o nome virou um número</span></div>
+        <div class="term-line"><span class="cmd">trabalhos.filhos = "qualquer coisa"</span>   <span class="out"># a árvore se perdeu</span></div>
+        <div class="term-line"><span class="cmd">trabalhos.altura = 1.70</span>   <span class="out"># propriedade que ninguém declarou</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="out hl">nenhuma dessas linhas dá erro</span></div>
+      </div>
+    </div>
+    <p class="payoff"><code>objeto.propriedade = valor</code> de fora da classe é feio e perigoso:
+    a classe perde o controle dos <strong>próprios dados</strong>. Hoje: como fechar essa porta.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="visibilidade">
+    <h2>Quem pode ver o quê: <span class="accent">modificadores de acesso</span></h2>
+    <table class="data-table">
+      <thead><tr><th>nível</th><th>quem acessa</th><th>Java</th><th>Python</th></tr></thead>
+      <tbody>
+        <tr><td><strong>público</strong></td><td>qualquer um</td><td><code>public</code></td><td><code>self.nome</code></td></tr>
+        <tr><td><strong>protegido</strong></td><td>a classe e as filhas</td><td><code>protected</code></td><td><code>self._nome</code> (convenção)</td></tr>
+        <tr><td><strong>privado</strong></td><td>só a própria classe</td><td><code>private</code></td><td><code>self.__nome</code> (renomeado)</td></tr>
+      </tbody>
+    </table>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/09/visibilidade.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class ItemConvencao:</span></div>
+        <div class="term-line"><span class="cmd">    def __init__(self, nome):</span></div>
+        <div class="term-line"><span class="cmd">        self.nome = nome</span>       <span class="out"># público</span></div>
+        <div class="term-line"><span class="cmd">        self._pai = None</span>       <span class="out"># protegido: só pede</span></div>
+        <div class="term-line"><span class="cmd">        self.__filhos = []</span>     <span class="out"># privado: o Python renomeia</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">item.__filhos</span>   <span class="out"># AttributeError</span></div>
+        <div class="term-line"><span class="cmd">item._ItemConvencao__filhos</span>   <span class="out"># o nome renomeado: não é cofre</span></div>
+      </div>
+    </div>
+    <p class="payoff">Em Java o <strong>compilador proíbe</strong>; em Python a
+    <strong>convenção pede</strong>. Vale também para métodos: <code>_receber()</code>
+    e <code>__validar_nome()</code>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="fechando a cerca · property">
+    <h2>Getter e setter: <span class="accent">a porta controlada</span></h2>
+    <div class="two-col">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/09/encapsulamento.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">    @property</span></div>
+        <div class="term-line"><span class="cmd">    def nome(self):</span>                <span class="out"># getter</span></div>
+        <div class="term-line"><span class="cmd">        return self.__nome</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    @nome.setter</span></div>
+        <div class="term-line"><span class="cmd">    def nome(self, novo_nome):</span>   <span class="out"># setter</span></div>
+        <div class="term-line"><span class="cmd">        self.</span><span class="hl">__validar_nome</span><span class="cmd">(novo_nome)</span></div>
+        <div class="term-line"><span class="cmd">        self.__nome = novo_nome</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    @property</span></div>
+        <div class="term-line"><span class="cmd">    def pai(self):</span>                 <span class="out"># só getter</span></div>
+        <div class="term-line"><span class="cmd">        return self.__pai</span></div>
+      </div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>combinação</th><th>permite</th></tr></thead>
+      <tbody>
+        <tr><td>getter + setter com validação</td><td>ler e escrever, com regra</td></tr>
+        <tr><td>só getter</td><td>só ler (<code>item.pai = x</code> dá erro)</td></tr>
+        <tr><td class="hl">nem setter: comportamento</td><td><code>mover_para(destino)</code></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="payoff">Quem usa continua escrevendo <code>item.nome</code>. O encapsulamento mais
+    forte nem libera setter: <strong>expõe o que o objeto faz, não o dado cru</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="fechando a cerca · __slots__">
+    <h2>Nenhum atributo novo: <span class="accent">__slots__</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># em Python o atributo nasce na atribuição</span><br>
+      <strong>p.altura = 1.70</strong> cria sem reclamar<br>
+      os atributos moram no <strong>__dict__</strong><br>
+      <span class="dim">__slots__ lista os únicos permitidos<br>e elimina o __dict__</span>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/09/encapsulamento.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class Item:</span></div>
+        <div class="term-line"><span class="cmd">    </span><span class="hl">__slots__</span><span class="cmd"> = ("__nome", "__eh_pasta",</span></div>
+        <div class="term-line"><span class="cmd">                 "__pai", "__filhos")</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    @property</span></div>
+        <div class="term-line"><span class="cmd">    def filhos(self):</span></div>
+        <div class="term-line"><span class="cmd">        return </span><span class="hl">tuple(self.__filhos)</span>  <span class="out"># cópia</span></div>
+      </div>
+    </div>
+    </div>
+    <ul class="points">
+      <li><code>trabalhos.altura = 1.70</code> e <code>trabalhos.pai = None</code> agora levantam <code>AttributeError</code></li>
+      <li>Devolver a lista de dentro <strong>vaza</strong> a cerca: <code>.filhos.append(x)</code> burlaria as regras. A tupla é uma cópia imutável</li>
+      <li>Nada é cofre: <code>trabalhos._Item__nome</code> ainda chega. A proteção é <strong>por contrato</strong></li>
+    </ul>
+  </section>
+
+  <section class="slide" data-eyebrow="abstrair">
+    <h2>Antes dos pilares: o que é <span class="accent">abstrair</span>?</h2>
+    <p class="lede">Do latim <em>abstrahere</em>, "arrastar para fora, separar":
+    <strong>recortar o essencial e ignorar o detalhe</strong>. Não é inventar, é recortar.</p>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># o que eu uso (interface)</span><br>
+      mapa do metrô: estações e ligações<br>
+      dirigir: volante, pedais, câmbio<br>
+      Explorador: pastas e arquivos
+    </div>
+    <div class="tree">
+      <span class="dim"># o que ignoro (implementação)</span><br>
+      as ruas, as curvas, as distâncias<br>
+      a combustão, a injeção<br>
+      setores de disco, blocos, ponteiros
+    </div>
+    </div>
+    <p class="payoff">O ganho é sempre o mesmo: <strong>usar sem precisar entender tudo</strong>.
+    Guarde a frase: ela volta em cada pilar.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="pilar 1 · encapsulamento">
+    <span class="kicker-badge">pilar 1</span>
+    <h2><span class="accent">Encapsulamento</span>: dados privados, porta pública</h2>
+    <ul class="points">
+      <li>Agrupar dados e métodos e <strong>controlar o acesso</strong>: <code>__</code>, <code>property</code>, <code>__slots__</code></li>
+      <li>Caixa eletrônico: você usa <code>sacar()</code>, não mexe no saldo</li>
+      <li>A classe pode mudar por dentro sem quebrar quem a usa</li>
+    </ul>
+    <p class="payoff"><strong>Abstração aqui:</strong> separa a <strong>interface</strong> (<code>mover_para()</code>) da <strong>implementação</strong> (<code>__filhos</code>).</p>
+    <a class="link-card" href="../modelos/encapsulamento/index.html" target="_blank" rel="noopener">▶ Diagrama vivo: <code>aula-09-pilares/modelos/encapsulamento/index.html</code></a>
+  </section>
+
+  <section class="slide" data-eyebrow="pilar 2 · herança">
+    <span class="kicker-badge">pilar 2</span>
+    <h2><span class="accent">Herança</span>: o geral e o específico</h2>
+    <ul class="points">
+      <li>Relação <strong>"é um"</strong>: <code>Pasta</code> é um <code>Item</code>, <code>Arquivo</code> é um <code>Item</code>; cada filha lista só o que acrescenta</li>
+      <li>Acoplamento forte: só com "é um" de verdade. "Tem um" é <strong>composição</strong> (a pasta <em>tem</em> filhos)</li>
+      <li><code>_receber()</code> protegido: o que a filha enxerga (e sobrescreve) da mãe</li>
+    </ul>
+    <p class="payoff"><strong>Abstração aqui:</strong> separa o <strong>geral</strong> (<code>Item</code>) do <strong>específico</strong> (<code>Pasta</code>, <code>Arquivo</code>).</p>
+    <a class="link-card" href="../modelos/heranca/index.html" target="_blank" rel="noopener">▶ Diagrama vivo: <code>aula-09-pilares/modelos/heranca/index.html</code></a>
+  </section>
+
+  <section class="slide" data-eyebrow="pilar 3 · polimorfismo">
+    <span class="kicker-badge">pilar 3</span>
+    <h2><span class="accent">Polimorfismo</span>: a mesma chamada, formas diferentes</h2>
+    <ul class="points">
+      <li><code>filho.tamanho()</code> serve para pasta e arquivo, <strong>sem <code>if eh_pasta</code></strong></li>
+      <li><strong>Override</strong>: a filha redefine o método e o Python escolhe em execução. <strong>Python não tem overload</strong></li>
+      <li>Sem herança também vale: <strong>duck typing</strong> (quem tem <code>tamanho()</code> serve)</li>
+    </ul>
+    <p class="payoff"><strong>Abstração aqui:</strong> separa <strong>o que se pede</strong> (<code>tamanho()</code>) de <strong>como é feito</strong> (cada classe calcula).</p>
+    <a class="link-card" href="../modelos/polimorfismo/index.html" target="_blank" rel="noopener">▶ Diagrama vivo: <code>aula-09-pilares/modelos/polimorfismo/index.html</code></a>
+  </section>
+
+  <section class="slide" data-eyebrow="os 3 pilares · resumo">
+    <h2>Os <span class="accent">3 pilares</span> num relance: a abstração dentro de cada um</h2>
+    <table class="data-table">
+      <thead><tr><th>pilar</th><th>a abstração embutida</th><th>no código</th><th>diagrama vivo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>encapsulamento</strong></td><td>separa a <strong>interface</strong> da <strong>implementação</strong></td><td><code>mover_para()</code> por fora, <code>__filhos</code> por dentro</td><td><a href="../modelos/encapsulamento/index.html" target="_blank" rel="noopener">▶ <code>modelos/encapsulamento</code></a></td></tr>
+        <tr><td><strong>herança</strong></td><td>separa o <strong>geral</strong> do <strong>específico</strong></td><td><code>Item</code> × <code>Pasta</code> e <code>Arquivo</code></td><td><a href="../modelos/heranca/index.html" target="_blank" rel="noopener">▶ <code>modelos/heranca</code></a></td></tr>
+        <tr><td><strong>polimorfismo</strong></td><td>separa <strong>o que se pede</strong> de <strong>como é feito</strong></td><td><code>tamanho()</code> pedido, cada classe calcula</td><td><a href="../modelos/polimorfismo/index.html" target="_blank" rel="noopener">▶ <code>modelos/polimorfismo</code></a></td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">Nos três, o movimento é o mesmo: <strong>ignorar o detalhe para trabalhar com o
+    essencial</strong>. A abstração não está ao lado dos pilares: está <strong>misturada dentro</strong> de cada um.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="interface">
+    <h2>Interface: <span class="accent">a tomada da parede</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># a tomada</span><br>
+      tem um formato (os furos, a voltagem)<br>
+      <strong>não sabe</strong> o que vai ser ligado:<br>
+      abajur, carregador, liquidificador
+    </div>
+    <div class="tree">
+      <span class="dim"># o aparelho</span><br>
+      segue o mesmo formato de plugue<br>
+      <strong>não sabe</strong> de onde vem a energia:<br>
+      hidrelétrica, painel solar, gerador
+    </div>
+    </div>
+    <p class="lede">Os dois se entendem pelo <strong>contrato</strong>: o formato do plugue.</p>
+    <p class="payoff">Interface é só a lista de métodos, <strong>sem estado e sem implementação</strong>:
+    diz <em>o que</em>, nunca <em>como</em>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="interface · em código">
+    <h2>O contrato <span class="accent">Medivel</span> na árvore</h2>
+    <div class="two-col">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/09/pilares.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class </span><span class="hl">Medivel</span><span class="cmd">(ABC):</span>          <span class="out"># o plugue</span></div>
+        <div class="term-line"><span class="cmd">    @abstractmethod</span></div>
+        <div class="term-line"><span class="cmd">    def tamanho(self): pass</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">class Item(</span><span class="hl">Medivel</span><span class="cmd">): ...</span></div>
+        <div class="term-line"><span class="cmd">class Lixeira(</span><span class="hl">Medivel</span><span class="cmd">): ...</span>  <span class="out"># fora da árvore</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">def </span><span class="hl">espaco_total</span><span class="cmd">(coisas):</span>      <span class="out"># a tomada</span></div>
+        <div class="term-line"><span class="cmd">    total = 0</span></div>
+        <div class="term-line"><span class="cmd">    for coisa in coisas:</span></div>
+        <div class="term-line"><span class="cmd">        total = total + coisa.tamanho()</span></div>
+        <div class="term-line"><span class="cmd">    return total</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">espaco_total([notas, trabalhos, lixeira])</span></div>
+        <div class="term-line"><span class="out hl">5960</span></div>
+      </div>
+    </div>
+    <div class="tree">
+      <span class="dim"># Java: a mesma ideia</span><br>
+      interface <strong>Medivel</strong> {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;long tamanho();<br>
+      }<br>
+      class Lixeira <strong>implements</strong> Medivel<br>
+      <br>
+      <span class="dim"># Python: também Protocol (duck typing)</span><br>
+      <code>Medivel()</code> → TypeError: classe abstrata
+    </div>
+    </div>
+    <p class="payoff">Nos três pilares, a abstração aparece misturada.
+    <strong>Na interface, ela aparece nua.</strong></p>
+  </section>
+
+  <section class="slide" data-eyebrow="debate aberto">
+    <h2>São <span class="accent">3 ou 4</span> pilares?</h2>
+    <ul class="points">
+      <li>A <strong>abstração é um pilar</strong> (tem manifestação própria na interface) ou o <strong>chão</strong> onde os outros três se apoiam?</li>
+      <li>O <strong>encapsulamento</strong> é recurso da linguagem ou <strong>ideia de projeto</strong>? O Python tem a ideia sem o recurso e dá para ir apertando a cerca</li>
+      <li><strong>3 ou 4</strong> são ambos válidos na literatura: nomear a abstração ajuda a nomear o raciocínio</li>
+    </ul>
+    <p class="payoff">A conclusão é <strong>de cada um</strong>. Python é OO no modelo e permissivo na
+    disciplina: <em>não é OO, ou só não me obriga a ser?</em></p>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 09 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 09: <span class="accent">o Atalho na árvore</span></h2>
+    <p class="lede">Num repositório novo <code>tf-09</code>, com venv e
+    <code>.gitignore</code>, partir do <code>pilares.py</code> e criar a classe
+    <code>Atalho(Item)</code>:</p>
+    <ul class="points">
+      <li><strong>Encapsulamento:</strong> <code>__destino</code> privado, em <code>__slots__</code>, só leitura; trocar só por <code>redirecionar()</code></li>
+      <li><strong>Polimorfismo:</strong> <code>tamanho()</code> e <code>mostrar()</code> próprios; o <code>espaco_total()</code> segue igual</li>
+      <li><strong>Herança e interface:</strong> nada de <code>nome</code>, <code>pai</code> ou <code>caminho</code> copiado; vira <code>Medivel</code> de graça</li>
+      <li>3 tentativas que <strong>falham</strong> de propósito, <code>README</code> sobre interface x implementação e 4+ commits</li>
+      <li>Sem <code>else</code>, sem <code>isinstance</code>, <code>.venv</code> fora do repositório</li>
+    </ul>
+    <p class="body-text">Entrega: link do repositório público no GitHub, pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdBiL-WCzYTcTK_BzVNVoMQqNtPtzK3o9QldB5wSOBt0HJC8w/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLSdBiL-WCzYTcTK_BzVNVoMQqNtPtzK3o9QldB5wSOBt0HJC8w/viewform</code></a></p>
+    <p class="payoff">Prazo: <strong>28/10, até 23:59</strong>.</p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">14</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+
+<script src="../../assets/slide.js"></script>
+<script src="../../assets/slide-16x9.js"></script>
+</body>
+</html>

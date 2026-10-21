@@ -1,0 +1,109 @@
+CONTEXTO
+
+Na Aula 09 vimos os 3 pilares da Orientacao a Objetos, com a abstracao presente em cada um deles: o encapsulamento esconde o como e expoe so o que importa (atributos privados com __, property, __slots__); a heranca separa o geral do especifico (Item, Pasta e Arquivo); o polimorfismo deixa quem chama pedir "o que" sem saber "como" (tamanho() responde diferente em cada classe). Vimos tambem a interface (Medivel), que e a abstracao nua: so o contrato, sem implementacao.
+
+Agora e a vez de voces estenderem a arvore de arquivos com uma classe nova: o Atalho, como aquele atalho do Windows ou o link simbolico do Linux. Ele e um item da arvore que aponta para outro item, o destino.
+
+O QUE VOCES PRECISAM FAZER
+
+Preparar o projeto Dentro do terminal do WSL, crie um diretorio chamado tf-09 e entre nele. Transforme a pasta em um repositorio Git e crie o ambiente virtual do projeto:
+
+mkdir tf-09
+cd tf-09
+git init
+python3 -m venv .venv
+source .venv/bin/activate
+
+Antes de qualquer git add, crie o .gitignore, para que o ambiente virtual nunca seja commitado:
+
+touch .gitignore
+code .
+
+No VS Code, dentro de .gitignore, escrever:
+
+.venv/
+__pycache__/
+
+Trazer a base Copie o arquivo src/09/pilares.py do repositorio base (link no fim) para dentro do tf-09, mas sem o bloco de testes do final (a partir de "disco = Pasta("C:")"): deixe apenas as classes Medivel, Item, Arquivo, Pasta, Lixeira e as funcoes espaco_total e tentar. Rode, leia e entenda o codigo antes de seguir.
+
+Commit:
+
+git add .
+git commit -m "Traz a base da aula 09"
+
+Criar a classe Atalho No mesmo arquivo, crie a classe Atalho, que herda de Item. O construtor recebe o nome, o destino (um Item) e o pai (opcional, como nos outros). Detalhes:
+
+- Encapsulamento: o destino e um atributo privado (__destino), declarado em __slots__, e so pode ser lido por uma property chamada destino (sem setter). Fora da classe, atalho.destino = x tem que dar erro;
+- redirecionar(novo_destino): unica forma de trocar o destino. Levanta ValueError se o novo destino for o proprio atalho ou uma Pasta que contem o atalho (qualquer ancestral dele). O construtor tambem usa essa mesma validacao, sem duplicar codigo;
+- Polimorfismo: tamanho() devolve 1 (o atalho ocupa 1 byte, nao importa o tamanho do destino) e mostrar() imprime, com o mesmo recuo dos outros, "nome -> caminho do destino";
+- Heranca: o Atalho nao pode ter copia de nome, pai, mover_para nem caminho. Isso tudo vem de Item;
+- Interface: como o Item ja assina o Medivel, o Atalho entra no espaco_total() sem nenhuma alteracao nessa funcao.
+
+Commit:
+
+git add .
+git commit -m "Cria a classe Atalho"
+
+Testar No fim do arquivo, monte uma arvore pequena com o seu nome de usuario nas pastas (por exemplo C:/Users/<seu nome>/Desktop), crie pelo menos 2 arquivos, 1 atalho para um arquivo e 1 atalho para uma pasta, e mostre:
+
+- a arvore completa com mostrar();
+- o espaco_total() de uma lista com um arquivo, uma pasta com o atalho dentro e uma Lixeira;
+- tres tentativas que precisam FALHAR e imprimir o erro (use a funcao tentar, igual a da aula): atalho.destino = outro item; um atalho apontando para si mesmo; um atalho apontando para a pasta onde ele esta.
+
+Rode no terminal:
+
+python3 pilares.py
+
+Commit:
+
+git add .
+git commit -m "Testa o atalho"
+
+README Crie o arquivo README.md com 3 a 5 linhas, com as suas palavras, dizendo em cada pilar (encapsulamento, heranca e polimorfismo) o que e a interface (o que quem usa precisa saber) e o que e a implementacao (o que fica escondido). Use o Atalho como exemplo.
+
+Commit:
+
+git add .
+git commit -m "Escreve o README"
+
+Criar o repositorio no GitHub e enviar o historico No site do GitHub, crie um repositorio Public chamado tf-09, sem README. Copie a URL SSH (botao verde Code, aba SSH) e, no terminal, dentro de tf-09:
+
+git remote add origin <URL copiada>
+git push -u origin main
+
+Conferir no proprio GitHub Abram o repositorio no navegador e confirmem: pilares.py, README.md e .gitignore aparecem; a pasta .venv NAO aparece.
+
+Ao final, a pasta tf-09 (local) deve estar assim:
+tf-09/
+├── .git/
+├── .venv/
+├── .gitignore
+├── README.md
+└── pilares.py
+
+REGRAS
+
+Nao usar nenhuma biblioteca alem do abc que ja vem no arquivo base: nada de dataclasses, typing ou outros imports.
+Nenhum atributo publico solto: todo estado do Atalho e privado (__), declarado em __slots__ e acessado por property ou metodo.
+Nada de else (nem elif) e nada de "if tipo == ..." ou isinstance: usar retorno antecipado, continue, valor padrao e polimorfismo.
+Nomes sem abreviacoes (mensagem, e nao msg; destino, e nao dest).
+As classes e os metodos novos devem ter comentarios explicando, com as proprias palavras, o que fazem.
+Pelo menos 4 commits no Git, na ordem do roteiro.
+A pasta .venv nao pode aparecer no repositorio.
+O repositorio no GitHub deve estar Public, pra que o codigo possa ser conferido pelo link enviado.
+Trabalho individual: codigos identicos entre colegas serao considerados copia e zerados para todos os envolvidos.
+Todo o trabalho deve ser feito dentro do ambiente Linux do WSL.
+
+REPOSITORIO BASE
+
+O codigo visto em aula (pasta src/09/) esta no repositorio base da disciplina: https://github.com/luan-tavares/unifaat-es-2026
+
+Usem ele como base e referencia, mas o repositorio entregue e o de cada um: criem o SEU repositorio tf-09, PUBLICO, no seu proprio GitHub. O link do repositorio base nao vale como entrega.
+
+ENTREGA
+
+Enviar o link do repositorio no GitHub (publico), junto com nome e RA, pelo formulario:
+
+https://docs.google.com/forms/d/e/1FAIpQLSdBiL-WCzYTcTK_BzVNVoMQqNtPtzK3o9QldB5wSOBt0HJC8w/viewform?usp=publish-editor
+
+2026-10-28T23:59:59

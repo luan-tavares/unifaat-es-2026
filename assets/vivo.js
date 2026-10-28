@@ -201,14 +201,22 @@
     F.push(fr('lf', 'ler', 'pilha: ler o A', '...e o B...', 3, P([A], {}, 0), 2));
     F.push(fr('lf', 'ler', 'pilha: ler o A', 'finalmente o A: 4 passos só para ler o fundo', 4, P([A], { pa: 'm-ler' }, 0, 'topo = A'), 4));
 
-    var c3 = { id: 'c3', t: 'fatorial(3)' }, c2 = { id: 'c2', t: 'fatorial(2)' }, c1 = { id: 'c1', t: 'fatorial(1)' };
-    var cs = function(arr, marks, n, msg, topo, h){ return fr('ch', 'info', 'fatorial(3)', msg, n, P(arr, marks, topo, 'topo'), h); };
-    F.push(cs([{ id: 'c3', t: 'fatorial(3)', from: { dx: 0, dy: -170 } }], { c3: 'm-esc' }, 1, 'o programa chama fatorial(3): entra na pilha de chamadas', 0));
-    F.push(cs([c3, { id: 'c2', t: 'fatorial(2)', from: { dx: 0, dy: -170 } }], { c2: 'm-esc' }, 2, 'fatorial(3) chama fatorial(2): a nova vai por cima', 1));
-    F.push(cs([c3, c2, { id: 'c1', t: 'fatorial(1)', from: { dx: 0, dy: -170 } }], { c1: 'm-esc' }, 3, 'fatorial(2) chama fatorial(1): a última a entrar...', 2));
-    F.push(cs([c3, c2, { id: 'c1', t: 'fatorial(1)', to: { dx: 330, dy: 0 } }], { c1: 'm-ler' }, 3, '...é a primeira a terminar: devolve 1', 2));
-    F.push(cs([c3, { id: 'c2', t: 'fatorial(2)', to: { dx: 330, dy: 0 } }], { c2: 'm-ler' }, 2, 'volta para fatorial(2): devolve 2', 1));
-    F.push(cs([{ id: 'c3', t: 'fatorial(3)', to: { dx: 330, dy: 0 } }], { c3: 'm-ler' }, 1, 'por último, fatorial(3): devolve 6', 0));
+    var c3 = { id: 'c3', t: 'fatorial(3)' }, c2 = { id: 'c2', t: 'fatorial(2)' };
+    // o def de exemplo ao lado da pilha: a linha acesa é a que está executando
+    var linhas = ['def fatorial(n):', '    if n == 1:', '        return 1', '    return n * fatorial(n - 1)', ' ', 'fatorial(3)'];
+    function codigo(ativa, espera){
+      var html = linhas.map(function(l, i){ return '<span class="cl' + (i === ativa ? ' on' : '') + '">' + l + '</span>'; }).join('');
+      return [item('cod', html, 402, 14, 314, 158, 'codigo'), item('esp', espera, 402, 180, 314, 26, 'lbl forte')];
+    }
+    var cs = function(arr, marks, n, msg, topo, ativa, espera){
+      return fr('ch', 'info', 'fatorial(3)', msg, n, P(arr, marks, topo, 'topo').concat(codigo(ativa, espera)), 3);
+    };
+    F.push(cs([{ id: 'c3', t: 'fatorial(3)', from: { dx: 0, dy: -170 } }], { c3: 'm-esc' }, 1, 'o programa chama fatorial(3): a chamada entra na pilha', 0, 5, ' '));
+    F.push(cs([c3, { id: 'c2', t: 'fatorial(2)', from: { dx: 0, dy: -170 } }], { c2: 'm-esc' }, 2, 'fatorial(3) chama fatorial(2) e ESPERA: não passa da linha enquanto não resolver', 1, 3, '◀ fatorial(3) espera fatorial(2)'));
+    F.push(cs([c3, c2, { id: 'c1', t: 'fatorial(1)', from: { dx: 0, dy: -170 } }], { c1: 'm-esc' }, 3, 'fatorial(2) também ESPERA fatorial(1): só a do topo está rodando', 2, 3, '◀ fatorial(2) espera fatorial(1)'));
+    F.push(cs([c3, c2, { id: 'c1', t: 'fatorial(1)', to: { dx: 330, dy: 0 } }], { c1: 'm-ler' }, 3, 'a última a entrar resolve primeiro: fatorial(1) devolve 1', 2, 2, 'resolveu: devolve 1'));
+    F.push(cs([c3, { id: 'c2', t: 'fatorial(2)', to: { dx: 330, dy: 0 } }], { c2: 'm-ler' }, 2, 'só agora a fatorial(2) continua: devolve 2', 1, 3, 'a espera acabou: 2 x 1 = 2'));
+    F.push(cs([{ id: 'c3', t: 'fatorial(3)', to: { dx: 330, dy: 0 } }], { c3: 'm-ler' }, 1, 'por último, fatorial(3) continua: devolve 6', 0, 3, 'a espera acabou: 3 x 2 = 6'));
     for(var i = 0; i < F.length; i++){ if(F[i].op === 'ch'){ F[i].hold = 3; } }
     return F;
   }
@@ -466,8 +474,12 @@
   }
 
   /* ------------------------------------------------------------------ cadastro */
-  var LEG = '<b>O(1)</b>: 1 passo, não importa o tamanho. <b>O(n)</b>: os passos crescem com a quantidade de dados.';
-  function op(id, tipo, rot, custo, bom, txt){ return { id: id, tipo: tipo, rot: rot, custo: custo, bom: bom, txt: txt }; }
+  var LEG = '<b>rápido</b>: poucos passos, não importa o tamanho dos dados. <b>lento</b>: os passos crescem junto com a quantidade de dados.';
+  // o custo aparece em palavras (rápido / lento): a notação O(...) fica fora dos slides
+  function op(id, tipo, rot, custo, bom, txt){
+    var palavra = /^O\(/.test(custo) ? (bom ? 'rápido' : 'lento') : custo;
+    return { id: id, tipo: tipo, rot: rot, custo: palavra, bom: bom, txt: txt };
+  }
   var E = {
     lista: { fn: lista, print: ['ins', 6], ops: [
       op('lp', 'ler', 'notas[i]', 'O(1)', 1, 'por posição: vai direto'),

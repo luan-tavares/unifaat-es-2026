@@ -109,6 +109,14 @@
 .viva .m-vazio{ background: var(--v-ruim-bg); border-style: dashed; border-color: var(--v-ruim); }
 .viva .vi2 small.sm{ color: inherit; }
 
+/* bloco de código curto dentro do palco (pilha de chamadas) */
+.viva .vi2.codigo{
+  align-items: stretch; justify-content: center; text-align: left; white-space: pre;
+  font: 600 .98rem var(--font-mono); line-height: 1.55; padding: 6px 8px; z-index: 2;
+}
+.viva .vi2.codigo .cl{ display: block; padding: 0 6px; border-radius: 4px; }
+.viva .vi2.codigo .cl.on{ background: var(--v-esc-bg); color: var(--v-esc); }
+
 /* linhas e setas finas (árvore, grafo, ponteiros) */
 .viva .vi2.lin{
   height: 4px; border: 0; border-radius: 2px; padding: 0;

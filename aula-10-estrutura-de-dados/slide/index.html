@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 10 — Estrutura de Dados</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<link rel="stylesheet" href="../../assets/slide-16x9.css">
+<link rel="stylesheet" href="../../assets/vivo.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">10</span> - Estrutura de Dados</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="dado, tipo e binário">
+    <h2><span class="accent">Dado</span>, <span class="accent">tipo</span> e <span class="accent">binário</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># dado: valor bruto, sem contexto</span><br>
+      <strong>1234</strong> &nbsp;·&nbsp; <strong>"Ana"</strong> &nbsp;·&nbsp; <strong>8.5</strong><br>
+      <span class="dim">RA? preço? ano? sozinho não diz nada</span><br>
+      <br>
+      <span class="dim"># tipo: o que o valor é e o que se faz com ele</span><br>
+      <code>2 + 3</code> dá <strong>5</strong><br>
+      <code>"2" + "3"</code> dá <strong>"23"</strong>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/10/binario_e_estrutura.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">bin(65)</span>   <span class="out">0b1000001</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">for letra in "Ola":</span></div>
+        <div class="term-line"><span class="cmd">    print(letra, ord(letra), bin(ord(letra)))</span></div>
+        <div class="term-line"><span class="out">O 79 0b1001111</span></div>
+        <div class="term-line"><span class="out">l 108 0b1101100</span></div>
+        <div class="term-line"><span class="out">a 97 0b1100001</span></div>
+      </div>
+    </div>
+    </div>
+    <ul class="points">
+      <li><strong>Inteiro</strong> (Aula 03): número na base 2. <strong>String</strong> (Aulas 03 e 07): cada caractere é um número da tabela, e o número vira binário</li>
+      <li>O <code>65</code> e o <code>"A"</code> são <strong>os mesmos bits</strong>: o tipo é a lente que lê</li>
+    </ul>
+    <p class="payoff">O computador não tem "número", "texto" nem "lista": só <strong>sequências de bits</strong>.
+    A <strong>estrutura de dados</strong> é como esses valores se organizam.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="estrutura">
+    <h2>Estrutura: <span class="accent">como os binários se organizam</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># memória: bytes numerados (endereços)</span><br>
+      <strong>100</strong> &nbsp;<strong>101</strong> &nbsp;<strong>102</strong> &nbsp;<strong>103</strong><br>
+      &nbsp;79 &nbsp;&nbsp;108 &nbsp;&nbsp;&nbsp;97 &nbsp;&nbsp;&nbsp;...<br>
+      <br>
+      <span class="dim"># lado a lado: a posição vira conta</span><br>
+      endereço = início + posição × tamanho
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/10/binario_e_estrutura.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">dados = bytes([79, 108, 97])</span></div>
+        <div class="term-line"><span class="cmd">print(dados)</span>   <span class="out">b'Ola'</span></div>
+        <div class="term-line"><span class="cmd">print(dados[0], dados[2])</span>   <span class="out">79 97</span></div>
+      </div>
+    </div>
+    </div>
+    <p class="payoff">Acessar <code>notas[2]</code> é rápido em qualquer tamanho. Cada estrutura é
+    <strong>boa para uma coisa e ruim para outra</strong>: escolher bem é metade do programa.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="primitivo x referência">
+    <h2>Tipo <span class="accent">primitivo</span> x tipo de <span class="accent">referência</span></h2>
+    <table class="data-table">
+      <thead><tr><th></th><th>primitivo</th><th>referência</th></tr></thead>
+      <tbody>
+        <tr><td><strong>a variável guarda</strong></td><td>o <strong>valor</strong> em si</td><td>o <strong>endereço</strong> do objeto</td></tr>
+        <tr><td><strong><code>b = a</code> copia...</strong></td><td>o valor: dois independentes</td><td>o endereço: dois nomes, <strong>um objeto</strong></td></tr>
+        <tr><td><strong>exemplos</strong></td><td><code>int</code>, <code>float</code>, <code>bool</code>, <code>str</code></td><td><code>list</code>, <code>dict</code>, <code>tuple</code>, objetos de classe</td></tr>
+        <tr><td><strong>tamanho</strong></td><td>pequeno e fixo</td><td>varia: pode crescer</td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">Em Python <strong>tudo é objeto</strong>: não há primitivo "puro" como o <code>int</code> do Java.
+    Os que <strong>se comportam</strong> como primitivo são os <strong>imutáveis</strong>. Os de referência são as <strong>estruturas de dados</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="primitivo x referência · vivo">
+    <h2>O <span class="accent">b = a</span> que engana</h2>
+    <div data-viva="memoria"></div>
+    <p class="payoff"><code>is</code> pergunta "é o <strong>mesmo objeto</strong>?"; <code>==</code> pergunta "têm o <strong>mesmo valor</strong>?".
+    É o mesmo mecanismo do <code>self</code> e do <code>pai</code> da árvore de arquivos.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="estruturas nativas">
+    <h2>O que é ser <span class="accent">nativo</span></h2>
+    <p class="lede">Já vem na linguagem: sem <code>import</code>, sem biblioteca, sem classe sua.</p>
+    <table class="data-table">
+      <thead><tr><th>linguagem</th><th>o que traz pronto</th></tr></thead>
+      <tbody>
+        <tr><td><strong>C</strong></td><td>array de tamanho fixo e <code>struct</code>; sem dicionário</td></tr>
+        <tr><td><strong>Java</strong></td><td><code>int[]</code> na linguagem; <code>ArrayList</code> e <code>HashMap</code> vêm do <code>java.util</code>; sem tupla</td></tr>
+        <tr><td><strong>JavaScript</strong></td><td><code>Array</code> e <code>Object</code> (e <code>Map</code>); sem tupla</td></tr>
+        <tr><td><strong>PHP</strong></td><td>o <code>array</code> é lista e dicionário ao mesmo tempo</td></tr>
+        <tr><td class="hl"><strong>Python</strong></td><td class="hl"><code>list</code>, <code>tuple</code> e <code>dict</code> direto na sintaxe</td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">A ideia é a mesma em todas; muda o nome e o quanto vem de graça.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="leitura x escrita">
+    <h2>Leitura x escrita: <span class="accent">ganhar de um lado é perder do outro</span></h2>
+    <div data-viva="antagonismo"></div>
+    <p class="payoff"><strong>Leitura</strong> consulta sem mudar; <strong>escrita</strong> inclui, altera ou remove. As duas são <strong>antagônicas</strong>:
+    organizar para ler rápido (ordem, índice, hash) dá trabalho na escrita; facilitar a escrita obriga a varrer na leitura.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="nativa 1 · lista">
+    <h2>Lista: <span class="accent">o array</span> do Python (vetor = array)</h2>
+    <div data-viva="lista"></div>
+    <p class="payoff"><strong>Ganha:</strong> ler por posição. <strong>Perde:</strong> escrever no início ou no meio.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="nativa 2 · tupla">
+    <h2>Tupla: <span class="accent">imutável</span></h2>
+    <div data-viva="tupla"></div>
+    <p class="payoff"><strong>Ganha:</strong> segurança, e vira chave de dicionário. <strong>Perde:</strong> a escrita: "alterar" é copiar tudo.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="nativa 3 · dicionário">
+    <h2>Dicionário: <span class="accent">o famoso HashMap</span></h2>
+    <div data-viva="dicionario"></div>
+    <p class="payoff"><strong>Ganha:</strong> ler e escrever pela chave em 1 passo. <strong>Perde:</strong> memória extra e a busca pelo valor.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="relacionamento entre objetos">
+    <h2>Relacionamento: <span class="accent">um objeto aponta para outro</span></h2>
+    <div class="two-col">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/10/relacionamentos.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class Turma:</span></div>
+        <div class="term-line"><span class="cmd">    def __init__(self, nome, professor):</span></div>
+        <div class="term-line"><span class="cmd">        self.professor = professor</span>   <span class="out">aponta, não copia</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">luan = Professor("Luan")</span></div>
+        <div class="term-line"><span class="cmd">ads = Turma("ADS", luan)</span></div>
+        <div class="term-line"><span class="cmd">es = Turma("ES", luan)</span></div>
+        <div class="term-line"><span class="cmd">ads.professor is es.professor</span>   <span class="out">True</span></div>
+      </div>
+    </div>
+    <div class="tree">
+      <span class="dim"># "é um": herança (Aula 09)</span><br>
+      <strong>Arquivo</strong> é um <strong>Item</strong><br>
+      <br>
+      <span class="dim"># "tem um": composição / associação</span><br>
+      <strong>Turma</strong> tem um <strong>Professor</strong><br>
+      <strong>Pasta</strong> tem <strong>filhos</strong> (um para muitos)
+    </div>
+    </div>
+    <p class="payoff">Um só professor na memória, duas turmas guardando o <strong>endereço</strong> dele.
+    <strong>Uma lista de objetos já é uma estrutura de dados.</strong></p>
+  </section>
+
+  <section class="slide" data-eyebrow="pilha · stack">
+    <h2><span class="accent">Pilha</span>: o último a entrar é o primeiro a sair</h2>
+    <div data-viva="pilha"></div>
+    <p class="payoff"><strong>Ganha:</strong> simplicidade, o topo em 1 passo. <strong>Perde:</strong> o acesso ao meio e ao fundo.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="fila · queue">
+    <h2><span class="accent">Fila</span>: o primeiro a entrar é o primeiro a sair</h2>
+    <div data-viva="fila"></div>
+    <p class="payoff"><strong>Ganha:</strong> a ordem de chegada, frente e fim em 1 passo. <strong>Perde:</strong> o meio (e o <code>pop(0)</code> da lista comum).</p>
+  </section>
+
+  <section class="slide" data-eyebrow="árvore · tree">
+    <h2><span class="accent">Árvore</span>: hierarquia, um pai por nó</h2>
+    <div data-viva="arvore"></div>
+    <p class="payoff"><strong>Ganha:</strong> hierarquia e escrita local barata (mover um galho é 1 ponteiro). <strong>Perde:</strong> a busca global, sem o caminho.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="grafo">
+    <h2><span class="accent">Grafo</span>: nós e ligações, sem hierarquia</h2>
+    <div data-viva="grafo"></div>
+    <p class="payoff"><strong>Ganha:</strong> modela qualquer relação e lista vizinhos direto. <strong>Perde:</strong> "A liga a B?" e remover varrem a lista. <strong>Caso real: o Git.</strong> Commit é nó, "pai" é aresta, merge é nó com dois pais. A árvore é um grafo sem ciclos.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="leitura x escrita · resumo">
+    <h2>Leitura x escrita: <span class="accent">o resumo</span></h2>
+    <table class="data-table">
+      <thead><tr><th>estrutura</th><th>lê rápido</th><th>escreve rápido</th><th>o preço</th></tr></thead>
+      <tbody>
+        <tr><td><strong>lista</strong></td><td>por posição</td><td>no fim</td><td>início e meio empurram todos</td></tr>
+        <tr><td><strong>tupla</strong></td><td>por posição</td><td>não escreve</td><td>alterar = copiar tudo</td></tr>
+        <tr><td><strong>dicionário</strong></td><td>por chave</td><td>por chave</td><td>memória; valor varre tudo</td></tr>
+        <tr><td><strong>pilha</strong></td><td>o topo</td><td>o topo</td><td>fundo e meio custam n</td></tr>
+        <tr><td><strong>fila</strong></td><td>a frente</td><td>o fim</td><td>o meio custa n</td></tr>
+        <tr><td><strong>árvore</strong></td><td>por caminho</td><td>filho, mover galho</td><td>busca por nome varre tudo</td></tr>
+        <tr><td><strong>grafo</strong></td><td>vizinhos</td><td>ligar</td><td>"A liga B?" e remover varrem</td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">Não existe estrutura que ganhe em tudo. A pergunta é sempre: <strong>vou mais ler ou mais escrever, e o quê?</strong></p>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 10 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 10: <span class="accent">o MiniGit</span></h2>
+    <p class="lede">Num repositório novo <code>tf-10</code>, com venv e
+    <code>.gitignore</code>, criar a classe <code>MiniGit</code> em <code>minigit.py</code>:</p>
+    <ul class="points">
+      <li><strong>Estruturas:</strong> dicionários (pais, mensagens, branches), lista, tupla e uma <strong>fila</strong> (<code>deque</code>) no <code>log()</code></li>
+      <li><strong>Escrita:</strong> <code>commitar</code>, <code>criar_branch</code>, <code>trocar_branch</code>, <code>mesclar</code> (commit com <strong>dois pais</strong>)</li>
+      <li><strong>Leitura:</strong> <code>mensagem</code>, <code>pais</code>, <code>log</code>, <code>buscar</code>, <code>merges</code></li>
+      <li><strong>Contar passos:</strong> a property <code>passos</code> diz o custo da última operação; medir <code>commitar</code> (sempre 2) e <code>log</code> (cresce) com 10, 100 e 1000 commits</li>
+      <li>4 tentativas que <strong>falham</strong>, README respondendo leitura x escrita e 5+ commits. Sem <code>else</code>, atributos privados</li>
+    </ul>
+    <p class="body-text">Entrega: link do repositório público no GitHub, pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfW4bh9zbk6fae3Z1XzzujO2wRlfEq4il7axAL9jx2Se-BupQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLSfW4bh9zbk6fae3Z1XzzujO2wRlfEq4il7axAL9jx2Se-BupQ/viewform</code></a></p>
+    <p class="payoff">Prazo: <strong>04/11, até 23:59</strong>.</p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">17</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+
+<script src="../../assets/vivo.js"></script>
+<script src="../../assets/slide.js"></script>
+<script src="../../assets/slide-16x9.js"></script>
+</body>
+</html>

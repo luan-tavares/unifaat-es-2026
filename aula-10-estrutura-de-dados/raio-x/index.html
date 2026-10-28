@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Código — Aula 10</title>
+<link rel="stylesheet" href="../../assets/raio-x.css">
+<script src="../../assets/tema.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="topbar"><a class="back" href="../../index.html">← Voltar</a></nav>
+
+<header>
+  <span class="kicker">Raio-X do Código · Aula 10 · Timeline</span>
+  <h1>Estrutura de Dados: o src/10 da disciplina</h1>
+  <p class="meta">
+    <span><i class="fa-solid fa-folder"></i> es-2026/src/10</span>
+    <span><i class="fa-solid fa-calendar-days"></i> 28/10/2026</span>
+    <span><i class="fa-solid fa-wrench"></i> 10 etapas</span>
+  </p>
+</header>
+
+<main>
+<div class="timeline">
+
+  <!-- ETAPA 1 -->
+  <div class="entry">
+    <div class="entry-dot">1</div>
+    <div class="entry-date">Etapa 1</div>
+    <h2><code class="inline">binario_e_estrutura.py</code> e <code class="inline">tipos.py</code>: dado, binário e referência</h2>
+    <p class="sub">Tudo é binário, o tipo é a lente, e o primitivo guarda o valor enquanto a referência guarda o endereço.</p>
+
+    <div class="tree">es-2026/
+├── aula-10-estrutura-de-dados/   <span class="comment">// briefing, slide vivo e este raio-x</span>
+└── <span class="dir">src/</span>
+    ├── <span class="dir">07/ 08/ 09/</span>              <span class="comment">// aulas anteriores</span>
+    └── <span class="dir">10/</span>                       <span class="new">← NOVO: um arquivo por estrutura de dados</span>
+        ├── <span class="new">binario_e_estrutura.py</span>  <span class="comment">// dado, binário, bytes lado a lado</span>
+        ├── <span class="new">tipos.py</span>                <span class="comment">// primitivo x referência</span>
+        ├── <span class="new">leitura_escrita.py</span>      <span class="comment">// solta x ordenada: ganha num, perde no outro</span>
+        ├── <span class="new">lista.py</span>  <span class="new">tupla.py</span>  <span class="new">dicionario.py</span>   <span class="comment">// as nativas</span>
+        ├── <span class="new">relacionamentos.py</span>      <span class="comment">// um objeto aponta para outro</span>
+        └── <span class="new">pilha.py</span>  <span class="new">fila.py</span>  <span class="new">arvore.py</span>  <span class="new">grafo.py</span>  <span class="new">grafo_git.py</span></div>
+
+    <div class="diff">
+      <div class="diff-head">src/10/binario_e_estrutura.py (arquivo novo)</div>
+      <div class="line add">+ # Dado, binário e estrutura: tudo vira 0 e 1 (Aulas 03 e 07).</div>
+      <div class="line add">+ # Rodar no terminal: python3 binario_e_estrutura.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Inteiro: o valor 65 em binário.</div>
+      <div class="line add">+ print(bin(65))                      # 0b1000001</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # String: cada caractere é um número da tabela, e o número vira binário.</div>
+      <div class="line add">+ for letra in &quot;Ola&quot;:</div>
+      <div class="line add">+     print(letra, ord(letra), bin(ord(letra)))</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Estrutura: os bytes de uma sequência ficam um ao lado do outro.</div>
+      <div class="line add">+ dados = bytes([79, 108, 97])        # os mesmos números de &quot;Ola&quot;</div>
+      <div class="line add">+ print(dados)                        # b&#x27;Ola&#x27;</div>
+      <div class="line add">+ print(dados[0], dados[2])           # 79 97 -&gt; acesso pela posição</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">src/10/tipos.py (arquivo novo)</div>
+      <div class="line add">+ # Tipo primitivo x tipo de referência.</div>
+      <div class="line add">+ # Rodar no terminal: python3 tipos.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Primitivo: a variável guarda o VALOR. Copiar é copiar o valor.</div>
+      <div class="line add">+ a = 10</div>
+      <div class="line add">+ b = a</div>
+      <div class="line add">+ b = b + 1</div>
+      <div class="line add">+ print(a, b)             # 10 11 -&gt; mexer em b não afeta a</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Referência: a variável guarda o ENDEREÇO do objeto. Copiar é copiar o endereço.</div>
+      <div class="line add">+ x = [1, 2]</div>
+      <div class="line add">+ y = x</div>
+      <div class="line add">+ y.append(3)</div>
+      <div class="line add">+ print(x, y)             # [1, 2, 3] [1, 2, 3] -&gt; o mesmo objeto, dois nomes</div>
+      <div class="line add">+ print(x is y)           # True</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Para ter outro objeto de verdade, é preciso copiar.</div>
+      <div class="line add">+ z = x.copy()</div>
+      <div class="line add">+ z.append(4)</div>
+      <div class="line add">+ print(x, z)             # [1, 2, 3] [1, 2, 3, 4]</div>
+      <div class="line add">+ print(x is z)           # False</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Tudo é binário</h4>
+        <p>O <code class="inline">65</code> e a letra <code class="inline">&quot;A&quot;</code> são os mesmos bits. O que muda é o tipo que o programa usa para ler (Aulas 03 e 07).</p>
+      </div>
+      <div class="why-card">
+        <h4>Estrutura é organização</h4>
+        <p><code class="inline">bytes([79, 108, 97])</code> guarda três valores lado a lado. Sabendo onde o primeiro está e quanto cada um ocupa, o endereço de qualquer posição é uma conta, e por isso ler pela posição é rápido.</p>
+      </div>
+      <div class="why-card">
+        <h4>Primitivo × referência</h4>
+        <p><code class="inline">b = a</code> com inteiro copia o valor; com lista copia só o endereço, e os dois nomes mexem no mesmo objeto (<code class="inline">x is y</code> dá <code class="inline">True</code>). Copiar de verdade é <code class="inline">.copy()</code>.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 binario_e_estrutura.py</div>
+      <div class="line ctx">0b1000001</div>
+      <div class="line ctx">O 79 0b1001111</div>
+      <div class="line ctx">l 108 0b1101100</div>
+      <div class="line ctx">a 97 0b1100001</div>
+      <div class="line ctx">b&#x27;Ola&#x27;</div>
+      <div class="line ctx">79 97</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 tipos.py</div>
+      <div class="line ctx">10 11</div>
+      <div class="line ctx">[1, 2, 3] [1, 2, 3]</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">[1, 2, 3] [1, 2, 3, 4]</div>
+      <div class="line ctx">False</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 2 -->
+  <div class="entry">
+    <div class="entry-dot">2</div>
+    <div class="entry-date">Etapa 2</div>
+    <h2><code class="inline">leitura_escrita.py</code>: o antagonismo</h2>
+    <p class="sub">A mesma lista de 8 números, solta e ordenada, com a contagem de passos de cada operação.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/leitura_escrita.py (arquivo novo)</div>
+      <div class="line add">+ # Leitura x escrita: a mesma lista de 8 números, organizada de duas formas.</div>
+      <div class="line add">+ # Rodar no terminal: python3 leitura_escrita.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # O custo é contado em PASSOS. Ganhar na leitura costuma custar na escrita.</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Lista solta (sem ordem) -----------------------------------------------</div>
+      <div class="line add">+ def escrever_solta(lista, valor):</div>
+      <div class="line add">+     lista.append(valor)             # larga no fim</div>
+      <div class="line add">+     return 1                        # 1 passo</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def ler_solta(lista, alvo):</div>
+      <div class="line add">+     passos = 0</div>
+      <div class="line add">+     for item in lista:              # sem ordem: só dá para olhar um por um</div>
+      <div class="line add">+         passos = passos + 1</div>
+      <div class="line add">+         if item == alvo:</div>
+      <div class="line add">+             return passos</div>
+      <div class="line add">+     return passos</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Lista ordenada --------------------------------------------------------</div>
+      <div class="line add">+ def ler_ordenada(lista, alvo):</div>
+      <div class="line add">+     # Busca binária: olha o meio e descarta metade.</div>
+      <div class="line add">+     inicio = 0</div>
+      <div class="line add">+     fim = len(lista) - 1</div>
+      <div class="line add">+     passos = 0</div>
+      <div class="line add">+     while inicio &lt;= fim:</div>
+      <div class="line add">+         meio = (inicio + fim) // 2</div>
+      <div class="line add">+         passos = passos + 1</div>
+      <div class="line add">+         if lista[meio] == alvo:</div>
+      <div class="line add">+             return passos</div>
+      <div class="line add">+         if lista[meio] &lt; alvo:</div>
+      <div class="line add">+             inicio = meio + 1</div>
+      <div class="line add">+             continue</div>
+      <div class="line add">+         fim = meio - 1</div>
+      <div class="line add">+     return passos</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def escrever_ordenada(lista, valor):</div>
+      <div class="line add">+     # Inserir na posição 0: todos à direita são empurrados uma casa.</div>
+      <div class="line add">+     lista.append(None)</div>
+      <div class="line add">+     passos = 0</div>
+      <div class="line add">+     for i in range(len(lista) - 1, 0, -1):</div>
+      <div class="line add">+         lista[i] = lista[i - 1]</div>
+      <div class="line add">+         passos = passos + 1</div>
+      <div class="line add">+     lista[0] = valor</div>
+      <div class="line add">+     return passos + 1</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ solta = [41, 7, 18, 66, 2, 75, 30, 93]</div>
+      <div class="line add">+ ordenada = [2, 7, 18, 30, 41, 66, 75, 93]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(&quot;solta    escrever:&quot;, escrever_solta(solta, 50))       # 1</div>
+      <div class="line add">+ print(&quot;solta    ler 93  :&quot;, ler_solta(solta, 93))            # 8</div>
+      <div class="line add">+ print(&quot;ordenada ler 93  :&quot;, ler_ordenada(ordenada, 93))      # 4</div>
+      <div class="line add">+ print(&quot;ordenada escrever:&quot;, escrever_ordenada(ordenada, 1))  # 9</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Custo em passos</h4>
+        <p>Cada função devolve quantos passos gastou. Escrever na solta custa 1, ler custa 8. Na ordenada é o contrário: ler custa 4 (busca binária) e escrever custa 9.</p>
+      </div>
+      <div class="why-card">
+        <h4>Ganhar de um lado é perder do outro</h4>
+        <p>Manter a ordem dá trabalho na escrita (abrir espaço), e é essa ordem que permite ler descartando metade. Largar solto facilita a escrita e obriga a varrer na leitura.</p>
+      </div>
+      <div class="why-card">
+        <h4>Busca binária</h4>
+        <p>Olha o meio e descarta metade: <code class="inline">inicio</code>, <code class="inline">fim</code> e <code class="inline">meio</code> andam até achar. Com 1 milhão de itens são uns 20 passos, contra até 1 milhão da varredura.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 leitura_escrita.py</div>
+      <div class="line ctx">solta    escrever: 1</div>
+      <div class="line ctx">solta    ler 93  : 8</div>
+      <div class="line ctx">ordenada ler 93  : 4</div>
+      <div class="line ctx">ordenada escrever: 9</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 3 -->
+  <div class="entry">
+    <div class="entry-dot">3</div>
+    <div class="entry-date">Etapa 3</div>
+    <h2><code class="inline">lista.py</code>: o array do Python</h2>
+    <p class="sub">Vetor é array. Leitura por posição direta, escrita no fim barata, escrita no início cara.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/lista.py (arquivo novo)</div>
+      <div class="line add">+ # Lista (array / vetor): a primeira estrutura nativa do Python.</div>
+      <div class="line add">+ # Rodar no terminal: python3 lista.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Vetor é só outro nome para array. A lista do Python é um array dinâmico:</div>
+      <div class="line add">+ # os itens ficam lado a lado e ela cresce sozinha.</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ notas = [7, 3, 9, 5, 8]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Leitura -----------------------------------------------------------------</div>
+      <div class="line add">+ # Por posição: O(1). O endereço é uma conta (início + posição x tamanho).</div>
+      <div class="line add">+ print(notas[3])             # 5</div>
+      <div class="line add">+ print(notas[-1])            # 8: o último</div>
+      <div class="line add">+ print(notas[1:3])           # [3, 9]: fatia, do 1 até antes do 3</div>
+      <div class="line add">+ print(len(notas))           # 5</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Por valor: O(n). Sem ordem, só dá para olhar um por um.</div>
+      <div class="line add">+ print(9 in notas)           # True</div>
+      <div class="line add">+ print(notas.index(9))       # 2</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Escrita -----------------------------------------------------------------</div>
+      <div class="line add">+ # No fim: O(1) em média. Cabe no próximo espaço livre.</div>
+      <div class="line add">+ notas.append(6)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # No início ou no meio: O(n). Todos os itens à direita andam uma casa.</div>
+      <div class="line add">+ notas.insert(0, 1)</div>
+      <div class="line add">+ print(notas)                # [1, 7, 3, 9, 5, 8, 6]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ notas.remove(3)             # remove pelo valor (também varre: O(n))</div>
+      <div class="line add">+ ultima = notas.pop()        # remove e devolve o último: O(1)</div>
+      <div class="line add">+ notas.sort()                # ordena a própria lista</div>
+      <div class="line add">+ print(notas, ultima)        # [1, 5, 7, 8, 9] 6</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Referência --------------------------------------------------------------</div>
+      <div class="line add">+ # A lista é um tipo de referência: &quot;outra = notas&quot; só dá outro nome.</div>
+      <div class="line add">+ outra = notas</div>
+      <div class="line add">+ outra.append(99)</div>
+      <div class="line add">+ print(notas)                # [1, 5, 7, 8, 9, 99]</div>
+      <div class="line add">+ copia = notas.copy()        # copiar de verdade cria outro objeto</div>
+      <div class="line add">+ copia.append(100)</div>
+      <div class="line add">+ print(notas == copia, notas is copia)   # False False</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Leitura</h4>
+        <p>Por posição é O(1) (<code class="inline">notas[3]</code>); por valor é O(n) (<code class="inline">9 in notas</code>), porque sem ordem só dá para olhar um por um.</p>
+      </div>
+      <div class="why-card">
+        <h4>Escrita</h4>
+        <p><code class="inline">append</code> cabe no próximo espaço livre (O(1) em média). <code class="inline">insert(0, x)</code> empurra todos os itens uma casa: O(n).</p>
+      </div>
+      <div class="why-card">
+        <h4>Referência</h4>
+        <p><code class="inline">outra = notas</code> não copia: é o mesmo objeto. A lista é um tipo de referência.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 lista.py</div>
+      <div class="line ctx">5</div>
+      <div class="line ctx">8</div>
+      <div class="line ctx">[3, 9]</div>
+      <div class="line ctx">5</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">2</div>
+      <div class="line ctx">[1, 7, 3, 9, 5, 8, 6]</div>
+      <div class="line ctx">[1, 5, 7, 8, 9] 6</div>
+      <div class="line ctx">[1, 5, 7, 8, 9, 99]</div>
+      <div class="line ctx">False False</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 4 -->
+  <div class="entry">
+    <div class="entry-dot">4</div>
+    <div class="entry-date">Etapa 4</div>
+    <h2><code class="inline">tupla.py</code>: imutável</h2>
+    <p class="sub">Lê como a lista, não escreve; alterar é criar outra.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/tupla.py (arquivo novo)</div>
+      <div class="line add">+ # Tupla: parecida com a lista, mas imutável.</div>
+      <div class="line add">+ # Rodar no terminal: python3 tupla.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ ponto = (10, 20)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Leitura: igual à lista --------------------------------------------------</div>
+      <div class="line add">+ print(ponto[1])                     # 20: por posição, O(1)</div>
+      <div class="line add">+ x, y = ponto                        # desempacotamento</div>
+      <div class="line add">+ print(x, y)                         # 10 20</div>
+      <div class="line add">+ print(ponto.count(10), ponto.index(20))   # 1 1</div>
+      <div class="line add">+ print(len(ponto), 20 in ponto)      # 2 True</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Escrita: não existe -----------------------------------------------------</div>
+      <div class="line add">+ try:</div>
+      <div class="line add">+     ponto[0] = 99</div>
+      <div class="line add">+ except TypeError as erro:</div>
+      <div class="line add">+     print(&quot;erro:&quot;, erro)            # &#x27;tuple&#x27; object does not support item assignment</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # &quot;Alterar&quot; é criar outra tupla, copiando todos os itens: O(n).</div>
+      <div class="line add">+ novo = (99,) + ponto[1:]</div>
+      <div class="line add">+ print(ponto, novo)                  # (10, 20) (99, 20): a antiga continua intacta</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- O que se ganha com o preço ---------------------------------------------</div>
+      <div class="line add">+ # Imutável: o hash nunca muda, então a tupla pode ser chave de dicionário.</div>
+      <div class="line add">+ mapa = {(10, 20): &quot;casa&quot;}</div>
+      <div class="line add">+ print(mapa[(10, 20)])               # casa</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # A tupla trava os itens que ela guarda: se um item for uma lista, a lista</div>
+      <div class="line add">+ # continua mutável por dentro.</div>
+      <div class="line add">+ mista = (1, [2, 3])</div>
+      <div class="line add">+ mista[1].append(4)</div>
+      <div class="line add">+ print(mista)                        # (1, [2, 3, 4])</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Sem escrita</h4>
+        <p><code class="inline">ponto[0] = 99</code> dá <code class="inline">TypeError</code>. "Alterar" é montar uma tupla nova copiando tudo: O(n), e a antiga continua intacta.</p>
+      </div>
+      <div class="why-card">
+        <h4>O que o preço compra</h4>
+        <p>Segurança (ninguém muda o valor por engano) e o hash que nunca muda, então a tupla pode ser chave de dicionário.</p>
+      </div>
+      <div class="why-card">
+        <h4>Imutável por fora</h4>
+        <p>A tupla trava os itens que guarda. Se um item for uma lista, ela continua mutável por dentro (<code class="inline">mista[1].append(4)</code>).</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 tupla.py</div>
+      <div class="line ctx">20</div>
+      <div class="line ctx">10 20</div>
+      <div class="line ctx">1 1</div>
+      <div class="line ctx">2 True</div>
+      <div class="line ctx">erro: &#x27;tuple&#x27; object does not support item assignment</div>
+      <div class="line ctx">(10, 20) (99, 20)</div>
+      <div class="line ctx">casa</div>
+      <div class="line ctx">(1, [2, 3, 4])</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 5 -->
+  <div class="entry">
+    <div class="entry-dot">5</div>
+    <div class="entry-date">Etapa 5</div>
+    <h2><code class="inline">dicionario.py</code>: o famoso HashMap</h2>
+    <p class="sub">Chave e valor; o hash diz o slot, sem procurar.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/dicionario.py (arquivo novo)</div>
+      <div class="line add">+ # Dicionário (o famoso HashMap): pares de chave e valor.</div>
+      <div class="line add">+ # Rodar no terminal: python3 dicionario.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Por baixo é uma tabela de espalhamento: o hash da chave diz em qual slot o</div>
+      <div class="line add">+ # valor mora, sem procurar.</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ aluno = {&quot;nome&quot;: &quot;Ana&quot;, &quot;ra&quot;: 1234}</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Leitura por chave: O(1) -------------------------------------------------</div>
+      <div class="line add">+ print(aluno[&quot;nome&quot;])                        # Ana</div>
+      <div class="line add">+ print(aluno.get(&quot;email&quot;, &quot;sem e-mail&quot;))     # sem e-mail: consulta sem erro</div>
+      <div class="line add">+ print(&quot;ra&quot; in aluno)                        # True: o in olha as chaves</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Escrita por chave: O(1) -------------------------------------------------</div>
+      <div class="line add">+ aluno[&quot;nota&quot;] = 8.5                         # inclui</div>
+      <div class="line add">+ aluno[&quot;nota&quot;] = 9.0                         # altera</div>
+      <div class="line add">+ aluno.update({&quot;curso&quot;: &quot;ADS&quot;})              # mistura outro dicionário</div>
+      <div class="line add">+ aluno.pop(&quot;ra&quot;)                             # remove a chave</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Percorrer ---------------------------------------------------------------</div>
+      <div class="line add">+ for chave, valor in aluno.items():</div>
+      <div class="line add">+     print(chave, &quot;-&gt;&quot;, valor)</div>
+      <div class="line add">+ print(list(aluno.keys()))                   # [&#x27;nome&#x27;, &#x27;nota&#x27;, &#x27;curso&#x27;]</div>
+      <div class="line add">+ print(list(aluno.values()))                 # [&#x27;Ana&#x27;, 9.0, &#x27;ADS&#x27;]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- O preço -----------------------------------------------------------------</div>
+      <div class="line add">+ # Leitura por VALOR: O(n). O hash só ajuda com a chave.</div>
+      <div class="line add">+ print(&quot;ADS&quot; in aluno.values())              # True, olhando slot por slot</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # A chave precisa ser imutável (o hash não pode mudar).</div>
+      <div class="line add">+ try:</div>
+      <div class="line add">+     aluno[[1, 2]] = &quot;lista não pode ser chave&quot;</div>
+      <div class="line add">+ except TypeError as erro:</div>
+      <div class="line add">+     print(&quot;erro:&quot;, erro)                    # unhashable type: &#x27;list&#x27;</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Leitura e escrita por chave</h4>
+        <p>Ambas O(1): o hash da chave calcula em qual slot o valor mora. É o HashMap do Java, o Map do JavaScript, o array associativo do PHP.</p>
+      </div>
+      <div class="why-card">
+        <h4>O preço</h4>
+        <p>Leitura por valor é O(n) (<code class="inline">in aluno.values()</code>): o hash só ajuda com a chave. Além disso a tabela reserva slots vazios (memória) e precisa crescer e reorganizar quando enche.</p>
+      </div>
+      <div class="why-card">
+        <h4>Chave imutável</h4>
+        <p><code class="inline">aluno[[1, 2]] = ...</code> dá <code class="inline">TypeError: unhashable</code>: uma lista pode mudar, então o hash dela não seria estável.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 dicionario.py</div>
+      <div class="line ctx">Ana</div>
+      <div class="line ctx">sem e-mail</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">nome -&gt; Ana</div>
+      <div class="line ctx">nota -&gt; 9.0</div>
+      <div class="line ctx">curso -&gt; ADS</div>
+      <div class="line ctx">[&#x27;nome&#x27;, &#x27;nota&#x27;, &#x27;curso&#x27;]</div>
+      <div class="line ctx">[&#x27;Ana&#x27;, 9.0, &#x27;ADS&#x27;]</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">erro: unhashable type: &#x27;list&#x27;</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 6 -->
+  <div class="entry">
+    <div class="entry-dot">6</div>
+    <div class="entry-date">Etapa 6</div>
+    <h2><code class="inline">relacionamentos.py</code>: um objeto aponta para outro</h2>
+    <p class="sub">Referência entre objetos: a base para montar as estruturas que não são nativas.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/relacionamentos.py (arquivo novo)</div>
+      <div class="line add">+ # Relacionamento entre objetos: um objeto guarda a referência de outro.</div>
+      <div class="line add">+ # Rodar no terminal: python3 relacionamentos.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Professor:</div>
+      <div class="line add">+     def __init__(self, nome):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Turma:</div>
+      <div class="line add">+     def __init__(self, nome, professor):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line add">+         self.professor = professor      # aponta para o objeto, não copia</div>
+      <div class="line add">+         self.alunos = []</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ luan = Professor(&quot;Luan&quot;)</div>
+      <div class="line add">+ ads = Turma(&quot;ADS 2º semestre&quot;, luan)</div>
+      <div class="line add">+ es = Turma(&quot;Engenharia de Software&quot;, luan)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(ads.professor is es.professor)    # True: os dois apontam para o mesmo</div>
+      <div class="line add">+ luan.nome = &quot;Luan Lourenço&quot;</div>
+      <div class="line add">+ print(ads.professor.nome)               # Luan Lourenço</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Relacionamento de mão dupla: a árvore de arquivos da Aula 08.</div>
+      <div class="line add">+ class Item:</div>
+      <div class="line add">+     def __init__(self, nome, pai=None):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line add">+         self.pai = pai                  # aponta para cima</div>
+      <div class="line add">+         self.filhos = []                # aponta para baixo</div>
+      <div class="line add">+         if pai is None:</div>
+      <div class="line add">+             return</div>
+      <div class="line add">+         pai.filhos.append(self)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ disco = Item(&quot;C:&quot;)</div>
+      <div class="line add">+ users = Item(&quot;Users&quot;, disco)</div>
+      <div class="line add">+ desktop = Item(&quot;Desktop&quot;, users)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(desktop.pai.pai.nome)             # C:</div>
+      <div class="line add">+ print(disco.filhos[0].filhos[0].nome)   # Desktop</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Aponta, não copia</h4>
+        <p>A <code class="inline">Turma</code> guarda o endereço do <code class="inline">Professor</code>. Duas turmas, um professor: <code class="inline">ads.professor is es.professor</code> dá <code class="inline">True</code> e mudar o nome vale para as duas.</p>
+      </div>
+      <div class="why-card">
+        <h4>É um × tem um</h4>
+        <p>Herança é "é um" (Aula 09). Aqui é "tem um": a turma tem um professor, a pasta tem filhos (um para muitos).</p>
+      </div>
+      <div class="why-card">
+        <h4>Mão dupla</h4>
+        <p>Na árvore, <code class="inline">pai</code> aponta para cima e <code class="inline">filhos</code> para baixo. Seguindo as referências sobe-se e desce-se pela estrutura.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 relacionamentos.py</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">Luan Lourenço</div>
+      <div class="line ctx">C:</div>
+      <div class="line ctx">Desktop</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 7 -->
+  <div class="entry">
+    <div class="entry-dot">7</div>
+    <div class="entry-date">Etapa 7</div>
+    <h2><code class="inline">pilha.py</code>: o último a entrar é o primeiro a sair</h2>
+    <p class="sub">Uma classe que usa uma lista por dentro e só expõe empilhar, desempilhar e topo.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/pilha.py (arquivo novo)</div>
+      <div class="line add">+ # Pilha (stack): o último a entrar é o primeiro a sair (LIFO).</div>
+      <div class="line add">+ # Rodar no terminal: python3 pilha.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Não é nativa: é uma classe que usa uma lista por dentro e só expõe os</div>
+      <div class="line add">+ # comandos que definem a pilha. A lista fica privada (encapsulamento, Aula 09).</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Pilha:</div>
+      <div class="line add">+     def __init__(self):</div>
+      <div class="line add">+         self.__itens = []</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def empilhar(self, valor):</div>
+      <div class="line add">+         self.__itens.append(valor)      # O(1): só pelo topo</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def desempilhar(self):</div>
+      <div class="line add">+         if self.vazia():</div>
+      <div class="line add">+             raise IndexError(&quot;pilha vazia&quot;)</div>
+      <div class="line add">+         return self.__itens.pop()       # O(1): o último a entrar sai primeiro</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def topo(self):</div>
+      <div class="line add">+         return self.__itens[-1]         # O(1)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def vazia(self):</div>
+      <div class="line add">+         return len(self.__itens) == 0</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Desfazer (Ctrl+Z) -------------------------------------------------------</div>
+      <div class="line add">+ historico = Pilha()</div>
+      <div class="line add">+ historico.empilhar(&quot;digitou A&quot;)</div>
+      <div class="line add">+ historico.empilhar(&quot;digitou B&quot;)</div>
+      <div class="line add">+ historico.empilhar(&quot;apagou B&quot;)</div>
+      <div class="line add">+ print(historico.desempilhar())          # apagou B</div>
+      <div class="line add">+ print(historico.desempilhar())          # digitou B</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Leitura x escrita -------------------------------------------------------</div>
+      <div class="line add">+ # Escrever e ler o topo: 1 passo. Ler o fundo: precisa tirar todos de cima.</div>
+      <div class="line add">+ def ler_fundo(pilha):</div>
+      <div class="line add">+     passos = 0</div>
+      <div class="line add">+     while True:</div>
+      <div class="line add">+         passos = passos + 1</div>
+      <div class="line add">+         item = pilha.desempilhar()</div>
+      <div class="line add">+         if pilha.vazia():</div>
+      <div class="line add">+             return item, passos</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ letras = Pilha()</div>
+      <div class="line add">+ for letra in &quot;ABCD&quot;:</div>
+      <div class="line add">+     letras.empilhar(letra)</div>
+      <div class="line add">+ print(letras.topo())                    # D: 1 passo</div>
+      <div class="line add">+ print(ler_fundo(letras))                # (&#x27;A&#x27;, 4): 4 passos só para ler o fundo</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- A pilha de chamadas: a pilha que o próprio Python usa -------------------</div>
+      <div class="line add">+ def fatorial(n):</div>
+      <div class="line add">+     print(&quot;entrou  fatorial(&quot;, n, &quot;)&quot;)</div>
+      <div class="line add">+     if n == 1:</div>
+      <div class="line add">+         print(&quot;saiu    fatorial( 1 ) = 1&quot;)</div>
+      <div class="line add">+         return 1</div>
+      <div class="line add">+     resultado = n * fatorial(n - 1)</div>
+      <div class="line add">+     print(&quot;saiu    fatorial(&quot;, n, &quot;) =&quot;, resultado)</div>
+      <div class="line add">+     return resultado</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ fatorial(3)</div>
+      <div class="line add">+ # Entram 3, 2, 1 e saem 1, 2, 3: a última chamada é a primeira a terminar.</div>
+      <div class="line add">+ # Recursão sem condição de parada enche a pilha: RecursionError.</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>LIFO</h4>
+        <p><code class="inline">empilhar</code> e <code class="inline">desempilhar</code> só mexem no topo: O(1). Ctrl+Z e o botão voltar do navegador são pilhas.</p>
+      </div>
+      <div class="why-card">
+        <h4>Leitura x escrita</h4>
+        <p>Ler o topo é 1 passo; ler o fundo (<code class="inline">ler_fundo</code>) exige desempilhar todos os de cima: 4 passos para 4 itens. A pilha ganha simplicidade e perde o acesso livre.</p>
+      </div>
+      <div class="why-card">
+        <h4>A pilha de chamadas</h4>
+        <p>No <code class="inline">fatorial(3)</code>, as chamadas entram 3, 2, 1 e saem 1, 2, 3: a última a entrar é a primeira a terminar. Recursão sem parada enche a pilha (<code class="inline">RecursionError</code>).</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 pilha.py</div>
+      <div class="line ctx">apagou B</div>
+      <div class="line ctx">digitou B</div>
+      <div class="line ctx">D</div>
+      <div class="line ctx">(&#x27;A&#x27;, 4)</div>
+      <div class="line ctx">entrou  fatorial( 3 )</div>
+      <div class="line ctx">entrou  fatorial( 2 )</div>
+      <div class="line ctx">entrou  fatorial( 1 )</div>
+      <div class="line ctx">saiu    fatorial( 1 ) = 1</div>
+      <div class="line ctx">saiu    fatorial( 2 ) = 2</div>
+      <div class="line ctx">saiu    fatorial( 3 ) = 6</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 8 -->
+  <div class="entry">
+    <div class="entry-dot">8</div>
+    <div class="entry-date">Etapa 8</div>
+    <h2><code class="inline">fila.py</code>: o primeiro a entrar é o primeiro a sair</h2>
+    <p class="sub">Uma classe em cima do deque, que mexe nas duas pontas.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/fila.py (arquivo novo)</div>
+      <div class="line add">+ # Fila (queue): o primeiro a entrar é o primeiro a sair (FIFO).</div>
+      <div class="line add">+ # Rodar no terminal: python3 fila.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Não é nativa: é uma classe em cima do deque (collections), feito para</div>
+      <div class="line add">+ # mexer nas duas pontas.</div>
+      <div class="line add">+ from collections import deque</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Fila:</div>
+      <div class="line add">+     def __init__(self):</div>
+      <div class="line add">+         self.__itens = deque()</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def enfileirar(self, valor):</div>
+      <div class="line add">+         self.__itens.append(valor)      # O(1): entra pelo fim</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def desenfileirar(self):</div>
+      <div class="line add">+         if self.vazia():</div>
+      <div class="line add">+             raise IndexError(&quot;fila vazia&quot;)</div>
+      <div class="line add">+         return self.__itens.popleft()   # O(1): sai pela frente</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def vazia(self):</div>
+      <div class="line add">+         return len(self.__itens) == 0</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Fila de impressão -------------------------------------------------------</div>
+      <div class="line add">+ impressora = Fila()</div>
+      <div class="line add">+ impressora.enfileirar(&quot;relatorio.pdf&quot;)</div>
+      <div class="line add">+ impressora.enfileirar(&quot;foto.png&quot;)</div>
+      <div class="line add">+ impressora.enfileirar(&quot;slide.pdf&quot;)</div>
+      <div class="line add">+ print(impressora.desenfileirar())       # relatorio.pdf</div>
+      <div class="line add">+ print(impressora.desenfileirar())       # foto.png</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Leitura x escrita: o antagonismo da lista comum -------------------------</div>
+      <div class="line add">+ # Com lista, tirar o primeiro item (pop(0)) obriga a puxar todos os outros</div>
+      <div class="line add">+ # uma casa para fechar o buraco: O(n). O deque só move o marcador da frente.</div>
+      <div class="line add">+ def passos_pop_zero(lista):</div>
+      <div class="line add">+     passos = 1                          # retirar o primeiro</div>
+      <div class="line add">+     lista.pop(0)</div>
+      <div class="line add">+     for _ in lista:                     # cada item restante é puxado</div>
+      <div class="line add">+         passos = passos + 1</div>
+      <div class="line add">+     return passos</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(passos_pop_zero([&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;]))    # 5</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Ler o meio (fila[2]) também é O(n): o deque caminha desde uma ponta.</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>FIFO</h4>
+        <p><code class="inline">enfileirar</code> entra pelo fim e <code class="inline">desenfileirar</code> sai pela frente, ambos O(1) com o <code class="inline">deque</code>.</p>
+      </div>
+      <div class="why-card">
+        <h4>O antagonismo com a lista</h4>
+        <p><code class="inline">lista.pop(0)</code> puxa todos os itens uma casa para fechar o buraco: 5 passos para 5 itens (O(n)). O <code class="inline">popleft()</code> do deque só move o marcador da frente.</p>
+      </div>
+      <div class="why-card">
+        <h4>O meio</h4>
+        <p>Ler <code class="inline">fila[2]</code> é O(n): não há posição direta, o deque caminha desde uma ponta.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 fila.py</div>
+      <div class="line ctx">relatorio.pdf</div>
+      <div class="line ctx">foto.png</div>
+      <div class="line ctx">5</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 9 -->
+  <div class="entry">
+    <div class="entry-dot">9</div>
+    <div class="entry-date">Etapa 9</div>
+    <h2><code class="inline">arvore.py</code>: hierarquia, um pai por nó</h2>
+    <p class="sub">A árvore de arquivos da Aula 08, agora com a análise de leitura e escrita.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/arvore.py (arquivo novo)</div>
+      <div class="line add">+ # Árvore (tree): hierarquia em que cada nó tem um único pai.</div>
+      <div class="line add">+ # Rodar no terminal: python3 arvore.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Raiz: o nó sem pai. Folha: o nó sem filhos. É a árvore de arquivos da Aula 08.</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class No:</div>
+      <div class="line add">+     def __init__(self, nome, pai=None):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line add">+         self.pai = pai                  # aponta para cima</div>
+      <div class="line add">+         self.filhos = []                # aponta para baixo</div>
+      <div class="line add">+         if pai is None:</div>
+      <div class="line add">+             return</div>
+      <div class="line add">+         pai.filhos.append(self)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def adicionar(self, nome):</div>
+      <div class="line add">+         # Com o pai na mão, um filho novo custa 1 passo: O(1).</div>
+      <div class="line add">+         return No(nome, self)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def mover_para(self, novo_pai):</div>
+      <div class="line add">+         # Trocar o pai muda um único ponteiro: O(1), seja qual for o tamanho</div>
+      <div class="line add">+         # do que está dentro da pasta.</div>
+      <div class="line add">+         self.pai.filhos.remove(self)</div>
+      <div class="line add">+         self.pai = novo_pai</div>
+      <div class="line add">+         novo_pai.filhos.append(self)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def caminho(self):</div>
+      <div class="line add">+         # Subir pelos pais: um passo por nível (a profundidade).</div>
+      <div class="line add">+         if self.pai is None:</div>
+      <div class="line add">+             return self.nome</div>
+      <div class="line add">+         return self.pai.caminho() + &quot;/&quot; + self.nome</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def buscar(self, nome):</div>
+      <div class="line add">+         # Sem o caminho, precisa visitar nó por nó: O(n).</div>
+      <div class="line add">+         # Devolve o nó achado e quantos nós foram visitados.</div>
+      <div class="line add">+         visitas = 1</div>
+      <div class="line add">+         if self.nome == nome:</div>
+      <div class="line add">+             return self, visitas</div>
+      <div class="line add">+         for filho in self.filhos:</div>
+      <div class="line add">+             achado, extras = filho.buscar(nome)</div>
+      <div class="line add">+             visitas = visitas + extras</div>
+      <div class="line add">+             if achado is not None:</div>
+      <div class="line add">+                 return achado, visitas</div>
+      <div class="line add">+         return None, visitas</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def imprimir(self, nivel=0):</div>
+      <div class="line add">+         print(&quot;    &quot; * nivel + self.nome)</div>
+      <div class="line add">+         for filho in self.filhos:</div>
+      <div class="line add">+             filho.imprimir(nivel + 1)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ disco = No(&quot;C:&quot;)</div>
+      <div class="line add">+ users = disco.adicionar(&quot;Users&quot;)</div>
+      <div class="line add">+ windows = disco.adicionar(&quot;Windows&quot;)</div>
+      <div class="line add">+ desktop = users.adicionar(&quot;Desktop&quot;)</div>
+      <div class="line add">+ downloads = users.adicionar(&quot;Downloads&quot;)</div>
+      <div class="line add">+ sistema = windows.adicionar(&quot;Sistema&quot;)</div>
+      <div class="line add">+ disco.imprimir()</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Leitura -----------------------------------------------------------------</div>
+      <div class="line add">+ print(desktop.caminho())                    # C:/Users/Desktop (3 níveis)</div>
+      <div class="line add">+ achado, visitas = disco.buscar(&quot;Downloads&quot;)</div>
+      <div class="line add">+ print(achado.caminho(), visitas)            # C:/Users/Downloads 4</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Escrita -----------------------------------------------------------------</div>
+      <div class="line add">+ desktop.adicionar(&quot;Fotos&quot;)                  # 1 passo</div>
+      <div class="line add">+ downloads.mover_para(windows)               # 1 ponteiro troca de pai</div>
+      <div class="line add">+ print(downloads.caminho())                  # C:/Windows/Downloads</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Escrita local barata</h4>
+        <p><code class="inline">adicionar</code> com o pai na mão é 1 passo. <code class="inline">mover_para</code> troca um único ponteiro (o <code class="inline">pai</code>), não importa quantos arquivos haja dentro da pasta.</p>
+      </div>
+      <div class="why-card">
+        <h4>Leitura por caminho</h4>
+        <p><code class="inline">caminho()</code> sobe pelos pais, um passo por nível (a profundidade). É a recursão da Aula 08.</p>
+      </div>
+      <div class="why-card">
+        <h4>O preço</h4>
+        <p>Buscar por nome sem o caminho (<code class="inline">buscar</code>) visita nó por nó: 4 visitas para achar o Downloads. A árvore ganha hierarquia e perde a busca global.</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 arvore.py</div>
+      <div class="line ctx">C:</div>
+      <div class="line ctx">    Users</div>
+      <div class="line ctx">        Desktop</div>
+      <div class="line ctx">        Downloads</div>
+      <div class="line ctx">    Windows</div>
+      <div class="line ctx">        Sistema</div>
+      <div class="line ctx">C:/Users/Desktop</div>
+      <div class="line ctx">C:/Users/Downloads 4</div>
+      <div class="line ctx">C:/Windows/Downloads</div>
+    </div>
+
+  </div>
+  <!-- ETAPA 10 -->
+  <div class="entry">
+    <div class="entry-dot">10</div>
+    <div class="entry-date">Etapa 10</div>
+    <h2><code class="inline">grafo.py</code> e <code class="inline">grafo_git.py</code>: nós, ligações e o Git</h2>
+    <p class="sub">Um dicionário de listas de vizinhos; e o Git como exemplo real, um grafo dirigido acíclico.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/10/grafo.py (arquivo novo)</div>
+      <div class="line add">+ # Grafo: nós ligados por arestas, sem hierarquia (pode ter ciclo).</div>
+      <div class="line add">+ # Rodar no terminal: python3 grafo.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # Não é nativo: é uma classe que guarda um dicionário de listas de vizinhos.</div>
+      <div class="line add">+ # A árvore é um grafo sem ciclos e com um único pai por nó.</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Grafo:</div>
+      <div class="line add">+     def __init__(self):</div>
+      <div class="line add">+         self.__ligacoes = {}</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def adicionar_no(self, no):</div>
+      <div class="line add">+         self.__ligacoes.setdefault(no, [])</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def ligar(self, a, b):</div>
+      <div class="line add">+         # Um item em cada lista: O(1).</div>
+      <div class="line add">+         self.adicionar_no(a)</div>
+      <div class="line add">+         self.adicionar_no(b)</div>
+      <div class="line add">+         self.__ligacoes[a].append(b)</div>
+      <div class="line add">+         self.__ligacoes[b].append(a)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def vizinhos(self, no):</div>
+      <div class="line add">+         # A lista já está pronta no dicionário: O(1).</div>
+      <div class="line add">+         return self.__ligacoes[no]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def ligados(self, a, b):</div>
+      <div class="line add">+         # Varre a lista de vizinhos de a: O(grau).</div>
+      <div class="line add">+         return b in self.__ligacoes[a]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def remover(self, a, b):</div>
+      <div class="line add">+         # Acha b na lista de a e a na lista de b: O(grau).</div>
+      <div class="line add">+         self.__ligacoes[a].remove(b)</div>
+      <div class="line add">+         self.__ligacoes[b].remove(a)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ amigos = Grafo()</div>
+      <div class="line add">+ amigos.ligar(&quot;Ana&quot;, &quot;Bia&quot;)</div>
+      <div class="line add">+ amigos.ligar(&quot;Ana&quot;, &quot;Caio&quot;)</div>
+      <div class="line add">+ amigos.ligar(&quot;Bia&quot;, &quot;Caio&quot;)      # fecha um ciclo: Ana, Bia, Caio</div>
+      <div class="line add">+ amigos.ligar(&quot;Caio&quot;, &quot;Duda&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Leitura -----------------------------------------------------------------</div>
+      <div class="line add">+ print(amigos.vizinhos(&quot;Caio&quot;))           # [&#x27;Ana&#x27;, &#x27;Bia&#x27;, &#x27;Duda&#x27;]</div>
+      <div class="line add">+ print(amigos.ligados(&quot;Ana&quot;, &quot;Duda&quot;))     # False</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- Escrita -----------------------------------------------------------------</div>
+      <div class="line add">+ amigos.ligar(&quot;Ana&quot;, &quot;Duda&quot;)</div>
+      <div class="line add">+ print(amigos.ligados(&quot;Ana&quot;, &quot;Duda&quot;))     # True</div>
+      <div class="line add">+ amigos.remover(&quot;Ana&quot;, &quot;Caio&quot;)</div>
+      <div class="line add">+ print(amigos.vizinhos(&quot;Ana&quot;))            # [&#x27;Bia&#x27;, &#x27;Duda&#x27;]</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">src/10/grafo_git.py (arquivo novo)</div>
+      <div class="line add">+ # O Git é um grafo: cada commit é um nó e aponta para o(s) seu(s) pai(s).</div>
+      <div class="line add">+ # Rodar no terminal: python3 grafo_git.py</div>
+      <div class="line add">+ #</div>
+      <div class="line add">+ # As setas só apontam para trás e nunca fecham um ciclo: é um grafo dirigido</div>
+      <div class="line add">+ # acíclico (DAG). Branch é só um ponteiro para um commit. Merge é um commit</div>
+      <div class="line add">+ # com DOIS pais, e é isso que impede o histórico de ser uma lista.</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ pais = {}           # commit -&gt; lista dos seus pais (as arestas)</div>
+      <div class="line add">+ branches = {}       # branch -&gt; commit para onde ela aponta</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def commitar(nome, lista_de_pais):</div>
+      <div class="line add">+     # Escrever é barato: um nó novo e uma aresta para cada pai (O(1)).</div>
+      <div class="line add">+     pais[nome] = list(lista_de_pais)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ commitar(&quot;A&quot;, [])</div>
+      <div class="line add">+ commitar(&quot;B&quot;, [&quot;A&quot;])</div>
+      <div class="line add">+ branches[&quot;main&quot;] = &quot;B&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ commitar(&quot;C&quot;, [branches[&quot;main&quot;]])        # git commit na main</div>
+      <div class="line add">+ branches[&quot;main&quot;] = &quot;C&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ branches[&quot;feature&quot;] = &quot;B&quot;                # git switch -c feature (só um ponteiro)</div>
+      <div class="line add">+ commitar(&quot;D&quot;, [branches[&quot;feature&quot;]])     # git commit na feature</div>
+      <div class="line add">+ branches[&quot;feature&quot;] = &quot;D&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ commitar(&quot;E&quot;, [branches[&quot;main&quot;], branches[&quot;feature&quot;]])   # git merge feature</div>
+      <div class="line add">+ branches[&quot;main&quot;] = &quot;E&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def historico(commit):</div>
+      <div class="line add">+     # Ler o histórico é seguir os pais, um commit por passo (git log).</div>
+      <div class="line add">+     visitados = []</div>
+      <div class="line add">+     fila = [commit]</div>
+      <div class="line add">+     while len(fila) &gt; 0:</div>
+      <div class="line add">+         atual = fila.pop(0)</div>
+      <div class="line add">+         if atual in visitados:</div>
+      <div class="line add">+             continue</div>
+      <div class="line add">+         visitados.append(atual)</div>
+      <div class="line add">+         fila.extend(pais[atual])</div>
+      <div class="line add">+     return visitados</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(pais)</div>
+      <div class="line add">+ # {&#x27;A&#x27;: [], &#x27;B&#x27;: [&#x27;A&#x27;], &#x27;C&#x27;: [&#x27;B&#x27;], &#x27;D&#x27;: [&#x27;B&#x27;], &#x27;E&#x27;: [&#x27;C&#x27;, &#x27;D&#x27;]}</div>
+      <div class="line add">+ print(branches)                          # {&#x27;main&#x27;: &#x27;E&#x27;, &#x27;feature&#x27;: &#x27;D&#x27;}</div>
+      <div class="line add">+ print(historico(branches[&quot;main&quot;]))   # [&#x27;E&#x27;, &#x27;C&#x27;, &#x27;D&#x27;, &#x27;B&#x27;, &#x27;A&#x27;]</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ merges = [c for c in pais if len(pais[c]) &gt; 1]</div>
+      <div class="line add">+ print(merges)                            # [&#x27;E&#x27;]: o commit com dois pais</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Dicionário de listas</h4>
+        <p>A chave é o nó, o valor é a lista de vizinhos. <code class="inline">ligar</code> e <code class="inline">vizinhos</code> são O(1); <code class="inline">ligados</code> e <code class="inline">remover</code> varrem a lista: O(grau).</p>
+      </div>
+      <div class="why-card">
+        <h4>A árvore é um grafo</h4>
+        <p>Com ciclo (Ana, Bia, Caio) já não é árvore. Árvore é o grafo sem ciclos e com um único pai por nó.</p>
+      </div>
+      <div class="why-card">
+        <h4>O Git é um grafo</h4>
+        <p>Commit é nó, "pai" é aresta, branch é só um ponteiro, e o <code class="inline">merge</code> é um commit com dois pais (<code class="inline">E</code> aponta para <code class="inline">C</code> e <code class="inline">D</code>). Como as setas só vão para trás, é um DAG. <code class="inline">git commit</code> é O(1); <code class="inline">git log</code> segue os pais: O(n).</p>
+      </div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 grafo.py</div>
+      <div class="line ctx">[&#x27;Ana&#x27;, &#x27;Bia&#x27;, &#x27;Duda&#x27;]</div>
+      <div class="line ctx">False</div>
+      <div class="line ctx">True</div>
+      <div class="line ctx">[&#x27;Bia&#x27;, &#x27;Duda&#x27;]</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 grafo_git.py</div>
+      <div class="line ctx">{&#x27;A&#x27;: [], &#x27;B&#x27;: [&#x27;A&#x27;], &#x27;C&#x27;: [&#x27;B&#x27;], &#x27;D&#x27;: [&#x27;B&#x27;], &#x27;E&#x27;: [&#x27;C&#x27;, &#x27;D&#x27;]}</div>
+      <div class="line ctx">{&#x27;main&#x27;: &#x27;E&#x27;, &#x27;feature&#x27;: &#x27;D&#x27;}</div>
+      <div class="line ctx">[&#x27;E&#x27;, &#x27;C&#x27;, &#x27;D&#x27;, &#x27;B&#x27;, &#x27;A&#x27;]</div>
+      <div class="line ctx">[&#x27;E&#x27;]</div>
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer>
+  Aula 10 — Estrutura de Dados · Engenharia de Software 2026.2 · Raio-X do Código (timeline viva — novas etapas entram aqui embaixo)
+</footer>
+
+<script src="../../assets/raio-x.js"></script>
+</body>
+</html>

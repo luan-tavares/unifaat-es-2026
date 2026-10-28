@@ -1,0 +1,208 @@
+CONTEXTO
+
+Na Aula 10 vimos as estruturas de dados (lista, tupla, dicionario, pilha, fila, arvore e grafo) e, para cada uma, a analise de LEITURA x ESCRITA: ler e escrever tem custos diferentes, e ganhar em uma costuma significar perder na outra. Contamos esse custo em PASSOS. Vimos tambem que o Git e um grafo: cada commit e um no, a aresta e o ponteiro para o commit pai, a branch e so um ponteiro para um commit, e o merge e um commit com DOIS pais.
+
+Agora e a vez de voces construirem um MiniGit: uma classe que guarda commits e branches usando as estruturas da aula, e que CONTA os passos de cada operacao. O MiniGit nao mexe em arquivos nem em conteudo: so no historico (commits, pais e branches). O objetivo e ver, com numeros, o que e barato e o que e caro.
+
+Estruturas que voces vao usar: dicionario (commit -> pais, commit -> mensagem, branch -> commit), lista (os pais de cada commit), tupla (o que os metodos devolvem) e fila (para percorrer o historico).
+
+O QUE VOCES PRECISAM FAZER
+
+Preparar o projeto Dentro do terminal do WSL, crie um diretorio chamado tf-10 e entre nele. Transforme a pasta em um repositorio Git e crie o ambiente virtual do projeto:
+
+mkdir tf-10
+cd tf-10
+git init
+python3 -m venv .venv
+source .venv/bin/activate
+
+Antes de qualquer git add, crie o .gitignore, para que o ambiente virtual nunca seja commitado:
+
+touch .gitignore
+code .
+
+No VS Code, dentro de .gitignore, escrever:
+
+.venv/
+__pycache__/
+
+Referencia Leiam, no repositorio base (link no fim), os arquivos src/10/grafo_git.py, src/10/fila.py e src/10/dicionario.py. Eles mostram a ideia, mas o MiniGit e uma CLASSE com atributos privados, e quem escreve e voces.
+
+Criar a classe MiniGit (parte 1: commits) Crie o arquivo minigit.py com a classe MiniGit. Detalhes:
+
+- Estado privado, declarado em __slots__: um dicionario de pais (commit -> lista dos pais), um dicionario de mensagens (commit -> mensagem), um dicionario de branches (branch -> commit para onde ela aponta), o nome da branch atual, um contador para gerar os identificadores e o numero de passos da ultima operacao;
+- O construtor nao recebe nada. O repositorio nasce vazio, na branch "main", que ainda nao aponta para nenhum commit;
+- Os identificadores dos commits sao gerados em ordem: "c1", "c2", "c3"...;
+- commitar(mensagem): cria um commit novo, filho do commit para onde a branch atual aponta (o primeiro commit nao tem pai), move o ponteiro da branch atual para ele e devolve o identificador. Levanta ValueError se a mensagem for vazia;
+- mensagem(commit): devolve a mensagem do commit. Levanta ValueError se o commit nao existe;
+- pais(commit): devolve os pais do commit como TUPLA (nunca a lista interna, para ninguem estragar o historico por fora). Levanta ValueError se o commit nao existe;
+- passos: uma property so de leitura (sem setter) que devolve quantos passos a ULTIMA operacao gastou. Fora da classe, git.passos = 5 tem que dar erro.
+
+Commit:
+
+git add .
+git commit -m "Cria o MiniGit com commitar, mensagem e pais"
+
+Criar a classe MiniGit (parte 2: branches e merge) No mesmo arquivo, acrescente:
+
+- criar_branch(nome): cria a branch apontando para o commit da branch atual. Levanta ValueError se a branch ja existe ou se ainda nao ha commits;
+- trocar_branch(nome): passa a branch atual a ser a indicada. Levanta ValueError se ela nao existe;
+- mesclar(nome): cria, na branch atual, um commit com DOIS pais (o commit da branch atual e o commit da branch indicada), com a mensagem "merge de <nome>", move o ponteiro da branch atual e devolve o identificador. Levanta ValueError se a branch nao existe ou se for a propria branch atual;
+- branch_atual: property so de leitura.
+
+Commit:
+
+git add .
+git commit -m "Acrescenta branches e merge"
+
+Criar a classe MiniGit (parte 3: leitura do historico) No mesmo arquivo, acrescente:
+
+- log(): devolve, como tupla, os identificadores de todos os commits alcancaveis a partir do commit da branch atual, seguindo os pais. Cada commit aparece uma vez so. Use uma FILA (collections.deque): coloque o commit da ponta na fila e, enquanto a fila nao estiver vazia, tire o primeiro, anote-o (se ainda nao anotado) e coloque os pais dele no fim da fila. Se nao ha commits, devolve uma tupla vazia;
+- buscar(texto): devolve o identificador do primeiro commit, na ordem de criacao, cuja mensagem contem o texto; se nenhum tem, devolve None;
+- merges(): devolve, como tupla, os commits que tem mais de um pai, na ordem de criacao.
+
+Commit:
+
+git add .
+git commit -m "Acrescenta log, buscar e merges"
+
+CONTAR OS PASSOS (o coracao do trabalho)
+
+Cada operacao publica da classe, ao terminar, guarda no estado privado quantos passos gastou, e a property passos devolve esse numero. A contagem e FIXA, assim:
+
+Escrita:
+- commitar: 2 passos (1 por criar o commit + 1 por mover o ponteiro da branch). O mesmo vale para mesclar;
+- criar_branch: 1 passo (1 ponteiro criado);
+- trocar_branch: 1 passo (1 ponteiro movido).
+
+Leitura:
+- mensagem e pais: 1 passo (vai direto na chave do dicionario);
+- log: 1 passo por commit visitado (o numero de commits da tupla devolvida; 0 se nao ha commits);
+- buscar: 1 passo por commit olhado, ate achar (ou todos, se nao achar);
+- merges: 1 passo por commit existente.
+
+Numere os passos no codigo, nao em um print: quem usa a classe le git.passos depois de chamar o metodo.
+
+Commit (junto com o que for ajustado na contagem):
+
+git add .
+git commit -m "Conta os passos de cada operacao"
+
+Testar No fim do minigit.py, escreva uma funcao tentar, igual a da aula, e as chamadas de teste abaixo, NESTA ordem:
+
+def tentar(acao):
+    try:
+        acao()
+    except ValueError as erro:
+        print("erro:", erro)
+
+Roteiro de teste (monta a mesma historia do slide da aula: dois commits na main, uma branch feature criada no segundo, um commit novo em cada branch e o merge):
+
+git = MiniGit()
+git.commitar("primeiro commit")
+print(git.passos)
+git.commitar("segundo commit")
+git.criar_branch("feature")
+print(git.passos)
+git.commitar("terceiro commit")
+git.trocar_branch("feature")
+git.commitar("quarto commit")
+git.trocar_branch("main")
+git.mesclar("feature")
+print(git.pais("c5"))
+print(git.log(), git.passos)
+print(git.mensagem("c3"), git.passos)
+print(git.buscar("quarto"), git.passos)
+print(git.merges())
+git.trocar_branch("feature")
+print(git.log(), git.passos)
+git.trocar_branch("main")
+
+As quatro tentativas que precisam FALHAR e imprimir o erro (use a funcao tentar, com lambda):
+
+tentar(lambda: git.trocar_branch("inexistente"))
+tentar(lambda: git.criar_branch("main"))
+tentar(lambda: git.mesclar("main"))
+tentar(lambda: git.pais("c99"))
+
+A SAIDA ESPERADA das linhas com print do roteiro, que voces devem conferir, e exatamente esta (os textos das mensagens de erro sao livres, mas tem que haver 4 linhas "erro: ..."):
+
+2
+1
+('c3', 'c4')
+('c5', 'c3', 'c4', 'c2', 'c1') 5
+terceiro commit 1
+c4 4
+('c5',)
+('c4', 'c2', 'c1') 3
+
+Medir a leitura x escrita Ainda no fim do minigit.py, escreva uma funcao medir(quantidade) que cria um MiniGit novo, faz quantidade commits seguidos (mensagens "commit 0", "commit 1"...), le git.passos logo depois do ULTIMO commitar, chama log() e le git.passos de novo. Devolve os dois numeros. Depois, imprima esta tabela chamando medir com 10, 100 e 1000:
+
+commits   passos do commitar   passos do log
+10        2                     10
+100       2                     100
+1000      2                     1000
+
+Rode no terminal e confira que a saida bate:
+
+python3 minigit.py
+
+Commit:
+
+git add .
+git commit -m "Testa e mede leitura x escrita"
+
+README Crie o arquivo README.md com as suas palavras (nao copiem o texto do slide nem do briefing). Cole nele a tabela da medicao e responda, em 2 a 3 linhas cada:
+
+1. Por que o commitar gasta sempre 2 passos, e o log gasta mais conforme o historico cresce? (leitura x escrita)
+2. Por que mensagem(commit) gasta 1 passo e buscar(texto) pode gastar muitos? O que o dicionario ganha quando se procura pela chave, e o que ele nao ajuda quando se procura pelo valor?
+3. Por que o merge e um commit com dois pais, e por que isso faz do historico um grafo, e nao uma lista?
+4. Por que o metodo pais devolve uma tupla, e nao a lista que esta guardada dentro do dicionario?
+
+Commit:
+
+git add .
+git commit -m "Escreve o README"
+
+Criar o repositorio no GitHub e enviar o historico No site do GitHub, crie um repositorio Public chamado tf-10, sem README. Copie a URL SSH (botao verde Code, aba SSH) e, no terminal, dentro de tf-10:
+
+git remote add origin <URL copiada>
+git push -u origin main
+
+Conferir no proprio GitHub Abram o repositorio no navegador e confirmem: minigit.py, README.md e .gitignore aparecem; a pasta .venv NAO aparece.
+
+Ao final, a pasta tf-10 (local) deve estar assim:
+tf-10/
+├── .git/
+├── .venv/
+├── .gitignore
+├── README.md
+└── minigit.py
+
+REGRAS
+
+Unico import permitido: deque, de collections (from collections import deque). Nada de dataclasses, typing, copy ou outros.
+Nenhum atributo publico solto: todo o estado do MiniGit e privado (__), declarado em __slots__ e acessado por property ou metodo.
+Nenhum metodo devolve uma lista ou dicionario interno: devolva tuplas (ou copias).
+Nada de else (nem elif): usar retorno antecipado, continue e valor padrao.
+Nomes sem abreviacoes (mensagem, e nao msg; identificador, e nao id).
+A classe e cada metodo devem ter comentarios explicando, com as proprias palavras, o que fazem e quantos passos gastam.
+Pelo menos 5 commits no Git, na ordem do roteiro.
+A pasta .venv nao pode aparecer no repositorio.
+O repositorio no GitHub deve estar Public, pra que o codigo possa ser conferido pelo link enviado.
+Trabalho individual: codigos identicos entre colegas serao considerados copia e zerados para todos os envolvidos.
+Todo o trabalho deve ser feito dentro do ambiente Linux do WSL.
+
+REPOSITORIO BASE
+
+O codigo visto em aula (pasta src/10/) esta no repositorio base da disciplina: https://github.com/luan-tavares/unifaat-es-2026
+
+Usem ele como base e referencia, mas o repositorio entregue e o de cada um: criem o SEU repositorio tf-10, PUBLICO, no seu proprio GitHub. O link do repositorio base nao vale como entrega.
+
+ENTREGA
+
+Enviar o link do repositorio no GitHub (publico), junto com nome e RA, pelo formulario:
+
+https://docs.google.com/forms/d/e/1FAIpQLSfW4bh9zbk6fae3Z1XzzujO2wRlfEq4il7axAL9jx2Se-BupQ/viewform?usp=dialog
+
+2026-11-04T23:59:59

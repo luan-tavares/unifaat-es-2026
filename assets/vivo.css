@@ -1,0 +1,168 @@
+/* Slides vivos (ES): animações que rodam sozinhas, em loop, enquanto o slide está aberto.
+   Cada widget é <div class="viva" data-viva="chave">; o vivo.js monta o palco, a legenda e o
+   painel "leitura x escrita". Os elementos ficam na tela e se movem por transição CSS (a seta
+   anda, a bolinha entra, os itens deslizam). Cores só por variável, nas duas paletas. */
+:root{
+  --v-ler: #15803d;       --v-ler-bg: #dcfce7;
+  --v-esc: #b45309;       --v-esc-bg: #ffedd5;
+  --v-mov: #2f5fd0;       --v-mov-bg: #dce8fb;
+  --v-ruim: #b91c1c;      --v-ruim-bg: #fee2e2;
+  --v-visto-bg: #e4e8e1;  --v-visto-ink: #5a665d;
+  --v-ptr-1: #7c3aed;     --v-ptr-2: #0e7490;
+}
+:root[data-theme="dark"]{
+  --v-ler: #4ade80;       --v-ler-bg: #12301e;
+  --v-esc: #fdba74;       --v-esc-bg: #3b1a08;
+  --v-mov: #8fb1f5;       --v-mov-bg: #172a4d;
+  --v-ruim: #f87171;      --v-ruim-bg: #3b1212;
+  --v-visto-bg: #26392f;  --v-visto-ink: #a8b8ad;
+  --v-ptr-1: #c4a1ff;     --v-ptr-2: #67d6ea;
+}
+
+.viva{
+  display: grid;
+  grid-template-columns: 1fr 372px;
+  gap: 16px;
+  height: 456px;
+  font-family: var(--font-body);
+}
+.viva.solo{ grid-template-columns: 1fr; }
+.viva .vleft{ display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+
+.viva .vstage{
+  position: relative;
+  flex: 1;
+  display: flex; align-items: flex-end; justify-content: center;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.viva .vcanvas{ position: relative; width: 720px; height: 332px; flex: none; margin-bottom: 6px; }
+.viva .vtag{
+  position: absolute; top: 10px; left: 12px; z-index: 5;
+  font: 700 .85rem var(--font-mono);
+  letter-spacing: .08em;
+  padding: 3px 10px; border-radius: 999px;
+  border: 2px solid var(--rule); color: var(--muted);
+}
+.viva .vtag.t-ler{ color: var(--v-ler); border-color: var(--v-ler); background: var(--v-ler-bg); }
+.viva .vtag.t-esc{ color: var(--v-esc); border-color: var(--v-esc); background: var(--v-esc-bg); }
+.viva .vtag.t-ex{ color: var(--v-mov); border-color: var(--v-mov); background: var(--v-mov-bg); }
+.viva .vcount{
+  position: absolute; top: 8px; right: 14px; z-index: 5;
+  font: 600 .95rem var(--font-mono); color: var(--muted);
+}
+.viva .vcount b{ font-size: 1.5rem; color: var(--ink); }
+
+.viva .vcap{
+  display: flex; flex-direction: column; gap: 2px;
+  border-left: 4px solid var(--accent);
+  padding: 4px 12px; min-height: 58px;
+}
+.viva .vcap code{ font: 700 1.15rem var(--font-mono); color: var(--ink); background: none; border: 0; padding: 0; }
+.viva .vcap .vmsg{ font-size: 1.05rem; color: var(--muted); }
+
+/* ---- itens animados: tudo é absoluto e anda por transição ---- */
+.viva .vi2{
+  position: absolute; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-sizing: border-box;
+  border: 2px solid var(--code-border); border-radius: 8px;
+  background: var(--bg); color: var(--ink);
+  font: 700 1.4rem var(--font-mono);
+  white-space: nowrap;
+  transition: left .6s ease, top .6s ease, width .6s ease, height .6s ease, opacity .5s ease,
+              transform .6s ease, background-color .3s, border-color .3s, color .3s, border-radius .5s;
+}
+.viva .vcanvas.sem-trans .vi2{ transition: none; }
+.viva .vi2 small{ font: 500 .78rem var(--font-mono); color: var(--muted); }
+.viva .vi2 b{ font-weight: 700; }
+.viva .vi2.bola{ border-radius: 50%; transform: scale(.55); opacity: 0; }
+.viva .vi2.ghost{ background: none; border-style: dashed; border-color: var(--rule); z-index: 0; }
+.viva .vi2.lbl{ background: none; border: 0; color: var(--muted); font: 600 .9rem var(--font-mono); z-index: 0; }
+.viva .vi2.lbl.forte{ color: var(--accent); font-size: 1.02rem; }
+.viva .vi2.seta{ background: none; border: 0; color: var(--accent); font: 700 1rem var(--font-mono); z-index: 3; overflow: visible; }
+.viva .vi2.seta b{ font-size: 1.9rem; line-height: 1; }
+.viva .vi2.seta small{ color: var(--accent); font-weight: 700; font-size: .85rem; }
+.viva .vi2.setaH{ background: none; border: 0; color: var(--accent); font: 700 1.05rem var(--font-mono); z-index: 3; align-items: flex-start; }
+.viva .vi2.frio{ border-width: 4px; }
+.viva .vi2.no{ border-radius: 10px; font-size: 1.05rem; }
+.viva .vi2.circ{ border-radius: 50%; }
+.viva .vi2.slot{ gap: 2px; font-size: 1rem; }
+.viva .vi2.slot span{ font-weight: 500; font-size: .95rem; }
+.viva .vi2.hash{ border-color: var(--accent); color: var(--accent); font-size: 1.1rem; }
+.viva .vi2.adj{ align-items: flex-start; background: none; border: 0; font: 700 1.02rem var(--font-mono); z-index: 2; }
+.viva .vi2.adj .vk{ color: var(--muted); font-weight: 500; }
+.viva .vi2.adj i{ font-style: normal; padding: 1px 5px; border-radius: 5px; border: 2px solid transparent; margin-right: 3px; }
+.viva .vi2.var{ gap: 0; font-size: 1.15rem; }
+.viva .vi2.obj{ font-size: 1.2rem; }
+.viva .vi2.p1{ color: var(--v-ptr-1); border-color: var(--v-ptr-1); }
+.viva .vi2.p2{ color: var(--v-ptr-2); border-color: var(--v-ptr-2); }
+.viva .vi2.lbl-c{ background: none; border: 0; color: var(--muted); font: 700 .95rem var(--font-body); z-index: 0; }
+
+.viva .m-ler{ background: var(--v-ler-bg); border-color: var(--v-ler); color: var(--v-ler); }
+.viva .m-esc{ background: var(--v-esc-bg); border-color: var(--v-esc); color: var(--v-esc); }
+.viva .m-mov{ background: var(--v-mov-bg); border-color: var(--v-mov); color: var(--v-mov); }
+.viva .m-ruim{ background: var(--v-ruim-bg); border-color: var(--v-ruim); color: var(--v-ruim); }
+.viva .m-visto{ background: var(--v-visto-bg); border-color: var(--rule); color: var(--v-visto-ink); }
+.viva .m-vazio{ background: var(--v-ruim-bg); border-style: dashed; border-color: var(--v-ruim); }
+.viva .vi2 small.sm{ color: inherit; }
+
+/* linhas e setas finas (árvore, grafo, ponteiros) */
+.viva .vi2.lin{
+  height: 4px; border: 0; border-radius: 2px; padding: 0;
+  background: var(--code-border);
+  transform-origin: 0 50%;
+  z-index: 0;
+}
+.viva .vi2.lin.m-ler{ background: var(--v-ler); height: 6px; }
+.viva .vi2.lin.m-esc{ background: var(--v-esc); height: 6px; }
+.viva .vi2.lin.m-ruim{ background: var(--v-ruim); height: 6px; }
+.viva .vi2.lin.pt::after{
+  content: ''; position: absolute; right: -2px; top: 50%;
+  border: 8px solid transparent; border-left: 14px solid var(--code-border);
+  border-right: 0; transform: translateY(-50%);
+}
+.viva .vi2.lin.pt.p1{ background: var(--v-ptr-1); }
+.viva .vi2.lin.pt.p1::after{ border-left-color: var(--v-ptr-1); }
+.viva .vi2.lin.pt.p2{ background: var(--v-ptr-2); }
+.viva .vi2.lin.pt.p2::after{ border-left-color: var(--v-ptr-2); }
+
+/* ---- painel leitura x escrita ---- */
+.viva .vpanel{
+  display: flex; flex-direction: column; gap: 8px; min-width: 0;
+  border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px;
+  background: var(--surface);
+}
+.viva .vpanel h3{ margin: 0 0 2px; font: 700 1rem var(--font-body); color: var(--accent); letter-spacing: .03em; }
+.viva .vop{
+  display: grid; grid-template-columns: auto 1fr auto; gap: 4px 8px; align-items: center;
+  padding: 6px 8px; border: 2px solid transparent; border-radius: 8px; cursor: pointer;
+  background: var(--bg);
+  transition: border-color .3s, box-shadow .3s;
+}
+.viva .vop.on{ border-color: var(--accent); box-shadow: 0 0 0 3px var(--v-esc-bg); }
+.viva .vop .vk{ font: 700 .72rem var(--font-mono); padding: 2px 7px; border-radius: 999px; border: 2px solid var(--rule); letter-spacing: .06em; }
+.viva .vop .vk.k-ler{ color: var(--v-ler); border-color: var(--v-ler); }
+.viva .vop .vk.k-esc{ color: var(--v-esc); border-color: var(--v-esc); }
+.viva .vop .vk.k-preco{ color: var(--v-ruim); border-color: var(--v-ruim); }
+.viva .vop .vk.k-ex{ color: var(--v-mov); border-color: var(--v-mov); }
+.viva .vop code{ font: 700 .95rem var(--font-mono); background: none; border: 0; padding: 0; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.viva .vop .vc-custo{ font: 700 .95rem var(--font-mono); padding: 2px 8px; border-radius: 6px; }
+.viva .vop .vc-custo.bom{ color: var(--v-ler); background: var(--v-ler-bg); }
+.viva .vop .vc-custo.ruim{ color: var(--v-ruim); background: var(--v-ruim-bg); }
+.viva .vop .vc-custo.neutro{ color: var(--muted); background: var(--v-visto-bg); }
+.viva .vop .vtxt{ grid-column: 1 / -1; font-size: .88rem; color: var(--muted); }
+.viva .vlegenda{ margin-top: auto; font-size: .82rem; color: var(--muted); line-height: 1.35; border-top: 1px dashed var(--rule); padding-top: 6px; }
+.viva .vlegenda b{ color: var(--ink); }
+
+/* painel com mais de 4 operações */
+.viva.denso .vpanel{ gap: 5px; }
+.viva.denso .vop{ padding: 3px 8px; gap: 2px 8px; }
+.viva.denso .vop .vtxt{ font-size: .8rem; }
+
+@media print{
+  .viva .vstage, .viva .vpanel{ break-inside: avoid; }
+  .viva .vi2{ transition: none !important; }
+}

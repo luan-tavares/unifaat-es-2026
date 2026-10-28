@@ -23,7 +23,7 @@
   display: grid;
   grid-template-columns: 1fr 372px;
   gap: 16px;
-  height: 456px;
+  height: 440px;
   font-family: var(--font-body);
 }
 .viva.solo{ grid-template-columns: 1fr; }

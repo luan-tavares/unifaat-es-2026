@@ -322,9 +322,9 @@
       Object.keys(GN).forEach(function(k){ out.push(item('g' + k, k, GN[k][0] - 32, GN[k][1] - 32, 64, 64, 'no circ ' + marca(nm, k))); });
       Object.keys(GN).forEach(function(k, i){
         var itens = (adj[k] || []).map(function(v, j){ return '<i class="' + marca(am && am[k], j) + '">' + v + '</i>'; }).join('');
-        out.push(item('adj' + k, '<span><span class="vk">' + k + ': [</span>' + itens + '<span class="vk">]</span></span>', 500, 50 + i * 62, 220, 30, 'adj'));
+        out.push(item('adj' + k, '<span><span class="vk">' + k + ': [</span>' + itens + '<span class="vk">]</span></span>', 500, 82 + i * 56, 220, 30, 'adj'));
       });
-      out.push(item('adjt', 'dicionário de vizinhos', 500, 14, 220, 22, 'lbl forte'));
+      out.push(item('adjt', 'dicionário de vizinhos', 500, 46, 220, 22, 'lbl forte'));
       return out.concat(extra || []);
     }
     var E0 = [['Ana', 'Bia'], ['Ana', 'Caio'], ['Bia', 'Caio'], ['Caio', 'Duda']];

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 08 — Paradigma Orientado a Objetos</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<link rel="stylesheet" href="../../assets/slide-16x9.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">08</span> - Paradigma Orientado a Objetos</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="por que agora">
+    <h2>Do dado pronto ao <span class="accent">dado que a gente desenha</span></h2>
+    <p class="lede">Até aqui só usamos o que o Python traz pronto:</p>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># dados prontos</span><br>
+      <strong>int · float · bool · str</strong><br>
+      <strong>list · tuple · dict</strong><br>
+      <span class="dim">não existe &quot;aluno&quot;, nem &quot;pasta&quot;</span>
+    </div>
+    <div class="tree">
+      <span class="dim"># dados que a gente desenha</span><br>
+      <strong>Aluno</strong>: nome, ra, notas<br>
+      <strong>Item</strong>: nome, pai, filhos<br>
+      <span class="dim">o molde se chama classe</span>
+    </div>
+    </div>
+    <p class="payoff">Uma árvore é feita de pedaços que apontam uns para os
+    outros, e cada pedaço é um objeto. Por isso a orientação a objetos
+    vem <strong>antes</strong> das estruturas de dados.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="funções · entrada e saída">
+    <h2>Função: <span class="accent">entrada → saída</span></h2>
+    <div class="tree">
+      <span class="dim"># parâmetros (entrada)  →  corpo  →  return (saída)</span><br>
+      <strong>parâmetro</strong>: o nome que a função declara pra receber<br>
+      <strong>argumento</strong>: o valor passado na hora de chamar
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/08/funcoes.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">def calcular_media(</span><span class="hl">primeira_nota, segunda_nota</span><span class="cmd">):</span>  <span class="out"># parâmetros</span></div>
+        <div class="term-line"><span class="cmd">    soma = primeira_nota + segunda_nota</span></div>
+        <div class="term-line"><span class="cmd">    media = soma / 2</span></div>
+        <div class="term-line"><span class="cmd">    </span><span class="hl">return media</span><span class="cmd"></span>  <span class="out"># a saída</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">resultado = calcular_media(</span><span class="hl">8, 6</span><span class="cmd">)</span>  <span class="out"># argumentos</span></div>
+        <div class="term-line"><span class="cmd">print(resultado)</span></div>
+        <div class="term-line out hl">7.0</div>
+      </div>
+    </div>
+    <p class="payoff">Na chamada, o 1º argumento entra no 1º parâmetro:
+    <strong>a ordem importa</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="funções · return">
+    <h2><span class="accent">return</span> não é print</h2>
+    <div class="two-col">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">com return</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">def media(a, b):</span></div>
+        <div class="term-line"><span class="cmd">    return (a + b) / 2</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">valor = media(8, 6)</span></div>
+        <div class="term-line"><span class="cmd">print(valor + 1)</span></div>
+        <div class="term-line out hl">8.0</div>
+      </div>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">só print</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">def media(a, b):</span></div>
+        <div class="term-line"><span class="cmd">    print((a + b) / 2)</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">valor = media(8, 6)</span></div>
+        <div class="term-line"><span class="cmd">print(valor)</span></div>
+        <div class="term-line out hl">7.0</div>
+        <div class="term-line out hl">None</div>
+      </div>
+    </div>
+    </div>
+    <ul class="points">
+      <li><code>return</code> <strong>devolve</strong> o valor: dá pra guardar, somar, comparar e encerra a função na hora</li>
+      <li><code>print</code> só <strong>mostra</strong> na tela; quem chamou não recebe nada</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-eyebrow="funções · void e procedure">
+    <h2>Sem retorno: <span class="accent">void</span> e procedure</h2>
+    <table class="data-table">
+      <thead><tr><th>tipo</th><th>tem return?</th><th>exemplo</th></tr></thead>
+      <tbody>
+        <tr><td>função</td><td>sim</td><td><code>calcular_media(8, 6)</code> devolve <code>7.0</code></td></tr>
+        <tr><td>procedimento (<em>procedure</em>)</td><td class="hl">não: devolve <code>None</code></td><td><code>mostrar_boletim("Ana", 7.0)</code></td></tr>
+        <tr><td>sem parâmetros</td><td>tanto faz</td><td><code>mostrar_cabecalho()</code></td></tr>
+      </tbody>
+    </table>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/08/funcoes.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">def mostrar_boletim(nome, media):</span></div>
+        <div class="term-line"><span class="cmd">    print("Aluno:", nome, "| Média:", media)</span>  <span class="out"># só faz, não devolve</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">def aprovado(media, </span><span class="hl">media_minima=7</span><span class="cmd">):</span>  <span class="out"># valor padrão</span></div>
+        <div class="term-line"><span class="cmd">    return media &gt;= media_minima</span></div>
+      </div>
+    </div>
+    <p class="payoff">Em C, sem retorno é <code>void</code>. Em Python não existe
+    a palavra: função sem <code>return</code> devolve <code>None</code> ("nada").</p>
+  </section>
+
+  <section class="slide" data-eyebrow="o que é um objeto">
+    <h2>O que é um <span class="accent">objeto</span>?</h2>
+    <p class="lede">Uma <strong>coisa do problema</strong> representada no código:
+    ela <strong>tem</strong> dados e <strong>sabe fazer</strong> coisas com eles.</p>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># no mundo: um aluno</span><br>
+      <strong>tem</strong>: nome, RA, notas<br>
+      <strong>faz</strong>: recebe nota,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;calcula a média
+    </div>
+    <div class="tree">
+      <span class="dim"># no código: o objeto ana</span><br>
+      <strong>dados</strong>: &quot;Ana&quot;, 1234, [8, 9]<br>
+      <strong>comportamento</strong>:<br>
+      &nbsp;&nbsp;adicionar_nota()<br>
+      &nbsp;&nbsp;calcular_media()
+    </div>
+    </div>
+    <p class="payoff">Antes: dados soltos e funções soltas. Agora: <strong>dados e o
+    que se faz com eles, juntos num lugar só</strong>. Um <code>int</code> ou uma
+    <code>str</code> não sabem nada sobre alunos; o objeto sabe.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="orientação a objetos · filosofia">
+    <h2>Orientar a objetos é <span class="accent">mais que classe e objeto</span></h2>
+    <p class="lede">Classe e objeto são a <strong>ferramenta</strong>. Saber usar a
+    ferramenta não basta: orientação a objetos é uma <strong>filosofia</strong> de
+    organizar o código.</p>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># a ferramenta (a sintaxe)</span><br>
+      classe e objeto<br>
+      propriedades e métodos<br>
+      self e construtor<br>
+      <span class="dim">é o que vemos hoje</span>
+    </div>
+    <div class="tree">
+      <span class="dim"># a filosofia (os pilares)</span><br>
+      <strong>abstração</strong><br>
+      <strong>encapsulamento</strong><br>
+      <strong>herança</strong><br>
+      <strong>polimorfismo</strong><br>
+      <span class="dim">são 3 ou 4? o que cada nome seria?</span>
+    </div>
+    </div>
+    <p class="payoff">Escrever uma classe não é orientar a objetos, do mesmo jeito
+    que saber usar o martelo não é saber construir uma casa. Os pilares ficam
+    pra <strong>próxima aula</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="classe e objeto">
+    <h2>Onde nasce o objeto: <span class="accent">a classe</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># C: só agrupa os dados</span><br>
+      struct Aluno {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;char nome[50];<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;int ra;<br>
+      };
+    </div>
+    <div class="tree">
+      <span class="dim"># Python: dados + funções</span><br>
+      class <strong>Aluno</strong>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;nome, ra, notas<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;adicionar_nota()<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;calcular_media()
+    </div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th></th><th>o que é</th><th>exemplo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>classe</strong></td><td>o molde: define como o dado vai ser</td><td><code>Aluno</code></td></tr>
+        <tr><td><strong>objeto</strong></td><td>o dado criado a partir do molde</td><td><code>ana</code>, <code>bruno</code></td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">Do mesmo molde saem quantos objetos quisermos,
+    cada um com os seus próprios dados.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="propriedades e métodos">
+    <h2>O objeto agrupa <span class="accent">propriedades e métodos</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># propriedade = o que o objeto TEM</span><br>
+      dado que pertence ao objeto<br>
+      <strong>qualquer tipo</strong>:<br>
+      &nbsp;&nbsp;nome (str) · ra (int)<br>
+      &nbsp;&nbsp;notas (list) · até outro objeto
+    </div>
+    <div class="tree">
+      <span class="dim"># método = o que o objeto FAZ</span><br>
+      função que pertence ao objeto<br>
+      mesmos parâmetros e return<br>
+      do tópico de funções<br>
+      chamada com ponto: <strong>ana.calcular_media()</strong>
+    </div>
+    </div>
+    <p class="payoff">Método é só uma função declarada <strong>dentro da classe</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="self">
+    <h2>O <span class="accent">self</span>: o objeto apontando pra si mesmo</h2>
+    <div class="two-col">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/08/classes.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class Aluno:</span></div>
+        <div class="term-line"><span class="cmd">    def adicionar_nota(</span><span class="hl">self</span><span class="cmd">, nota):</span></div>
+        <div class="term-line"><span class="cmd">        </span><span class="hl">self</span><span class="cmd">.notas.append(nota)</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">    def calcular_media(</span><span class="hl">self</span><span class="cmd">):</span></div>
+        <div class="term-line"><span class="cmd">        soma = 0</span></div>
+        <div class="term-line"><span class="cmd">        for nota in </span><span class="hl">self</span><span class="cmd">.notas:</span></div>
+        <div class="term-line"><span class="cmd">            soma = soma + nota</span></div>
+        <div class="term-line"><span class="cmd">        return soma / len(</span><span class="hl">self</span><span class="cmd">.notas)</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">ana = Aluno()</span></div>
+        <div class="term-line"><span class="cmd">bruno = Aluno()</span></div>
+        <div class="term-line"><span class="cmd">ana.adicionar_nota(8)</span></div>
+        <div class="term-line"><span class="cmd">bruno.adicionar_nota(4)</span></div>
+      </div>
+    </div>
+    <div class="tree">
+      <span class="dim"># o Python entrega o objeto ao self</span><br>
+      ana.adicionar_nota(8)<br>
+      &nbsp;&nbsp;→ self = <strong>ana</strong><br>
+      &nbsp;&nbsp;→ mexe na lista da Ana<br>
+      <br>
+      bruno.adicionar_nota(4)<br>
+      &nbsp;&nbsp;→ self = <strong>bruno</strong><br>
+      &nbsp;&nbsp;→ mexe na lista do Bruno
+    </div>
+    </div>
+    <p class="payoff">O método é escrito uma vez e serve pra todos os objetos.
+    Sem o <code>self</code>, ele perderia a referência de <strong>de quem</strong> é cada dado.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="construtor">
+    <h2>Construtor: <span class="accent">__init__</span></h2>
+    <p class="body-text">Método especial, chamado <strong>no instante em que o objeto
+    é criado</strong>. Os argumentos de <code>Aluno(...)</code> chegam nele.</p>
+    <div class="two-col">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">sem construtor</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">ana = Aluno()</span></div>
+        <div class="term-line"><span class="cmd">ana.nome = "Ana"</span></div>
+        <div class="term-line"><span class="cmd">ana.ra = 1234</span></div>
+        <div class="term-line"><span class="cmd">ana.notas = []</span></div>
+        <div class="term-line comment"># esqueceu uma? AttributeError</div>
+      </div>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">com construtor</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class Aluno:</span></div>
+        <div class="term-line"><span class="cmd">    def </span><span class="hl">__init__</span><span class="cmd">(self, nome, ra):</span></div>
+        <div class="term-line"><span class="cmd">        self.nome = nome</span></div>
+        <div class="term-line"><span class="cmd">        self.ra = ra</span></div>
+        <div class="term-line"><span class="cmd">        self.notas = []</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">ana = Aluno("Ana", 1234)</span></div>
+      </div>
+    </div>
+    </div>
+    <p class="payoff">O objeto já nasce completo. Em JavaScript é o
+    <code>constructor</code>; em PHP, o <code>__construct</code>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="injeção de objeto">
+    <h2>Propriedade pode ser <span class="accent">outro objeto</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/08/construtor.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class Professor:</span></div>
+        <div class="term-line"><span class="cmd">    def __init__(self, nome):</span></div>
+        <div class="term-line"><span class="cmd">        self.nome = nome</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">class Turma:</span></div>
+        <div class="term-line"><span class="cmd">    def __init__(self, nome, </span><span class="hl">professor</span><span class="cmd">):</span></div>
+        <div class="term-line"><span class="cmd">        self.nome = nome</span></div>
+        <div class="term-line"><span class="cmd">        self.professor = </span><span class="hl">professor</span><span class="cmd"></span>  <span class="out"># objeto injetado</span></div>
+        <div class="term-line"><span class="cmd">        self.alunos = []</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">luan = Professor("Luan")</span></div>
+        <div class="term-line"><span class="cmd">turma = Turma("ADS 2º semestre", </span><span class="hl">luan</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">print(turma.professor.nome)</span></div>
+        <div class="term-line out hl">Luan</div>
+      </div>
+    </div>
+    <p class="payoff">A turma não copia o professor: guarda uma
+    <strong>referência</strong> ao mesmo objeto. É essa ideia que monta a árvore.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="árvore de arquivos">
+    <h2>Árvore de arquivos: <span class="accent">cada item conhece o pai</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># o que o Explorador mostra</span><br>
+      C:/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;Users/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desktop/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trabalhos/<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tf-08.py
+    </div>
+    <div class="tree">
+      <span class="dim"># classe Item</span><br>
+      <strong>nome</strong>: &quot;tf-08.py&quot;<br>
+      <strong>eh_pasta</strong>: False<br>
+      <strong>pai</strong>: o objeto <code>trabalhos</code><br>
+      <strong>filhos</strong>: [ ] (só pasta tem)
+    </div>
+    </div>
+    <p class="payoff">Pasta e arquivo são o mesmo tipo de dado: a diferença é só o
+    booleano <code>eh_pasta</code>. A raiz é o único item sem pai (<code>None</code>).</p>
+  </section>
+
+  <section class="slide" data-eyebrow="árvore · construtor">
+    <h2>A classe <span class="accent">Item</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/08/arvore_arquivos.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">class Item:</span></div>
+        <div class="term-line"><span class="cmd">    def __init__(self, nome, eh_pasta, </span><span class="hl">pai=None</span><span class="cmd">):</span></div>
+        <div class="term-line comment">        # só pasta pode conter itens</div>
+        <div class="term-line"><span class="cmd">        if pai is not None and not pai.eh_pasta:</span></div>
+        <div class="term-line"><span class="cmd">            raise ValueError(pai.nome + " é um arquivo")</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">        self.nome = nome</span></div>
+        <div class="term-line"><span class="cmd">        self.eh_pasta = eh_pasta</span></div>
+        <div class="term-line"><span class="cmd">        </span><span class="hl">self.pai = pai</span><span class="cmd"></span>  <span class="out"># o objeto injetado</span></div>
+        <div class="term-line"><span class="cmd">        self.filhos = []</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">        if pai is not None:</span></div>
+        <div class="term-line"><span class="cmd">            </span><span class="hl">pai.filhos.append(self)</span><span class="cmd"></span>  <span class="out"># se cadastra no pai</span></div>
+      </div>
+    </div>
+    <p class="payoff">O pai é injetado, então precisa <strong>existir antes</strong>
+    do filho. Sem <code>else</code>: o <code>if</code> só age quando há pai.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="árvore · montando">
+    <h2>Montando a árvore: <span class="accent">primeiro o pai</span></h2>
+    <div class="two-col">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">src/08/arvore_arquivos.py</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="cmd">disco = Item("C:", True)</span></div>
+        <div class="term-line"><span class="cmd">usuarios = Item("Users", True, </span><span class="hl">disco</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">desktop = Item("Desktop", True, </span><span class="hl">usuarios</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">trabalhos = Item("Trabalhos", True, </span><span class="hl">desktop</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">Item("notas.txt", False, desktop)</span></div>
+        <div class="term-line"><span class="cmd">tf = Item("tf-08.py", False, </span><span class="hl">trabalhos</span><span class="cmd">)</span></div>
+        <div class="term-line"><span class="cmd">Item("slide.pdf", False, trabalhos)</span></div>
+        <div class="term-line"><span class="cmd"> </span></div>
+        <div class="term-line"><span class="cmd">disco.mostrar()</span></div>
+      </div>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">saída</span>
+      </div>
+      <div class="term-body">
+
+        <div class="term-line out hl">C:/</div>
+        <div class="term-line out hl">    Users/</div>
+        <div class="term-line out hl">        Desktop/</div>
+        <div class="term-line out hl">            Trabalhos/</div>
+        <div class="term-line out hl">                tf-08.py</div>
+        <div class="term-line out hl">                slide.pdf</div>
+        <div class="term-line out hl">            notas.txt</div>
+      </div>
+    </div>
+    </div>
+    <p class="payoff">Cada linha cria um objeto e injeta o pai no construtor.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="próximos passos">
+    <h2>Próximos <span class="accent">passos</span></h2>
+    <ul class="points">
+      <li>A <strong>filosofia</strong> de orientar a objetos: os pilares</li>
+      <li>Usar <strong>objetos para montar estruturas de dados</strong>: a árvore de arquivos foi só o começo</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 08 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 08: <span class="accent">commit e repositório</span></h2>
+    <p class="lede">Num repositório novo <code>tf-08</code>, com venv e
+    <code>.gitignore</code>, criar no <code>commit.py</code> o histórico do Git
+    em objetos:</p>
+    <ul class="points">
+      <li><code>Commit</code>: <code>id</code>, <code>mensagem</code>, <code>autor</code> e <code>pai</code> (o commit anterior); o <code>historico()</code> sobe de pai em pai</li>
+      <li><code>Repositorio</code>: <code>commitar()</code> (um contador gera o <strong>id único</strong>), <code>log()</code> e <code>total_de_commits()</code></li>
+      <li>Autor = <strong>nome e RA</strong> do aluno; 3+ commits com mensagens suas</li>
+      <li>Sem <code>else</code>, <strong>sem <code>import</code></strong>, comentários com as próprias palavras, <code>.venv</code> fora do repositório</li>
+    </ul>
+    <p class="body-text">Entrega: link do repositório público no GitHub, pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSedMOT1GH_eZeXlU-WdvvE8HfQfe2he01c4yeqElX2tvn3jaw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer"><code>docs.google.com/forms/d/e/1FAIpQLSedMOT1GH_eZeXlU-WdvvE8HfQfe2he01c4yeqElX2tvn3jaw/viewform</code></a></p>
+    <p class="payoff">Prazo: <strong>21/10, até 23:59</strong>.</p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">17</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">use ← → ou espaço para navegar · T alterna o tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+
+<script src="../../assets/slide.js"></script>
+<script src="../../assets/slide-16x9.js"></script>
+</body>
+</html>

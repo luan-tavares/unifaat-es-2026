@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilar 3: Polimorfismo</title>
+<link rel="stylesheet" href="../../../assets/modelo.css">
+<script src="../../../assets/tema.js"></script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="topbar"><a class="back" href="../../../index.html">← Voltar</a></nav>
+
+  <p class="eyebrow">Engenharia de Software · 2026.2 · Aula 09 · modelo interativo</p>
+  <h1>Pilar 3: <span class="accent">Polimorfismo</span></h1>
+  <p class="lede">A mesma chamada, <code>tamanho()</code>, feita em pastas e em arquivos da árvore. Cada objeto responde do seu jeito, e quem chama nunca pergunta "você é pasta?". Rode o cenário passo a passo.</p>
+
+  <div class="controls">
+    <div class="group" role="group" aria-label="Cenários"><span class="group-title">Cenários</span><span id="scenarios" class="group"></span></div>
+  </div>
+
+  <div class="scroller">
+    <div class="stage" id="stage">
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+    </div>
+  </div>
+
+  <div class="panels">
+    <section class="panel" id="info"></section>
+    <section class="panel" id="scn"></section>
+  </div>
+
+  <div class="legend">
+    <span><i class="lg-obj"></i>objeto</span>
+    <span><i class="lg-cls"></i>método que existe numa classe</span>
+    <span><i class="lg-call"></i>a chamada <code>tamanho()</code></span>
+    <span><i class="lg-ok"></i>escolha do método, em tempo de execução</span>
+    <span>a seta de chamada sai de quem chama e aponta para quem responde</span>
+  </div>
+
+</div>
+<script>
+window.MODELO = {
+  W: 1800, H: 720,
+  nodes: [
+    { id: 't-obj', cls: 'label static', x: 620, y: 40, w: 400, h: 40, html: 'Três objetos (tipos diferentes)' },
+    { id: 't-met', cls: 'label static', x: 1240, y: 40, w: 500, h: 40, html: 'O método de cada um' },
+
+    { id: 'cli', cls: 'client', x: 40, y: 290, w: 380, h: 130, html: '<code>x.tamanho()</code><small>a mesma chamada, sem perguntar o tipo</small>' },
+
+    { id: 'o-arq', cls: 'obj file', x: 620, y: 110, w: 330, h: 120, html: 'notas.txt<small>é um Arquivo</small>' },
+    { id: 'o-pasta', cls: 'obj', x: 620, y: 300, w: 330, h: 120, html: 'Trabalhos<small>é uma Pasta (tem tf-09.py e slide.pdf)</small>' },
+    { id: 'o-atalho', cls: 'obj file novo', x: 620, y: 490, w: 330, h: 120, html: 'atalho<small>é um Atalho (classe nova)</small>' },
+
+    { id: 'm-arq', cls: 'cls card', x: 1240, y: 110, w: 500, h: 120, html: '<span>Arquivo.tamanho()</span><small>devolve os próprios bytes</small>' },
+    { id: 'm-pasta', cls: 'cls card', x: 1240, y: 300, w: 500, h: 120, html: '<span>Pasta.tamanho()</span><small>soma o tamanho dos filhos</small>' },
+    { id: 'm-atalho', cls: 'cls card novo', x: 1240, y: 490, w: 500, h: 120, html: '<span>Atalho.tamanho()</span><small>devolve o tamanho do alvo</small>' }
+  ],
+  edges: [
+    { id: 'k-arq', from: 'cli', to: 'o-arq', kind: 'call', label: 'tamanho()' },
+    { id: 'k-pasta', from: 'cli', to: 'o-pasta', kind: 'call', label: 'tamanho()' },
+    { id: 'k-atalho', from: 'cli', to: 'o-atalho', kind: 'call', label: 'tamanho()' },
+
+    { id: 'd-arq', from: 'o-arq', to: 'm-arq', kind: 'ok', only: true, label: 'é Arquivo → este' },
+    { id: 'd-pasta', from: 'o-pasta', to: 'm-pasta', kind: 'ok', only: true, label: 'é Pasta → este' },
+    { id: 'd-atalho', from: 'o-atalho', to: 'm-atalho', kind: 'ok', only: true, label: 'é Atalho → este' }
+  ],
+  info: {
+    cli: { t: 'x.tamanho()', p: 'Quem chama só conhece o nome do método. Não sabe (nem precisa saber) se <code>x</code> é arquivo, pasta ou outra coisa.' },
+    'o-arq': { t: 'notas.txt (Arquivo)', p: 'Um arquivo não tem filhos: responde com o próprio dado.' },
+    'o-pasta': { t: 'Trabalhos (Pasta)', p: 'Uma pasta responde somando o que tem dentro.' },
+    'o-atalho': { t: 'atalho (Atalho, classe nova)', p: 'Uma classe que ainda não existe. Se alguém a criar e implementar <code>tamanho()</code>, quem chama já a aceita.' },
+    'm-arq': { t: 'Arquivo.tamanho()', d: [['código', '<code>return self.__bytes</code>']], p: 'Devolve o dado que só o arquivo tem.' },
+    'm-pasta': { t: 'Pasta.tamanho()', d: [['código', '<code>total = total + filho.tamanho()</code>']], p: 'Soma o que cada filho responde. Cada filho responde do seu jeito, e a pasta nem pergunta qual é qual.' },
+    'm-atalho': { t: 'Atalho.tamanho() (novo)', p: 'Uma implementação nova do mesmo nome. Quem chama não muda uma linha.' }
+  },
+  scenarios: {
+    mesma: { label: 'a mesma chamada', t: 'Mesma chamada, comportamentos diferentes', steps: [
+      { title: 'a mesma linha, dois objetos', e: ['k-arq', 'k-pasta'], n: ['cli'], x: 'Quem chama escreve <code>x.tamanho()</code> e não sabe o tipo de <code>x</code>. Aqui <code>x</code> é um arquivo e, em outro momento, uma pasta.', code: 'for x in [notas, trabalhos]:\n    print(x.tamanho())' },
+      { title: 'cada um executa o seu', e: ['d-arq', 'd-pasta'], n: ['m-arq', 'm-pasta'], tags: [{ n: 'm-arq', t: 'return __bytes', tone: 'ok' }, { n: 'm-pasta', t: 'soma os filhos', tone: 'ok' }], x: 'O Python olha o objeto que recebeu a chamada e executa o <code>tamanho()</code> <b>da classe dele</b>. Isso é <b>sobrescrita</b> (<i>override</i>): cada classe redefine o método. O Python escolhe em execução.' },
+      { title: 'respostas diferentes', e: ['d-arq', 'd-pasta'], n: ['m-arq', 'm-pasta'], tags: [{ n: 'm-arq', t: '→ 120', tone: 'ok', pos: 'below' }, { n: 'm-pasta', t: '→ 5800', tone: 'ok', pos: 'below' }], x: 'Mesma chamada, comportamentos diferentes: o arquivo devolve 120; a pasta soma 800 + 5000 e devolve 5800. Em Java existe também a <i>sobrecarga</i> (<i>overload</i>); <b>o Python não tem sobrecarga</b>.' }
+    ]},
+    novo: { label: 'um tipo novo, sem mexer', t: 'Acrescentar o Atalho sem alterar quem chama', steps: [
+      { title: 'a mesma chamada', e: ['k-atalho'], n: ['cli', 'o-atalho'], tags: [{ n: 'o-atalho', t: 'classe nova', tone: 'warn' }], x: 'Amanhã alguém cria a classe <code>Atalho</code>. Quem chama continua escrevendo <code>x.tamanho()</code>, igualzinho.' },
+      { title: 'responde do jeito dele', e: ['d-atalho'], n: ['m-atalho'], tags: [{ n: 'cli', t: 'não mudou uma linha', tone: 'ok', pos: 'below' }, { n: 'm-atalho', t: 'implementação nova', tone: 'ok' }], x: 'O <code>Atalho</code> executa o <code>tamanho()</code> dele. <b>Nenhum <code>if</code> para o tipo novo</b>: quem chama só depende do nome do método.' }
+    ]},
+    antes: { label: 'antes: com if (Aula 08)', t: 'Sem polimorfismo: quem chama pergunta o tipo', steps: [
+      { title: 'o if espalhado', e: ['k-arq', 'k-pasta', 'k-atalho'], n: ['cli'], tags: [{ n: 'cli', t: 'if eh_pasta ...', tone: 'bad' }], x: 'Sem polimorfismo, quem chama precisa perguntar "você é pasta?" e escolher o cálculo. Cada tipo novo (o <code>Atalho</code>) exige mexer <b>aí</b>, e em todo lugar que faz a mesma pergunta.', code: '# Aula 08: quem soma precisa conhecer os tipos\nif x.eh_pasta:\n    total = tamanho_da_pasta(x)\n    return total\ntotal = x.bytes' }
+    ]}
+  }
+};
+</script>
+<script src="../../../assets/modelo.js"></script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Briefing · Aula 10 — Estrutura de Dados</title>
+<link rel="stylesheet" href="../../assets/briefing.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="back" href="../../index.html">← Voltar</a>
+    <details class="toc" open><summary>Nesta página</summary><ol><li class="l1"><a href="#topo">10 - Estrutura de Dados</a></li><li class="l2"><a href="#s1-introdução">1 - Introdução</a></li><li class="l2"><a href="#s2-dado-tipo-e-estrutura">2 - Dado, tipo e estrutura</a></li><li class="l3"><a href="#s2-1-dado-é-valor-bruto">2.1 - Dado é valor bruto</a></li><li class="l3"><a href="#s2-2-tipo-de-dado">2.2 - Tipo de dado</a></li><li class="l3"><a href="#s2-3-tudo-em-computação-é-binário">2.3 - Tudo em computação é binário</a></li><li class="l3"><a href="#s2-4-tipos-primitivos">2.4 - Tipos primitivos</a></li><li class="l3"><a href="#s2-5-estrutura-como-os-binários-se-organizam">2.5 - Estrutura: como os binários se organizam</a></li><li class="l3"><a href="#s2-6-leitura-x-escrita-a-regra-de-toda-estrutura">2.6 - Leitura x escrita: a regra de toda estrutura</a></li><li class="l2"><a href="#s3-tipos-de-referência">3 - Tipos de referência</a></li><li class="l3"><a href="#s3-1-primitivo-x-referência">3.1 - Primitivo x referência</a></li><li class="l3"><a href="#s3-2-o-que-é-ser-nativo">3.2 - O que é ser nativo</a></li><li class="l3"><a href="#s3-3-lista-o-array-do-python">3.3 - Lista: o array do Python</a></li><li class="l3"><a href="#s3-4-tupla-valores-que-não-mudam">3.4 - Tupla: valores que não mudam</a></li><li class="l3"><a href="#s3-5-dicionário-busca-por-chave">3.5 - Dicionário: busca por chave</a></li><li class="l3"><a href="#s3-6-qual-usar">3.6 - Qual usar</a></li><li class="l2"><a href="#s4-relacionamento-entre-objetos">4 - Relacionamento entre objetos</a></li><li class="l3"><a href="#s4-1-um-objeto-que-conhece-outro">4.1 - Um objeto que conhece outro</a></li><li class="l3"><a href="#s4-2-tipos-de-relacionamento">4.2 - Tipos de relacionamento</a></li><li class="l3"><a href="#s4-3-a-árvore-de-arquivos-de-novo">4.3 - A árvore de arquivos, de novo</a></li><li class="l2"><a href="#s5-estruturas-clássicas-não-nativas">5 - Estruturas clássicas, não nativas</a></li><li class="l3"><a href="#s5-1-construídas-em-cima-das-nativas">5.1 - Construídas em cima das nativas</a></li><li class="l3"><a href="#s5-2-pilha-stack-o-último-a-entrar-é-o-primeiro-a-sair">5.2 - Pilha (stack): o último a entrar é o primeiro a sair</a></li><li class="l3"><a href="#s5-3-fila-queue-o-primeiro-a-entrar-é-o-primeiro-a-sair">5.3 - Fila (queue): o primeiro a entrar é o primeiro a sair</a></li><li class="l3"><a href="#s5-4-árvore-tree">5.4 - Árvore (tree)</a></li><li class="l3"><a href="#s5-5-comparando">5.5 - Comparando</a></li><li class="l2"><a href="#s6-grafo-o-básico">6 - Grafo: o básico</a></li><li class="l3"><a href="#s6-1-nós-e-ligações">6.1 - Nós e ligações</a></li><li class="l3"><a href="#s6-2-um-grafo-em-poucas-linhas">6.2 - Um grafo em poucas linhas</a></li><li class="l3"><a href="#s6-3-o-git-é-um-grafo">6.3 - O Git é um grafo</a></li><li class="l2"><a href="#s7-conclusão">7 - Conclusão</a></li><li class="l2"><a href="#s8-referências">8 - Referências</a></li><li class="l2"><a href="#questoes">Questões do TA</a></li></ol></details>
+  </aside>
+  <main class="doc">
+    <header class="cover" id="topo">
+      <p class="eyebrow">UNIFAAT · 2026.2 · Briefing para produção de conteúdo</p>
+      <h1><span class="cn">10</span> - Estrutura de Dados</h1>
+      <dl class="ficha">
+        <div><dt>Professor</dt><dd>Luan Tavares Lourenço</dd></div>
+        <div><dt>Disciplina</dt><dd>Engenharia de Software</dd></div>
+        <div><dt>Aula</dt><dd>10</dd></div>
+        <div><dt>Opção do TA</dt><dd>Texto</dd></div>
+      </dl>
+    </header>
+<h2 id="s1-introdução"><span class="hn">1</span>Introdução</h2>
+<p>Nas aulas anteriores, o Python ganhou funções, classes e objetos, e a árvore de arquivos mostrou que um objeto pode guardar outros. Faltava dar nome ao que estávamos fazendo o tempo todo: <strong>organizar dados</strong>. Esta aula é sobre isso. Um programa quase nunca trabalha com um valor solto; ele trabalha com <strong>conjuntos</strong> de valores (as notas de uma turma, os arquivos de uma pasta, os pedidos de uma loja), e a forma como esse conjunto é organizado decide o que o programa consegue fazer com ele, e com que facilidade.</p>
+<p>O caminho da aula tem seis passos. Primeiro, o que é <strong>dado</strong>, <strong>tipo de dado</strong> e <strong>estrutura</strong>, lembrando que por baixo de tudo existe o binário, e os <strong>tipos primitivos</strong>. Segundo, os <strong>tipos de referência</strong>, com a diferença para os primitivos e as três estruturas que o Python entrega prontas: <strong>lista (array), tupla e dicionário</strong>. Terceiro, o <strong>relacionamento entre objetos</strong>, que é o que permite montar estruturas maiores. Quarto, as estruturas clássicas que <strong>não são nativas</strong> e que construímos com classes: <strong>pilha, fila e árvore</strong>. Quinto, o <strong>grafo</strong>, o caso geral da árvore. Sexto, uma conclusão que junta tudo.</p>
+<p>Os arquivos completos estão em <code>src/10/</code>, um por assunto e um por estrutura de dados: <code>binario_e_estrutura.py</code>, <code>tipos.py</code>, <code>leitura_escrita.py</code>, <code>lista.py</code>, <code>tupla.py</code>, <code>dicionario.py</code>, <code>relacionamentos.py</code>, <code>pilha.py</code>, <code>fila.py</code>, <code>arvore.py</code>, <code>grafo.py</code> e <code>grafo_git.py</code>.</p>
+<h2 id="s2-dado-tipo-e-estrutura"><span class="hn">2</span>Dado, tipo e estrutura</h2>
+<h3 id="s2-1-dado-é-valor-bruto"><span class="hn">2.1</span>Dado é valor bruto</h3>
+<p><strong>Dado</strong> é o valor bruto, sem contexto: <code>1234</code>, <code>"Ana"</code>, <code>8.5</code>. Sozinho ele não diz nada; <code>1234</code> pode ser um RA, um preço ou um ano. Quando o dado ganha contexto, passa a ser <strong>informação</strong>: "o RA da Ana é 1234". A estrutura de dados é justamente a ferramenta que dá esse contexto, agrupando os valores brutos de um jeito que faça sentido.</p>
+<h3 id="s2-2-tipo-de-dado"><span class="hn">2.2</span>Tipo de dado</h3>
+<p>Um mesmo valor pode significar coisas diferentes, e é o <strong>tipo de dado</strong> que diz qual. O tipo define duas coisas: <strong>o que o valor é</strong> (um número inteiro, um número com casas decimais, um texto, verdadeiro ou falso) e <strong>o que se pode fazer com ele</strong> (somar números, juntar textos). Somar <code>2 + 3</code> dá <code>5</code>, mas somar <code>"2" + "3"</code> dá <code>"23"</code>: os caracteres são os mesmos, e o tipo muda o resultado. O tipo é a lente da Aula 07.</p>
+<h3 id="s2-3-tudo-em-computação-é-binário"><span class="hn">2.3</span>Tudo em computação é binário</h3>
+<p>Por baixo de qualquer dado, de qualquer linguagem e de qualquer tipo, existe só uma coisa: <strong>bits</strong>, ou seja, zeros e uns. O computador não tem "número", "texto" ou "lista"; tem sequências de bits, e o tipo diz como interpretá-las. Já vimos dois casos:</p>
+<ul><li><strong>Inteiro</strong> (Aula 03): o número é escrito na base 2. O 65 vira <code>1000001</code>.</li><li><strong>String</strong> (Aulas 03 e 07): cada caractere é um número da tabela ASCII/Unicode, e esse número vira binário. O "A" é o 65, que vira <code>1000001</code>.</li></ul>
+<pre class="code"><code>print(bin(65))                      # 0b1000001
+
+for letra in "Ola":
+    print(letra, ord(letra), bin(ord(letra)))
+# O 79 0b1001111
+# l 108 0b1101100
+# a 97 0b1100001</code></pre>
+<p>O número 65 e a letra "A" são <strong>os mesmos bits</strong>. O que muda é o tipo que o programa usa para ler.</p>
+<h3 id="s2-4-tipos-primitivos"><span class="hn">2.4</span>Tipos primitivos</h3>
+<p>Os <strong>tipos primitivos</strong> são os tijolos mais simples da linguagem: um valor único, que não se divide em partes. Os de sempre são o <strong>inteiro</strong> (<code>int</code>), o <strong>número com casas decimais</strong> (<code>float</code>), o <strong>booleano</strong> (<code>bool</code>, que por baixo é 1 ou 0) e o <strong>caractere ou texto</strong> (<code>str</code>). Quatro características definem o primitivo:</p>
+<ul><li><strong>Guarda o valor em si.</strong> A variável <code>idade = 19</code> carrega o 19, não o endereço dele. Copiar a variável é copiar o valor, e as duas passam a ser independentes.</li><li><strong>Tamanho pequeno e conhecido.</strong> Cabe em poucos bytes (o inteiro, o decimal e o booleano são os binários da Aula 03).</li><li><strong>Imutável.</strong> O valor 19 não muda; trocar a idade é pôr <strong>outro</strong> valor na variável.</li><li><strong>É a base de tudo.</strong> Qualquer estrutura maior é feita de primitivos.</li></ul>
+<p>Uma observação de honestidade: em Python <strong>tudo é objeto</strong>, e não existem primitivos "puros" como em Java (<code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code>). O que o Python tem são tipos que <strong>se comportam</strong> como primitivos, porque são imutáveis: <code>int</code>, <code>float</code>, <code>bool</code> e <code>str</code>.</p>
+<h3 id="s2-5-estrutura-como-os-binários-se-organizam"><span class="hn">2.5</span>Estrutura: como os binários se organizam</h3>
+<p>A memória do computador pode ser imaginada como uma fila enorme de <strong>bytes numerados</strong>, e cada número é um <strong>endereço</strong>. Uma <strong>estrutura de dados</strong> é uma regra de como organizar os valores nessa memória e de como encontrá-los depois. A mais simples é colocar os valores <strong>lado a lado</strong>: sabendo onde o primeiro está e quanto cada um ocupa, o computador calcula o endereço de qualquer posição com uma conta (início + posição × tamanho). É por isso que acessar <code>notas[2]</code> é rápido, não importa o tamanho da lista.</p>
+<pre class="code"><code>dados = bytes([79, 108, 97])        # três bytes, lado a lado
+print(dados)                        # b'Ola'
+print(dados[0], dados[2])           # 79 97: acesso pela posição</code></pre>
+<p>Cada estrutura escolhe uma organização diferente, e cada organização é boa para uma coisa e ruim para outra. Escolher a estrutura certa é metade de um bom programa.</p>
+<h3 id="s2-6-leitura-x-escrita-a-regra-de-toda-estrutura"><span class="hn">2.6</span>Leitura x escrita: a regra de toda estrutura</h3>
+<p>Toda estrutura de dados faz duas coisas: <strong>leitura</strong> (consultar um valor sem mudar nada) e <strong>escrita</strong> (incluir, alterar ou remover). E o que importa é o <strong>custo</strong> de cada uma, medido em <strong>passos</strong>. Usamos a notação <strong>O(...)</strong> para falar desse custo: <strong>O(1)</strong> quer dizer "1 passo, não importa o tamanho dos dados", e <strong>O(n)</strong> quer dizer "os passos crescem junto com a quantidade de dados" (com 1 milhão de itens, até 1 milhão de passos).</p>
+<p>O ponto central da aula: <strong>leitura e escrita são antagônicas</strong>. Ganhar em uma costuma significar perder na outra. Organizar os dados para <strong>ler rápido</strong> (em ordem, com índice, com hash) dá trabalho na hora de <strong>escrever</strong>, porque a organização precisa ser mantida. E deixar a escrita fácil (largar tudo solto) obriga a <strong>varrer</strong> os dados na hora de ler. Um exemplo com a mesma lista de 8 números, de duas formas:</p>
+<div class="tbl"><table><thead><tr><th>Organização</th><th>Escrever (incluir um valor)</th><th>Ler (achar o 93)</th></tr></thead><tbody><tr><td><strong>Solta</strong> (sem ordem)</td><td><strong>1 passo</strong>: coloca no fim</td><td><strong>8 passos</strong>: olha um por um</td></tr><tr><td><strong>Ordenada</strong></td><td><strong>9 passos</strong>: abre espaço no lugar certo</td><td><strong>4 passos</strong>: busca binária, olha o meio e descarta metade</td></tr></tbody></table></div>
+<p>Nenhuma ganha nas duas. Por isso, em cada estrutura a seguir fazemos sempre a mesma pergunta: <strong>o que ela lê rápido, o que ela escreve rápido, e qual é o preço?</strong></p>
+<h2 id="s3-tipos-de-referência"><span class="hn">3</span>Tipos de referência</h2>
+<h3 id="s3-1-primitivo-x-referência"><span class="hn">3.1</span>Primitivo x referência</h3>
+<p>Um valor pequeno cabe numa "caixinha" só. Um conjunto de valores (as notas de uma turma, os dados de um aluno) não cabe: ele fica guardado em outro lugar da memória, e a variável guarda só <strong>o endereço</strong> desse lugar. Essa é a diferença:</p>
+<div class="tbl"><table><thead><tr><th></th><th><strong>Primitivo</strong></th><th><strong>Referência</strong></th></tr></thead><tbody><tr><td><strong>A variável guarda</strong></td><td>O valor em si</td><td>O endereço do objeto</td></tr><tr><td><strong>Copiar (<code>b = a</code>)</strong></td><td>Copia o valor: dois valores independentes</td><td>Copia o endereço: dois nomes para o mesmo objeto</td></tr><tr><td><strong>Exemplos</strong></td><td><code>int</code>, <code>float</code>, <code>bool</code>, <code>str</code></td><td><code>list</code>, <code>dict</code>, <code>tuple</code> e qualquer objeto de classe</td></tr><tr><td><strong>Tamanho</strong></td><td>Pequeno e fixo</td><td>Varia: pode crescer</td></tr></tbody></table></div>
+<pre class="code"><code># Primitivo: copiar é copiar o valor.
+a = 10
+b = a
+b = b + 1
+print(a, b)             # 10 11 -&gt; mexer em b não afeta a
+
+# Referência: copiar é copiar o endereço.
+x = [1, 2]
+y = x
+y.append(3)
+print(x, y)             # [1, 2, 3] [1, 2, 3] -&gt; o mesmo objeto, dois nomes
+print(x is y)           # True
+
+z = x.copy()            # para ter outro objeto de verdade, é preciso copiar
+z.append(4)
+print(x, z)             # [1, 2, 3] [1, 2, 3, 4]</code></pre>
+<p>É a armadilha do <code>b = a</code> com listas, avisada na Aula 07, agora com nome: a lista é um <strong>tipo de referência</strong>. A mesma ideia explica o <code>self</code> da Aula 08 e o <code>pai</code> da árvore de arquivos: tudo isso é guardar endereços. O <code>is</code> pergunta "é o mesmo objeto?", e o <code>==</code> pergunta "têm o mesmo valor?".</p>
+<p>Os tipos de referência são justamente as <strong>estruturas de dados</strong>: agrupam valores (primitivos ou outras referências) num objeto só. O Python traz três prontas.</p>
+<h3 id="s3-2-o-que-é-ser-nativo"><span class="hn">3.2</span>O que é ser nativo</h3>
+<p>Uma estrutura <strong>nativa</strong> (<em>built-in</em>) já vem dentro da linguagem: não precisa de <code>import</code>, de biblioteca nem de classe escrita por você. O Python traz três que usamos todos os dias: a <strong>lista</strong>, a <strong>tupla</strong> e o <strong>dicionário</strong>. As outras linguagens fazem escolhas diferentes:</p>
+<div class="tbl"><table><thead><tr><th>Linguagem</th><th>O que traz pronto</th></tr></thead><tbody><tr><td><strong>C</strong></td><td>Só o array de tamanho fixo e a <code>struct</code>; não há dicionário nem lista que cresce</td></tr><tr><td><strong>Java</strong></td><td><code>int[]</code> (array de tamanho fixo) na linguagem; <code>ArrayList</code> e <code>HashMap</code> vêm da biblioteca (<code>java.util</code>); não há tupla</td></tr><tr><td><strong>JavaScript</strong></td><td><code>Array</code> e <code>Object</code> (e <code>Map</code>); não há tupla</td></tr><tr><td><strong>PHP</strong></td><td>O <code>array</code> faz papel de lista e de dicionário ao mesmo tempo</td></tr><tr><td><strong>Python</strong></td><td><code>list</code>, <code>tuple</code> e <code>dict</code> direto na sintaxe</td></tr></tbody></table></div>
+<p>A ideia é a mesma em todas; o que muda é o nome e o quanto vem de graça. Aprender a estrutura como conceito permite reconhecê-la em qualquer linguagem.</p>
+<h3 id="s3-3-lista-o-array-do-python"><span class="hn">3.3</span>Lista: o array do Python</h3>
+<p>Uma sequência de valores guardados em ordem e acessados por posição é um <strong>array</strong>, e <strong>vetor</strong> é só outro nome para array. No Python, o equivalente é a <strong>lista</strong> (<code>list</code>), escrita entre colchetes: ordenada, indexada a partir do zero e <strong>mutável</strong>. Por baixo, a lista é um array que cresce sozinho (um <em>array dinâmico</em>), e por isso aceita valores de tipos diferentes.</p>
+<pre class="code"><code>notas = [7, 3, 9]
+
+notas.append(5)             # inclui no final
+notas.insert(0, 10)         # inclui numa posição
+notas.remove(3)             # remove pelo valor
+ultima = notas.pop()        # remove e devolve o último
+notas.sort()                # ordena a própria lista
+
+print(notas, ultima)        # [7, 9, 10] 5
+print(len(notas), 9 in notas, notas[0], notas[-1], notas[0:2])</code></pre>
+<p>Os comandos principais:</p>
+<div class="tbl"><table><thead><tr><th>Comando</th><th>O que faz</th></tr></thead><tbody><tr><td><code>lista[i]</code></td><td>Lê ou troca o elemento da posição <code>i</code> (<code>-1</code> é o último)</td></tr><tr><td><code>lista[a:b]</code></td><td>Fatia: do <code>a</code> até antes do <code>b</code></td></tr><tr><td><code>append(x)</code> / <code>insert(i, x)</code></td><td>Inclui no final / numa posição</td></tr><tr><td><code>remove(x)</code> / <code>pop()</code></td><td>Remove pelo valor / remove e devolve o último</td></tr><tr><td><code>len(lista)</code> / <code>x in lista</code></td><td>Tamanho / pertence ou não</td></tr><tr><td><code>sort()</code> / <code>reverse()</code></td><td>Ordena / inverte a própria lista</td></tr></tbody></table></div>
+<p><strong>Leitura x escrita.</strong> A lista <strong>lê</strong> por posição em <strong>O(1)</strong>: sabendo onde ela começa e quanto cada item ocupa, o endereço é uma conta. A <strong>escrita</strong> no fim (<code>append</code>) também é <strong>O(1)</strong> em média (de vez em quando a lista cresce e copia tudo, mas na média é 1 passo). O preço aparece ao <strong>escrever no início ou no meio</strong> (<code>insert(0, x)</code>): todos os itens à direita precisam ser empurrados uma casa, <strong>O(n)</strong>. Também é <strong>O(n)</strong> ler <strong>por valor</strong> (<code>x in notas</code>): sem ordem, só dá para olhar um por um. O código completo está em <code>src/10/lista.py</code>.</p>
+<h3 id="s3-4-tupla-valores-que-não-mudam"><span class="hn">3.4</span>Tupla: valores que não mudam</h3>
+<p>A <strong>tupla</strong> (<code>tuple</code>) é parecida com a lista, mas <strong>imutável</strong>: depois de criada, não dá para trocar, incluir nem remover elementos. Escreve-se entre parênteses e serve para valores que pertencem um ao outro, como um ponto <code>(x, y)</code> ou uma data <code>(dia, mês, ano)</code>.</p>
+<pre class="code"><code>ponto = (10, 20)
+x, y = ponto                # desempacotamento
+print(x, y, ponto.count(10), ponto.index(20))
+
+ponto[0] = 99               # TypeError: 'tuple' object does not support item assignment
+
+novo = (99,) + ponto[1:]    # "alterar" é criar outra tupla
+print(ponto, novo)          # (10, 20) (99, 20)</code></pre>
+<p><strong>Imutável</strong> significa que o objeto nunca muda depois de criado: qualquer "alteração" produz um objeto novo e deixa o original intacto. Isso traz segurança (ninguém estraga o valor por engano, o mesmo raciocínio do encapsulamento da Aula 09) e uma vantagem técnica: só valores imutáveis podem ser <strong>chave de dicionário</strong>. A string, que já vimos ser imutável, funciona do mesmo jeito. Um detalhe: a tupla trava os <strong>elementos que ela guarda</strong>; se um deles for uma lista, essa lista continua mutável por dentro.</p>
+<p>Comandos: <code>t[i]</code>, <code>len(t)</code>, <code>x in t</code>, <code>count(x)</code>, <code>index(x)</code> e o desempacotamento. Não existe <code>append</code> nem <code>remove</code>, justamente porque ela não muda.</p>
+<p><strong>Leitura x escrita.</strong> A <strong>leitura</strong> por posição é <strong>O(1)</strong>, igual à lista. Para a <strong>escrita</strong>, a tupla simplesmente <strong>não tem</strong>: <code>t[0] = 99</code> dá <code>TypeError</code>. "Alterar" é <strong>criar outra tupla</strong>, copiando todos os itens, <strong>O(n)</strong>. O que se ganha com esse preço é a <strong>segurança</strong> (ninguém muda o valor por engano) e o fato de a tupla poder ser <strong>chave de dicionário</strong>. O código completo está em <code>src/10/tupla.py</code>.</p>
+<h3 id="s3-5-dicionário-busca-por-chave"><span class="hn">3.5</span>Dicionário: busca por chave</h3>
+<p>O <strong>dicionário</strong> (<code>dict</code>) é o famoso <strong>HashMap</strong>: o nome que o Python dá a uma estrutura que existe em quase toda linguagem. Ele guarda pares de <strong>chave e valor</strong>, entre chaves <code>{}</code>. Em vez da posição, busca-se pela <strong>chave</strong>, e a busca é rápida mesmo com milhões de itens, porque por baixo ele usa uma <strong>tabela de espalhamento</strong> (<em>hash table</em>): a chave passa por uma função de <em>hash</em> que calcula onde o valor está guardado, sem precisar percorrer os itens um a um. As chaves são únicas e precisam ser imutáveis (para o <em>hash</em> não mudar); os valores podem ser qualquer coisa, inclusive outro dicionário ou uma lista. Em outras linguagens o mesmo conceito tem outros nomes: <code>HashMap</code> no Java, <code>Map</code> ou <code>Object</code> no JavaScript, <em>hash</em> no Ruby, array associativo no PHP.</p>
+<pre class="code"><code>aluno = {"nome": "Ana", "ra": 1234}
+
+aluno["nota"] = 8.5                     # inclui ou altera
+print(aluno["nome"], aluno.get("email", "sem e-mail"))
+print("ra" in aluno)                    # True: o in olha as chaves
+aluno.pop("ra")                         # remove a chave
+aluno.update({"curso": "ADS"})          # mistura outro dicionário
+
+for chave, valor in aluno.items():
+    print(chave, "-&gt;", valor)</code></pre>
+<div class="tbl"><table><thead><tr><th>Comando</th><th>O que faz</th></tr></thead><tbody><tr><td><code>d[chave]</code></td><td>Lê o valor (<code>KeyError</code> se a chave não existe)</td></tr><tr><td><code>d.get(chave, padrão)</code></td><td>Lê sem dar erro, com valor padrão</td></tr><tr><td><code>d[chave] = valor</code></td><td>Inclui ou altera</td></tr><tr><td><code>pop(chave)</code> / <code>del d[chave]</code></td><td>Remove a chave</td></tr><tr><td><code>chave in d</code></td><td>A chave existe?</td></tr><tr><td><code>keys()</code> / <code>values()</code> / <code>items()</code></td><td>Chaves / valores / pares, para percorrer com <code>for</code></td></tr></tbody></table></div>
+<p><strong>Leitura x escrita.</strong> Aqui a conta é diferente: ler <strong>por chave</strong> é <strong>O(1)</strong> e escrever <strong>por chave</strong> também é <strong>O(1)</strong>, porque o <em>hash</em> diz direto em qual slot o valor mora, sem procurar. O preço está em dois lugares. Primeiro, <strong>memória</strong>: a tabela reserva <strong>slots vazios</strong> para espalhar bem as chaves, e quando enche ela precisa crescer e reorganizar tudo. Segundo, a busca <strong>por valor</strong> (<code>x in d.values()</code>) é <strong>O(n)</strong>, porque o <em>hash</em> só ajuda com a chave. O código completo está em <code>src/10/dicionario.py</code>.</p>
+<h3 id="s3-6-qual-usar"><span class="hn">3.6</span>Qual usar</h3>
+<div class="tbl"><table><thead><tr><th>Preciso de...</th><th>Estrutura</th></tr></thead><tbody><tr><td>Uma sequência que cresce e muda</td><td><strong>Lista</strong></td></tr><tr><td>Valores fixos que andam juntos</td><td><strong>Tupla</strong></td></tr><tr><td>Achar um valor pelo nome ou código</td><td><strong>Dicionário</strong></td></tr></tbody></table></div>
+<h2 id="s4-relacionamento-entre-objetos"><span class="hn">4</span>Relacionamento entre objetos</h2>
+<h3 id="s4-1-um-objeto-que-conhece-outro"><span class="hn">4.1</span>Um objeto que conhece outro</h3>
+<p>Um <strong>relacionamento</strong> acontece quando um objeto guarda, numa propriedade, <strong>outro objeto</strong>. É o que a Aula 08 chamou de "injetar" o objeto: a <code>Turma</code> recebe o <code>Professor</code> e o guarda. O Python não copia o professor; guarda um <strong>ponteiro</strong>, uma <strong>referência</strong> para o objeto que já existe. Por isso se diz que um objeto "aponta" para o outro.</p>
+<pre class="code"><code>class Professor:
+    def __init__(self, nome):
+        self.nome = nome
+
+
+class Turma:
+    def __init__(self, nome, professor):
+        self.nome = nome
+        self.professor = professor      # aponta para o objeto, não copia
+        self.alunos = []
+
+
+luan = Professor("Luan")
+ads = Turma("ADS 2º semestre", luan)
+es = Turma("Engenharia de Software", luan)
+
+print(ads.professor is es.professor)    # True: os dois apontam para o mesmo
+luan.nome = "Luan Lourenço"
+print(ads.professor.nome)               # Luan Lourenço</code></pre>
+<p>As duas turmas enxergam a mudança porque existe <strong>um só</strong> professor na memória, e as duas guardam o endereço dele. O <code>is</code> pergunta justamente isso: "é o mesmo objeto?".</p>
+<h3 id="s4-2-tipos-de-relacionamento"><span class="hn">4.2</span>Tipos de relacionamento</h3>
+<p>Dois relacionamentos aparecem o tempo todo:</p>
+<ul><li><strong>"É um"</strong>: a <strong>herança</strong> da Aula 09. O <code>Arquivo</code> <em>é um</em> <code>Item</code>.</li><li><strong>"Tem um"</strong>: a <strong>composição</strong> ou <strong>associação</strong>, desta aula. A <code>Turma</code> <em>tem um</em> <code>Professor</code>; a pasta <em>tem</em> filhos.</li></ul>
+<p>Quanto aos números, o relacionamento pode ser <strong>um para um</strong> (a turma tem um professor) ou <strong>um para muitos</strong> (a turma tem vários alunos, e a pasta tem vários filhos, guardados numa lista). Já a lista de alunos mostra a primeira ligação entre as duas partes da aula: <strong>uma lista de objetos é uma estrutura de dados</strong>.</p>
+<h3 id="s4-3-a-árvore-de-arquivos-de-novo"><span class="hn">4.3</span>A árvore de arquivos, de novo</h3>
+<p>A árvore da Aula 08 é um relacionamento de <strong>mão dupla</strong>: o filho aponta para o pai, e o pai aponta para os filhos. Com isso, dá para subir e descer pela estrutura só seguindo as referências.</p>
+<pre class="code"><code>class Item:
+    def __init__(self, nome, pai=None):
+        self.nome = nome
+        self.pai = pai                  # aponta para cima
+        self.filhos = []                # aponta para baixo
+        if pai is None:
+            return
+        pai.filhos.append(self)
+
+
+disco = Item("C:")
+users = Item("Users", disco)
+desktop = Item("Desktop", users)
+
+print(desktop.pai.pai.nome)             # C:
+print(disco.filhos[0].filhos[0].nome)   # Desktop</code></pre>
+<p>Nenhuma estrutura nova foi preciso: a lista (<code>filhos</code>) e a referência (<code>pai</code>) já bastaram. É assim que se constroem as estruturas da próxima parte.</p>
+<h2 id="s5-estruturas-clássicas-não-nativas"><span class="hn">5</span>Estruturas clássicas, não nativas</h2>
+<h3 id="s5-1-construídas-em-cima-das-nativas"><span class="hn">5.1</span>Construídas em cima das nativas</h3>
+<p>O Python não traz <strong>pilha</strong>, <strong>fila</strong> nem <strong>árvore</strong> prontas na sintaxe, mas elas aparecem em qualquer programa. A receita é a que acabamos de ver: uma <strong>classe</strong> que usa uma estrutura nativa por dentro (uma lista, um <code>deque</code>) e só <strong>expõe os comandos que definem a estrutura</strong>. É o encapsulamento da Aula 09 a serviço dos dados: quem usa a <code>Pilha</code> não consegue furar a regra, porque a lista fica privada.</p>
+<h3 id="s5-2-pilha-stack-o-último-a-entrar-é-o-primeiro-a-sair"><span class="hn">5.2</span>Pilha (stack): o último a entrar é o primeiro a sair</h3>
+<p>Pense numa pilha de pratos: coloca-se um por cima do outro, e só se tira o de cima. Esse comportamento chama-se <strong>LIFO</strong> (<em>last in, first out</em>). Os dois comandos que definem a pilha são <strong>empilhar</strong> (<em>push</em>) e <strong>desempilhar</strong> (<em>pop</em>), e só o <strong>topo</strong> é acessível.</p>
+<pre class="code"><code>class Pilha:
+    def __init__(self):
+        self.__itens = []
+
+    def empilhar(self, valor):
+        self.__itens.append(valor)
+
+    def desempilhar(self):
+        if self.vazia():
+            raise IndexError("pilha vazia")
+        return self.__itens.pop()       # o último a entrar é o primeiro a sair
+
+    def topo(self):
+        return self.__itens[-1]
+
+    def vazia(self):
+        return len(self.__itens) == 0
+
+
+historico = Pilha()
+historico.empilhar("digitou A")
+historico.empilhar("digitou B")
+historico.empilhar("apagou B")
+print(historico.desempilhar())          # apagou B
+print(historico.desempilhar())          # digitou B</code></pre>
+<p>Exemplos do dia a dia: o <strong>desfazer</strong> (Ctrl+Z) de qualquer editor e o botão <strong>voltar</strong> do navegador. E o exemplo mais importante para quem programa: a <strong>pilha de chamadas</strong> (<em>call stack</em>), que o próprio programa usa. Quando uma função chama outra, a nova chamada vai para o topo; a última que entrou é a primeira que termina, e só então a anterior continua. É exatamente a recursão da Aula 08:</p>
+<pre class="code"><code>def fatorial(n):
+    print("entrou  fatorial(", n, ")")
+    if n == 1:
+        print("saiu    fatorial( 1 ) = 1")
+        return 1
+    resultado = n * fatorial(n - 1)
+    print("saiu    fatorial(", n, ") =", resultado)
+    return resultado
+
+
+fatorial(3)
+# entrou  fatorial( 3 )
+# entrou  fatorial( 2 )
+# entrou  fatorial( 1 )
+# saiu    fatorial( 1 ) = 1
+# saiu    fatorial( 2 ) = 2
+# saiu    fatorial( 3 ) = 6</code></pre>
+<p>A ordem em que as funções <strong>entram</strong> é 3, 2, 1, e a ordem em que <strong>saem</strong> é 1, 2, 3: o inverso, como numa pilha. Essa pilha tem tamanho limitado, e uma recursão sem condição de parada a enche até o Python reclamar com um <code>RecursionError</code>. O nome do famoso site <em>Stack Overflow</em> vem desse erro: <em>estouro de pilha</em>.</p>
+<p><strong>Leitura x escrita.</strong> Empilhar e desempilhar são <strong>O(1)</strong>, e ler o topo também: tudo acontece numa ponta só. O preço é o <strong>acesso ao meio ou ao fundo</strong>: para ler o item do fundo é preciso desempilhar todos os de cima, <strong>O(n)</strong>. A pilha <strong>ganha simplicidade</strong> e <strong>perde acesso livre</strong>. O código completo está em <code>src/10/pilha.py</code>.</p>
+<h3 id="s5-3-fila-queue-o-primeiro-a-entrar-é-o-primeiro-a-sair"><span class="hn">5.3</span>Fila (queue): o primeiro a entrar é o primeiro a sair</h3>
+<p>A fila é a do banco ou do caixa: quem chegou primeiro é atendido primeiro. Chama-se <strong>FIFO</strong> (<em>first in, first out</em>). Os comandos são <strong>enfileirar</strong> (<em>enqueue</em>), no final, e <strong>desenfileirar</strong> (<em>dequeue</em>), no começo. Aqui o encapsulamento esconde uma decisão técnica: tirar o primeiro item de uma <code>list</code> com <code>pop(0)</code> obriga o Python a deslocar todos os outros, então a fila usa o <code>deque</code>, da biblioteca <code>collections</code>, feito para mexer nas duas pontas.</p>
+<pre class="code"><code>from collections import deque
+
+
+class Fila:
+    def __init__(self):
+        self.__itens = deque()
+
+    def enfileirar(self, valor):
+        self.__itens.append(valor)
+
+    def desenfileirar(self):
+        if self.vazia():
+            raise IndexError("fila vazia")
+        return self.__itens.popleft()   # o primeiro a entrar é o primeiro a sair
+
+    def vazia(self):
+        return len(self.__itens) == 0
+
+
+impressora = Fila()
+impressora.enfileirar("relatorio.pdf")
+impressora.enfileirar("foto.png")
+impressora.enfileirar("slide.pdf")
+print(impressora.desenfileirar())       # relatorio.pdf
+print(impressora.desenfileirar())       # foto.png</code></pre>
+<p>Exemplos: a <strong>fila de impressão</strong>, a <strong>fila de requisições</strong> de um servidor web (cada pedido espera a sua vez) e as <strong>filas de mensagens</strong> que ligam sistemas diferentes.</p>
+<p><strong>Leitura x escrita.</strong> Enfileirar (no fim) e desenfileirar (na frente) são <strong>O(1)</strong> com o <code>deque</code>. Já ler o <strong>meio</strong> (<code>fila[2]</code>) é <strong>O(n)</strong>, porque não há posição direta e o <code>deque</code> caminha desde uma ponta. E o contraste com a lista comum é o exemplo perfeito de antagonismo: <code>lista.pop(0)</code> é <strong>O(n)</strong>, porque todos os itens precisam ser puxados uma casa para fechar o buraco, enquanto o <code>popleft()</code> do <code>deque</code> só move o marcador da frente. O código completo está em <code>src/10/fila.py</code>.</p>
+<h3 id="s5-4-árvore-tree"><span class="hn">5.4</span>Árvore (tree)</h3>
+<p>A <strong>árvore</strong> já é velha conhecida: é o sistema de arquivos da Aula 08. Cada elemento é um <strong>nó</strong>; o primeiro é a <strong>raiz</strong>; cada nó pode ter <strong>filhos</strong>, e o nó sem filhos é uma <strong>folha</strong>. Todo nó, exceto a raiz, tem <strong>um único pai</strong>. Diferente da lista, a árvore <strong>não é uma sequência</strong>: é uma hierarquia, e por isso é percorrida com <strong>recursão</strong>, cada nó pedindo o mesmo aos seus filhos.</p>
+<pre class="code"><code>class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.filhos = []
+
+    def adicionar(self, filho):
+        self.filhos.append(filho)
+        return filho
+
+    def imprimir(self, nivel=0):
+        print("    " * nivel + str(self.valor))
+        for filho in self.filhos:
+            filho.imprimir(nivel + 1)
+
+
+raiz = No("C:")
+users = raiz.adicionar(No("Users"))
+users.adicionar(No("Desktop"))
+users.adicionar(No("Downloads"))
+raiz.adicionar(No("Windows"))
+raiz.imprimir()
+# C:
+#     Users
+#         Desktop
+#         Downloads
+#     Windows</code></pre>
+<p>Exemplos: o <strong>sistema de arquivos</strong>, o <strong>HTML</strong> de uma página (a tag <code>html</code> é a raiz, e <code>head</code> e <code>body</code> são seus filhos) e o <strong>organograma</strong> de uma empresa.</p>
+<p><strong>Leitura x escrita.</strong> Com o pai na mão, <strong>adicionar um filho</strong> é <strong>O(1)</strong>. <strong>Mover uma pasta</strong> inteira (<code>mover_para</code>) também: só um ponteiro muda, o <code>pai</code>, <strong>não importa quantos arquivos</strong> haja dentro. <strong>Ler por caminho</strong> custa um passo por nível (a <strong>profundidade</strong>). O preço aparece na <strong>busca por nome sem o caminho</strong>: é preciso visitar pasta por pasta, <strong>O(n)</strong>. A árvore <strong>ganha hierarquia e escrita local barata</strong> e <strong>perde a busca global</strong>. O código completo está em <code>src/10/arvore.py</code>.</p>
+<h3 id="s5-5-comparando"><span class="hn">5.5</span>Comparando</h3>
+<div class="tbl"><table><thead><tr><th>Estrutura</th><th>Regra</th><th>Comandos</th><th>Exemplo</th></tr></thead><tbody><tr><td><strong>Pilha</strong></td><td>Último a entrar, primeiro a sair</td><td>empilhar, desempilhar</td><td>Desfazer, chamadas de função</td></tr><tr><td><strong>Fila</strong></td><td>Primeiro a entrar, primeiro a sair</td><td>enfileirar, desenfileirar</td><td>Impressão, requisições</td></tr><tr><td><strong>Árvore</strong></td><td>Hierarquia: um pai, vários filhos</td><td>adicionar, percorrer</td><td>Arquivos, HTML</td></tr></tbody></table></div>
+<h2 id="s6-grafo-o-básico"><span class="hn">6</span>Grafo: o básico</h2>
+<h3 id="s6-1-nós-e-ligações"><span class="hn">6.1</span>Nós e ligações</h3>
+<p>A árvore tem regras rígidas: um pai por nó, sempre descendo. Quando essas regras caem, sobra o <strong>grafo</strong>: um conjunto de <strong>nós</strong> (também chamados de vértices) e de <strong>arestas</strong>, que são as ligações entre eles. Qualquer nó pode se ligar a qualquer outro, e é permitido fechar um <strong>ciclo</strong>, voltando ao ponto de partida. Em termos de estrutura, <strong>a árvore é um grafo com regras a mais</strong>: sem ciclos e com um único pai por nó.</p>
+<p>Exemplos: uma <strong>rede social</strong> (cada pessoa é um nó, cada amizade é uma aresta), um <strong>mapa</strong> (cidades e estradas), a <strong>internet</strong> (computadores e cabos) e o <strong>Git</strong>, que veremos a seguir.</p>
+<h3 id="s6-2-um-grafo-em-poucas-linhas"><span class="hn">6.2</span>Um grafo em poucas linhas</h3>
+<p>A forma mais simples de guardar um grafo usa as estruturas nativas: um <strong>dicionário</strong> em que a chave é o nó e o valor é a <strong>lista dos seus vizinhos</strong>.</p>
+<pre class="code"><code>class Grafo:
+    def __init__(self):
+        self.__ligacoes = {}
+
+    def adicionar_no(self, no):
+        self.__ligacoes.setdefault(no, [])
+
+    def ligar(self, a, b):
+        self.adicionar_no(a)
+        self.adicionar_no(b)
+        self.__ligacoes[a].append(b)
+        self.__ligacoes[b].append(a)
+
+    def vizinhos(self, no):
+        return self.__ligacoes[no]
+
+    def ligados(self, a, b):
+        return b in self.__ligacoes[a]
+
+
+amigos = Grafo()
+amigos.ligar("Ana", "Bia")
+amigos.ligar("Ana", "Caio")
+amigos.ligar("Bia", "Caio")      # fecha um ciclo: Ana, Bia, Caio
+amigos.ligar("Caio", "Duda")
+
+print(amigos.vizinhos("Caio"))           # ['Ana', 'Bia', 'Duda']
+print(amigos.ligados("Ana", "Duda"))     # False</code></pre>
+<p>O ciclo Ana, Bia e Caio é o que impede esse grafo de ser uma árvore.</p>
+<p><strong>Leitura x escrita.</strong> Com <code>ligar(a, b)</code>, <strong>escrever</strong> é <strong>O(1)</strong>: um item em cada uma das duas listas de vizinhos. <strong>Listar os vizinhos</strong> de um nó também é <strong>O(1)</strong>, porque a lista já está pronta no dicionário. O preço está em <strong>perguntar se dois nós estão ligados</strong> (<code>ligados(a, b)</code>) e em <strong>remover</strong> uma ligação: ambos varrem a lista de vizinhos, <strong>O(grau)</strong>, onde o grau é o número de vizinhos do nó. O código completo está em <code>src/10/grafo.py</code>.</p>
+<h3 id="s6-3-o-git-é-um-grafo"><span class="hn">6.3</span>O Git é um grafo</h3>
+<p>O exemplo mais próximo de quem programa é o <strong>Git</strong>, que usamos desde as Aulas 04 e 05. O histórico de um repositório é um grafo: cada <strong>commit é um nó</strong>, e a <strong>aresta é o ponteiro para o commit pai</strong>. Um commit novo é só um nó com uma aresta para o commit em que você estava. Uma <strong>branch</strong> não guarda commits: é apenas <strong>um ponteiro para um commit</strong>, e criar uma branch é criar um ponteiro (por isso é instantâneo). E o <strong>merge</strong> é um commit com <strong>dois pais</strong>, um de cada linha de trabalho que se juntou. É esse segundo pai que faz do histórico um grafo, e não uma lista.</p>
+<p>As setas só apontam para trás (do commit para o pai) e nunca voltam a um commit anterior, então não existe ciclo. Esse tipo de grafo tem nome: <strong>grafo dirigido acíclico</strong>, o <strong>DAG</strong> (<em>directed acyclic graph</em>). É o que o <code>git log --graph</code> desenha no terminal.</p>
+<pre class="code"><code>pais = {}           # commit -&gt; lista dos seus pais (as arestas)
+branches = {}       # branch -&gt; commit para onde ela aponta
+
+
+def commitar(nome, lista_de_pais):
+    pais[nome] = list(lista_de_pais)     # um nó novo e uma aresta por pai: O(1)
+
+
+commitar("A", [])
+commitar("B", ["A"])
+branches["main"] = "B"
+
+commitar("C", [branches["main"]])        # git commit na main
+branches["main"] = "C"
+
+branches["feature"] = "B"                # git switch -c feature: só um ponteiro
+commitar("D", [branches["feature"]])     # git commit na feature
+branches["feature"] = "D"
+
+commitar("E", [branches["main"], branches["feature"]])   # git merge feature
+branches["main"] = "E"
+
+
+def historico(commit):
+    visitados = []
+    fila = [commit]
+    while len(fila) &gt; 0:
+        atual = fila.pop(0)
+        if atual in visitados:
+            continue
+        visitados.append(atual)
+        fila.extend(pais[atual])
+    return visitados
+
+
+print(pais)                       # {'A': [], 'B': ['A'], 'C': ['B'], 'D': ['B'], 'E': ['C', 'D']}
+print(historico("E"))             # ['E', 'C', 'D', 'B', 'A']
+print([c for c in pais if len(pais[c]) &gt; 1])   # ['E']: o commit com dois pais</code></pre>
+<p><strong>Leitura x escrita no Git.</strong> <strong>Escrever</strong> (<code>git commit</code>) é barato: um nó e uma aresta, <strong>O(1)</strong>. <strong>Ler</strong> o histórico (<code>git log</code>) é seguir os pais, um commit por passo, <strong>O(n)</strong>. E há um ganho extra do modelo: o commit <strong>nunca é alterado</strong> depois de criado, porque o identificador dele depende do conteúdo e dos pais. O código completo está em <code>src/10/grafo_git.py</code>.</p>
+<h2 id="s7-conclusão"><span class="hn">7</span>Conclusão</h2>
+<p>Todo dado é binário, o <strong>tipo</strong> diz como lê-lo, e a <strong>estrutura</strong> é a regra de como os valores se organizam e se acessam. Os tipos <strong>primitivos</strong> guardam o valor em si; os tipos de <strong>referência</strong> guardam o endereço de um objeto, e é por isso que <code>b = a</code> com uma lista não copia nada. O Python entrega três referências prontas: a <strong>lista</strong> (o array, ou vetor), a <strong>tupla</strong> (imutável) e o <strong>dicionário</strong> (busca por chave). Com classes e <strong>relacionamentos</strong> (um objeto apontando para outro), construímos as que não são nativas: a <strong>pilha</strong> (LIFO, a mesma regra da pilha de chamadas das funções), a <strong>fila</strong> (FIFO) e a <strong>árvore</strong>. Soltando as regras da árvore (um pai, sem ciclos), chega-se ao <strong>grafo</strong>, que o dicionário e a lista já bastam para guardar, e que está no <strong>Git</strong>: cada commit é um nó, e o merge é um nó com dois pais. A pergunta que guia a escolha é sempre a mesma: <strong>como vou precisar acessar esses dados?</strong></p>
+<p>Resumo da leitura x escrita de cada estrutura:</p>
+<div class="tbl"><table><thead><tr><th>Estrutura</th><th>Lê rápido</th><th>Escreve rápido</th><th>O preço</th></tr></thead><tbody><tr><td><strong>Lista</strong></td><td>Por posição</td><td>No fim</td><td>Início e meio empurram todos os itens</td></tr><tr><td><strong>Tupla</strong></td><td>Por posição</td><td>Não escreve</td><td>"Alterar" é copiar tudo</td></tr><tr><td><strong>Dicionário</strong></td><td>Por chave</td><td>Por chave</td><td>Memória extra; buscar pelo valor varre tudo</td></tr><tr><td><strong>Pilha</strong></td><td>O topo</td><td>O topo</td><td>Fundo e meio custam n passos</td></tr><tr><td><strong>Fila</strong></td><td>A frente</td><td>O fim</td><td>O meio custa n passos</td></tr><tr><td><strong>Árvore</strong></td><td>Por caminho</td><td>Adicionar filho, mover galho</td><td>Buscar por nome varre tudo</td></tr><tr><td><strong>Grafo</strong></td><td>Os vizinhos</td><td>Ligar</td><td>"A liga B?" e remover varrem a lista</td></tr></tbody></table></div>
+<p>Não existe estrutura que ganhe em tudo: a pergunta é sempre <strong>o que vou mais ler, o que vou mais escrever, e o que estou disposto a pagar</strong>.</p>
+<h2 id="s8-referências"><span class="hn">8</span>Referências</h2>
+<p>Python Software Foundation — Tutorial de Python: Estruturas de dados (<a href="https://docs.python.org/pt-br/3/tutorial/datastructures.html" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/tutorial/datastructures.html</a>)</p>
+<p>Python Software Foundation — Biblioteca padrão: Tipos embutidos, sequências e mapeamentos (<a href="https://docs.python.org/pt-br/3/library/stdtypes.html" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/library/stdtypes.html</a>)</p>
+<p>Python Software Foundation — Biblioteca padrão: <code>collections.deque</code> (<a href="https://docs.python.org/pt-br/3/library/collections.html#collections.deque" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/library/collections.html#collections.deque</a>)</p>
+<p>Python Software Foundation — Modelo de dados: objetos, valores e tipos (<a href="https://docs.python.org/pt-br/3/reference/datamodel.html" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/reference/datamodel.html</a>)</p>
+<p>Material de aulas anteriores: Aula 03 (Linguagem de Máquina), Aula 07 (Introdução ao Python), Aula 08 (Paradigma Orientado a Objetos) e Aula 09 (Os 3 Pilares da Orientação a Objetos).</p>
+<h2 id="questoes"><span class="hn">TA</span>Questões do TA</h2>
+<article class="questao"><h3><span class="qn">Questão 1</span></h3><p>Segundo o texto, qual é a relação entre dado, binário e estrutura de dados?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O dado é sempre um texto, e a estrutura converte esse texto em números decimais.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">A estrutura de dados só existe em linguagens que têm tipos primitivos, como o Java.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">O dado é um valor bruto, que no computador é sempre uma sequência de bits; a estrutura é a regra de como esses valores são organizados e acessados.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">O número 65 e a letra "A" são bits diferentes, e por isso o Python precisa de duas estruturas para guardá-los.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">A estrutura de dados é a conversão do dado de binário para decimal.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 2</span></h3><p>Considere o código abaixo:</p>
+<pre class="code"><code>ponto = (10, 20)
+ponto[0] = 99
+print(ponto)</code></pre>
+<p>O que acontece ao executá-lo?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Imprime <code>(99, 20)</code>, porque a tupla aceita troca de elementos.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Imprime <code>(10, 20)</code>, porque o Python ignora a atribuição.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Imprime <code>(10, 20, 99)</code>, porque a tupla inclui o novo valor no final.</span></li><li class="alt ok"><span class="ltr">D</span><span class="txt">Levanta <code>TypeError</code>, porque a tupla é imutável e não aceita atribuição a um elemento.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Levanta <code>KeyError</code>, porque a posição 0 não é uma chave válida.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 3</span></h3><p>Considere o código abaixo:</p>
+<pre class="code"><code>aluno = {"nome": "Ana", "nota": 8}
+print("Ana" in aluno, aluno.get("ra", 0), len(aluno))</code></pre>
+<p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt"><code>True 0 2</code></span></li><li class="alt ok"><span class="ltr">B</span><span class="txt"><code>False 0 2</code></span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt"><code>False None 2</code></span></li><li class="alt"><span class="ltr">D</span><span class="txt"><code>True 0 1</code></span></li><li class="alt"><span class="ltr">E</span><span class="txt">Um erro, porque a chave <code>"ra"</code> não existe.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 4</span></h3><p>Considere o código abaixo:</p>
+<pre class="code"><code>from collections import deque
+pilha = []
+fila = deque()
+for letra in "ABC":
+    pilha.append(letra)
+    fila.append(letra)
+print(pilha.pop(), fila.popleft())</code></pre>
+<p>O que será impresso?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt"><code>A A</code></span></li><li class="alt"><span class="ltr">B</span><span class="txt"><code>A C</code></span></li><li class="alt"><span class="ltr">C</span><span class="txt"><code>C C</code></span></li><li class="alt"><span class="ltr">D</span><span class="txt"><code>B B</code></span></li><li class="alt ok"><span class="ltr">E</span><span class="txt"><code>C A</code></span><span class="gab">gabarito</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 5</span></h3><p>Considere as classes abaixo e o código que as usa:</p>
+<pre class="code"><code>class Professor:
+    def __init__(self, nome):
+        self.nome = nome
+class Turma:
+    def __init__(self, professor):
+        self.professor = professor
+luan = Professor("Luan")
+a = Turma(luan)
+b = Turma(luan)
+luan.nome = "Outro"
+print(a.professor.nome, a.professor is b.professor)</code></pre>
+<p>O que será impresso, e por quê?</p><ol class="alts"><li class="alt ok"><span class="ltr">A</span><span class="txt"><code>Outro True</code>, porque as duas turmas guardam a referência para o mesmo objeto, e não uma cópia.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">B</span><span class="txt"><code>Luan True</code>, porque a turma guarda uma cópia do nome no momento da criação.</span></li><li class="alt"><span class="ltr">C</span><span class="txt"><code>Outro False</code>, porque cada turma cria o seu próprio professor.</span></li><li class="alt"><span class="ltr">D</span><span class="txt"><code>Luan False</code>, porque o <code>is</code> compara os nomes e eles são diferentes.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Um erro, porque um objeto não pode guardar outro objeto numa propriedade.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 6</span></h3><p>Considere o código abaixo:</p>
+<pre class="code"><code>a = [1, 2]
+b = a
+b.append(3)
+x = 10
+y = x
+y = y + 1
+print(a, x)</code></pre>
+<p>O que será impresso, e por quê?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt"><code>[1, 2] 10</code>, porque <code>b = a</code> copia a lista.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt"><code>[1, 2, 3] 10</code>, porque a lista é um tipo de referência (<code>b</code> e <code>a</code> apontam para o mesmo objeto), enquanto o inteiro é copiado por valor.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt"><code>[1, 2, 3] 11</code>, porque os dois tipos compartilham o mesmo endereço.</span></li><li class="alt"><span class="ltr">D</span><span class="txt"><code>[1, 2] 11</code>, porque só o inteiro é compartilhado entre as variáveis.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Um erro, porque não se pode copiar uma lista com <code>=</code>.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 7</span></h3><p>Qual característica transforma uma árvore em um grafo mais geral?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O grafo exige que cada nó tenha exatamente um pai.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">O grafo permite que qualquer nó se ligue a qualquer outro e que existam ciclos; a árvore é um grafo sem ciclos e com um único pai por nó.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">O grafo só pode ser guardado em uma tupla.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">O grafo não tem nós, apenas ligações.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O grafo é uma pilha em que o último nó a entrar é o primeiro a sair.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 8</span></h3><p>Considere o código abaixo e as afirmações sobre o custo de cada linha:</p>
+<pre class="code"><code>notas = [7, 3, 9, 5, 8]
+notas.append(6)
+notas.insert(0, 1)</code></pre>
+<p>Qual afirmação descreve corretamente a diferença entre as duas escritas?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">As duas custam o mesmo: um passo cada, porque a lista é um array.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">O <code>insert(0, 1)</code> é mais rápido, porque a posição 0 é a primeira e não há nada antes dela.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">O <code>append(6)</code> custa um passo, porque cabe no próximo espaço livre; o <code>insert(0, 1)</code> custa n passos, porque todos os itens precisam ser empurrados uma casa para a direita.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">O <code>append(6)</code> custa n passos, porque a lista precisa ser reordenada; o <code>insert(0, 1)</code> custa um passo.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Nenhuma das duas é uma escrita, porque a lista é imutável.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+  </main>
+</div>
+<script src="../../assets/briefing.js"></script>
+</body>
+</html>

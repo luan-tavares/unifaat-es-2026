@@ -1,0 +1,115 @@
+CONTEXTO
+
+Na Aula 08 vimos que uma classe e o molde de um dado e que o objeto e o dado criado a partir dele, com propriedades (o que ele tem) e metodos (o que ele faz). Vimos o self, que aponta para o proprio objeto, o construtor __init__ e como um objeto pode guardar outro: na arvore de arquivos, cada Item recebia o seu pai no construtor.
+
+Agora e a vez de voces transformarem em objetos algo que todo mundo ja usa no dia a dia: o historico de commits do Git (Aulas 04 e 05). Cada commit aponta para o commit anterior, o seu pai, e e essa corrente que o git log percorre.
+
+O QUE VOCES PRECISAM FAZER
+
+Preparar o projeto Dentro do terminal do WSL, crie um diretorio chamado tf-08 e entre nele. Transforme a pasta em um repositorio Git e crie o ambiente virtual do projeto:
+
+mkdir tf-08
+cd tf-08
+git init
+python3 -m venv .venv
+source .venv/bin/activate
+
+Antes de qualquer git add, crie o .gitignore, para que o ambiente virtual nunca seja commitado:
+
+touch .gitignore
+code .
+
+No VS Code, dentro de .gitignore, escrever:
+
+.venv/
+__pycache__/
+
+Criar a classe Commit Crie o arquivo commit.py e, dentro dele, a classe Commit. O construtor recebe o id, a mensagem, o autor e o pai (o commit anterior, que e opcional: o primeiro commit nao tem pai, entao o valor padrao e None). A classe guarda tudo em propriedades (id, mensagem, autor e pai) e tem o metodo historico().
+
+- id: um numero unico para cada commit (1, 2, 3...), que e entregue pelo Repositorio na hora de criar o commit, como veremos adiante;
+
+- historico(): imprime este commit no formato "#id mensagem (autor)" e depois pede ao pai que faca o mesmo, ate chegar no primeiro commit. E a mesma ideia do caminho() da arvore de arquivos: o metodo chama o proprio metodo do pai, e o commit sem pai e o caso base.
+
+Quando terminar, faca um commit:
+
+git add .
+git commit -m "Cria a classe Commit"
+
+Criar a classe Repositorio No mesmo arquivo, crie a classe Repositorio. O construtor recebe o nome e o autor e comeca sem nenhum commit (a propriedade head, que aponta para o commit mais recente, comeca com None) e tem um contador de commits, tambem uma propriedade, que comeca em 0. Metodos:
+
+- commitar(mensagem): soma 1 no contador, cria um Commit usando o valor do contador como id, a mensagem, o autor do repositorio e o head atual como pai, e passa a guardar esse novo commit como head. Nao devolve nada (procedimento). Assim cada commit recebe um id diferente;
+- log(): se nao houver commit, imprime "Nenhum commit ainda"; se houver, chama o historico() do head, do mais novo para o mais antigo;
+- total_de_commits(): devolve quantos commits existem, andando de pai em pai a partir do head com um while.
+
+Commit:
+
+git add .
+git commit -m "Cria a classe Repositorio"
+
+Testar No fim do commit.py, use o seu nome e o seu RA como autor e registre pelo menos 3 commits com mensagens reais, escritas por voces:
+
+repositorio = Repositorio("meu-projeto", "Ana Souza - 123456")
+repositorio.log()
+repositorio.commitar("Cria o projeto")
+repositorio.commitar("Adiciona o README")
+repositorio.commitar("Corrige o titulo do README")
+repositorio.log()
+print(repositorio.total_de_commits())
+
+Rode no terminal:
+
+python3 commit.py
+
+O resultado deve ter este formato (o autor e as mensagens de voces vao ser os de voces):
+
+Nenhum commit ainda
+#3 Corrige o titulo do README (Ana Souza - 123456)
+#2 Adiciona o README (Ana Souza - 123456)
+#1 Cria o projeto (Ana Souza - 123456)
+3
+
+Commit:
+
+git add .
+git commit -m "Testa o repositorio de commits"
+
+Criar o repositorio no GitHub e enviar o historico No site do GitHub, crie um repositorio Public chamado tf-08, sem README. Copie a URL SSH (botao verde Code, aba SSH) e, no terminal, dentro de tf-08:
+
+git remote add origin <URL copiada>
+git push -u origin main
+
+Conferir no proprio GitHub Abram o repositorio no navegador e confirmem: commit.py e .gitignore aparecem; a pasta .venv NAO aparece.
+
+Ao final, a pasta tf-08 (local) deve estar assim:
+tf-08/
+├── .git/
+├── .venv/
+├── .gitignore
+└── commit.py
+
+REGRAS
+
+Nao usar nenhuma biblioteca: nada de import, so o que o Python ja traz sem importar. O historico e o id tem que ser feitos pelas classes de voces.
+O autor tem que ser o seu nome e o seu RA, e as mensagens dos commits tem que ser suas.
+Nada de else (nem elif): usar retorno antecipado, continue ou valor padrao, como em aula.
+Nomes sem abreviacoes (mensagem, e nao msg; repositorio, e nao repo).
+As classes e os metodos devem ter comentarios explicando, com as proprias palavras, o que fazem.
+Pelo menos 3 commits no Git, na ordem do roteiro.
+A pasta .venv nao pode aparecer no repositorio.
+O repositorio no GitHub deve estar Public, pra que o codigo possa ser conferido pelo link enviado.
+Trabalho individual: codigos identicos entre colegas serao considerados copia e zerados para todos os envolvidos.
+Todo o trabalho deve ser feito dentro do ambiente Linux do WSL.
+
+REPOSITORIO BASE
+
+O codigo visto em aula (pasta src/08/) esta no repositorio base da disciplina: https://github.com/luan-tavares/unifaat-es-2026
+
+Usem ele como base e referencia, mas o repositorio entregue e o de cada um: criem o SEU repositorio tf-08, PUBLICO, no seu proprio GitHub. O link do repositorio base nao vale como entrega.
+
+ENTREGA
+
+Enviar o link do repositorio no GitHub (publico), junto com nome e RA, pelo formulario:
+
+https://docs.google.com/forms/d/e/1FAIpQLSedMOT1GH_eZeXlU-WdvvE8HfQfe2he01c4yeqElX2tvn3jaw/viewform?usp=dialog
+
+2026-10-21T23:59:59

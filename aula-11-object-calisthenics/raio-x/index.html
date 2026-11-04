@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Código — Aula 11</title>
+<link rel="stylesheet" href="../../assets/raio-x.css">
+<script src="../../assets/tema.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="topbar"><a class="back" href="../../index.html">← Voltar</a></nav>
+
+<header>
+  <span class="kicker">Raio-X do Código · Aula 11 · Timeline</span>
+  <h1>Object Calisthenics: o src/11 da disciplina</h1>
+  <p class="meta">
+    <span><i class="fa-solid fa-folder"></i> es-2026/src/11</span>
+    <span><i class="fa-solid fa-calendar-days"></i> 04/11/2026</span>
+    <span><i class="fa-solid fa-wrench"></i> 10 etapas</span>
+  </p>
+</header>
+
+<main>
+<div class="timeline">
+
+  <!-- ETAPA 1 -->
+  <div class="entry">
+    <div class="entry-dot">1</div>
+    <div class="entry-date">Etapa 1</div>
+    <h2><code class="inline">01_indentacao.py</code>: um nível por método e o código hadouken</h2>
+    <p class="sub">Regra 1 (One level of indentation per method). O <code class="inline">if</code> dentro de <code class="inline">if</code> vira uma seta para a direita; a cura é o fail first e extrair métodos com nome.</p>
+
+    <div class="tree">es-2026/
+├── aula-11-object-calisthenics/   <span class="comment">// briefing, slides vivos, TF e este raio-x</span>
+└── <span class="dir">src/</span>
+    ├── <span class="dir">07/ 08/ 09/ 10/</span>             <span class="comment">// aulas anteriores (a árvore de arquivos nasceu na 08)</span>
+    └── <span class="dir">11/</span>                          <span class="new">← NOVO: um arquivo por regra do Object Calisthenics</span>
+        ├── <span class="new">01_indentacao.py</span>          <span class="comment">// um nível por método; hadouken e fail first</span>
+        ├── <span class="new">02_sem_else.py</span>            <span class="comment">// retorno antecipado, valor padrão, polimorfismo</span>
+        ├── <span class="new">03_embrulhar_primitivos.py</span> <span class="comment">// obsessão por tipos primitivos</span>
+        ├── <span class="new">04_colecao_primeira_classe.py</span>
+        ├── <span class="new">05_um_ponto_por_linha.py</span>   <span class="comment">// Lei de Demeter</span>
+        ├── <span class="new">06_diga_nao_pergunte.py</span>
+        ├── <span class="new">07_entidades_pequenas.py</span>
+        ├── <span class="new">08_divida_tecnica.py</span>      <span class="comment">// o atalho consciente</span>
+        ├── <span class="new">09_modularizacao.py</span>       <span class="comment">// o guarda-chuva das regras</span>
+        └── <span class="dir">tf-11/</span> <span class="new">loja_feia.py</span>      <span class="comment">// o código feio do TF 11</span></div>
+
+    <div class="diff">
+      <div class="diff-head">src/11/01_indentacao.py (arquivo novo)</div>
+      <div class="line add">+ # Regra 1: um único nível de indentação por método.</div>
+      <div class="line add">+ # Rodar no terminal: python3 01_indentacao.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ turma = {</div>
+      <div class="line add">+     &quot;Ana&quot;: [8, 9, 7],</div>
+      <div class="line add">+     &quot;Bruno&quot;: [4, 5, 6],</div>
+      <div class="line add">+     &quot;Carla&quot;: [],</div>
+      <div class="line add">+     &quot;Diego&quot;: [10, 9, 10],</div>
+      <div class="line add">+ }</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # ANTES: três níveis (for -&gt; if -&gt; for) na mesma função.</div>
+      <div class="line add">+ def aprovados_antes(turma):</div>
+      <div class="line add">+     aprovados = []</div>
+      <div class="line add">+     for nome in turma:</div>
+      <div class="line add">+         if len(turma[nome]) &gt; 0:</div>
+      <div class="line add">+             soma = 0</div>
+      <div class="line add">+             for nota in turma[nome]:</div>
+      <div class="line add">+                 soma += nota</div>
+      <div class="line add">+             if soma / len(turma[nome]) &gt;= 6:</div>
+      <div class="line add">+                 aprovados.append(nome)</div>
+      <div class="line add">+     return aprovados</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DEPOIS: cada função faz uma coisa e tem no máximo um nível.</div>
+      <div class="line add">+ def media(notas):</div>
+      <div class="line add">+     return sum(notas) / len(notas)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def foi_aprovado(notas):</div>
+      <div class="line add">+     if len(notas) == 0:</div>
+      <div class="line add">+         return False</div>
+      <div class="line add">+     return media(notas) &gt;= 6</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def aprovados(turma):</div>
+      <div class="line add">+     return [nome for nome in turma if foi_aprovado(turma[nome])]</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(aprovados_antes(turma))   # [&#x27;Ana&#x27;, &#x27;Diego&#x27;]</div>
+      <div class="line add">+ print(aprovados(turma))         # [&#x27;Ana&#x27;, &#x27;Diego&#x27;]</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # ANTES (código hadouken): os if se empilham e a indentação vira uma seta &gt;&gt;&gt;.</div>
+      <div class="line add">+ def certificado_antes(existe, matriculado, frequencia, nota):</div>
+      <div class="line add">+     if existe:</div>
+      <div class="line add">+         if matriculado:</div>
+      <div class="line add">+             if frequencia &gt;= 75:</div>
+      <div class="line add">+                 if nota &gt;= 6:</div>
+      <div class="line add">+                     return &quot;certificado emitido&quot;</div>
+      <div class="line add">+     return &quot;certificado negado&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DEPOIS (fail first): testa o que está errado e sai cedo; tudo no nível 1 e cada saída diz o motivo.</div>
+      <div class="line add">+ def certificado(existe, matriculado, frequencia, nota):</div>
+      <div class="line add">+     if not existe:</div>
+      <div class="line add">+         return &quot;negado: aluno não existe&quot;</div>
+      <div class="line add">+     if not matriculado:</div>
+      <div class="line add">+         return &quot;negado: sem matrícula&quot;</div>
+      <div class="line add">+     if frequencia &lt; 75:</div>
+      <div class="line add">+         return &quot;negado: frequência abaixo de 75%&quot;</div>
+      <div class="line add">+     if nota &lt; 6:</div>
+      <div class="line add">+         return &quot;negado: nota abaixo de 6&quot;</div>
+      <div class="line add">+     return &quot;certificado emitido&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(certificado_antes(True, True, 80, 7))    # certificado emitido</div>
+      <div class="line add">+ print(certificado(True, True, 60, 7))          # negado: frequência abaixo de 75%</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 01_indentacao.py</div>
+      <div class="line ctx">[&#x27;Ana&#x27;, &#x27;Diego&#x27;]</div>
+      <div class="line ctx">[&#x27;Ana&#x27;, &#x27;Diego&#x27;]</div>
+      <div class="line ctx">certificado emitido</div>
+      <div class="line ctx">negado: frequência abaixo de 75%</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>O hadouken</h4>
+        <p><code class="inline">certificado_antes</code> empilha quatro <code class="inline">if</code> e o que importa (<code class="inline">&quot;certificado emitido&quot;</code>) fica no fundo da seta. Para chegar lá, o leitor guardou quatro condições na cabeça.</p>
+      </div>
+      <div class="why-card">
+        <h4>Fail first</h4>
+        <p><code class="inline">certificado</code> testa o que está ERRADO primeiro e sai cedo (cláusula de guarda). Tudo no nível 1, e cada saída diz o motivo: a saída mostra <code class="inline">negado: frequência abaixo de 75%</code>.</p>
+      </div>
+      <div class="why-card">
+        <h4>Extrair o aninhado</h4>
+        <p><code class="inline">aprovados_antes</code> mistura percorrer, somar, calcular a média e decidir em três níveis. Com <code class="inline">media</code>, <code class="inline">foi_aprovado</code> e <code class="inline">aprovados</code>, cada função faz uma coisa, e o nome vira a explicação.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 2 -->
+  <div class="entry">
+    <div class="entry-dot">2</div>
+    <div class="entry-date">Etapa 2</div>
+    <h2><code class="inline">02_sem_else.py</code>: três saídas no lugar do else</h2>
+    <p class="sub">Regra 2 (Don't use the ELSE keyword). O <code class="inline">else</code> costuma ser sintoma de uma unidade fazendo coisa demais.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/02_sem_else.py (arquivo novo)</div>
+      <div class="line add">+ # Regra 2: não usar else. Três saídas no lugar dele.</div>
+      <div class="line add">+ # Rodar no terminal: python3 02_sem_else.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # 1) Retorno antecipado (fail first / cláusula de guarda): cada caso resolve e sai.</div>
+      <div class="line add">+ def conceito(nota):</div>
+      <div class="line add">+     if nota &gt;= 9:</div>
+      <div class="line add">+         return &quot;A&quot;</div>
+      <div class="line add">+     if nota &gt;= 7:</div>
+      <div class="line add">+         return &quot;B&quot;</div>
+      <div class="line add">+     if nota &gt;= 5:</div>
+      <div class="line add">+         return &quot;C&quot;</div>
+      <div class="line add">+     return &quot;D&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # 2) Valor padrão antes do if: o if só sobrescreve quando precisa.</div>
+      <div class="line add">+ def situacao(media):</div>
+      <div class="line add">+     resultado = &quot;reprovado&quot;</div>
+      <div class="line add">+     if media &gt;= 6:</div>
+      <div class="line add">+         resultado = &quot;aprovado&quot;</div>
+      <div class="line add">+     return resultado</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # 3) Polimorfismo (Aula 09): cada classe sabe o seu desconto, ninguém pergunta o tipo.</div>
+      <div class="line add">+ class Aluno:</div>
+      <div class="line add">+     def desconto(self):</div>
+      <div class="line add">+         return 0.5</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Professor:</div>
+      <div class="line add">+     def desconto(self):</div>
+      <div class="line add">+         return 0.3</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Visitante:</div>
+      <div class="line add">+     def desconto(self):</div>
+      <div class="line add">+         return 0.0</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def preco_final(preco, cliente):</div>
+      <div class="line add">+     return preco * (1 - cliente.desconto())</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(conceito(9.5), conceito(7), conceito(3))            # A B D</div>
+      <div class="line add">+ print(situacao(8), situacao(4))                           # aprovado reprovado</div>
+      <div class="line add">+ print(preco_final(100, Aluno()), preco_final(100, Visitante()))   # 50.0 100.0</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 02_sem_else.py</div>
+      <div class="line ctx">A B D</div>
+      <div class="line ctx">aprovado reprovado</div>
+      <div class="line ctx">50.0 100.0</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Retorno antecipado</h4>
+        <p><code class="inline">conceito</code> resolve cada caso e sai (fail first). O leitor não precisa lembrar das condições de cima para entender o <code class="inline">return &quot;D&quot;</code> do fim.</p>
+      </div>
+      <div class="why-card">
+        <h4>Valor padrão antes do if</h4>
+        <p><code class="inline">situacao</code> começa com <code class="inline">&quot;reprovado&quot;</code> e o <code class="inline">if</code> só sobrescreve quando precisa. Uma variável, um <code class="inline">if</code>, nenhum <code class="inline">else</code>.</p>
+      </div>
+      <div class="why-card">
+        <h4>Polimorfismo (Aula 09)</h4>
+        <p>Cada classe (<code class="inline">Aluno</code>, <code class="inline">Professor</code>, <code class="inline">Visitante</code>) sabe o seu <code class="inline">desconto()</code>. <code class="inline">preco_final</code> não pergunta o tipo: tipo novo é classe nova, e a função antiga não muda.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 3 -->
+  <div class="entry">
+    <div class="entry-dot">3</div>
+    <div class="entry-date">Etapa 3</div>
+    <h2><code class="inline">03_embrulhar_primitivos.py</code>: obsessão por tipos primitivos</h2>
+    <p class="sub">Regra 3 (Wrap all primitives and strings), a cura da Primitive Obsession: usar <code class="inline">int</code>, <code class="inline">float</code> e <code class="inline">str</code> soltos para representar ideias do domínio.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/03_embrulhar_primitivos.py (arquivo novo)</div>
+      <div class="line add">+ # Regra 3: embrulhar primitivos e strings em classes pequenas.</div>
+      <div class="line add">+ # Rodar no terminal: python3 03_embrulhar_primitivos.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # ANTES: o int aceita qualquer coisa, e o erro viaja pelo sistema.</div>
+      <div class="line add">+ def registrar_antes(ra, nota):</div>
+      <div class="line add">+     return &quot;RA &quot; + str(ra) + &quot; tirou &quot; + str(nota)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(registrar_antes(8.5, 1234))       # RA 8.5 tirou 1234 (trocou e ninguém reclamou)</div>
+      <div class="line add">+ print(registrar_antes(1234, 15))        # RA 1234 tirou 15 (nota 15 numa prova de 0 a 10)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DEPOIS: o tipo carrega a regra e o erro aparece na criação.</div>
+      <div class="line add">+ class Nota:</div>
+      <div class="line add">+     def __init__(self, valor):</div>
+      <div class="line add">+         if valor &lt; 0 or valor &gt; 10:</div>
+      <div class="line add">+             raise ValueError(&quot;nota deve estar entre 0 e 10&quot;)</div>
+      <div class="line add">+         self._valor = valor</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def aprovada(self):</div>
+      <div class="line add">+         return self._valor &gt;= 6</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def __str__(self):</div>
+      <div class="line add">+         return str(self._valor)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Ra:</div>
+      <div class="line add">+     def __init__(self, numero):</div>
+      <div class="line add">+         if not isinstance(numero, int) or numero &lt;= 0:</div>
+      <div class="line add">+             raise ValueError(&quot;RA deve ser um inteiro positivo&quot;)</div>
+      <div class="line add">+         self._numero = numero</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def __str__(self):</div>
+      <div class="line add">+         return str(self._numero)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def registrar(ra: Ra, nota: Nota):</div>
+      <div class="line add">+     return &quot;RA &quot; + str(ra) + &quot; tirou &quot; + str(nota)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(registrar(Ra(1234), Nota(8.5)))   # RA 1234 tirou 8.5</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ try:</div>
+      <div class="line add">+     Nota(15)</div>
+      <div class="line add">+ except ValueError as erro:</div>
+      <div class="line add">+     print(&quot;Recusou na entrada:&quot;, erro)   # Recusou na entrada: nota deve estar entre 0 e 10</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 03_embrulhar_primitivos.py</div>
+      <div class="line ctx">RA 8.5 tirou 1234</div>
+      <div class="line ctx">RA 1234 tirou 15</div>
+      <div class="line ctx">RA 1234 tirou 8.5</div>
+      <div class="line ctx">Recusou na entrada: nota deve estar entre 0 e 10</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>O primitivo aceita tudo</h4>
+        <p>Em <code class="inline">registrar_antes</code>, <code class="inline">(8.5, 1234)</code> troca RA e nota e <code class="inline">(1234, 15)</code> põe 15 numa prova de 0 a 10. Nada reclama, e o erro viaja pelo sistema.</p>
+      </div>
+      <div class="why-card">
+        <h4>A regra mora no tipo</h4>
+        <p><code class="inline">Nota</code> valida 0 a 10 no construtor e <code class="inline">Ra</code> exige inteiro positivo. Toda <code class="inline">Nota</code> do sistema já nasceu válida, e o erro aparece na criação (a última linha da saída: <code class="inline">Nota(15)</code> é recusada).</p>
+      </div>
+      <div class="why-card">
+        <h4>Dicas de tipo não checam</h4>
+        <p><code class="inline">ra: Ra</code> no <code class="inline">registrar</code> serve ao editor e ao <code class="inline">mypy</code>: o Python não confere em tempo de execução. Quem barra o erro é a validação do construtor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 4 -->
+  <div class="entry">
+    <div class="entry-dot">4</div>
+    <div class="entry-date">Etapa 4</div>
+    <h2><code class="inline">04_colecao_primeira_classe.py</code>: quem tem uma lista não tem mais nada</h2>
+    <p class="sub">Regra 4 (First-class collections). A lista ganha um dono, que oferece só as operações que fazem sentido.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/04_colecao_primeira_classe.py (arquivo novo)</div>
+      <div class="line add">+ # Regra 4: coleção de primeira classe. Quem tem uma lista não tem mais nada.</div>
+      <div class="line add">+ # Rodar no terminal: python3 04_colecao_primeira_classe.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Aluno:</div>
+      <div class="line add">+     def __init__(self, nome, nota):</div>
+      <div class="line add">+         self._nome = nome</div>
+      <div class="line add">+         self._nota = nota</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def aprovado(self):</div>
+      <div class="line add">+         return self._nota &gt;= 6</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def descrever(self):</div>
+      <div class="line add">+         return self._nome + &quot;: &quot; + str(self._nota)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Turma:</div>
+      <div class="line add">+     def __init__(self, alunos=()):</div>
+      <div class="line add">+         self._alunos = list(alunos)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def matricular(self, aluno):</div>
+      <div class="line add">+         self._alunos.append(aluno)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def aprovados(self):</div>
+      <div class="line add">+         return Turma([aluno for aluno in self._alunos if aluno.aprovado()])</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def quantidade(self):</div>
+      <div class="line add">+         return len(self._alunos)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def descrever(self):</div>
+      <div class="line add">+         return &quot;\n&quot;.join(aluno.descrever() for aluno in self._alunos)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ turma = Turma()</div>
+      <div class="line add">+ turma.matricular(Aluno(&quot;Ana&quot;, 8.5))</div>
+      <div class="line add">+ turma.matricular(Aluno(&quot;Bruno&quot;, 4))</div>
+      <div class="line add">+ turma.matricular(Aluno(&quot;Diego&quot;, 10))</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(turma.aprovados().descrever())</div>
+      <div class="line add">+ # Ana: 8.5</div>
+      <div class="line add">+ # Diego: 10</div>
+      <div class="line add">+ print(turma.aprovados().quantidade(), &quot;de&quot;, turma.quantidade())   # 2 de 3</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 04_colecao_primeira_classe.py</div>
+      <div class="line ctx">Ana: 8.5</div>
+      <div class="line ctx">Diego: 10</div>
+      <div class="line ctx">2 de 3</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>A lista tem dono</h4>
+        <p><code class="inline">Turma</code> guarda <code class="inline">_alunos</code> e nada mais. Ninguém de fora recebe a lista crua (o vazamento da lista da Aula 09).</p>
+      </div>
+      <div class="why-card">
+        <h4>Devolve outra Turma</h4>
+        <p><code class="inline">aprovados()</code> não devolve uma lista: devolve uma nova <code class="inline">Turma</code>, que já sabe <code class="inline">quantidade()</code> e <code class="inline">descrever()</code>. A estrutura de dados da Aula 10 vira classe do domínio.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 5 -->
+  <div class="entry">
+    <div class="entry-dot">5</div>
+    <div class="entry-date">Etapa 5</div>
+    <h2><code class="inline">05_um_ponto_por_linha.py</code>: Lei de Demeter, não fale com estranhos</h2>
+    <p class="sub">Regra 5 (One dot per line, Law of Demeter). A mesma árvore de arquivos da Aula 08, agora perguntando ao amigo certo.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/05_um_ponto_por_linha.py (arquivo novo)</div>
+      <div class="line add">+ # Regra 5: um ponto por linha (Lei de Demeter: fale só com os seus amigos).</div>
+      <div class="line add">+ # Rodar no terminal: python3 05_um_ponto_por_linha.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # ANTES: quem chama conhece a estrutura inteira da árvore da Aula 08.</div>
+      <div class="line add">+ class ItemAberto:</div>
+      <div class="line add">+     def __init__(self, nome, pai=None):</div>
+      <div class="line add">+         self.nome = nome</div>
+      <div class="line add">+         self.pai = pai</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ disco = ItemAberto(&quot;C:&quot;)</div>
+      <div class="line add">+ usuarios = ItemAberto(&quot;Users&quot;, disco)</div>
+      <div class="line add">+ desktop = ItemAberto(&quot;Desktop&quot;, usuarios)</div>
+      <div class="line add">+ trabalhos = ItemAberto(&quot;Trabalhos&quot;, desktop)</div>
+      <div class="line add">+ tf = ItemAberto(&quot;tf-08.py&quot;, trabalhos)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(tf.pai.pai.pai.pai.nome)      # C: (quatro pontos: se a árvore mudar, quebra aqui)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DEPOIS: o item só fala com o pai direto e o pai responde pelo resto.</div>
+      <div class="line add">+ class Item:</div>
+      <div class="line add">+     def __init__(self, nome, pai=None):</div>
+      <div class="line add">+         self._nome = nome</div>
+      <div class="line add">+         self._pai = pai</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def disco(self):</div>
+      <div class="line add">+         if self._pai is None:</div>
+      <div class="line add">+             return self._nome</div>
+      <div class="line add">+         return self._pai.disco()</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ raiz = Item(&quot;C:&quot;)</div>
+      <div class="line add">+ pasta = Item(&quot;Users&quot;, raiz)</div>
+      <div class="line add">+ arquivo = Item(&quot;tf-08.py&quot;, pasta)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(arquivo.disco())              # C: (um ponto)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Exceção: encadear métodos que devolvem o mesmo tipo (fluente) não é navegar.</div>
+      <div class="line add">+ print(&quot;  Ola  &quot;.strip().lower())    # ola</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 05_um_ponto_por_linha.py</div>
+      <div class="line ctx">C:</div>
+      <div class="line ctx">C:</div>
+      <div class="line ctx">ola</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Quatro pontos, quatro estranhos</h4>
+        <p><code class="inline">tf.pai.pai.pai.pai.nome</code> atravessa quatro objetos: quem chama conhece o desenho inteiro da árvore, e uma árvore com um nível a mais quebra todo lugar que copiou a cadeia.</p>
+      </div>
+      <div class="why-card">
+        <h4>Delegar ao pai</h4>
+        <p><code class="inline">arquivo.disco()</code> fala só com o pai direto; o pai repete o gesto até a raiz, que responde com o próprio nome. Um ponto, e a resposta continua certa se a árvore crescer.</p>
+      </div>
+      <div class="why-card">
+        <h4>A exceção</h4>
+        <p>Encadear métodos que devolvem o mesmo tipo (<code class="inline">&quot;  Ola  &quot;.strip().lower()</code>) não é navegar entre objetos, é uma sequência de transformações.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 6 -->
+  <div class="entry">
+    <div class="entry-dot">6</div>
+    <div class="entry-date">Etapa 6</div>
+    <h2><code class="inline">06_diga_nao_pergunte.py</code>: sem getters e setters</h2>
+    <p class="sub">Regra 9 do texto original (No getters/setters/properties), conhecida como Tell, Don't Ask.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/06_diga_nao_pergunte.py (arquivo novo)</div>
+      <div class="line add">+ # Regra 9: sem getters/setters/properties. Diga ao objeto o que fazer, não pergunte.</div>
+      <div class="line add">+ # Rodar no terminal: python3 06_diga_nao_pergunte.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # ANTES: o objeto entrega o saldo e quem chama decide a regra.</div>
+      <div class="line add">+ class ContaAberta:</div>
+      <div class="line add">+     def __init__(self, saldo):</div>
+      <div class="line add">+         self._saldo = saldo</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def get_saldo(self):</div>
+      <div class="line add">+         return self._saldo</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def set_saldo(self, valor):</div>
+      <div class="line add">+         self._saldo = valor</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ conta = ContaAberta(100)</div>
+      <div class="line add">+ if conta.get_saldo() &gt;= 30:                      # a regra mora fora da conta</div>
+      <div class="line add">+     conta.set_saldo(conta.get_saldo() - 30)      # e cada chamador pode esquecê-la</div>
+      <div class="line add">+ conta.set_saldo(-999)                            # nada impede isto</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DEPOIS: a regra mora na conta, e só existe o comportamento.</div>
+      <div class="line add">+ class Conta:</div>
+      <div class="line add">+     def __init__(self, saldo):</div>
+      <div class="line add">+         self._saldo = saldo</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def sacar(self, valor):</div>
+      <div class="line add">+         if valor &gt; self._saldo:</div>
+      <div class="line add">+             raise ValueError(&quot;saldo insuficiente&quot;)</div>
+      <div class="line add">+         self._saldo -= valor</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def descrever(self):</div>
+      <div class="line add">+         return &quot;saldo: &quot; + str(self._saldo)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ conta = Conta(100)</div>
+      <div class="line add">+ conta.sacar(30)</div>
+      <div class="line add">+ print(conta.descrever())                         # saldo: 70</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ try:</div>
+      <div class="line add">+     conta.sacar(500)</div>
+      <div class="line add">+ except ValueError as erro:</div>
+      <div class="line add">+     print(&quot;Recusou:&quot;, erro)                      # Recusou: saldo insuficiente</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 06_diga_nao_pergunte.py</div>
+      <div class="line ctx">saldo: 70</div>
+      <div class="line ctx">Recusou: saldo insuficiente</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Perguntar e decidir fora</h4>
+        <p>Com <code class="inline">get_saldo</code> e <code class="inline">set_saldo</code>, a regra ("só saca se tiver saldo") mora em quem chama, e <code class="inline">conta.set_saldo(-999)</code> nada impede.</p>
+      </div>
+      <div class="why-card">
+        <h4>Dizer e a conta decide</h4>
+        <p><code class="inline">conta.sacar(30)</code> entrega a ordem e a <code class="inline">Conta</code> aplica a própria regra (<code class="inline">saldo insuficiente</code> na recusa). Um <code class="inline">@property</code> de leitura seria só um getter com outra roupa.</p>
+      </div>
+      <div class="why-card">
+        <h4>Aula 09 x Aula 11</h4>
+        <p>Na Aula 09 o getter/setter era "a porta controlada". Aqui vai um passo além: o objeto não entrega o estado cru, ele oferece comportamento.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 7 -->
+  <div class="entry">
+    <div class="entry-dot">7</div>
+    <div class="entry-date">Etapa 7</div>
+    <h2><code class="inline">07_entidades_pequenas.py</code>: classes pequenas, até duas variáveis</h2>
+    <p class="sub">Regras 7 e 8 (Keep all entities small, No classes with more than two instance variables).</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/07_entidades_pequenas.py (arquivo novo)</div>
+      <div class="line add">+ # Regra 7 (e 8): entidades pequenas, no máximo duas variáveis de instância.</div>
+      <div class="line add">+ # Rodar no terminal: python3 07_entidades_pequenas.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # ANTES: uma classe só guarda cinco dados e mistura assuntos.</div>
+      <div class="line add">+ class ClienteGrande:</div>
+      <div class="line add">+     def __init__(self, nome, sobrenome, rua, numero, cidade):</div>
+      <div class="line add">+         self._nome = nome</div>
+      <div class="line add">+         self._sobrenome = sobrenome</div>
+      <div class="line add">+         self._rua = rua</div>
+      <div class="line add">+         self._numero = numero</div>
+      <div class="line add">+         self._cidade = cidade</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DEPOIS: cada assunto vira uma classe pequena e o cliente só junta duas.</div>
+      <div class="line add">+ class Nome:</div>
+      <div class="line add">+     def __init__(self, primeiro, sobrenome):</div>
+      <div class="line add">+         self._primeiro = primeiro</div>
+      <div class="line add">+         self._sobrenome = sobrenome</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def completo(self):</div>
+      <div class="line add">+         return self._primeiro + &quot; &quot; + self._sobrenome</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Endereco:</div>
+      <div class="line add">+     def __init__(self, rua, cidade):</div>
+      <div class="line add">+         self._rua = rua</div>
+      <div class="line add">+         self._cidade = cidade</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def completo(self):</div>
+      <div class="line add">+         return self._rua + &quot;, &quot; + self._cidade</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Cliente:</div>
+      <div class="line add">+     def __init__(self, nome, endereco):</div>
+      <div class="line add">+         self._nome = nome</div>
+      <div class="line add">+         self._endereco = endereco</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def etiqueta(self):</div>
+      <div class="line add">+         return self._nome.completo() + &quot; - &quot; + self._endereco.completo()</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ cliente = Cliente(Nome(&quot;Ana&quot;, &quot;Souza&quot;), Endereco(&quot;Rua das Flores, 10&quot;, &quot;Sorocaba&quot;))</div>
+      <div class="line add">+ print(cliente.etiqueta())   # Ana Souza - Rua das Flores, 10, Sorocaba</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 07_entidades_pequenas.py</div>
+      <div class="line ctx">Ana Souza - Rua das Flores, 10, Sorocaba</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Uma classe, vários assuntos</h4>
+        <p><code class="inline">ClienteGrande</code> guarda cinco dados e muda por muitos motivos: trocar o formato do endereço mexe na mesma classe do nome.</p>
+      </div>
+      <div class="why-card">
+        <h4>Assunto único</h4>
+        <p><code class="inline">Nome</code> e <code class="inline">Endereco</code> têm duas variáveis cada, e <code class="inline">Cliente</code> só junta as duas peças. Cada uma pode ser testada e reaproveitada sozinha.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 8 -->
+  <div class="entry">
+    <div class="entry-dot">8</div>
+    <div class="entry-date">Etapa 8</div>
+    <h2><code class="inline">08_divida_tecnica.py</code>: o atalho consciente</h2>
+    <p class="sub">Entregar rápido é um empréstimo: pega-se velocidade agora e paga-se depois, com juros. Não tem problema, desde que a gente saiba.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/08_divida_tecnica.py (arquivo novo)</div>
+      <div class="line add">+ # Dívida técnica: entregar rápido é um empréstimo. Pode, desde que a gente saiba.</div>
+      <div class="line add">+ # Rodar no terminal: python3 08_divida_tecnica.py</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DÍVIDA TÉCNICA (consciente), sexta 17h:</div>
+      <div class="line add">+ # preco_professor é cópia de preco_aluno.</div>
+      <div class="line add">+ # Pagar: unificar em um dicionário de multiplicadores (ticket #42, sprint 3).</div>
+      <div class="line add">+ def preco_aluno(preco):</div>
+      <div class="line add">+     return preco * 0.5</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def preco_professor(preco):</div>
+      <div class="line add">+     return preco * 0.7</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(preco_aluno(100), preco_professor(100))     # 50.0 70.0</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Pagamento (sprint 3): uma função, um dicionário, nada duplicado.</div>
+      <div class="line add">+ MULTIPLICADOR = {&quot;aluno&quot;: 0.5, &quot;professor&quot;: 0.7}</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def preco_final(preco, tipo):</div>
+      <div class="line add">+     return preco * MULTIPLICADOR[tipo]</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(preco_final(100, &quot;aluno&quot;), preco_final(100, &quot;professor&quot;))   # 50.0 70.0</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 08_divida_tecnica.py</div>
+      <div class="line ctx">50.0 70.0</div>
+      <div class="line ctx">50.0 70.0</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Dívida registrada</h4>
+        <p>O comentário diz o quê, por quê e quando pagar (ticket, sprint 3). A mesma duplicação, sem o comentário, seria um descuido: os juros cresceriam em silêncio.</p>
+      </div>
+      <div class="why-card">
+        <h4>O pagamento</h4>
+        <p><code class="inline">MULTIPLICADOR</code> e <code class="inline">preco_final</code> removem a duplicação. A saída é igual antes e depois, que é o que torna seguro pagar a dívida.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 9 -->
+  <div class="entry">
+    <div class="entry-dot">9</div>
+    <div class="entry-date">Etapa 9</div>
+    <h2><code class="inline">09_modularizacao.py</code>: o guarda-chuva das regras</h2>
+    <p class="sub">O que une todas as regras: separar as unidades de execução. É a resposta para "por que não posso usar else?".</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/09_modularizacao.py (arquivo novo)</div>
+      <div class="line add">+ # Modularização: o guarda-chuva das sete regras. Separar as unidades de execução.</div>
+      <div class="line add">+ # Rodar no terminal: python3 09_modularizacao.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ turma = {</div>
+      <div class="line add">+     &quot;Ana&quot;: [8, 9, 7],</div>
+      <div class="line add">+     &quot;Bruno&quot;: [4, 5, 6],</div>
+      <div class="line add">+     &quot;Carla&quot;: [],</div>
+      <div class="line add">+     &quot;Diego&quot;: [10, 9, 10],</div>
+      <div class="line add">+ }</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # ANTES: uma unidade só faz tudo (percorre, soma, calcula a média, decide e imprime).</div>
+      <div class="line add">+ def relatorio_antes(turma):</div>
+      <div class="line add">+     for nome in turma:</div>
+      <div class="line add">+         if len(turma[nome]) &gt; 0:</div>
+      <div class="line add">+             soma = 0</div>
+      <div class="line add">+             for nota in turma[nome]:</div>
+      <div class="line add">+                 soma += nota</div>
+      <div class="line add">+             media = soma / len(turma[nome])</div>
+      <div class="line add">+             if media &gt;= 6:</div>
+      <div class="line add">+                 print(nome, &quot;aprovado&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # DEPOIS: cada função é uma unidade com uma responsabilidade, e a pilha de chamadas</div>
+      <div class="line add">+ # vira uma história: relatorio -&gt; foi_aprovado -&gt; media.</div>
+      <div class="line add">+ def media(notas):</div>
+      <div class="line add">+     return sum(notas) / len(notas)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def foi_aprovado(notas):</div>
+      <div class="line add">+     return len(notas) &gt; 0 and media(notas) &gt;= 6</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def relatorio(turma):</div>
+      <div class="line add">+     for nome in turma:</div>
+      <div class="line add">+         if foi_aprovado(turma[nome]):</div>
+      <div class="line add">+             print(nome, &quot;aprovado&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ relatorio_antes(turma)    # Ana aprovado / Diego aprovado</div>
+      <div class="line add">+ relatorio(turma)          # Ana aprovado / Diego aprovado</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 09_modularizacao.py</div>
+      <div class="line ctx">Ana aprovado</div>
+      <div class="line ctx">Diego aprovado</div>
+      <div class="line ctx">Ana aprovado</div>
+      <div class="line ctx">Diego aprovado</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Uma unidade, cinco tarefas</h4>
+        <p><code class="inline">relatorio_antes</code> percorre, soma, calcula a média, decide e imprime: na pilha de execução, é um frame só carregando cinco responsabilidades.</p>
+      </div>
+      <div class="why-card">
+        <h4>A pilha vira uma história</h4>
+        <p>Com <code class="inline">media</code>, <code class="inline">foi_aprovado</code> e <code class="inline">relatorio</code>, a pilha mostra <code class="inline">relatorio</code> chamando <code class="inline">foi_aprovado</code>, que chama <code class="inline">media</code>. Se algo quebrar, o stack trace aponta o culpado, com nome e uma responsabilidade só.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 10 -->
+  <div class="entry">
+    <div class="entry-dot">10</div>
+    <div class="entry-date">Etapa 10</div>
+    <h2><code class="inline">tf-11/loja_feia.py</code>: o código feio do TF 11</h2>
+    <p class="sub">A loja que os alunos precisam consertar sem mudar a saída. Cada trecho abaixo viola uma regra da aula.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/11/tf-11/loja_feia.py (arquivo novo)</div>
+      <div class="line add">+ # CODIGO FEIO DE PROPOSITO (TF 11). Funciona, mas viola quase todas as regras do</div>
+      <div class="line add">+ # Object Calisthenics. A missao e consertar SEM mudar o que ele imprime.</div>
+      <div class="line add">+ # Rodar no terminal: python3 loja_feia.py</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ ped = []                      # todos os pedidos da loja: lista solta, global</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Ped:</div>
+      <div class="line add">+     def __init__(self, n, cnome, ccpf, cmail, rua, cid, cep, tp):</div>
+      <div class="line add">+         self.n = n            # numero do pedido</div>
+      <div class="line add">+         self.cnome = cnome    # os dados do cliente se repetem em CADA pedido dele</div>
+      <div class="line add">+         self.ccpf = ccpf</div>
+      <div class="line add">+         self.cmail = cmail</div>
+      <div class="line add">+         self.rua = rua</div>
+      <div class="line add">+         self.cid = cid</div>
+      <div class="line add">+         self.cep = cep</div>
+      <div class="line add">+         self.tp = tp          # tipo do cliente: &quot;N&quot; normal, &quot;V&quot; vip, &quot;F&quot; funcionario</div>
+      <div class="line add">+         self.itens = []       # cada item e uma lista: [produto, qtd, preco]</div>
+      <div class="line add">+         self.st = &quot;A&quot;         # A = aberto, P = pago, C = cancelado</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def get_st(self):</div>
+      <div class="line add">+         return self.st</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def set_st(self, v):</div>
+      <div class="line add">+         self.st = v</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def valida(cmail, ccpf, cep):</div>
+      <div class="line add">+     if len(cmail) &gt; 0:</div>
+      <div class="line add">+         if &quot;@&quot; in cmail:</div>
+      <div class="line add">+             if len(ccpf) == 11:</div>
+      <div class="line add">+                 if len(cep) == 8:</div>
+      <div class="line add">+                     return &quot;ok&quot;</div>
+      <div class="line add">+                 else:</div>
+      <div class="line add">+                     return &quot;cep invalido&quot;</div>
+      <div class="line add">+             else:</div>
+      <div class="line add">+                 return &quot;cpf invalido&quot;</div>
+      <div class="line add">+         else:</div>
+      <div class="line add">+             return &quot;email invalido&quot;</div>
+      <div class="line add">+     else:</div>
+      <div class="line add">+         return &quot;email vazio&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def novo_ped(n, cnome, ccpf, cmail, rua, cid, cep, tp):</div>
+      <div class="line add">+     r = valida(cmail, ccpf, cep)</div>
+      <div class="line add">+     if r != &quot;ok&quot;:</div>
+      <div class="line add">+         print(&quot;pedido&quot;, n, &quot;recusado:&quot;, r)</div>
+      <div class="line add">+         return None</div>
+      <div class="line add">+     else:</div>
+      <div class="line add">+         p = Ped(n, cnome, ccpf, cmail, rua, cid, cep, tp)</div>
+      <div class="line add">+         ped.append(p)</div>
+      <div class="line add">+         return p</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def add_item(p, prod, qtd, vl):</div>
+      <div class="line add">+     p.itens.append([prod, qtd, vl])</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def total(p):</div>
+      <div class="line add">+     t = 0</div>
+      <div class="line add">+     for i in p.itens:</div>
+      <div class="line add">+         t = t + i[1] * i[2]</div>
+      <div class="line add">+     return t</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def desc(tp, t):</div>
+      <div class="line add">+     if tp == &quot;V&quot;:</div>
+      <div class="line add">+         d = t * 0.10</div>
+      <div class="line add">+     elif tp == &quot;F&quot;:</div>
+      <div class="line add">+         d = t * 0.20</div>
+      <div class="line add">+     else:</div>
+      <div class="line add">+         d = 0</div>
+      <div class="line add">+     return d</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def a_pagar(p):</div>
+      <div class="line add">+     return total(p) - desc(p.tp, total(p))</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def pagar(p):</div>
+      <div class="line add">+     if p.get_st() == &quot;A&quot;:</div>
+      <div class="line add">+         if len(p.itens) &gt; 0:</div>
+      <div class="line add">+             p.set_st(&quot;P&quot;)</div>
+      <div class="line add">+             return True</div>
+      <div class="line add">+         else:</div>
+      <div class="line add">+             return False</div>
+      <div class="line add">+     else:</div>
+      <div class="line add">+         return False</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def cancelar(p):</div>
+      <div class="line add">+     if p.get_st() == &quot;A&quot;:</div>
+      <div class="line add">+         p.set_st(&quot;C&quot;)</div>
+      <div class="line add">+         return True</div>
+      <div class="line add">+     else:</div>
+      <div class="line add">+         return False</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def st_txt(s):</div>
+      <div class="line add">+     if s == &quot;A&quot;:</div>
+      <div class="line add">+         return &quot;aberto&quot;</div>
+      <div class="line add">+     elif s == &quot;P&quot;:</div>
+      <div class="line add">+         return &quot;pago&quot;</div>
+      <div class="line add">+     else:</div>
+      <div class="line add">+         return &quot;cancelado&quot;</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def relatorio():</div>
+      <div class="line add">+     for p in ped:</div>
+      <div class="line add">+         print(&quot;Pedido&quot;, p.n, &quot;-&quot;, p.cnome, &quot;-&quot;, p.cid)</div>
+      <div class="line add">+         print(&quot;  status:&quot;, st_txt(p.get_st()))</div>
+      <div class="line add">+         for i in p.itens:</div>
+      <div class="line add">+             print(&quot;  &quot;, i[1], &quot;x&quot;, i[0], &quot;= R$ %.2f&quot; % (i[1] * i[2]))</div>
+      <div class="line add">+         if len(p.itens) &gt; 0:</div>
+      <div class="line add">+             print(&quot;  total: R$ %.2f | desconto: R$ %.2f | a pagar: R$ %.2f&quot; % (total(p), desc(p.tp, total(p)), a_pagar(p)))</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def arrecadado():</div>
+      <div class="line add">+     t = 0</div>
+      <div class="line add">+     for p in ped:</div>
+      <div class="line add">+         if p.get_st() == &quot;P&quot;:</div>
+      <div class="line add">+             t = t + a_pagar(p)</div>
+      <div class="line add">+     return t</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ def qtd_abertos():</div>
+      <div class="line add">+     q = 0</div>
+      <div class="line add">+     for p in ped:</div>
+      <div class="line add">+         if p.get_st() == &quot;A&quot;:</div>
+      <div class="line add">+             q = q + 1</div>
+      <div class="line add">+     return q</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # --- o roteiro da loja (o TF mantem esta saida identica) -----------------------</div>
+      <div class="line add">+ a = novo_ped(1, &quot;Ana Souza&quot;, &quot;12345678901&quot;, &quot;ana@mail.com&quot;, &quot;Rua das Flores, 10&quot;, &quot;Sorocaba&quot;, &quot;18010000&quot;, &quot;V&quot;)</div>
+      <div class="line add">+ add_item(a, &quot;Caderno&quot;, 2, 15.5)</div>
+      <div class="line add">+ add_item(a, &quot;Caneta&quot;, 5, 2.5)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ novo_ped(2, &quot;Bruno Lima&quot;, &quot;123&quot;, &quot;bruno@mail.com&quot;, &quot;Av. Central, 200&quot;, &quot;Votorantim&quot;, &quot;18110000&quot;, &quot;N&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ c = novo_ped(3, &quot;Ana Souza&quot;, &quot;12345678901&quot;, &quot;ana@mail.com&quot;, &quot;Rua das Flores, 10&quot;, &quot;Sorocaba&quot;, &quot;18010000&quot;, &quot;V&quot;)</div>
+      <div class="line add">+ add_item(c, &quot;Livro&quot;, 1, 89.5)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ novo_ped(4, &quot;Carla Dias&quot;, &quot;98765432100&quot;, &quot;carla.mail.com&quot;, &quot;Rua do Sol, 55&quot;, &quot;Sorocaba&quot;, &quot;18020000&quot;, &quot;F&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ e = novo_ped(5, &quot;Diego Rocha&quot;, &quot;11122233344&quot;, &quot;diego@mail.com&quot;, &quot;Rua Nova, 7&quot;, &quot;Itu&quot;, &quot;13300000&quot;, &quot;N&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ f = novo_ped(6, &quot;Eva Nunes&quot;, &quot;55566677788&quot;, &quot;eva@mail.com&quot;, &quot;Alameda Azul, 1&quot;, &quot;Itu&quot;, &quot;13300001&quot;, &quot;F&quot;)</div>
+      <div class="line add">+ add_item(f, &quot;Fone&quot;, 1, 60.0)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ novo_ped(7, &quot;Fabio Costa&quot;, &quot;99988877766&quot;, &quot;fabio@mail.com&quot;, &quot;Rua Velha, 3&quot;, &quot;Itu&quot;, &quot;123&quot;, &quot;N&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ g = novo_ped(8, &quot;Gil Alves&quot;, &quot;44455566677&quot;, &quot;gil@mail.com&quot;, &quot;Rua do Meio, 9&quot;, &quot;Sorocaba&quot;, &quot;18030000&quot;, &quot;N&quot;)</div>
+      <div class="line add">+ add_item(g, &quot;Fone&quot;, 2, 60.0)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ print(&quot;pagar 1:&quot;, pagar(a))</div>
+      <div class="line add">+ print(&quot;pagar 3:&quot;, pagar(c))</div>
+      <div class="line add">+ print(&quot;pagar 5:&quot;, pagar(e))</div>
+      <div class="line add">+ print(&quot;pagar 6:&quot;, pagar(f))</div>
+      <div class="line add">+ print(&quot;cancelar 5:&quot;, cancelar(e))</div>
+      <div class="line add">+ print(&quot;cancelar 1:&quot;, cancelar(a))</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ relatorio()</div>
+      <div class="line add">+ print(&quot;arrecadado: R$ %.2f&quot; % arrecadado())</div>
+      <div class="line add">+ print(&quot;abertos:&quot;, qtd_abertos())</div>
+      <div class="line ctx"></div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 loja_feia.py</div>
+      <div class="line ctx">pedido 2 recusado: cpf invalido</div>
+      <div class="line ctx">pedido 4 recusado: email invalido</div>
+      <div class="line ctx">pedido 7 recusado: cep invalido</div>
+      <div class="line ctx">pagar 1: True</div>
+      <div class="line ctx">pagar 3: True</div>
+      <div class="line ctx">pagar 5: False</div>
+      <div class="line ctx">pagar 6: True</div>
+      <div class="line ctx">cancelar 5: True</div>
+      <div class="line ctx">cancelar 1: False</div>
+      <div class="line ctx">Pedido 1 - Ana Souza - Sorocaba</div>
+      <div class="line ctx">  status: pago</div>
+      <div class="line ctx">   2 x Caderno = R$ 31.00</div>
+      <div class="line ctx">   5 x Caneta = R$ 12.50</div>
+      <div class="line ctx">  total: R$ 43.50 | desconto: R$ 4.35 | a pagar: R$ 39.15</div>
+      <div class="line ctx">Pedido 3 - Ana Souza - Sorocaba</div>
+      <div class="line ctx">  status: pago</div>
+      <div class="line ctx">   1 x Livro = R$ 89.50</div>
+      <div class="line ctx">  total: R$ 89.50 | desconto: R$ 8.95 | a pagar: R$ 80.55</div>
+      <div class="line ctx">Pedido 5 - Diego Rocha - Itu</div>
+      <div class="line ctx">  status: cancelado</div>
+      <div class="line ctx">Pedido 6 - Eva Nunes - Itu</div>
+      <div class="line ctx">  status: pago</div>
+      <div class="line ctx">   1 x Fone = R$ 60.00</div>
+      <div class="line ctx">  total: R$ 60.00 | desconto: R$ 12.00 | a pagar: R$ 48.00</div>
+      <div class="line ctx">Pedido 8 - Gil Alves - Sorocaba</div>
+      <div class="line ctx">  status: aberto</div>
+      <div class="line ctx">   2 x Fone = R$ 120.00</div>
+      <div class="line ctx">  total: R$ 120.00 | desconto: R$ 0.00 | a pagar: R$ 120.00</div>
+      <div class="line ctx">arrecadado: R$ 167.70</div>
+      <div class="line ctx">abertos: 1</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Obsessão por tipos primitivos</h4>
+        <p>CPF, email e CEP são <code class="inline">str</code>, o dinheiro é <code class="inline">float</code> e o status é uma letra (<code class="inline">&quot;A&quot;</code>, <code class="inline">&quot;P&quot;</code>, <code class="inline">&quot;C&quot;</code>): nenhum tem regra.</p>
+      </div>
+      <div class="why-card">
+        <h4>Sem normalização</h4>
+        <p>Os dados da cliente Ana se repetem em cada pedido dela, e o preço do Fone aparece em dois itens. Cada informação deveria morar em um lugar só.</p>
+      </div>
+      <div class="why-card">
+        <h4>Hadouken e else</h4>
+        <p><code class="inline">valida</code> empilha cinco <code class="inline">if</code> com <code class="inline">else</code>; <code class="inline">desc</code> e <code class="inline">st_txt</code> são escadas de <code class="inline">if</code>, <code class="inline">elif</code> e <code class="inline">else</code> sobre uma letra.</p>
+      </div>
+      <div class="why-card">
+        <h4>Lista solta e getters</h4>
+        <p><code class="inline">ped</code> é uma lista global, os itens são listas cruas e <code class="inline">Ped</code> tem <code class="inline">get_st</code>/<code class="inline">set_st</code> com dez atributos públicos abreviados.</p>
+      </div>
+      <div class="why-card">
+        <h4>A rede de segurança</h4>
+        <p>O TF pede para guardar esta saída (<code class="inline">saida-original.txt</code>) e rodar um <code class="inline">diff</code> a cada passo: refatorar é mudar a estrutura sem mudar o comportamento.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  Aula 11 — Object Calisthenics · Engenharia de Software 2026.2 · Raio-X do Código
+</footer>
+
+<script src="../../assets/raio-x.js"></script>
+</body>
+</html>

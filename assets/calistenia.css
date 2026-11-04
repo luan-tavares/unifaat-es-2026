@@ -1,0 +1,125 @@
+/* Slides "jeito ruim x jeito bom" (ES, Aula 11): o código à esquerda (ruim) e à direita (bom),
+   com uma animação embaixo de cada um. Começa sozinho; o aluno pode pausar (P) e andar etapa
+   por etapa (, e .). O calistenia.js monta tudo a partir de <div data-cali="chave">.
+   Cores só por variável, nas duas paletas. */
+:root{
+  --v-ler: #15803d;       --v-ler-bg: #dcfce7;
+  --v-esc: #b45309;       --v-esc-bg: #ffedd5;
+  --v-mov: #2f5fd0;       --v-mov-bg: #dce8fb;
+  --v-ruim: #b91c1c;      --v-ruim-bg: #fee2e2;
+  --v-visto-bg: #e4e8e1;  --v-visto-ink: #5a665d;
+}
+:root[data-theme="dark"]{
+  --v-ler: #4ade80;       --v-ler-bg: #12301e;
+  --v-esc: #fdba74;       --v-esc-bg: #3b1a08;
+  --v-mov: #8fb1f5;       --v-mov-bg: #172a4d;
+  --v-ruim: #f87171;      --v-ruim-bg: #3b1212;
+  --v-visto-bg: #26392f;  --v-visto-ink: #a8b8ad;
+}
+
+.cali{ display: flex; flex-direction: column; gap: 8px; font-family: var(--font-body); }
+.cali .ccols{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.cali .cp{
+  display: flex; flex-direction: column; min-width: 0;
+  border: 2px solid var(--rule); border-radius: 10px; background: var(--surface);
+  overflow: hidden; transition: opacity .45s;
+}
+.cali .cp-r{ border-color: var(--v-ruim); }
+.cali .cp-b{ border-color: var(--v-ler); }
+.cali[data-foco="r"] .cp-b{ opacity: .38; }
+.cali[data-foco="b"] .cp-r{ opacity: .38; }
+
+.cali .chd{ display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-bottom: 1px solid var(--rule); }
+.cali .ctag{ font: 700 .82rem var(--font-mono); letter-spacing: .08em; padding: 2px 10px; border-radius: 999px; border: 2px solid; }
+.cali .cp-r .ctag{ color: var(--v-ruim); border-color: var(--v-ruim); background: var(--v-ruim-bg); }
+.cali .cp-b .ctag{ color: var(--v-ler); border-color: var(--v-ler); background: var(--v-ler-bg); }
+.cali .cfile{ font: 500 .78rem var(--font-mono); color: var(--muted); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cali .cbadge{ font: 700 .85rem var(--font-mono); padding: 2px 9px; border-radius: 6px; transition: opacity .3s; }
+.cali .cbadge:empty{ opacity: 0; }
+.cali .cbadge.ruim{ color: var(--v-ruim); background: var(--v-ruim-bg); }
+.cali .cbadge.bom{ color: var(--v-ler); background: var(--v-ler-bg); }
+.cali .cbadge.neutro{ color: var(--muted); background: var(--v-visto-bg); }
+
+.cali .ccode{ padding: 8px 0; height: 232px; box-sizing: border-box; background: var(--bg); overflow: hidden; font: 600 13.5px/19.6px var(--font-mono); color: var(--ink); }
+.cali .cl{ display: flex; height: 19.6px; white-space: pre; transition: background-color .3s, opacity .45s, box-shadow .3s; box-shadow: inset 4px 0 0 transparent; }
+.cali .cl .ln{ flex: none; width: 34px; padding-right: 10px; text-align: right; color: var(--muted); opacity: .55; font-weight: 500; }
+.cali .cl .cm{ color: var(--muted); font-style: italic; font-weight: 500; }
+.cali .cl.on{ background: var(--v-esc-bg); box-shadow: inset 4px 0 0 var(--v-esc); }
+.cali .cl.ruim{ background: var(--v-ruim-bg); box-shadow: inset 4px 0 0 var(--v-ruim); }
+.cali .cl.ok{ background: var(--v-ler-bg); box-shadow: inset 4px 0 0 var(--v-ler); }
+.cali .cl.dim{ opacity: .4; }
+.cali .cl.oculta{ opacity: 0; }
+
+.cali .cstage{ height: 134px; border-top: 1px dashed var(--rule); display: flex; justify-content: center; align-items: center; }
+.cali .ccanvas{ position: relative; width: 556px; height: 130px; flex: none; }
+
+/* ---- itens animados: tudo é absoluto e anda por transição ---- */
+.cali .ci{
+  position: absolute; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-sizing: border-box; text-align: center; line-height: 1.15;
+  border: 2px solid var(--code-border); border-radius: 8px;
+  background: var(--bg); color: var(--ink);
+  font: 700 .9rem var(--font-mono);
+  white-space: nowrap;
+  transition: left .6s ease, top .6s ease, width .6s ease, height .6s ease, opacity .5s ease,
+              transform .6s ease, background-color .3s, border-color .3s, color .3s;
+}
+.cali .ccanvas.sem-trans .ci{ transition: none; }
+.cali .ci small{ font: 500 .72rem var(--font-mono); color: var(--muted); }
+.cali .ci.bola{ transform: scale(.55); opacity: 0; }
+.cali .ci.moldura{ background: none; border-style: dashed; border-color: var(--rule); z-index: 0; align-items: flex-start; justify-content: flex-start; padding: 3px 8px; color: var(--muted); font-size: .8rem; }
+.cali .ci.forte{ border-width: 3px; }
+.cali .ci.lbl{ background: none; border: 0; color: var(--muted); font: 600 .82rem var(--font-mono); z-index: 0; }
+.cali .ci.lbl-e{ align-items: flex-start; }
+.cali .ci.pilula{ border-radius: 999px; }
+
+.cali .m-ler{ background: var(--v-ler-bg); border-color: var(--v-ler); color: var(--v-ler); }
+.cali .m-esc{ background: var(--v-esc-bg); border-color: var(--v-esc); color: var(--v-esc); }
+.cali .m-mov{ background: var(--v-mov-bg); border-color: var(--v-mov); color: var(--v-mov); }
+.cali .m-ruim{ background: var(--v-ruim-bg); border-color: var(--v-ruim); color: var(--v-ruim); }
+.cali .m-visto{ background: var(--v-visto-bg); border-color: var(--rule); color: var(--v-visto-ink); }
+.cali .ci.moldura.m-ler{ background: none; }
+.cali .ci.moldura.m-ruim{ background: none; }
+
+/* linhas e setas */
+.cali .ci.lin{ height: 4px; border: 0; border-radius: 2px; padding: 0; background: var(--code-border); transform-origin: 0 50%; z-index: 0; }
+.cali .ci.lin.m-ler{ background: var(--v-ler); height: 5px; }
+.cali .ci.lin.m-esc{ background: var(--v-esc); height: 5px; }
+.cali .ci.lin.m-mov{ background: var(--v-mov); height: 5px; }
+.cali .ci.lin.m-ruim{ background: var(--v-ruim); height: 5px; }
+.cali .ci.lin.pt::after{
+  content: ''; position: absolute; right: -2px; top: 50%;
+  border: 7px solid transparent; border-left: 12px solid var(--code-border);
+  border-right: 0; transform: translateY(-50%);
+}
+.cali .ci.lin.pt.m-ler::after{ border-left-color: var(--v-ler); }
+.cali .ci.lin.pt.m-esc::after{ border-left-color: var(--v-esc); }
+.cali .ci.lin.pt.m-mov::after{ border-left-color: var(--v-mov); }
+.cali .ci.lin.pt.m-ruim::after{ border-left-color: var(--v-ruim); }
+
+/* legenda e controles */
+.cali .ccap{ border-left: 4px solid var(--accent); padding: 4px 12px; min-height: 48px; display: flex; align-items: center; }
+.cali .cmsg{ font-size: 1.12rem; line-height: 1.3; color: var(--ink); }
+.cali .cctl{ display: flex; align-items: center; gap: 8px; }
+.cali .cctl button{
+  font: 700 1rem var(--font-mono); min-width: 40px; height: 32px; padding: 0 10px;
+  border: 2px solid var(--rule); border-radius: 8px; background: var(--surface); color: var(--ink); cursor: pointer;
+}
+.cali .cctl button:hover{ border-color: var(--accent); color: var(--accent); }
+.cali .cdots{ display: flex; gap: 5px; align-items: center; flex: 1; min-width: 0; }
+.cali .cdots i{ flex: 1; max-width: 26px; height: 8px; border-radius: 4px; background: var(--v-visto-bg); cursor: pointer; transition: background-color .3s; }
+.cali .cdots i.on{ background: var(--accent); }
+.cali .cn{ font: 700 .9rem var(--font-mono); color: var(--muted); white-space: nowrap; }
+.cali .chint{ font: 500 .78rem var(--font-mono); color: var(--muted); white-space: nowrap; }
+.cali.pausado .cctl [data-a="play"]{ border-color: var(--accent); color: var(--accent); }
+
+@media print{
+  .cali .cctl{ display: none; }
+  .cali .ci, .cali .cl{ transition: none !important; }
+  .cali[data-foco] .cp{ opacity: 1; }
+}
+
+/* nome em inglês embaixo do título do slide */
+.slide h2 .en{ display: block; font: 500 .5em var(--font-mono); color: var(--muted); margin-top: 2px; }

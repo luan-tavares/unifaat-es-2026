@@ -1,0 +1,229 @@
+CONTEXTO
+
+Na Aula 11 vimos o Object Calisthenics: um conjunto de REGRAS de restricao para treinar o desenho orientado a objetos (Jeff Bay, 2008). Cada regra tira de voce uma facilidade que costuma esconder um problema: o hadouken (if dentro de if), o else, o tipo primitivo solto, a lista solta, a cadeia de pontos, o getter e o setter, a classe gigante. Vimos tambem que todas elas sao a mesma ideia, a MODULARIZACAO: separar o codigo em unidades pequenas, cada uma com uma responsabilidade so.
+
+Agora e a vez de voces praticarem: eu escrevi, de proposito, uma loja FEIA. Ela funciona e imprime um relatorio, mas viola quase todas as regras. A missao de voces e CONSERTAR o codigo, em passos pequenos, sem mudar nada do que ele imprime.
+
+Dois conceitos novos aparecem no caminho, e o roteiro explica os dois:
+
+- NORMALIZACAO (bem de leve): guardar cada informacao em UM lugar so, e deixar os outros pontos apenas apontarem para ela. Na loja feia, os dados da cliente Ana (nome, CPF, email, endereco) estao COPIADOS em cada pedido dela: se ela mudar de rua, e preciso lembrar de mudar em todos os pedidos. Normalizar e criar o objeto Cliente uma vez so, e fazer os pedidos apontarem para ele. E o mesmo raciocinio das tabelas de um banco de dados (cliente numa tabela, pedido em outra, ligados por referencia), so que com objetos. O mesmo vale para o produto (o preco do Fone aparece em dois lugares).
+- OBSESSAO POR TIPOS PRIMITIVOS (Primitive Obsession): usar int, float e str soltos para representar ideias do dominio. Na loja feia, o CPF, o email e o CEP sao strings, o dinheiro e um float e o status do pedido e uma letra ("A", "P", "C"). Nenhum deles tem regra: o CPF "123" passa por todo o programa. A cura e embrulhar cada um numa classe pequena, com a regra dentro (regra "wrap all primitives and strings").
+
+O QUE VOCES PRECISAM FAZER
+
+Preparar o projeto Dentro do terminal do WSL, crie um diretorio chamado tf-11 e entre nele. Transforme a pasta em um repositorio Git e crie o ambiente virtual do projeto:
+
+mkdir tf-11
+cd tf-11
+git init
+python3 -m venv .venv
+source .venv/bin/activate
+
+Antes de qualquer git add, crie o .gitignore, para que o ambiente virtual nunca seja commitado:
+
+touch .gitignore
+code .
+
+No VS Code, dentro de .gitignore, escrever:
+
+.venv/
+__pycache__/
+saida-nova.txt
+
+Passo 1 - Trazer a base feia e criar a rede de seguranca Copie o arquivo src/11/tf-11/loja_feia.py do repositorio base (link no fim) para dentro do tf-11, com o nome loja.py. Rode, leia e entenda o codigo. Depois guarde a saida ORIGINAL do programa:
+
+python3 loja.py > saida-original.txt
+
+Essa saida e a sua REDE DE SEGURANCA. Depois de CADA passo a seguir, rode os dois comandos abaixo. Se o diff nao mostrar NADA, o programa continua fazendo exatamente o mesmo e voce pode commitar. Se mostrar alguma linha, voce quebrou algo: desfaca ou conserte antes de seguir.
+
+python3 loja.py > saida-nova.txt
+diff saida-original.txt saida-nova.txt
+
+Commit:
+
+git add .
+git commit -m "Traz a loja feia e guarda a saida original"
+
+Passo 2 - Nomes sem abreviar (regra: Don't abbreviate) Troque todos os nomes abreviados por nomes inteiros, em portugues, que expliquem o que e a coisa. Funcoes, classes, parametros, atributos e variaveis. Alguns exemplos (os outros voces descobrem):
+
+ped -> pedidos            Ped -> Pedido          novo_ped -> novo_pedido
+n -> numero               cnome -> nome_do_cliente   ccpf -> cpf_do_cliente
+cmail -> email_do_cliente cid -> cidade             tp -> tipo
+st -> status              qtd -> quantidade         vl -> preco
+desc -> calcular_desconto a_pagar -> calcular_valor_a_pagar   st_txt -> descrever_status
+p -> pedido               i -> item                 t -> total
+
+Os nomes das variaveis do roteiro no fim do arquivo (a, c, e, f, g) tambem: use nomes como pedido_da_ana. Rode a rede de seguranca. Commit:
+
+git add .
+git commit -m "Troca as abreviacoes por nomes inteiros"
+
+Passo 3 - Normalizacao: Cliente e Produto (regra: Normalize os dados) Hoje o mesmo cliente esta copiado em cada pedido, e o mesmo produto (nome e preco) esta copiado em cada item. Normalize:
+
+- Crie a classe Cliente, com todos os dados do cliente que estavam soltos no pedido (nome, cpf, email, rua, cidade, cep e tipo). Cada cliente e criado UMA VEZ so no roteiro, e os pedidos apontam para ele. A Ana tem dois pedidos (1 e 3): os dois tem que apontar para o MESMO objeto Cliente;
+- Crie a classe Produto (nome e preco) e a classe ItemDoPedido (produto e quantidade), no lugar da lista [produto, qtd, preco];
+- O Pedido passa a ter o numero, o cliente, os itens e o status.
+
+Por enquanto os atributos podem ficar como estao. Rode a rede de seguranca. Commit:
+
+git add .
+git commit -m "Normaliza: Cliente, Produto e ItemDoPedido"
+
+Passo 4 - Obsessao por tipos primitivos (regra: Wrap all primitives and strings) Crie uma classe pequena para cada primitivo que tem regra, com a validacao DENTRO do construtor (levanta ValueError com a mesma mensagem que a loja feia imprime hoje):
+
+- Cpf: 11 caracteres, senao ValueError("cpf invalido");
+- Email: nao pode ser vazio (ValueError("email vazio")) e precisa ter "@" (ValueError("email invalido"));
+- Cep: 8 caracteres, senao ValueError("cep invalido");
+- Dinheiro: guarda os CENTAVOS como int (e nao reais como float, que erra conta: 0.1 + 0.2 nao e 0.3). Tem as operacoes de somar, subtrair, multiplicar por uma quantidade e calcular um percentual, e sabe se imprimir como "R$ 31.00" (use str() e o metodo __str__);
+- Status: guarda o codigo "A", "P" ou "C" e sabe dizer a descricao ("aberto", "pago", "cancelado") e se esta aberto.
+
+A funcao que validava (a do hadouken) deixa de existir: agora quem cria um Cpf, um Email ou um Cep invalido recebe o erro na hora. No roteiro, capture o ValueError e imprima exatamente "pedido N recusado: <mensagem do erro>". Rode a rede de seguranca. Commit:
+
+git add .
+git commit -m "Embrulha os primitivos: Cpf, Email, Cep, Dinheiro e Status"
+
+Passo 5 - Colecoes de primeira classe (regra: First-class collections) Hoje a lista de pedidos e uma variavel global solta, e os itens sao uma lista crua dentro do pedido. Crie:
+
+- ItensDoPedido: a unica coisa que ela guarda e a lista de itens. Sabe adicionar um item, dizer se esta vazia, calcular o total e imprimir os itens;
+- Pedidos: a unica coisa que ela guarda e um DICIONARIO numero -> pedido (os numeros 2, 4 e 7 nunca entram, porque foram recusados). Sabe criar um pedido novo, imprimir o relatorio, calcular o total arrecadado e contar os pedidos abertos.
+
+A variavel global ped (agora pedidos) some, e as funcoes soltas de relatorio, arrecadado e abertos viram metodos de Pedidos. O Pedido deixa de guardar o numero (ele mora na chave do dicionario de Pedidos). Nenhuma das duas classes devolve a lista ou o dicionario de dentro. Rode a rede de seguranca. Commit:
+
+git add .
+git commit -m "Cria as colecoes ItensDoPedido e Pedidos"
+
+Passo 6 - Entidades pequenas (regras: Keep all entities small e No classes with more than two instance variables) O Cliente ficou com 7 variaveis, e isso e coisa demais. Quebre em classes menores, cada uma com UM assunto:
+
+- Pessoa: nome, cpf e email;
+- Endereco: rua, cidade e cep;
+- Cliente: so a pessoa, o endereco e o tipo.
+
+A regra original do Object Calisthenics diz 2 variaveis por classe; neste trabalho aceitamos NO MAXIMO 3 (por isso Pessoa, Endereco, Cliente e Pedido podem ter 3), e as classes de valor (Cpf, Email, Cep, Dinheiro, Status) tem 1. Confira todas as classes. Cuidado: ao separar o Cliente, o relatorio vai querer escrever pedido.cliente.endereco.cidade. Deixe assim por enquanto: o proximo passo conserta. Rode a rede de seguranca. Commit:
+
+git add .
+git commit -m "Quebra o Cliente em Pessoa e Endereco"
+
+Passo 7 - Lei de Demeter e diga, nao pergunte (regras: One dot per line e No getters/setters/properties) Dois consertos juntos:
+
+- Lei de Demeter ("nao fale com estranhos"): nenhuma linha pode atravessar objetos com mais de um ponto. No lugar de pedido.cliente.endereco.cidade, peca ao pedido e deixe cada objeto responder pelo seu pedaco (o pedido pergunta ao cliente, o cliente ao endereco). Encadear metodos que devolvem o mesmo tipo (texto.strip().lower()) pode;
+- Diga, nao pergunte: apague get_status e set_status e qualquer atributo publico. Quem chama nao pergunta o status para decidir; diz ao pedido o que fazer: pedido.pagar() e pedido.cancelar(), e o PROPRIO pedido aplica as regras (so paga se estiver aberto e tiver itens, so cancela se estiver aberto) e devolve True ou False. Nenhum getter, setter ou property.
+
+Rode a rede de seguranca. Commit:
+
+git add .
+git commit -m "Aplica a Lei de Demeter e o diga, nao pergunte"
+
+Passo 8 - Sem else e um nivel so (regras: Don't use the ELSE keyword e One level of indentation per method) Sobrou o que ainda tem else, elif ou ifs aninhados. Procure e conserte, usando as tres saidas da aula:
+
+- Fail first (retorno antecipado): trate o caso de erro primeiro e saia cedo. Serve para pagar(), cancelar() e para os metodos que viraram hadouken;
+- Valor padrao antes do if;
+- Polimorfismo: o desconto por tipo de cliente (normal 0%, vip 10%, funcionario 20%) nao deve ser um if/elif/else sobre uma letra. Crie as classes TipoNormal, TipoVip e TipoFuncionario, cada uma com um metodo desconto_sobre(valor) que devolve o desconto, e o Cliente passa a guardar o objeto do tipo (e nao a letra). A funcao que descreve o status tambem nao pode ter elif: use um dicionario ou o proprio Status.
+
+Cada metodo, no maximo UM nivel de indentacao (um for ou um if, sem aninhar um dentro do outro; compreensoes de lista valem). Se um metodo precisa de mais, EXTRAIA outro metodo com nome. Rode a rede de seguranca. Commit:
+
+git add .
+git commit -m "Tira os else e deixa um nivel por metodo"
+
+Passo 9 - Conferir o roteiro final O fim do loja.py (o roteiro da loja) tem que fazer as MESMAS acoes, na MESMA ordem, e imprimir EXATAMENTE a saida esperada abaixo. A API das suas classes e livre; o que nao pode mudar e o que aparece no terminal:
+
+pedido 2 recusado: cpf invalido
+pedido 4 recusado: email invalido
+pedido 7 recusado: cep invalido
+pagar 1: True
+pagar 3: True
+pagar 5: False
+pagar 6: True
+cancelar 5: True
+cancelar 1: False
+Pedido 1 - Ana Souza - Sorocaba
+  status: pago
+   2 x Caderno = R$ 31.00
+   5 x Caneta = R$ 12.50
+  total: R$ 43.50 | desconto: R$ 4.35 | a pagar: R$ 39.15
+Pedido 3 - Ana Souza - Sorocaba
+  status: pago
+   1 x Livro = R$ 89.50
+  total: R$ 89.50 | desconto: R$ 8.95 | a pagar: R$ 80.55
+Pedido 5 - Diego Rocha - Itu
+  status: cancelado
+Pedido 6 - Eva Nunes - Itu
+  status: pago
+   1 x Fone = R$ 60.00
+  total: R$ 60.00 | desconto: R$ 12.00 | a pagar: R$ 48.00
+Pedido 8 - Gil Alves - Sorocaba
+  status: aberto
+   2 x Fone = R$ 120.00
+  total: R$ 120.00 | desconto: R$ 0.00 | a pagar: R$ 120.00
+arrecadado: R$ 167.70
+abertos: 1
+
+Rode no terminal:
+
+python3 loja.py
+
+Commit (junto com o que for ajustado):
+
+git add .
+git commit -m "Confere o roteiro final"
+
+README Crie o arquivo README.md com as suas palavras (nao copiem o texto do slide nem do briefing). Responda, em 2 a 3 linhas cada:
+
+1. Normalizacao: o que e, e que problema ela resolveu na loja (use o caso da cliente Ana)?
+2. Obsessao por tipos primitivos: por que o Cpf virou uma classe, e nao ficou uma string? O que o programa ganhou? Por que o Dinheiro guarda centavos inteiros e nao um float?
+3. Diga, nao pergunte: o que mudou na forma de pagar um pedido, e por que a regra ficou melhor dentro do Pedido?
+4. Fail first: onde estava o hadouken da loja feia e como ele ficou? Por que o else foi substituido por retorno antecipado e por polimorfismo?
+5. Modularizacao: liste as classes que voce criou e escreva, em UMA linha, a responsabilidade de cada uma.
+6. Divida tecnica: ficou alguma regra que voce NAO conseguiu aplicar, ou algum atalho que voce tomou? Registre aqui como uma divida consciente: o que e, por que ficou, quanto custa e quando voce pagaria. (Se nao ficou nada, diga qual regra foi a mais dificil e por que.)
+
+Commit:
+
+git add .
+git commit -m "Escreve o README"
+
+Criar o repositorio no GitHub e enviar o historico No site do GitHub, crie um repositorio Public chamado tf-11, sem README. Copie a URL SSH (botao verde Code, aba SSH) e, no terminal, dentro de tf-11:
+
+git remote add origin <URL copiada>
+git push -u origin main
+
+Conferir no proprio GitHub Abram o repositorio no navegador e confirmem: loja.py, saida-original.txt, README.md e .gitignore aparecem; a pasta .venv NAO aparece.
+
+Ao final, a pasta tf-11 (local) deve estar assim:
+tf-11/
+├── .git/
+├── .venv/
+├── .gitignore
+├── README.md
+├── loja.py
+└── saida-original.txt
+
+REGRAS
+
+A saida do loja.py tem que ser IDENTICA a saida-original.txt (o diff vazio) no commit final e em cada passo.
+Nenhum import: nada alem do que a linguagem ja traz.
+Nenhum atributo publico, getter, setter ou property: todo o estado e privado (com _ ou __) e so se mexe nele por metodos de comportamento.
+Nada de else (nem elif): usar retorno antecipado (fail first), continue, valor padrao e polimorfismo.
+Um nivel de indentacao por metodo (um for ou um if, sem aninhar).
+Nomes sem abreviacoes (cliente, e nao cli; quantidade, e nao qtd).
+Nenhuma linha atravessa objetos com mais de um ponto (Lei de Demeter). Encadear metodos que devolvem o mesmo tipo e permitido.
+Nenhuma classe com mais de 3 variaveis de instancia; Cpf, Email, Cep, Dinheiro e Status com 1.
+Nenhum metodo devolve a lista ou o dicionario interno de uma colecao.
+Cada classe deve ter um comentario, com as proprias palavras, dizendo qual e a sua responsabilidade.
+Pelo menos 8 commits no Git, um por passo, na ordem do roteiro.
+A pasta .venv nao pode aparecer no repositorio.
+O repositorio no GitHub deve estar Public, pra que o codigo possa ser conferido pelo link enviado.
+Trabalho individual: codigos identicos entre colegas serao considerados copia e zerados para todos os envolvidos.
+Todo o trabalho deve ser feito dentro do ambiente Linux do WSL.
+
+REPOSITORIO BASE
+
+O codigo feio (src/11/tf-11/loja_feia.py) e os exemplos vistos em aula (pasta src/11/) estao no repositorio base da disciplina: https://github.com/luan-tavares/unifaat-es-2026
+
+Usem ele como base e referencia, mas o repositorio entregue e o de cada um: criem o SEU repositorio tf-11, PUBLICO, no seu proprio GitHub. O link do repositorio base nao vale como entrega.
+
+ENTREGA
+
+Enviar o link do repositorio no GitHub (publico), junto com nome e RA, pelo formulario:
+
+https://docs.google.com/forms/d/e/1FAIpQLSf-SrLqtjyG_L1fQTq2o1ULjmE0HTPzSD7BX_4vSCvvqUe0Yg/viewform?usp=publish-editor
+
+2026-11-11T23:59:59

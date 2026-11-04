@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 11 — Object Calisthenics</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<link rel="stylesheet" href="../../assets/slide-16x9.css">
+<link rel="stylesheet" href="../../assets/calistenia.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">11</span> - Object Calisthenics</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="calistenia">
+    <h2>Calistenia: <span class="accent">treinar sem atalho</span></h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># no treino</span><br>
+      só o <strong>peso do corpo</strong>, sem máquina<br>
+      <br>
+      <span class="dim"># o que se ganha</span><br>
+      <strong>controle</strong> e <strong>técnica</strong>
+    </div>
+    <div class="tree">
+      <span class="dim"># no código</span><br>
+      sem as <strong>facilidades</strong> que escondem o problema<br>
+      <br>
+      <span class="dim"># o que se ganha</span><br>
+      <strong>código</strong> que outra pessoa consegue <strong>ler e mudar</strong>
+    </div>
+    </div>
+    <p class="payoff">Restrição que ensina: <strong>uma regra por vez</strong>, e depois você relaxa a regra por escolha, não por ignorância.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="o que é">
+    <h2>Object Calisthenics: <span class="accent">fail first</span> e restrição</h2>
+    <div class="two-col">
+    <div class="tree">
+      <span class="dim"># origem</span><br>
+      <strong>Jeff Bay</strong>, <em>The ThoughtWorks Anthology</em> (2008)<br>
+      <strong>9 regras</strong> de restrição para treinar OO<br>
+      <br>
+      <span class="dim"># a pergunta de toda regra</span><br>
+      <strong>"e se eu não pudesse fazer assim?"</strong>
+    </div>
+    <div class="tree">
+      <span class="dim"># fail first</span><br>
+      <strong>tratar o erro primeiro</strong> e sair cedo<br>
+      o caminho feliz fica no fim, no <strong>nível 1</strong><br>
+      <br>
+      <span class="dim"># o contrário</span><br>
+      o <strong>código hadouken</strong>: if dentro de if dentro de if
+    </div>
+    </div>
+    <ul class="points">
+      <li>É um <strong>exercício</strong>, como a escala do músico, e não uma lei da indústria: faça um projeto pequeno obedecendo tudo e veja o desenho mudar</li>
+      <li>Cada regra empurra uma decisão para o <strong>dono do dado</strong>: menos acoplamento, mais coesão</li>
+      <li>Nesta aula: <strong>7 pontos</strong>, sempre com o <strong>jeito ruim</strong> e o <strong>jeito bom</strong> lado a lado, em animação</li>
+    </ul>
+    <p class="payoff">Nas animações a seguir: <strong>P</strong> pausa, <strong>,</strong> e <strong>.</strong> andam etapa por etapa. Elas começam sozinhas.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="os 7 pontos">
+    <h2>Os <span class="accent">7 pontos</span> da aula</h2>
+    <table class="data-table">
+      <thead><tr><th>#</th><th>ponto</th><th>jeito ruim</th><th>jeito bom</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Um nível de indentação</strong><br><em>One level of indentation</em></td><td>hadouken: <code>if</code> dentro de <code>if</code> dentro de <code>for</code></td><td><strong>fail first</strong> e métodos com nome</td></tr>
+        <tr><td>2</td><td><strong>Sem <code>else</code></strong><br><em>Don't use ELSE</em></td><td>escada de <code>if</code>, <code>elif</code> e <code>else</code></td><td>retorno antecipado, valor padrão, polimorfismo</td></tr>
+        <tr><td>3</td><td><strong>Obsessão por tipos primitivos</strong><br><em>Primitive Obsession</em></td><td><code>int</code> e <code>float</code> soltos</td><td><code>Nota</code> e <code>Ra</code> com a regra dentro</td></tr>
+        <tr><td>4</td><td><strong>Coleção de primeira classe</strong><br><em>First-class collections</em></td><td>lista solta circulando</td><td><code>Turma</code>, dona da lista</td></tr>
+        <tr><td>5</td><td><strong>Um ponto por linha</strong> (<strong>Lei de Demeter</strong>)<br><em>One dot per line · Law of Demeter</em></td><td><code>tf.pai.pai.pai.nome</code></td><td><code>tf.disco()</code>: não fale com estranhos</td></tr>
+        <tr><td>6</td><td><strong>Sem getters e setters</strong><br><em>Tell, Don't Ask</em></td><td>pergunta o saldo e decide fora</td><td>diga: <code>conta.sacar(30)</code></td></tr>
+        <tr><td>7</td><td><strong>Entidades pequenas</strong><br><em>Keep all entities small</em></td><td>classe com 5 variáveis de instância</td><td>classes pequenas, até 2 variáveis</td></tr>
+      </tbody>
+    </table>
+    <p class="payoff">Ficam de fora as regras de <strong>não abreviar</strong> e de <strong>tamanho de pacote</strong>. Os códigos estão em <code>src/11/</code>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 1 · hadouken">
+    <h2>Ponto 1: <span class="accent">código hadouken</span> e um nível só<span class="en">One level of indentation per method · arrow code, fail first</span></h2>
+    <div data-cali="hadouken"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 1 · extrair">
+    <h2>Ainda o ponto 1: <span class="accent">extrair o aninhado</span> em métodos com nome<span class="en">One level of indentation per method · extract method</span></h2>
+    <div data-cali="extracao"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 2 · sem else">
+    <h2>Ponto 2: <span class="accent">sem else</span><span class="en">Don't use the ELSE keyword</span></h2>
+    <div data-cali="sem-else"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 3 · primitive obsession">
+    <h2>Ponto 3: <span class="accent">obsessão por tipos primitivos</span><span class="en">Primitive Obsession · Wrap all primitives and strings</span></h2>
+    <div data-cali="primitivos"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 4 · coleção">
+    <h2>Ponto 4: <span class="accent">coleção de primeira classe</span><span class="en">First-class collections</span></h2>
+    <div data-cali="colecao"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 5 · Demeter">
+    <h2>Ponto 5: <span class="accent">Lei de Demeter</span>, um ponto por linha<span class="en">Law of Demeter · One dot per line</span></h2>
+    <div data-cali="demeter"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 6 · diga">
+    <h2>Ponto 6: <span class="accent">diga, não pergunte</span> (sem getters e setters)<span class="en">Tell, Don't Ask · No getters/setters/properties</span></h2>
+    <div data-cali="diga"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="ponto 7 · pequenas">
+    <h2>Ponto 7: <span class="accent">entidades pequenas</span>, até 2 variáveis<span class="en">Keep all entities small · No classes with more than two instance variables</span></h2>
+    <div data-cali="pequenas"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="resenha · equipe">
+    <h2>Resenha: <span class="accent">regra de código só vale em equipe</span></h2>
+    <ul class="points">
+      <li><strong>Acordo escrito:</strong> padrão de codificação com o <strong>porquê</strong> de cada regra. O XP (Kent Beck, 1999) já trata disso: padrão de codificação, propriedade coletiva do código e refatoração contínua</li>
+      <li><strong>Revisão no pull request</strong> (Aula 05): "isto fere o nosso acordo, e por quê", em vez de "eu faria diferente". O feedback vira critério compartilhado, não opinião</li>
+      <li><strong>Automatizar o que dá:</strong> no CI, <code>flake8 --max-complexity</code> e a regra <code>C901</code> do <code>ruff</code> pegam a escada de níveis. "Sem getters" e "um assunto só" ainda pedem julgamento humano</li>
+      <li><strong>Praticar junto:</strong> dojo, kata e programação em par. O aprendizado está na conversa: "por que você extraiu isso?"</li>
+    </ul>
+    <p class="payoff">Código que só o autor entende é uma <strong>dependência de pessoa</strong>: se ela sai, o conhecimento sai junto.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="resenha · dívida técnica">
+    <h2>Dívida técnica: <span class="accent">o empréstimo consciente</span><span class="en">Technical debt · pegar velocidade agora, pagar depois com juros</span></h2>
+    <div data-cali="divida"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="resenha · processo">
+    <h2>Resenha: <span class="accent">processo</span> e custo da mudança</h2>
+    <ul class="points">
+      <li><strong>Cascata:</strong> o desenho vem inteiro antes do código, e mudar custa cada vez mais com o tempo</li>
+      <li><strong>Ágil</strong> (XP, Scrum, Kanban): ciclos curtos, e o código precisa <strong>continuar fácil de mudar</strong> a cada ciclo. É aqui que as regras entram: mantêm o custo da mudança baixo</li>
+      <li><strong>Dívida técnica:</strong> cada atalho é um empréstimo, e a regra é o hábito de pagar à vista. Sem testes e sem refatoração contínua, o ágil vira só pressa</li>
+      <li>Nenhuma regra substitui <strong>conversar com quem vai usar</strong>: código bonito resolvendo o problema errado continua sendo o problema errado</li>
+    </ul>
+    <div class="callout">
+      <p><strong>Para pensar:</strong> qual regra mais incomodou, e o que ela escondia no seu código? O que aconteceria numa equipe de cinco <strong>sem</strong> acordo de código? E com um acordo que ninguém revisa?</p>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="fechamento · modularização">
+    <h2>Modularização: <span class="accent">o guarda-chuva de todas as regras</span><span class="en">"por que não usar else?" Porque falta separar melhor a unidade de execução</span></h2>
+    <div data-cali="modulos"></div>
+  </section>
+
+  <section class="slide" data-eyebrow="tf 11 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 11: <span class="accent">a loja feia</span></h2>
+    <p class="lede">Num repositório novo <code>tf-11</code>, com venv e <code>.gitignore</code>, pegar o código feio
+    <code>src/11/tf-11/loja_feia.py</code> do repositório base e <strong>consertá-lo em passos</strong>, sem mudar o que ele imprime:</p>
+    <ul class="points">
+      <li><strong>Rede de segurança:</strong> guardar a saída original e rodar um <code>diff</code> depois de cada passo</li>
+      <li><strong>Passos:</strong> nomes sem abreviar, <strong>normalização</strong> (Cliente, Produto), <strong>obsessão por tipos primitivos</strong> (Cpf, Email, Cep, Dinheiro, Status), coleções (ItensDoPedido, Pedidos), entidades pequenas, <strong>Lei de Demeter</strong> e diga-não-pergunte, sem <code>else</code> (<strong>fail first</strong> e polimorfismo)</li>
+      <li><strong>README:</strong> normalização, primitivos, modularização (uma linha por classe) e a <strong>dívida técnica</strong> que sobrou</li>
+      <li>Um commit por passo (8 ou mais), repositório <strong>Public</strong>, sem <code>.venv</code>, trabalho individual</li>
+    </ul>
+    <p class="body-text">Entrega: link do repositório no GitHub (público), pelo formulário abaixo —
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-SrLqtjyG_L1fQTq2o1ULjmE0HTPzSD7BX_4vSCvvqUe0Yg/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"><code>https://docs.google.com/forms/d/e/1FAIpQLSf-SrLqtjyG_L1fQTq2o1ULjmE0HTPzSD7BX_4vSCvvqUe0Yg/viewform?usp=publish-editor</code></a></p>
+    <p class="payoff">Prazo: <strong>11/11, até 23:59</strong>.</p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">17</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">← → ou espaço: slides · P pausa a animação · , . etapas · T tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+
+<script src="../../assets/calistenia.js"></script>
+<script src="../../assets/slide.js"></script>
+<script src="../../assets/slide-16x9.js"></script>
+</body>
+</html>

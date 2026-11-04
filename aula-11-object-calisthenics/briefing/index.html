@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Briefing · Aula 11 — Object Calisthenics</title>
+<link rel="stylesheet" href="../../assets/briefing.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="back" href="../../index.html">← Voltar</a>
+    <details class="toc" open><summary>Nesta página</summary><ol><li class="l1"><a href="#topo">11 - Object Calisthenics</a></li><li class="l2"><a href="#s1-introdução">1 - Introdução</a></li><li class="l2"><a href="#s2-o-que-é-e-por-que-restringir">2 - O que é e por que restringir</a></li><li class="l3"><a href="#s2-1-calistenia-o-treino-que-dá-nome-à-técnica">2.1 - Calistenia: o treino que dá nome à técnica</a></li><li class="l3"><a href="#s2-2-origem">2.2 - Origem</a></li><li class="l3"><a href="#s2-3-por-que-restringir-ensina">2.3 - Por que restringir ensina</a></li><li class="l3"><a href="#s2-4-os-sete-pontos-desta-aula">2.4 - Os sete pontos desta aula</a></li><li class="l2"><a href="#s3-fluxo-o-caminho-que-o-código-faz">3 - Fluxo: o caminho que o código faz</a></li><li class="l3"><a href="#s3-1-ponto-1-um-único-nível-de-indentação-por-método-one-level-of">3.1 - Ponto 1: um único nível de indentação por método (One level of indentation per method)</a></li><li class="l3"><a href="#s3-2-ponto-2-não-usar-else-dont-use-the-else-keyword">3.2 - Ponto 2: não usar `else` (Don&#x27;t use the ELSE keyword)</a></li><li class="l2"><a href="#s4-dados-o-que-guardamos-e-como">4 - Dados: o que guardamos e como</a></li><li class="l3"><a href="#s4-1-ponto-3-obsessão-por-tipos-primitivos-primitive-obsession-wr">4.1 - Ponto 3: obsessão por tipos primitivos (Primitive Obsession; Wrap all primitives and strings)</a></li><li class="l3"><a href="#s4-2-ponto-4-coleção-de-primeira-classe-first-class-collections">4.2 - Ponto 4: coleção de primeira classe (First-class collections)</a></li><li class="l2"><a href="#s5-acesso-quem-fala-com-quem">5 - Acesso: quem fala com quem</a></li><li class="l3"><a href="#s5-1-ponto-5-um-ponto-por-linha-lei-de-demeter-law-of-demeter-one">5.1 - Ponto 5: um ponto por linha (Lei de Demeter, Law of Demeter; One dot per line)</a></li><li class="l3"><a href="#s5-2-ponto-6-sem-getters-setters-e-properties-no-getterssetterspr">5.2 - Ponto 6: sem getters, setters e properties (No getters/setters/properties; Tell, Don&#x27;t Ask)</a></li><li class="l2"><a href="#s6-tamanho-quanto-cada-coisa-carrega">6 - Tamanho: quanto cada coisa carrega</a></li><li class="l3"><a href="#s6-1-ponto-7-entidades-pequenas-keep-all-entities-small-no-classe">6.1 - Ponto 7: entidades pequenas (Keep all entities small; No classes with more than two instance variables)</a></li><li class="l2"><a href="#s7-juntando-tudo-e-saber-quando-não-seguir">7 - Juntando tudo e saber quando não seguir</a></li><li class="l2"><a href="#s8-resenha-processo-e-trabalho-em-equipe">8 - Resenha: processo e trabalho em equipe</a></li><li class="l3"><a href="#s8-1-código-é-trabalho-coletivo">8.1 - Código é trabalho coletivo</a></li><li class="l3"><a href="#s8-2-o-acordo-de-equipe">8.2 - O acordo de equipe</a></li><li class="l3"><a href="#s8-3-revisão-de-código-e-pull-request">8.3 - Revisão de código e pull request</a></li><li class="l3"><a href="#s8-4-automatizar-o-que-dá-para-automatizar">8.4 - Automatizar o que dá para automatizar</a></li><li class="l3"><a href="#s8-5-praticar-em-conjunto-dojo-kata-e-programação-em-par">8.5 - Praticar em conjunto: dojo, kata e programação em par</a></li><li class="l3"><a href="#s8-6-processo-onde-as-regras-entram-no-ciclo-de-desenvolvimento">8.6 - Processo: onde as regras entram no ciclo de desenvolvimento</a></li><li class="l3"><a href="#s8-7-dívida-técnica-o-empréstimo-consciente">8.7 - Dívida técnica: o empréstimo consciente</a></li><li class="l3"><a href="#s8-8-para-pensar-resenha-da-turma">8.8 - Para pensar (resenha da turma)</a></li><li class="l2"><a href="#s9-modularização-o-guarda-chuva-de-todas-as-regras">9 - Modularização: o guarda-chuva de todas as regras</a></li><li class="l3"><a href="#s9-1-por-que-eu-não-posso-usar-else">9.1 - &quot;Por que eu não posso usar else?&quot;</a></li><li class="l3"><a href="#s9-2-modularizar-é-separar-unidades-de-execução">9.2 - Modularizar é separar unidades de execução</a></li><li class="l3"><a href="#s9-3-as-sete-regras-são-uma-ideia-só">9.3 - As sete regras são uma ideia só</a></li><li class="l2"><a href="#s10-conclusão">10 - Conclusão</a></li><li class="l2"><a href="#s11-referências">11 - Referências</a></li><li class="l2"><a href="#questoes">Questões do TA</a></li></ol></details>
+  </aside>
+  <main class="doc">
+    <header class="cover" id="topo">
+      <p class="eyebrow">UNIFAAT · 2026.2 · Briefing para produção de conteúdo</p>
+      <h1><span class="cn">11</span> - Object Calisthenics</h1>
+      <dl class="ficha">
+        <div><dt>Professor</dt><dd>Luan Tavares Lourenço</dd></div>
+        <div><dt>Disciplina</dt><dd>Engenharia de Software</dd></div>
+        <div><dt>Aula</dt><dd>11</dd></div>
+        <div><dt>Opção do TA</dt><dd>Texto</dd></div>
+      </dl>
+    </header>
+<h2 id="s1-introdução"><span class="hn">1</span>Introdução</h2>
+<p>Nas últimas aulas o Python ganhou classes, os três pilares da orientação a objetos e as estruturas de dados. Quem chegou até aqui já <strong>consegue</strong> escrever um programa orientado a objetos. Esta aula é sobre a pergunta seguinte: <strong>como escrever um programa que outra pessoa (ou você, daqui a seis meses) consiga ler, mudar e confiar</strong>. Em engenharia de software, esse é o ponto em que a profissão começa de verdade: o código que funciona é só o começo, porque ele vai ser <strong>lido e alterado muito mais vezes do que foi escrito</strong>, quase sempre por uma equipe.</p>
+<p>O <strong>Object Calisthenics</strong> é um conjunto de regras de restrição para treinar esse olhar. "Calistenia" é o treino com o próprio peso do corpo: sem máquina, sem atalho, só disciplina repetida. A ideia é a mesma: durante o exercício, o programador se <strong>proíbe</strong> de algumas facilidades e descobre, na prática, o que elas escondiam.</p>
+<p>O caminho da aula tem quatro passos. Primeiro, <strong>de onde vêm as regras e por que restringir</strong> (e por que elas não são lei). Segundo, <strong>sete pontos principais</strong>, agrupados em fluxo, dados, acesso e tamanho. Terceiro, <strong>juntar tudo e saber quando não seguir</strong>. Quarto, um fechamento: a <strong>modularização</strong>, o guarda-chuva que explica por que todas as regras existem, e uma <strong>resenha sobre processo e trabalho em equipe</strong>: regra de código só funciona quando a equipe combina, revisa e automatiza, e a <strong>dívida técnica</strong> mostra que entregar rápido com atalho é um empréstimo que não tem problema, desde que a gente saiba que está pegando.</p>
+<p>Os arquivos completos estão em <code>src/11/</code>, um por ponto: <code>01_indentacao.py</code>, <code>02_sem_else.py</code>, <code>03_embrulhar_primitivos.py</code>, <code>04_colecao_primeira_classe.py</code>, <code>05_um_ponto_por_linha.py</code>, <code>06_diga_nao_pergunte.py</code>, <code>07_entidades_pequenas.py</code> e <code>08_divida_tecnica.py</code> (o da resenha) e <code>09_modularizacao.py</code> (o do fechamento).</p>
+<h2 id="s2-o-que-é-e-por-que-restringir"><span class="hn">2</span>O que é e por que restringir</h2>
+<h3 id="s2-1-calistenia-o-treino-que-dá-nome-à-técnica"><span class="hn">2.1</span>Calistenia: o treino que dá nome à técnica</h3>
+<p>A palavra <strong>calistenia</strong> vem do grego: <em>kalos</em> (belo) e <em>sthenos</em> (força), ou seja, "força com beleza". É o treino que usa <strong>apenas o peso do próprio corpo</strong>: flexão, barra fixa, paralelas, agachamento, prancha, até movimentos avançados como o <em>muscle-up</em>. Não tem máquina nem anilha; o que se treina é <strong>controle, técnica e consistência</strong>. Alguns princípios da calistenia explicam bem a técnica de código:</p>
+<ul><li><strong>Restrição que ensina:</strong> sem máquina para "ajudar", o corpo aprende a se sustentar sozinho. Sem <code>else</code>, sem getters e sem listas soltas, o código aprende a se sustentar sozinho.</li><li><strong>Técnica antes de carga:</strong> quem faz flexão torta com muita repetição só se machuca. Quem escreve código aninhado com muita funcionalidade só gera dívida técnica.</li><li><strong>Progressão:</strong> ninguém começa pelo <em>muscle-up</em>; começa pela flexão no joelho e evolui. Aqui também: adotar <strong>uma regra por vez</strong> e só depois somar as outras.</li><li><strong>Base serve a qualquer esporte:</strong> a força de calistenia ajuda em corrida, escalada, luta. As regras servem a qualquer linguagem e a qualquer projeto.</li><li><strong>Constância vence intensidade:</strong> treinar pouco todo dia ganha de treinar muito uma vez. Refatorar um pouco a cada mudança ganha de "projeto de limpeza" a cada ano.</li></ul>
+<p>O nome é uma <strong>metáfora</strong>: Jeff Bay propôs treinar o desenho de código como se treina o corpo, sem equipamento e com disciplina.</p>
+<h3 id="s2-2-origem"><span class="hn">2.2</span>Origem</h3>
+<p>O Object Calisthenics foi apresentado por <strong>Jeff Bay</strong>, no capítulo "Object Calisthenics" do livro <em>The ThoughtWorks Anthology</em> (2008), com <strong>nove regras</strong>. O próprio texto propõe as regras como <strong>exercício</strong>: faça um projeto pequeno obedecendo todas, sem exceção, e observe como o desenho muda. Não é uma norma da indústria nem um mandamento: é um <strong>treino</strong>, parecido com o do músico que toca escala devagar para depois tocar música de verdade.</p>
+<h3 id="s2-3-por-que-restringir-ensina"><span class="hn">2.3</span>Por que restringir ensina</h3>
+<p>Quando tudo é permitido, o caminho mais curto vence: um <code>if</code> dentro de um <code>for</code> dentro de outro <code>if</code>, uma lista passada de mão em mão, um <code>objeto.a.b.c.d</code> para chegar ao dado. Funciona hoje e <strong>cobra amanhã</strong>: cada atalho aumenta o <strong>acoplamento</strong> (uma parte do código depende dos detalhes da outra) e reduz a <strong>coesão</strong> (cada parte deveria fazer uma coisa só). As regras forçam, uma a uma, a pergunta "e se eu não pudesse fazer assim?", e a resposta quase sempre é <strong>criar uma classe pequena ou mover um comportamento para o dono do dado</strong>.</p>
+<p>Esse custo tem nome: <strong>dívida técnica</strong>. Cada atalho é um empréstimo; a regra é o hábito de pagar à vista.</p>
+<h3 id="s2-4-os-sete-pontos-desta-aula"><span class="hn">2.4</span>Os sete pontos desta aula</h3>
+<p>Das nove regras, a aula aprofunda sete, que cobrem o essencial. As duas que ficam de fora estão resumidas no fim da seção 6.</p>
+<div class="tbl"><table><thead><tr><th>#</th><th>Ponto</th><th>Em uma frase</th><th>Grupo</th></tr></thead><tbody><tr><td>1</td><td>Um nível de indentação por método (<em>One level of indentation per method</em>)</td><td>Se aninhou, extraia</td><td>Fluxo</td></tr><tr><td>2</td><td>Não usar <code>else</code> (<em>Don't use the ELSE keyword</em>)</td><td>Saia cedo, ou comece com o valor padrão</td><td>Fluxo</td></tr><tr><td>3</td><td>Obsessão por tipos primitivos (<em>Primitive Obsession</em>): embrulhar primitivos e strings (<em>Wrap all primitives and strings</em>)</td><td>Nota é uma <code>Nota</code>, não um <code>float</code></td><td>Dados</td></tr><tr><td>4</td><td>Coleção de primeira classe (<em>First-class collections</em>)</td><td>Quem tem uma lista não tem mais nada</td><td>Dados</td></tr><tr><td>5</td><td>Um ponto por linha (Lei de Demeter, <em>Law of Demeter</em>; <em>One dot per line</em>)</td><td>Fale só com os seus amigos, não fale com estranhos</td><td>Acesso</td></tr><tr><td>6</td><td>Sem getters, setters e properties (<em>No getters/setters/properties</em>; <em>Tell, Don't Ask</em>)</td><td>Diga ao objeto o que fazer, não pergunte</td><td>Acesso</td></tr><tr><td>7</td><td>Entidades pequenas (<em>Keep all entities small</em>; <em>No classes with more than two instance variables</em>)</td><td>Classe pequena, no máximo duas variáveis de instância</td><td>Tamanho</td></tr></tbody></table></div>
+<p>A numeração acima é a <strong>da aula</strong>; no texto de Jeff Bay a ordem é outra (por exemplo, "sem getters" é a regra 9). Em cada ponto indicamos a regra de origem.</p>
+<h2 id="s3-fluxo-o-caminho-que-o-código-faz"><span class="hn">3</span>Fluxo: o caminho que o código faz</h2>
+<h3 id="s3-1-ponto-1-um-único-nível-de-indentação-por-método-one-level-of"><span class="hn">3.1</span>Ponto 1: um único nível de indentação por método (One level of indentation per method)</h3>
+<p>Cada nível de indentação é uma decisão que o leitor precisa <strong>guardar na cabeça</strong> para entender a linha de baixo. Três níveis (<code>for</code>, <code>if</code>, <code>for</code>) já pedem papel e caneta. A regra manda extrair o aninhado para um método com nome, e o nome vira a explicação.</p>
+<p>O caso extremo tem apelido: <strong>código hadouken</strong> (também chamado de <em>arrow code</em> ou <em>pyramid of doom</em>). Quando os <code>if</code> se empilham um dentro do outro, a indentação cresce para a direita e o código desenha uma <strong>seta</strong>, parecida com a onda de energia do golpe <em>hadouken</em> do Street Fighter. O sintoma é inconfundível: o que importa (o <code>return "certificado emitido"</code>) está lá no fundo, e para chegar nele o leitor precisou <strong>guardar quatro condições na cabeça</strong>. A cura é o <strong>fail first</strong> (falhar primeiro): testar logo no começo o que está errado e <strong>sair cedo</strong> (cláusula de guarda ou <em>early return</em>, que reencontramos no ponto 2). O hadouken é o caso clássico em que o fail first mais aparece, e é a cara do Object Calisthenics: a restrição empurra o programador a tratar o erro primeiro e deixar o caminho feliz no fim, no nível 1:</p>
+<pre class="code"><code># ANTES (código hadouken): os if se empilham e a indentação vira uma seta &gt;&gt;&gt;.
+def certificado_antes(existe, matriculado, frequencia, nota):
+    if existe:
+        if matriculado:
+            if frequencia &gt;= 75:
+                if nota &gt;= 6:
+                    return "certificado emitido"
+    return "certificado negado"
+
+
+# DEPOIS (fail first): testa o que está errado e sai cedo; tudo no nível 1, e cada saída diz o motivo.
+def certificado(existe, matriculado, frequencia, nota):
+    if not existe:
+        return "negado: aluno não existe"
+    if not matriculado:
+        return "negado: sem matrícula"
+    if frequencia &lt; 75:
+        return "negado: frequência abaixo de 75%"
+    if nota &lt; 6:
+        return "negado: nota abaixo de 6"
+    return "certificado emitido"</code></pre>
+<p>Outro exemplo, agora com laços aninhados:</p>
+<pre class="code"><code># ANTES: três níveis (for -&gt; if -&gt; for) na mesma função.
+def aprovados_antes(turma):
+    aprovados = []
+    for nome in turma:
+        if len(turma[nome]) &gt; 0:
+            soma = 0
+            for nota in turma[nome]:
+                soma += nota
+            if soma / len(turma[nome]) &gt;= 6:
+                aprovados.append(nome)
+    return aprovados
+
+
+# DEPOIS: cada função faz uma coisa e tem no máximo um nível.
+def media(notas):
+    return sum(notas) / len(notas)
+
+
+def foi_aprovado(notas):
+    if len(notas) == 0:
+        return False
+    return media(notas) &gt;= 6
+
+
+def aprovados(turma):
+    return [nome for nome in turma if foi_aprovado(turma[nome])]</code></pre>
+<p>A lógica é a mesma; o que mudou é que agora existe uma função chamada <code>foi_aprovado</code>, que <strong>diz o que o teste significa</strong>. Também ficou possível testar <code>media</code> sozinha, algo que o bloco aninhado não permitia.</p>
+<h3 id="s3-2-ponto-2-não-usar-else-dont-use-the-else-keyword"><span class="hn">3.2</span>Ponto 2: não usar <code>else</code> (Don't use the ELSE keyword)</h3>
+<p>A escada de <code>if</code>, <code>elif</code> e <code>else</code> esconde um problema: para entender o último ramo, o leitor precisa lembrar de <strong>todas as condições anteriores</strong>. Existem três saídas, e o Python ajuda nas três. A primeira é o <strong>fail first</strong> do ponto 1 aplicado à escada de decisões:</p>
+<pre class="code"><code># 1) Retorno antecipado (fail first / cláusula de guarda): cada caso resolve e sai.
+def conceito(nota):
+    if nota &gt;= 9:
+        return "A"
+    if nota &gt;= 7:
+        return "B"
+    if nota &gt;= 5:
+        return "C"
+    return "D"
+
+
+# 2) Valor padrão antes do if: o if só sobrescreve quando precisa.
+def situacao(media):
+    resultado = "reprovado"
+    if media &gt;= 6:
+        resultado = "aprovado"
+    return resultado
+
+
+# 3) Polimorfismo (Aula 09): cada classe sabe o seu desconto.
+class Aluno:
+    def desconto(self):
+        return 0.5
+
+
+class Visitante:
+    def desconto(self):
+        return 0.0
+
+
+def preco_final(preco, cliente):
+    return preco * (1 - cliente.desconto())</code></pre>
+<p>A terceira saída é a mais poderosa: em vez de <strong>perguntar o tipo</strong> (<code>if tipo == "aluno"</code>), cada tipo carrega a sua resposta. Quando surge um tipo novo, cria-se uma classe; as funções antigas <strong>não mudam</strong>. É o polimorfismo da Aula 09 resolvendo um problema de manutenção.</p>
+<h2 id="s4-dados-o-que-guardamos-e-como"><span class="hn">4</span>Dados: o que guardamos e como</h2>
+<h3 id="s4-1-ponto-3-obsessão-por-tipos-primitivos-primitive-obsession-wr"><span class="hn">4.1</span>Ponto 3: obsessão por tipos primitivos (Primitive Obsession; Wrap all primitives and strings)</h3>
+<p>Usar <code>int</code>, <code>float</code> e <code>str</code> soltos para representar conceitos do domínio (RA, nota, e-mail, dinheiro) tem nome em inglês: <strong>Primitive Obsession</strong>, em português <strong>obsessão por tipos primitivos</strong>. É um dos <em>code smells</em> ("mau cheiro" de código) catalogados por Martin Fowler no livro <em>Refactoring</em>. A regra do Object Calisthenics é a cura: <strong>embrulhar todos os primitivos e strings</strong> (<em>wrap all primitives and strings</em>) numa classe pequena.</p>
+<p>Um <code>int</code> aceita qualquer inteiro, e um <code>float</code> aceita qualquer decimal. O RA e a nota são ambos números, e o sistema <strong>não sabe a diferença</strong>. A regra manda criar uma classe pequena para cada conceito do domínio:</p>
+<pre class="code"><code># ANTES: o primitivo aceita qualquer coisa.
+def registrar_antes(ra, nota):
+    return "RA " + str(ra) + " tirou " + str(nota)
+
+
+print(registrar_antes(8.5, 1234))   # RA 8.5 tirou 1234 (trocou e ninguém reclamou)
+print(registrar_antes(1234, 15))    # RA 1234 tirou 15 (nota 15 numa prova de 0 a 10)
+
+
+# DEPOIS: o tipo carrega a regra, e o erro aparece na criação.
+class Nota:
+    def __init__(self, valor):
+        if valor &lt; 0 or valor &gt; 10:
+            raise ValueError("nota deve estar entre 0 e 10")
+        self._valor = valor
+
+    def aprovada(self):
+        return self._valor &gt;= 6
+
+    def __str__(self):
+        return str(self._valor)</code></pre>
+<p>Duas vantagens. A <strong>validação mora num lugar só</strong>: toda <code>Nota</code> do sistema já nasceu válida, e nenhuma função precisa conferir de novo. E o <strong>nome do tipo documenta</strong> a intenção. Uma ressalva de honestidade: as dicas de tipo (<code>ra: Ra</code>) <strong>não são checadas</strong> pelo Python em tempo de execução; servem ao editor e a ferramentas como o <code>mypy</code>. Quem barra o erro é a validação do construtor.</p>
+<h3 id="s4-2-ponto-4-coleção-de-primeira-classe-first-class-collections"><span class="hn">4.2</span>Ponto 4: coleção de primeira classe (First-class collections)</h3>
+<p>Uma lista solta circula pelo programa e <strong>qualquer um pode mexer nela</strong> (o vazamento da lista da Aula 09). A regra manda que uma classe que tem uma coleção <strong>não tenha mais nenhum outro atributo</strong>, e que ofereça só os comportamentos que fazem sentido para aquele conjunto:</p>
+<pre class="code"><code>class Turma:
+    def __init__(self, alunos=()):
+        self._alunos = list(alunos)
+
+    def matricular(self, aluno):
+        self._alunos.append(aluno)
+
+    def aprovados(self):
+        return Turma([aluno for aluno in self._alunos if aluno.aprovado()])
+
+    def quantidade(self):
+        return len(self._alunos)</code></pre>
+<p>Repare em <code>aprovados()</code>: ela devolve <strong>outra <code>Turma</code></strong>, não a lista. O conjunto de aprovados também é uma turma e herda todos os comportamentos. É a Aula 10 voltando: a estrutura de dados deixa de ser um tipo nativo exposto e passa a ser <strong>uma classe do domínio</strong> com nome, regras e operações próprias.</p>
+<h2 id="s5-acesso-quem-fala-com-quem"><span class="hn">5</span>Acesso: quem fala com quem</h2>
+<h3 id="s5-1-ponto-5-um-ponto-por-linha-lei-de-demeter-law-of-demeter-one"><span class="hn">5.1</span>Ponto 5: um ponto por linha (Lei de Demeter, Law of Demeter; One dot per line)</h3>
+<p>A <strong>Lei de Demeter</strong>, nascida no projeto Demeter, na Northeastern University (fim dos anos 1980), diz em português simples: <strong>fale só com os seus amigos</strong>. Dito pelo outro lado, é o <strong>"não fale com estranhos"</strong> que ouvimos na infância: o amigo é quem o objeto conhece de verdade, e o estranho é o objeto que ele só alcançou passando por outro (o "pai do pai do pai"). Um objeto pode chamar a si mesmo, os seus atributos e os seus parâmetros; não deve atravessar um objeto para chegar a outro. Na árvore de arquivos da Aula 08:</p>
+<pre class="code"><code># ANTES: quem chama conhece a estrutura inteira da árvore.
+print(tf.pai.pai.pai.pai.nome)      # C: (quatro pontos: se a árvore mudar, quebra aqui)
+
+
+# DEPOIS: o item fala só com o pai direto, e o pai responde pelo resto.
+class Item:
+    def __init__(self, nome, pai=None):
+        self._nome = nome
+        self._pai = pai
+
+    def disco(self):
+        if self._pai is None:
+            return self._nome
+        return self._pai.disco()
+
+
+print(arquivo.disco())              # C: (um ponto)</code></pre>
+<p>Cada ponto a mais é <strong>uma dependência a mais</strong> da estrutura interna de outro objeto. Se a árvore ganhar um nível, o primeiro código quebra em todos os lugares que o repetiram; o segundo não muda. Uma exceção prática: <strong>encadear métodos que devolvem o mesmo tipo</strong> (<code>"  Ola  ".strip().lower()</code>) não é navegar entre objetos, é uma sequência de transformações, e é aceita.</p>
+<h3 id="s5-2-ponto-6-sem-getters-setters-e-properties-no-getterssetterspr"><span class="hn">5.2</span>Ponto 6: sem getters, setters e properties (No getters/setters/properties; Tell, Don't Ask)</h3>
+<p>Na Aula 09 o getter e o setter apareceram como "a porta controlada" da classe. O Object Calisthenics dá <strong>um passo além</strong>: mesmo controlada, a porta ainda <strong>entrega o dado</strong> para quem chama decidir o que fazer. O princípio chama-se <strong>diga, não pergunte</strong> (<em>tell, don't ask</em>):</p>
+<pre class="code"><code># ANTES: o objeto entrega o saldo, e quem chama decide a regra.
+conta = ContaAberta(100)
+if conta.get_saldo() &gt;= 30:                      # a regra mora fora da conta
+    conta.set_saldo(conta.get_saldo() - 30)      # e cada chamador pode esquecê-la
+conta.set_saldo(-999)                            # nada impede isto
+
+
+# DEPOIS: a regra mora na conta, e só existe o comportamento.
+class Conta:
+    def __init__(self, saldo):
+        self._saldo = saldo
+
+    def sacar(self, valor):
+        if valor &gt; self._saldo:
+            raise ValueError("saldo insuficiente")
+        self._saldo -= valor</code></pre>
+<p>Um <code>@property</code> de leitura é só um getter com outra roupa: a regra vale para ele também. O que a regra pede <strong>não é esconder mais</strong>, é <strong>mover o comportamento para onde o dado vive</strong>. Isso fecha o ciclo com o encapsulamento: encapsular é esconder o dado <strong>para que a regra fique com um dono só</strong>. Uma nota de bom senso: um objeto pode, sim, <strong>responder uma pergunta calculada</strong> (<code>disco()</code>, <code>aprovado()</code>), o que a regra combate é entregar o <strong>estado cru</strong> para o outro decidir.</p>
+<h2 id="s6-tamanho-quanto-cada-coisa-carrega"><span class="hn">6</span>Tamanho: quanto cada coisa carrega</h2>
+<h3 id="s6-1-ponto-7-entidades-pequenas-keep-all-entities-small-no-classe"><span class="hn">6.1</span>Ponto 7: entidades pequenas (Keep all entities small; No classes with more than two instance variables)</h3>
+<p>Classe grande é classe que faz muita coisa, e classe que faz muita coisa <strong>muda por muitos motivos</strong>. A regra original de Jeff Bay dá uma ordem de grandeza: <strong>classes de até cerca de 50 linhas</strong>. Junto vem uma regra irmã: <strong>no máximo duas variáveis de instância por classe</strong>. O limite parece arbitrário, e é de propósito: com duas variáveis, a classe é obrigada a ter <strong>um assunto só</strong>.</p>
+<pre class="code"><code># ANTES: cinco dados, vários assuntos.
+class ClienteGrande:
+    def __init__(self, nome, sobrenome, rua, numero, cidade):
+        ...
+
+
+# DEPOIS: cada assunto vira uma classe pequena; o cliente só junta duas.
+class Cliente:
+    def __init__(self, nome, endereco):
+        self._nome = nome              # um Nome (primeiro, sobrenome)
+        self._endereco = endereco      # um Endereco (rua, cidade)
+
+    def etiqueta(self):
+        return self._nome.completo() + " - " + self._endereco.completo()</code></pre>
+<p>O resultado são <strong>muitas classes pequenas</strong> em vez de poucas gigantes, e esse é o ponto: navegar numa classe de 20 linhas é mais fácil do que numa de 400, e cada uma pode ser reaproveitada e testada sozinha.</p>
+<p>As duas regras que ficaram de fora seguem a mesma lógica: <strong>não abreviar nomes</strong> (<code>calc_med_tot</code> obriga o leitor a decifrar; <code>media_total</code> já diz) e o limite de <strong>tamanho de pacote</strong> (agrupar poucas classes por pasta). Quem quiser aprofundar encontra as nove no texto original.</p>
+<h2 id="s7-juntando-tudo-e-saber-quando-não-seguir"><span class="hn">7</span>Juntando tudo e saber quando não seguir</h2>
+<p>Cada regra sozinha é pequena; o ganho aparece no <strong>conjunto</strong>. Um programa feito sob as sete restrições tende a ter muitas classes minúsculas, métodos de poucas linhas, nomes que explicam o domínio e <strong>pouquíssimas decisões espalhadas</strong>: a regra de negócio fica dentro do objeto dono, e quem chama só dá ordens. O custo é real: <strong>mais arquivos, mais classes e mais indireção</strong> (o leitor pula de uma classe para outra para ver o que acontece). Por isso a regra é um <strong>exercício</strong>, e não uma meta a cumprir em todo código.</p>
+<p>Quando relaxar, com honestidade:</p>
+<ul><li><strong>Scripts curtos e descartáveis:</strong> um <code>for</code> com <code>if</code> num script de uma noite não precisa de cinco classes.</li><li><strong>Dados puros</strong> (a linha de um CSV, a resposta de uma API): uma <code>dataclass</code> só com campos é legítima; o objeto não tem comportamento a proteger.</li><li><strong>Idiomas da linguagem:</strong> em Python, <code>property</code>, <code>dict</code> e compreensões são o jeito natural de escrever; a regra vale como <strong>pergunta</strong>, não como proibição cega.</li><li><strong>Desempenho medido:</strong> mais objetos custam memória e tempo. Só quando medido e relevante, e conscientemente.</li></ul>
+<p>O treino serve para que, <strong>depois</strong>, o programador relaxe a regra por escolha, e não por ignorância.</p>
+<h2 id="s8-resenha-processo-e-trabalho-em-equipe"><span class="hn">8</span>Resenha: processo e trabalho em equipe</h2>
+<p>Esta seção é uma <strong>resenha</strong>: ela olha para as regras de fora e pergunta o que elas dizem sobre <strong>como equipes constroem software</strong>.</p>
+<h3 id="s8-1-código-é-trabalho-coletivo"><span class="hn">8.1</span>Código é trabalho coletivo</h3>
+<p>Software de verdade quase nunca tem um autor só, nem um único momento de escrita. Ele é <strong>mantido</strong> durante anos, por pessoas que entram e saem. Cada regra da aula é, no fundo, um gesto de <strong>cortesia com o próximo leitor</strong>: o nível de indentação a menos, o nome sem abreviação, a validação que mora na <code>Nota</code>. Um código que só o autor entende é uma <strong>dependência de pessoa</strong> (se ela sai, o conhecimento sai junto).</p>
+<h3 id="s8-2-o-acordo-de-equipe"><span class="hn">8.2</span>O acordo de equipe</h3>
+<p>Regra individual dura até o primeiro prazo apertado. Para valer, a equipe precisa <strong>combinar</strong>: um <strong>padrão de codificação</strong> escrito, com decisões como estas ("não usamos <code>else</code>", "toda nota é <code>Nota</code>") e o <strong>porquê</strong> de cada uma. O <em>Extreme Programming</em> (XP), descrito por Kent Beck em 1999, já trata disso como prática: <strong>padrão de codificação</strong>, <strong>propriedade coletiva do código</strong> (qualquer um pode alterar qualquer parte, e por isso todos seguem o mesmo padrão) e <strong>refatoração contínua</strong> (melhorar o desenho aos poucos, sem esperar um "projeto de limpeza").</p>
+<h3 id="s8-3-revisão-de-código-e-pull-request"><span class="hn">8.3</span>Revisão de código e pull request</h3>
+<p>Na Aula 05 o Git e o GitHub trouxeram o <strong>pull request</strong>. Ele é o lugar onde o acordo de equipe vira prática: outra pessoa lê a mudança <strong>antes</strong> de ela entrar na <code>main</code>. Uma boa revisão não é "eu faria diferente"; é <strong>"isto fere o nosso acordo, e por quê"</strong>. A diferença muda o clima da equipe: o feedback deixa de ser opinião pessoal e passa a ser <strong>critério compartilhado</strong>. Revisar também é a forma mais barata de <strong>espalhar conhecimento</strong> pela equipe.</p>
+<h3 id="s8-4-automatizar-o-que-dá-para-automatizar"><span class="hn">8.4</span>Automatizar o que dá para automatizar</h3>
+<p>Gente cansa e esquece; máquina não. Parte das regras pode ser <strong>verificada por ferramenta</strong> num passo de <strong>integração contínua (CI)</strong>: limites de complexidade (o <code>flake8</code> tem a opção <code>--max-complexity</code> e o <code>ruff</code> tem a regra <code>C901</code>), formatação, tipos. Assim o humano da revisão gasta a atenção no que a máquina não vê (o nome faz sentido? o conceito está no lugar certo?). Nem tudo é automatizável: "não usar getters" ou "classe com um assunto só" exigem julgamento.</p>
+<h3 id="s8-5-praticar-em-conjunto-dojo-kata-e-programação-em-par"><span class="hn">8.5</span>Praticar em conjunto: dojo, kata e programação em par</h3>
+<p>Como o Object Calisthenics é um treino, ele é feito para ser praticado <strong>junto</strong>. No <strong>dojo</strong>, a equipe resolve um problema pequeno (um <strong>kata</strong>) sob as restrições, em <strong>programação em par</strong> (um digita, outro pensa e questiona) ou em grupo. O aprendizado está na conversa: "por que você extraiu isso?", "e se a nota viesse errada?". Isso é transferência de conhecimento que nenhum documento faz.</p>
+<h3 id="s8-6-processo-onde-as-regras-entram-no-ciclo-de-desenvolvimento"><span class="hn">8.6</span>Processo: onde as regras entram no ciclo de desenvolvimento</h3>
+<p>Um <strong>processo</strong> é o jeito combinado de uma equipe levar uma ideia até o software em produção. Nos modelos em cascata, o desenho vem <strong>inteiro antes</strong> do código, e o custo de mudar cresce com o tempo. Nos métodos ágeis (XP, Scrum, Kanban), o software é entregue em <strong>ciclos curtos</strong>, e o código <strong>precisa continuar fácil de mudar</strong> a cada ciclo. É aí que as regras entram: elas <strong>mantêm o custo da mudança baixo</strong>. Sem testes e sem refatoração contínua, um processo ágil vira só pressa; com elas, vira <strong>ritmo sustentável</strong>. Um alerta honesto: nenhuma regra de código substitui <strong>conversar com quem vai usar o software</strong>; código bonito resolvendo o problema errado continua sendo o problema errado.</p>
+<h3 id="s8-7-dívida-técnica-o-empréstimo-consciente"><span class="hn">8.7</span>Dívida técnica: o empréstimo consciente</h3>
+<p>Entregar rápido às vezes é a decisão certa: o cliente precisa do sistema na sexta, a demonstração é amanhã, o mercado não espera. Nessas horas escolhemos o atalho: copiar e colar, pular o teste, deixar o nome ruim, deixar o <code>if</code> aninhado. A metáfora da <strong>dívida técnica</strong>, atribuída a Ward Cunningham (1992), descreve isso como um <strong>empréstimo</strong>: pegamos velocidade agora e <strong>pagamos depois, com juros</strong>. O <strong>principal</strong> é o retrabalho para arrumar de vez. Os <strong>juros</strong> são o custo extra de cada mudança futura naquele trecho (mais difícil de ler, mais risco de quebrar, mais tempo para mexer), e crescem enquanto a dívida existir.</p>
+<p>O ponto central: <strong>não tem problema entrar em dívida técnica, desde que a gente saiba que está entrando.</strong> Empresas pegam empréstimo para crescer, e isso é saudável; o que quebra é a dívida que ninguém sabe que existe. Martin Fowler chama as duas de dívida <strong>prudente</strong> e <strong>imprudente</strong>:</p>
+<ul><li><strong>Dívida consciente (prudente):</strong> decidida de olhos abertos, <strong>registrada</strong> (o quê, por quê, quanto custa e até quando) e com <strong>plano de pagamento</strong>. É um empréstimo.</li><li><strong>Dívida inconsciente (imprudente):</strong> ninguém anotou, ninguém lembra, e os juros crescem em silêncio até o dia em que a equipe não consegue mais mexer no código sem quebrar algo. É um descuido.</li></ul>
+<p>O mesmo atalho vira uma coisa ou outra conforme o que fazemos ao lado dele:</p>
+<pre class="code"><code># DÍVIDA TÉCNICA (consciente), sexta 17h:
+# preco_professor é cópia de preco_aluno.
+# Pagar: unificar em um dicionário de multiplicadores (ticket #42, sprint 3).
+def preco_aluno(preco):
+    return preco * 0.5
+
+
+def preco_professor(preco):
+    return preco * 0.7
+
+
+# Pagamento (sprint 3): uma função, um dicionário, nada duplicado.
+MULTIPLICADOR = {"aluno": 0.5, "professor": 0.7}
+
+
+def preco_final(preco, tipo):
+    return preco * MULTIPLICADOR[tipo]</code></pre>
+<p>Hábitos de uma equipe que usa a dívida como ferramenta: <strong>registrar</strong> cada atalho no backlog (comentário e ticket); <strong>combinar</strong> com o time e o cliente que foi uma decisão; <strong>reservar</strong> parte de cada ciclo para pagar; e <strong>pagar antes que os juros pesem</strong>. As ferramentas de pagamento são as desta aula e da anterior: <strong>testes</strong> (para mexer sem medo), <strong>refatoração</strong> e as regras do Object Calisthenics, que funcionam como "pagar à vista": cada regra seguida é uma dívida a menos nascendo.</p>
+<h3 id="s8-8-para-pensar-resenha-da-turma"><span class="hn">8.8</span>Para pensar (resenha da turma)</h3>
+<ul><li>Qual das sete regras mais incomodou ao tentar usar, e o que ela escondia no seu código?</li><li>O que aconteceria em uma equipe de cinco pessoas <strong>sem</strong> acordo de código? E com um acordo que ninguém revisa?</li><li>Que parte do acordo deveria ser automatizada, e qual parte só funciona com conversa?</li><li>Quando seguir as regras ao pé da letra vira <strong>excesso</strong>?</li><li>Qual foi o último atalho que você tomou, e ele estava <strong>registrado</strong> em algum lugar? Quando vai ser pago?</li></ul>
+<h2 id="s9-modularização-o-guarda-chuva-de-todas-as-regras"><span class="hn">9</span>Modularização: o guarda-chuva de todas as regras</h2>
+<h3 id="s9-1-por-que-eu-não-posso-usar-else"><span class="hn">9.1</span>"Por que eu não posso usar else?"</h3>
+<p>Em algum momento alguém da turma vai torcer o nariz: "mas o <code>else</code> funciona, por que proibir?". É uma boa pergunta, e a resposta honesta não é "porque o Jeff Bay mandou". O <code>else</code> não é o vilão; ele costuma ser o <strong>sintoma</strong> de uma unidade de código fazendo coisa demais. Quando uma função precisa de uma escada de decisões, o que falta quase sempre é <strong>modularizar melhor</strong>: separar as decisões em unidades menores (uma função com retorno antecipado, uma classe que sabe a própria resposta). A restrição não proíbe por proibir: ela força a pergunta <strong>"onde está a unidade que eu deixei de separar?"</strong>.</p>
+<h3 id="s9-2-modularizar-é-separar-unidades-de-execução"><span class="hn">9.2</span>Modularizar é separar unidades de execução</h3>
+<p><strong>Modularizar</strong> é dividir o programa em <strong>unidades</strong> pequenas, cada uma com uma <strong>responsabilidade</strong> e uma interface clara (o que recebe, o que devolve). Em Python a unidade pode ser uma função, uma classe, um arquivo (que o Python chama de <em>módulo</em>) ou um pacote; aqui a palavra vale no sentido amplo.</p>
+<p>Uma forma de enxergar a ideia é pela <strong>pilha de execução</strong> (<em>call stack</em>): cada chamada de função vira um <em>frame</em> empilhado, e sai da pilha quando a função termina. Uma função que faz tudo é <strong>um frame só carregando cinco responsabilidades</strong>. Funções pequenas formam uma pilha curta, em que cada frame tem um nome e uma tarefa. E quando algo quebra, o <em>stack trace</em> (o relatório de erro do Python) lista os frames: com unidades pequenas ele <strong>conta uma história</strong> (<code>relatorio</code> chamou <code>foi_aprovado</code>, que chamou <code>media</code>) e aponta o culpado, que tem um nome e uma responsabilidade só.</p>
+<pre class="code"><code># ANTES: uma unidade só faz tudo (percorre, soma, calcula a média, decide e imprime).
+def relatorio_antes(turma):
+    for nome in turma:
+        if len(turma[nome]) &gt; 0:
+            soma = 0
+            for nota in turma[nome]:
+                soma += nota
+            media = soma / len(turma[nome])
+            if media &gt;= 6:
+                print(nome, "aprovado")
+
+
+# DEPOIS: cada função é uma unidade com uma responsabilidade, e a pilha vira uma história:
+# relatorio -&gt; foi_aprovado -&gt; media.
+def media(notas):
+    return sum(notas) / len(notas)
+
+
+def foi_aprovado(notas):
+    return len(notas) &gt; 0 and media(notas) &gt;= 6
+
+
+def relatorio(turma):
+    for nome in turma:
+        if foi_aprovado(turma[nome]):
+            print(nome, "aprovado")</code></pre>
+<h3 id="s9-3-as-sete-regras-são-uma-ideia-só"><span class="hn">9.3</span>As sete regras são uma ideia só</h3>
+<p>Cada ponto da aula é a mesma pergunta feita de um ângulo diferente:</p>
+<div class="tbl"><table><thead><tr><th>Ponto</th><th>Como é modularização</th></tr></thead><tbody><tr><td>1 - Um nível de indentação</td><td>Cada nível extraído vira uma unidade (função) com nome</td></tr><tr><td>2 - Sem <code>else</code></td><td>Cada decisão vira uma unidade: retorno antecipado em funções pequenas, ou classes que sabem a própria resposta</td></tr><tr><td>3 - Obsessão por tipos primitivos</td><td>A regra do dado (a nota entre 0 e 10) mora numa unidade só, a <code>Nota</code></td></tr><tr><td>4 - Coleção de primeira classe</td><td>A lista tem um dono, a <code>Turma</code></td></tr><tr><td>5 - Lei de Demeter</td><td>É a <strong>fronteira</strong> da unidade: ela fala só com o vizinho direto</td></tr><tr><td>6 - Diga, não pergunte</td><td>O comportamento mora na unidade dona do dado</td></tr><tr><td>7 - Entidades pequenas</td><td>Cada unidade tem um assunto só</td></tr></tbody></table></div>
+<p>Quando a pergunta vier ("por que não usar <code>else</code>?"), a resposta serve para os sete: <strong>uma unidade melhor separada</strong> é mais fácil de ler, de testar, de mudar e de consertar. É também a ponte para a próxima aula: <strong>arquitetura</strong> é modularizar em escala maior, decidindo as unidades de um sistema inteiro (camadas, módulos, serviços).</p>
+<h2 id="s10-conclusão"><span class="hn">10</span>Conclusão</h2>
+<p>O Object Calisthenics não ensina uma técnica nova, ensina uma <strong>pergunta</strong>: "e se eu não pudesse fazer assim?". Os sete pontos da aula respondem com o mesmo movimento: <strong>pegar a decisão que estava espalhada e entregar ao objeto certo</strong>. Os níveis de indentação viram métodos com nome, o <code>else</code> vira saída antecipada ou polimorfismo, o primitivo vira tipo, a lista vira classe, a cadeia de pontos vira um pedido, o getter vira ordem, e a classe grande vira várias pequenas. O resultado é código mais barato de <strong>ler, testar e mudar</strong>, e a explicação de fundo é uma só: a <strong>modularização</strong>, cada unidade de execução fazendo uma coisa.</p>
+<p>Mas código é só metade da engenharia. A outra metade é a <strong>equipe</strong>: um acordo escrito, uma revisão que aplica o acordo, uma automação que cobre o repetitivo, e um processo que entrega em ciclos curtos. Na próxima aula, a <strong>Arquitetura de Código</strong>, o mesmo raciocínio sobe de escala: das regras de uma classe para as <strong>decisões de estrutura</strong> de um sistema inteiro.</p>
+<h2 id="s11-referências"><span class="hn">11</span>Referências</h2>
+<p>Jeff Bay — Object Calisthenics, em The ThoughtWorks Anthology (Pragmatic Bookshelf, 2008)</p>
+<p>Kent Beck — Extreme Programming Explained: Embrace Change (Addison-Wesley, 1999)</p>
+<p>Python Software Foundation — Tutorial de Python: Classes (<a href="https://docs.python.org/pt-br/3/tutorial/classes.html" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/tutorial/classes.html</a>)</p>
+<p>Python Software Foundation — Tutorial de Python: Estruturas de controle (<a href="https://docs.python.org/pt-br/3/tutorial/controlflow.html" target="_blank" rel="noopener">https://docs.python.org/pt-br/3/tutorial/controlflow.html</a>)</p>
+<p>Martin Fowler — Refactoring: Improving the Design of Existing Code (Addison-Wesley, 1999)</p>
+<p>Ward Cunningham — The WyCash Portfolio Management System (relato de experiência, OOPSLA, 1992), origem da metáfora da dívida técnica</p>
+<p>Material de aulas anteriores: Aula 05 (Git e GitHub), Aula 08 (Paradigma Orientado a Objetos), Aula 09 (Os 3 Pilares da Orientação a Objetos) e Aula 10 (Estrutura de Dados).</p>
+<h2 id="questoes"><span class="hn">TA</span>Questões do TA</h2>
+<article class="questao"><h3><span class="qn">Questão 1</span></h3><p>Sobre o Object Calisthenics, qual afirmação está correta?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">É uma lei obrigatória da orientação a objetos, que todo código Python precisa cumprir para rodar.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">É um recurso do Python que bloqueia o uso de <code>else</code> e de getters em tempo de execução.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">É um conjunto de regras de restrição, apresentado por Jeff Bay, para treinar o desenho orientado a objetos: funciona como exercício, e não como norma universal.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">É um padrão de projeto (GoF) para criar objetos sem usar construtor.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">É o nome da técnica que transforma classes em funções para deixar o código mais rápido.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 2</span></h3><p>Considere a função abaixo:</p>
+<pre class="code"><code>def nomes_aprovados(turma):
+    resultado = []
+    for aluno in turma:
+        if aluno.aprovado():
+            resultado.append(aluno.descrever())
+    return resultado</code></pre>
+<p>Em relação à regra "um único nível de indentação por método", qual afirmação está correta?</p><ol class="alts"><li class="alt ok"><span class="ltr">A</span><span class="txt">A função tem dois níveis (<code>for</code> e <code>if</code>); extrair o teste para outro método, ou usar uma compreensão de lista, leva a função a um nível.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">B</span><span class="txt">A função tem um nível, porque só existe um <code>for</code>.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">A função tem três níveis, contando o <code>return</code>.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">A função respeita a regra, porque o <code>return</code> está fora do <code>for</code>.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">A regra vale só para <code>if</code>; o <code>for</code> nunca conta como nível.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 3</span></h3><p>Observe a função:</p>
+<pre class="code"><code>def taxa(tipo):
+    if tipo == "premium":
+        return 0.0
+    if tipo == "comum":
+        return 0.05
+    return 0.1</code></pre>
+<p>Qual técnica ela usa para dispensar o <code>else</code>?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Polimorfismo: cada tipo é uma classe com o seu método.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Valor padrão atribuído a uma variável antes do <code>if</code>.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Dicionário que mapeia o tipo para a taxa.</span></li><li class="alt ok"><span class="ltr">D</span><span class="txt">Retorno antecipado (cláusula de guarda): cada caso devolve e sai, e o último <code>return</code> cobre os demais.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Recursão: a função chama a si mesma até sobrar um caso.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 4</span></h3><p>Qual é a principal vantagem de embrulhar a nota numa classe <code>Nota</code>, em vez de usar um <code>float</code> solto?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O programa passa a rodar mais rápido, porque objetos são mais leves que números.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">A regra (entre 0 e 10) fica num único lugar, o tipo documenta a intenção, e um valor inválido é recusado na criação, em vez de viajar pelo sistema.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">O Python passa a checar os tipos dos argumentos em tempo de execução, apenas por causa das dicas de tipo.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Deixa de ser necessário testar qualquer função que receba uma nota.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">A nota é convertida automaticamente para binário.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 5</span></h3><p>Qual descrição corresponde a uma <strong>coleção de primeira classe</strong>?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Uma classe <code>Turma</code> com os atributos <code>_alunos</code> (lista), <code>_professor</code> e <code>_sala</code>.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Uma função que recebe uma lista de alunos e a devolve ordenada.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Uma lista global, usada por todas as funções do programa.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Uma classe que devolve a própria lista <code>_alunos</code> num método <code>obter_lista()</code>, para quem quiser alterar.</span></li><li class="alt ok"><span class="ltr">E</span><span class="txt">Uma classe <code>Turma</code> cujo único atributo é a lista <code>_alunos</code>, com comportamentos como <code>matricular</code> e <code>aprovados</code> (que devolve outra <code>Turma</code>), sem expor a lista.</span><span class="gab">gabarito</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 6</span></h3><p>Considere a linha <code>print(tf.pai.pai.pai.nome)</code>. Qual avaliação está correta?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Está correta, porque <code>nome</code> é um atributo e atributos podem ser acessados livremente.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Está correta, desde que a árvore nunca mude.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">Viola a Lei de Demeter, pois quem chama conhece a estrutura interna da árvore; a solução é pedir ao <code>tf</code> um método (como <code>disco()</code>) que delegue ao pai.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Viola a regra porque <code>print</code> não deveria ser usado em classes.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Viola a regra apenas porque usa mais de dois pontos; com dois pontos seria correto.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 7</span></h3><p>Qual alternativa descreve melhor o princípio "diga, não pergunte" aplicado a uma conta bancária?</p><ol class="alts"><li class="alt ok"><span class="ltr">A</span><span class="txt">Em vez de ler o saldo com um getter e decidir fora da conta, chama-se <code>conta.sacar(30)</code>, e a conta aplica a regra de saldo insuficiente.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Trocar <code>get_saldo()</code> por uma <code>property</code> chamada <code>saldo</code> resolve, porque deixa de ser um getter.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Tornar o atributo público (<code>conta.saldo</code>) resolve, porque tira a necessidade de métodos.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Criar um setter com validação resolve, porque a regra volta para a conta.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Pedir o saldo várias vezes seguidas garante que o valor está atualizado.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 8</span></h3><p>Uma equipe combinou regras do Object Calisthenics como padrão de código, aplicadas por revisão de pull request e por verificações automáticas no CI. Qual é o principal ganho desse conjunto?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Garante que o software nunca terá bugs.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Dispensa as reuniões de equipe e a conversa com o cliente.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Substitui os testes automatizados.</span></li><li class="alt ok"><span class="ltr">D</span><span class="txt">O que é "código bom" passa a ser um acordo verificável: o feedback deixa de ser opinião pessoal, o conhecimento se espalha pela equipe, e a mudança é barrada antes de entrar na <code>main</code>.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Só traz benefício em equipes com mais de cinquenta pessoas.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 9</span></h3><p>Entregar rápido com um atalho pode ser uma decisão legítima de engenharia. O que transforma esse atalho em dívida técnica <strong>consciente</strong>, e não em descuido?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Esconder o atalho do restante da equipe para não gerar preocupação.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">Registrar o atalho (o que é, por que foi feito, quanto custa e até quando) e planejar o pagamento.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Nunca pagar a dívida, já que o cliente não percebe a diferença.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Repetir o atalho em todo o código, para que fique consistente.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Esperar os juros ficarem altos e só então avisar a equipe.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 10</span></h3><p>Um aluno pergunta: "por que eu não posso usar <code>else</code>?". Qual resposta resume a ideia que une as regras da aula?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Porque o <code>else</code> é mais lento que o <code>if</code> em Python.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Porque o <code>else</code> foi removido da linguagem Python.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Porque a regra é arbitrária e serve só para punir quem a ignora.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Porque o <code>else</code> não funciona dentro de funções.</span></li><li class="alt ok"><span class="ltr">E</span><span class="txt">Porque o <code>else</code> costuma ser sintoma de uma unidade fazendo coisa demais: modularizar melhor (extrair funções, retornar cedo, usar polimorfismo) separa as decisões em unidades pequenas, cada uma com uma responsabilidade e uma pilha de execução fácil de ler.</span><span class="gab">gabarito</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+  </main>
+</div>
+<script src="../../assets/briefing.js"></script>
+</body>
+</html>

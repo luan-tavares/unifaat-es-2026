@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Código — Aula 09</title>
+<link rel="stylesheet" href="../../assets/raio-x.css">
+<script src="../../assets/tema.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<nav class="topbar"><a class="back" href="../../index.html">← Voltar</a></nav>
+
+<header>
+  <span class="kicker">Raio-X do Código · Aula 09 · Timeline</span>
+  <h1>Os 3 Pilares da OO: o src/09 da disciplina, em relação ao src/08</h1>
+  <p class="meta">
+    <span><i class="fa-solid fa-folder"></i> es-2026/src/09 (comparado com src/08)</span>
+    <span><i class="fa-solid fa-calendar-days"></i> 21/10/2026</span>
+    <span><i class="fa-solid fa-wrench"></i> 5 etapas</span>
+  </p>
+</header>
+
+<main>
+<div class="timeline">
+
+  <!-- ETAPA 1 -->
+  <div class="entry">
+    <div class="entry-dot">1</div>
+    <div class="entry-date">Etapa 1</div>
+    <h2><code class="inline">visibilidade.py</code>: quem pode ver o quê</h2>
+    <p class="sub">O <code class="inline">Item</code> da Aula 08 deixava tudo público. Antes de fechar a cerca, o que o Python oferece: nenhuma palavra reservada, só convenção.</p>
+
+    <div class="tree">es-2026/
+├── aula-09-pilares/        <span class="comment">// briefing, slide, modelos interativos e este raio-x</span>
+└── <span class="dir">src/</span>
+    ├── <span class="dir">07/ 08/</span>               <span class="comment">// aulas anteriores (o Item da árvore nasceu em 08/arvore_arquivos.py)</span>
+    └── <span class="dir">09/</span>                    <span class="new">← NOVO: o mesmo Item, agora com cerca</span>
+        ├── <span class="new">visibilidade.py</span>      <span class="comment">// público, _protegido e __privado: o que o Python realmente faz</span>
+        ├── <span class="new">encapsulamento.py</span>    <span class="comment">// o Item da Aula 08 com a cerca fechada</span>
+        ├── <span class="new">pilares.py</span>           <span class="comment">// herança, polimorfismo, abstração e interface na árvore</span>
+        └── <span class="dir">simples/</span>             <span class="new">← um pilar por arquivo, sem a árvore</span></div>
+
+    <div class="diff">
+      <div class="diff-head">src/09/visibilidade.py: o Item da Aula 08 (ItemAberto) → ItemConvencao</div>
+      <div class="line rem">- class ItemAberto:</div>
+      <div class="line rem">-     # O Item da Aula 08: tudo público, qualquer um mexe em tudo.</div>
+      <div class="line rem">-     def __init__(self, nome, pai=None):</div>
+      <div class="line rem">-         self.nome = nome</div>
+      <div class="line rem">-         self.pai = pai</div>
+      <div class="line rem">-         self.filhos = []</div>
+      <div class="line add">+ class ItemConvencao:</div>
+      <div class="line add">+     def __init__(self, nome):</div>
+      <div class="line add">+         self.nome = nome       # público: qualquer um</div>
+      <div class="line add">+         self._pai = None       # protegido: convenção (&quot;mexa só se for da família&quot;)</div>
+      <div class="line add">+         self.__filhos = []     # privado: o Python renomeia (name mangling)</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     def quantos_filhos(self):</div>
+      <div class="line add">+         return len(self.__filhos)</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     def _anexar(self, filho):          # método protegido (convenção)</div>
+      <div class="line add">+         self.__filhos.append(filho)</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     def __conferir(self):              # método privado (mangling)</div>
+      <div class="line add">+         return len(self.__filhos) &gt;= 0</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 visibilidade.py</div>
+      <div class="line ctx">1 qualquer coisa 1.7</div>
+      <div class="line ctx">{&#x27;nome&#x27;: 1, &#x27;pai&#x27;: None, &#x27;filhos&#x27;: &#x27;qualquer coisa&#x27;, &#x27;altura&#x27;: 1.7}</div>
+      <div class="line ctx">lixo</div>
+      <div class="line ctx">item.__filhos -&gt; AttributeError: &#x27;ItemConvencao&#x27; object has no attribute &#x27;__filhos&#x27;</div>
+      <div class="line ctx">item.__conferir() -&gt; AttributeError: &#x27;ItemConvencao&#x27; object has no attribute &#x27;__conferir&#x27;</div>
+      <div class="line ctx">[&#x27;_ItemConvencao__conferir&#x27;, &#x27;_ItemConvencao__filhos&#x27;, &#x27;quantos_filhos&#x27;]</div>
+      <div class="line ctx">[]</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Tudo público é um buraco</h4>
+        <p>No <code class="inline">Item</code> da Aula 08, <code class="inline">pasta.nome = 1</code>, <code class="inline">pasta.filhos = &quot;qualquer coisa&quot;</code> e até <code class="inline">pasta.altura = 1.70</code> passam sem aviso. A saída mostra o <code class="inline">__dict__</code> da pasta: o nome virou número, a lista de filhos virou texto e nasceu um atributo que a classe nunca previu.</p>
+      </div>
+      <div class="why-card">
+        <h4>_ é convenção, __ é renomeação</h4>
+        <p><code class="inline">_pai</code> só pede "mexa só se for da família": <code class="inline">item._pai = &quot;lixo&quot;</code> funciona. <code class="inline">__filhos</code> o Python renomeia por baixo para <code class="inline">_ItemConvencao__filhos</code>, então <code class="inline">item.__filhos</code> dá <code class="inline">AttributeError</code>. Em Java o compilador proíbe; em Python o programador combina.</p>
+      </div>
+      <div class="why-card">
+        <h4>Nada é cofre</h4>
+        <p><code class="inline">item._ItemConvencao__filhos</code> ainda alcança a lista privada (a última linha da saída). O Python não esconde, só desencoraja. O que protege de verdade é um contrato bem desenhado, que é o assunto das próximas etapas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 2 -->
+  <div class="entry">
+    <div class="entry-dot">2</div>
+    <div class="entry-date">Etapa 2</div>
+    <h2><code class="inline">encapsulamento.py</code>: o Item da Aula 08 com a cerca fechada</h2>
+    <p class="sub">A mesma classe da árvore de arquivos, agora com atributos privados, <code class="inline">property</code>, setter com validação, <code class="inline">__slots__</code> e um método no lugar de <code class="inline">item.pai = ...</code>.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/08/arvore_arquivos.py → src/09/encapsulamento.py: a classe Item</div>
+      <div class="line ctx">  class Item:</div>
+      <div class="line rem">-     # pai é um OBJETO Item (a pasta onde este item está) ou None (a raiz).</div>
+      <div class="line add">+     # __slots__ lista os únicos atributos permitidos (e elimina o __dict__).</div>
+      <div class="line add">+     __slots__ = (&quot;__nome&quot;, &quot;__eh_pasta&quot;, &quot;__pai&quot;, &quot;__filhos&quot;)</div>
+      <div class="line add">+ </div>
+      <div class="line ctx">      def __init__(self, nome, eh_pasta, pai=None):</div>
+      <div class="line rem">-         # Só pasta pode conter itens: recusa já na criação.</div>
+      <div class="line rem">-         if pai is not None and not pai.eh_pasta:</div>
+      <div class="line rem">-             raise ValueError(pai.nome + &quot; é um arquivo, não pode conter itens&quot;)</div>
+      <div class="line add">+         self.__validar_nome(nome)</div>
+      <div class="line add">+         self.__nome = nome</div>
+      <div class="line add">+         self.__eh_pasta = eh_pasta</div>
+      <div class="line add">+         self.__pai = None</div>
+      <div class="line add">+         self.__filhos = []</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-         self.nome = nome</div>
+      <div class="line rem">-         self.eh_pasta = eh_pasta</div>
+      <div class="line rem">-         self.pai = pai</div>
+      <div class="line rem">-         self.filhos = []    # um item só tem filhos se for pasta</div>
+      <div class="line add">+         if pai is not None:</div>
+      <div class="line add">+             self.mover_para(pai)</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-         # O item novo se cadastra na lista de filhos do pai.</div>
+      <div class="line rem">-         if pai is not None:</div>
+      <div class="line rem">-             pai.filhos.append(self)</div>
+      <div class="line add">+     # Método privado: detalhe interno, ninguém de fora precisa chamar.</div>
+      <div class="line add">+     def __validar_nome(self, nome):</div>
+      <div class="line add">+         if nome == &quot;&quot; or &quot;/&quot; in nome:</div>
+      <div class="line add">+             raise ValueError(&quot;nome inválido: &quot; + repr(nome))</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     # Sobe de pai em pai até a raiz, montando o caminho, como na barra de</div>
+      <div class="line rem">-     # endereço do Explorador (usamos / como separador, o Windows aceita).</div>
+      <div class="line add">+     # Leitura e escrita com validação.</div>
+      <div class="line add">+     @property</div>
+      <div class="line add">+     def nome(self):</div>
+      <div class="line add">+         return self.__nome</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     @nome.setter</div>
+      <div class="line add">+     def nome(self, novo_nome):</div>
+      <div class="line add">+         self.__validar_nome(novo_nome)</div>
+      <div class="line add">+         self.__nome = novo_nome</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     # Só leitura: getter sem setter.</div>
+      <div class="line add">+     @property</div>
+      <div class="line add">+     def eh_pasta(self):</div>
+      <div class="line add">+         return self.__eh_pasta</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     @property</div>
+      <div class="line add">+     def pai(self):</div>
+      <div class="line add">+         return self.__pai</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     # Devolve uma CÓPIA imutável: pasta.filhos.append(...) não funciona.</div>
+      <div class="line add">+     @property</div>
+      <div class="line add">+     def filhos(self):</div>
+      <div class="line add">+         return tuple(self.__filhos)</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     # Comportamento em vez de dado cru: no lugar de &quot;item.pai = destino&quot;.</div>
+      <div class="line add">+     def mover_para(self, destino):</div>
+      <div class="line add">+         if not destino.eh_pasta:</div>
+      <div class="line add">+             raise ValueError(destino.nome + &quot; é um arquivo, não pode conter itens&quot;)</div>
+      <div class="line add">+ </div>
+      <div class="line add">+         ancestral = destino</div>
+      <div class="line add">+         while ancestral is not None:</div>
+      <div class="line add">+             if ancestral is self:</div>
+      <div class="line add">+                 raise ValueError(&quot;não dá para mover &quot; + self.nome + &quot; para dentro dela mesma&quot;)</div>
+      <div class="line add">+             ancestral = ancestral.pai</div>
+      <div class="line add">+ </div>
+      <div class="line add">+         if self.__pai is not None:</div>
+      <div class="line add">+             self.__pai.__filhos.remove(self)</div>
+      <div class="line add">+ </div>
+      <div class="line add">+         # privado é da CLASSE, não do objeto: aqui mexemos no __filhos de outro Item</div>
+      <div class="line add">+         destino.__filhos.append(self)</div>
+      <div class="line add">+         self.__pai = destino</div>
+      <div class="line add">+ </div>
+      <div class="line ctx">      def caminho(self):</div>
+      <div class="line rem">-         if self.pai is None:</div>
+      <div class="line rem">-             return self.nome</div>
+      <div class="line rem">-         return self.pai.caminho() + &quot;/&quot; + self.nome</div>
+      <div class="line add">+         if self.__pai is None:</div>
+      <div class="line add">+             return self.__nome</div>
+      <div class="line add">+         return self.__pai.caminho() + &quot;/&quot; + self.__nome</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     # Quantos pais existem acima deste item. A raiz tem profundidade 0.</div>
+      <div class="line ctx">      def profundidade(self):</div>
+      <div class="line rem">-         if self.pai is None:</div>
+      <div class="line add">+         if self.__pai is None:</div>
+      <div class="line ctx">              return 0</div>
+      <div class="line rem">-         return self.pai.profundidade() + 1</div>
+      <div class="line rem">- </div>
+      <div class="line rem">-     # Mostra o item e, recursivamente, todos os filhos, recuando 4 espaços</div>
+      <div class="line rem">-     # por nível de profundidade.</div>
+      <div class="line rem">-     def mostrar(self):</div>
+      <div class="line rem">-         recuo = &quot;    &quot; * self.profundidade()</div>
+      <div class="line rem">-         sufixo = &quot;&quot;</div>
+      <div class="line rem">-         if self.eh_pasta:</div>
+      <div class="line rem">-             sufixo = &quot;/&quot;</div>
+      <div class="line rem">-         print(recuo + self.nome + sufixo)</div>
+      <div class="line rem">- </div>
+      <div class="line rem">-         for filho in self.filhos:</div>
+      <div class="line rem">-             filho.mostrar()</div>
+      <div class="line add">+         return self.__pai.profundidade() + 1</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 encapsulamento.py</div>
+      <div class="line ctx">C:/Users/Desktop/Trabalhos/tf-09.py</div>
+      <div class="line ctx">4</div>
+      <div class="line ctx">[&#x27;tf-09.py&#x27;]</div>
+      <div class="line ctx">tf-09-final.py</div>
+      <div class="line ctx">tf.nome = &#x27;&#x27; -&gt; ValueError: nome inválido: &#x27;&#x27;</div>
+      <div class="line ctx">tf.pai = None -&gt; AttributeError: property &#x27;pai&#x27; of &#x27;Item&#x27; object has no setter</div>
+      <div class="line ctx">tf.eh_pasta = True -&gt; AttributeError: property &#x27;eh_pasta&#x27; of &#x27;Item&#x27; object has no setter</div>
+      <div class="line ctx">tf.altura = 1.70 -&gt; AttributeError: &#x27;Item&#x27; object has no attribute &#x27;altura&#x27;</div>
+      <div class="line ctx">trabalhos.filhos.append(...) -&gt; AttributeError: &#x27;tuple&#x27; object has no attribute &#x27;append&#x27;</div>
+      <div class="line ctx">tf.__filhos -&gt; AttributeError: &#x27;Item&#x27; object has no attribute &#x27;__filhos&#x27;</div>
+      <div class="line ctx">mover pasta p/ dentro de si -&gt; ValueError: não dá para mover Users para dentro dela mesma</div>
+      <div class="line ctx">mover p/ dentro de arquivo -&gt; ValueError: tf-09-final.py é um arquivo, não pode conter itens</div>
+      <div class="line ctx">C:/Users/Desktop/tf-09-final.py</div>
+      <div class="line ctx">0 2</div>
+      <div class="line ctx">tf-09-final.py</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>property: leitura e escrita controladas</h4>
+        <p><code class="inline">nome</code> tem getter e setter que valida (<code class="inline">tf.nome = &quot;&quot;</code> dá <code class="inline">ValueError</code>). <code class="inline">eh_pasta</code> e <code class="inline">pai</code> só têm getter: tentar atribuir dá <code class="inline">AttributeError: property ... has no setter</code>. Quem usa lê como atributo, mas a classe decide quem escreve.</p>
+      </div>
+      <div class="why-card">
+        <h4>__slots__ e tupla fecham o resto</h4>
+        <p><code class="inline">__slots__</code> lista os únicos atributos permitidos: <code class="inline">tf.altura = 1.70</code> agora é recusado. <code class="inline">filhos</code> devolve uma tupla (cópia imutável), então <code class="inline">trabalhos.filhos.append(...)</code> não existe mais, e o vazamento da lista da Aula 08 some.</p>
+      </div>
+      <div class="why-card">
+        <h4>Método no lugar de dado cru</h4>
+        <p>Em vez de <code class="inline">item.pai = destino</code>, existe <code class="inline">mover_para(destino)</code>: recusa destino que é arquivo, recusa ciclo (mover uma pasta para dentro dela mesma) e mantém <code class="inline">pai</code> e <code class="inline">filhos</code> coerentes nos dois lados. Comportamento no lugar de atribuição.</p>
+      </div>
+      <div class="why-card">
+        <h4>Privado é da classe, não do objeto</h4>
+        <p>Dentro de <code class="inline">mover_para</code>, o código mexe em <code class="inline">destino.__filhos</code> de OUTRO <code class="inline">Item</code>: pode, porque <code class="inline">__</code> protege contra quem está fora da classe, não contra outro objeto da mesma classe.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 3 -->
+  <div class="entry">
+    <div class="entry-dot">3</div>
+    <div class="entry-date">Etapa 3</div>
+    <h2><code class="inline">pilares.py</code> (1/2): herança e polimorfismo, Item vira o geral</h2>
+    <p class="sub">O booleano <code class="inline">eh_pasta</code> e os vários <code class="inline">if eh_pasta</code> da Aula 08 desaparecem: o <code class="inline">Item</code> fica com o que é comum, e <code class="inline">Arquivo</code> e <code class="inline">Pasta</code> ficam com o específico.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/09/encapsulamento.py → src/09/pilares.py: a classe Item (muda de lugar de &quot;tudo num lugar só&quot; para &quot;o geral&quot;)</div>
+      <div class="line rem">- class Item:</div>
+      <div class="line rem">-     # __slots__ lista os únicos atributos permitidos (e elimina o __dict__).</div>
+      <div class="line rem">-     __slots__ = (&quot;__nome&quot;, &quot;__eh_pasta&quot;, &quot;__pai&quot;, &quot;__filhos&quot;)</div>
+      <div class="line add">+ class Item(Medivel):</div>
+      <div class="line add">+     __slots__ = (&quot;__nome&quot;, &quot;__pai&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     def __init__(self, nome, eh_pasta, pai=None):</div>
+      <div class="line add">+     def __init__(self, nome, pai=None):</div>
+      <div class="line ctx">          self.__validar_nome(nome)</div>
+      <div class="line ctx">          self.__nome = nome</div>
+      <div class="line rem">-         self.__eh_pasta = eh_pasta</div>
+      <div class="line ctx">          self.__pai = None</div>
+      <div class="line rem">-         self.__filhos = []</div>
+      <div class="line ctx"></div>
+      <div class="line ctx">          if pai is not None:</div>
+      <div class="line ctx">              self.mover_para(pai)</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     # Método privado: detalhe interno, ninguém de fora precisa chamar.</div>
+      <div class="line ctx">      def __validar_nome(self, nome):</div>
+      <div class="line ctx">          if nome == &quot;&quot; or &quot;/&quot; in nome:</div>
+      <div class="line ctx">              raise ValueError(&quot;nome inválido: &quot; + repr(nome))</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     # Leitura e escrita com validação.</div>
+      <div class="line ctx">      @property</div>
+      <div class="line ctx">      def nome(self):</div>
+      <div class="line ctx">  ⋯</div>
+      <div class="line ctx">          self.__nome = novo_nome</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     # Só leitura: getter sem setter.</div>
+      <div class="line rem">-     @property</div>
+      <div class="line rem">-     def eh_pasta(self):</div>
+      <div class="line rem">-         return self.__eh_pasta</div>
+      <div class="line rem">- </div>
+      <div class="line ctx">      @property</div>
+      <div class="line ctx">      def pai(self):</div>
+      <div class="line ctx">          return self.__pai</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     # Devolve uma CÓPIA imutável: pasta.filhos.append(...) não funciona.</div>
+      <div class="line rem">-     @property</div>
+      <div class="line rem">-     def filhos(self):</div>
+      <div class="line rem">-         return tuple(self.__filhos)</div>
+      <div class="line add">+     def mover_para(self, destino):</div>
+      <div class="line add">+         if destino is self.__pai:</div>
+      <div class="line add">+             return</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-     # Comportamento em vez de dado cru: no lugar de &quot;item.pai = destino&quot;.</div>
+      <div class="line rem">-     def mover_para(self, destino):</div>
+      <div class="line rem">-         if not destino.eh_pasta:</div>
+      <div class="line rem">-             raise ValueError(destino.nome + &quot; é um arquivo, não pode conter itens&quot;)</div>
+      <div class="line add">+         destino._receber(self)          # cada tipo decide se aceita</div>
+      <div class="line add">+         if self.__pai is not None:</div>
+      <div class="line add">+             self.__pai._soltar(self)</div>
+      <div class="line add">+         self.__pai = destino</div>
+      <div class="line ctx"></div>
+      <div class="line rem">-         ancestral = destino</div>
+      <div class="line rem">-         while ancestral is not None:</div>
+      <div class="line rem">-             if ancestral is self:</div>
+      <div class="line rem">-                 raise ValueError(&quot;não dá para mover &quot; + self.nome + &quot; para dentro dela mesma&quot;)</div>
+      <div class="line rem">-             ancestral = ancestral.pai</div>
+      <div class="line rem">- </div>
+      <div class="line rem">-         if self.__pai is not None:</div>
+      <div class="line rem">-             self.__pai.__filhos.remove(self)</div>
+      <div class="line rem">- </div>
+      <div class="line rem">-         # privado é da CLASSE, não do objeto: aqui mexemos no __filhos de outro Item</div>
+      <div class="line rem">-         destino.__filhos.append(self)</div>
+      <div class="line rem">-         self.__pai = destino</div>
+      <div class="line add">+     # PROTEGIDO: o gancho que as filhas sobrescrevem. Por padrão, recusa.</div>
+      <div class="line add">+     def _receber(self, item):</div>
+      <div class="line add">+         raise ValueError(self.__nome + &quot; é um arquivo, não pode conter itens&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx">      def caminho(self):</div>
+      <div class="line ctx">  ⋯</div>
+      <div class="line ctx">              return 0</div>
+      <div class="line ctx">          return self.__pai.profundidade() + 1</div>
+      <div class="line add">+ </div>
+      <div class="line add">+     @abstractmethod</div>
+      <div class="line add">+     def mostrar(self):</div>
+      <div class="line add">+         pass</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">src/09/pilares.py: Arquivo e Pasta (classes novas)</div>
+      <div class="line add">+ class Arquivo(Item):</div>
+      <div class="line add">+     __slots__ = (&quot;__bytes&quot;,)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def __init__(self, nome, tamanho_bytes, pai=None):</div>
+      <div class="line add">+         if tamanho_bytes &lt; 0:</div>
+      <div class="line add">+             raise ValueError(&quot;tamanho não pode ser negativo&quot;)</div>
+      <div class="line add">+         self.__bytes = tamanho_bytes</div>
+      <div class="line add">+         super().__init__(nome, pai)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def tamanho(self):</div>
+      <div class="line add">+         return self.__bytes</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def mostrar(self):</div>
+      <div class="line add">+         recuo = &quot;    &quot; * self.profundidade()</div>
+      <div class="line add">+         print(recuo + self.nome + &quot; (&quot; + str(self.tamanho()) + &quot; B)&quot;)</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ class Pasta(Item):</div>
+      <div class="line add">+     __slots__ = (&quot;__filhos&quot;,)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def __init__(self, nome, pai=None):</div>
+      <div class="line add">+         self.__filhos = []</div>
+      <div class="line add">+         super().__init__(nome, pai)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     @property</div>
+      <div class="line add">+     def filhos(self):</div>
+      <div class="line add">+         return tuple(self.__filhos)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # OVERRIDE do gancho protegido: a pasta aceita, desde que não crie um ciclo.</div>
+      <div class="line add">+     def _receber(self, item):</div>
+      <div class="line add">+         ancestral = self</div>
+      <div class="line add">+         while ancestral is not None:</div>
+      <div class="line add">+             if ancestral is item:</div>
+      <div class="line add">+                 raise ValueError(&quot;não dá para mover &quot; + item.nome + &quot; para dentro dela mesma&quot;)</div>
+      <div class="line add">+             ancestral = ancestral.pai</div>
+      <div class="line add">+         self.__filhos.append(item)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def _soltar(self, item):</div>
+      <div class="line add">+         self.__filhos.remove(item)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     # POLIMORFISMO: a pasta soma o que tem dentro; nenhum filho é perguntado</div>
+      <div class="line add">+     # se é pasta ou arquivo, cada um responde do seu jeito.</div>
+      <div class="line add">+     def tamanho(self):</div>
+      <div class="line add">+         total = 0</div>
+      <div class="line add">+         for filho in self.__filhos:</div>
+      <div class="line add">+             total = total + filho.tamanho()</div>
+      <div class="line add">+         return total</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def mostrar(self):</div>
+      <div class="line add">+         recuo = &quot;    &quot; * self.profundidade()</div>
+      <div class="line add">+         print(recuo + self.nome + &quot;/ (&quot; + str(self.tamanho()) + &quot; B)&quot;)</div>
+      <div class="line add">+         for filho in self.__filhos:</div>
+      <div class="line add">+             filho.mostrar()</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>O booleano some</h4>
+        <p>Na Aula 08 o <code class="inline">Item</code> guardava <code class="inline">eh_pasta</code> e quem usava a árvore perguntava "você é pasta?". Agora são duas classes, e nenhum código de fora faz essa pergunta: cada objeto sabe o que é.</p>
+      </div>
+      <div class="why-card">
+        <h4>Herança: o geral fica no Item</h4>
+        <p><code class="inline">nome</code>, <code class="inline">pai</code>, <code class="inline">caminho()</code> e <code class="inline">profundidade()</code> ficam no <code class="inline">Item</code>, e <code class="inline">Arquivo</code> e <code class="inline">Pasta</code> herdam sem copiar uma linha (o <code class="inline">super().__init__</code> reaproveita a validação do nome).</p>
+      </div>
+      <div class="why-card">
+        <h4>O gancho protegido _receber</h4>
+        <p>O <code class="inline">Item</code> recusa receber filhos por padrão (é o caso do arquivo). A <code class="inline">Pasta</code> faz override do <code class="inline">_receber</code>: aceita e confere que não cria ciclo. <code class="inline">mover_para</code> só chama o gancho, sem saber quem está do outro lado.</p>
+      </div>
+      <div class="why-card">
+        <h4>Polimorfismo: tamanho()</h4>
+        <p>O <code class="inline">Arquivo</code> devolve os próprios bytes; a <code class="inline">Pasta</code> soma o <code class="inline">tamanho()</code> dos filhos. Quem chama só pede "qual o seu tamanho?" e cada um responde do seu jeito: a <code class="inline">Pasta</code> nunca pergunta se o filho é pasta ou arquivo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 4 -->
+  <div class="entry">
+    <div class="entry-dot">4</div>
+    <div class="entry-date">Etapa 4</div>
+    <h2><code class="inline">pilares.py</code> (2/2): abstração e interface</h2>
+    <p class="sub">A interface é a abstração sem disfarce: um contrato puro (<code class="inline">Medivel</code>) que até uma classe fora da árvore (<code class="inline">Lixeira</code>) pode assinar.</p>
+
+    <div class="diff">
+      <div class="diff-head">src/09/pilares.py: Medivel (a interface), Lixeira e espaco_total</div>
+      <div class="line add">+ # INTERFACE: contrato puro, sem estado e sem implementação.</div>
+      <div class="line add">+ # Quem assina promete saber dizer o próprio tamanho em bytes.</div>
+      <div class="line add">+ class Medivel(ABC):</div>
+      <div class="line add">+     __slots__ = ()</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     @abstractmethod</div>
+      <div class="line add">+     def tamanho(self):</div>
+      <div class="line add">+         pass</div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Outra classe que assina o contrato SEM ser da árvore: a Lixeira.</div>
+      <div class="line add">+ class Lixeira(Medivel):</div>
+      <div class="line add">+     __slots__ = (&quot;__descartados&quot;,)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def __init__(self):</div>
+      <div class="line add">+         self.__descartados = []</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def descartar(self, arquivo):</div>
+      <div class="line add">+         self.__descartados.append(arquivo)</div>
+      <div class="line ctx"></div>
+      <div class="line add">+     def tamanho(self):</div>
+      <div class="line add">+         total = 0</div>
+      <div class="line add">+         for arquivo in self.__descartados:</div>
+      <div class="line add">+             total = total + arquivo.tamanho()</div>
+      <div class="line add">+         return total</div>
+      <div class="line ctx"></div>
+      <div class="line ctx"></div>
+      <div class="line add">+ # Quem usa o contrato não sabe (nem quer saber) quem está do outro lado.</div>
+      <div class="line add">+ def espaco_total(coisas):</div>
+      <div class="line add">+     total = 0</div>
+      <div class="line add">+     for coisa in coisas:</div>
+      <div class="line add">+         total = total + coisa.tamanho()</div>
+      <div class="line add">+     return total</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 pilares.py</div>
+      <div class="line ctx">C:/ (5920 B)</div>
+      <div class="line ctx">    Users/ (5920 B)</div>
+      <div class="line ctx">        Desktop/ (5920 B)</div>
+      <div class="line ctx">            Trabalhos/ (5800 B)</div>
+      <div class="line ctx">                tf-09.py (800 B)</div>
+      <div class="line ctx">                slide.pdf (5000 B)</div>
+      <div class="line ctx">            notas.txt (120 B)</div>
+      <div class="line ctx">C:/Users/Desktop/Trabalhos/tf-09.py</div>
+      <div class="line ctx">5920</div>
+      <div class="line ctx">5960</div>
+      <div class="line ctx">Item(&#x27;x&#x27;) -&gt; TypeError: Can&#x27;t instantiate abstract class Item without an implementation for abstract methods &#x27;mostrar&#x27;, &#x27;tamanho&#x27;</div>
+      <div class="line ctx">Medivel() -&gt; TypeError: Can&#x27;t instantiate abstract class Medivel without an implementation for abstract method &#x27;tamanho&#x27;</div>
+      <div class="line ctx">Arquivo dentro de arquivo -&gt; ValueError: tf-09.py é um arquivo, não pode conter itens</div>
+      <div class="line ctx">tf.pai = None -&gt; AttributeError: property &#x27;pai&#x27; of &#x27;Arquivo&#x27; object has no setter</div>
+      <div class="line ctx">tf.altura = 1.70 -&gt; AttributeError: &#x27;Arquivo&#x27; object has no attribute &#x27;altura&#x27;</div>
+      <div class="line ctx">usuarios p/ dentro de si -&gt; ValueError: não dá para mover Users para dentro dela mesma</div>
+      <div class="line ctx">C:/Users/Desktop/tf-09.py</div>
+      <div class="line ctx">1 3</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Interface é contrato puro</h4>
+        <p><code class="inline">Medivel</code> tem um <code class="inline">@abstractmethod</code> e nenhum estado. Quem assina promete ter <code class="inline">tamanho()</code>; como, é problema dele. A saída confirma: <code class="inline">Medivel()</code> dá <code class="inline">TypeError</code>, contrato não se instancia.</p>
+      </div>
+      <div class="why-card">
+        <h4>Lixeira assina sem ser da árvore</h4>
+        <p><code class="inline">Lixeira</code> não é <code class="inline">Item</code>, não tem pai, mas assina <code class="inline">Medivel</code>. Por isso <code class="inline">espaco_total([notas, trabalhos, lixeira])</code> soma 120 + 5800 + 40 = 5960 sem nenhum <code class="inline">if</code>: a função só conhece o contrato.</p>
+      </div>
+      <div class="why-card">
+        <h4>A abstração atravessa os três pilares</h4>
+        <p><code class="inline">Item</code> também é abstrato (<code class="inline">Item(&quot;x&quot;)</code> dá <code class="inline">TypeError</code>): é só o recorte do essencial, e o que muda fica nas filhas. Encapsulamento separa interface de implementação, herança separa o geral do específico, polimorfismo separa o que se pede de como é feito.</p>
+      </div>
+      <div class="why-card">
+        <h4>Comparando com a Aula 08</h4>
+        <p>A Aula 08 criou a árvore com <code class="inline">if eh_pasta</code>. A Aula 09 chega no mesmo resultado (<code class="inline">mostrar()</code>, <code class="inline">caminho()</code>, <code class="inline">tamanho()</code>) com três classes, um contrato e zero perguntas de tipo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 5 -->
+  <div class="entry">
+    <div class="entry-dot">5</div>
+    <div class="entry-date">Etapa 5</div>
+    <h2><code class="inline">simples/</code>: um pilar por arquivo, sem a árvore</h2>
+    <p class="sub">Para ver cada pilar nu, quatro arquivos pequenos (30 a 45 linhas) com <code class="inline">Arquivo</code> e <code class="inline">Pasta</code> mínimos.</p>
+
+    <div class="tree"><span class="dir">src/09/simples/</span>
+├── <span class="new">encapsulamento.py</span>   <span class="comment">// private, property sem setter, validação no construtor</span>
+├── <span class="new">heranca.py</span>          <span class="comment">// Item geral; Arquivo e Pasta específicos; isinstance</span>
+├── <span class="new">polimorfismo.py</span>     <span class="comment">// tamanho() responde diferente em cada classe</span>
+└── <span class="new">interface.py</span>        <span class="comment">// o contrato Medivel e a Lixeira que o assina</span></div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 encapsulamento.py</div>
+      <div class="line ctx">120</div>
+      <div class="line ctx">300</div>
+      <div class="line ctx">ler pode, atribuir não: property &#x27;tamanho&#x27; of &#x27;Arquivo&#x27; object has no setter</div>
+      <div class="line ctx">gravar valida: tamanho não pode ser negativo</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 heranca.py</div>
+      <div class="line ctx">Eu sou notas.txt</div>
+      <div class="line ctx">Eu sou Trabalhos</div>
+      <div class="line ctx">True</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 polimorfismo.py</div>
+      <div class="line ctx">notas.txt 120</div>
+      <div class="line ctx">Trabalhos 5800</div>
+    </div>
+
+    <div class="diff">
+      <div class="diff-head">saída</div>
+      <div class="line ctx">$ python3 interface.py</div>
+      <div class="line ctx">220</div>
+      <div class="line ctx">contrato não se instancia: Can&#x27;t instantiate abstract class Medivel without an implementation for abstract method &#x27;tamanho&#x27;</div>
+    </div>
+
+    <div class="why">
+      <div class="why-card">
+        <h4>Um conceito por arquivo</h4>
+        <p>Cada arquivo isola um pilar, para rodar e ler em um minuto antes de ver a versão completa em <code class="inline">pilares.py</code>.</p>
+      </div>
+      <div class="why-card">
+        <h4>Os mesmos nomes da árvore</h4>
+        <p><code class="inline">Arquivo</code>, <code class="inline">Pasta</code>, <code class="inline">Medivel</code>: quem entendeu a árvore da Aula 08 reconhece tudo, só que menor.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  Aula 09 — Os 3 Pilares da Orientação a Objetos · Engenharia de Software 2026.2 · Raio-X do Código (feito depois, comparando com a Aula 08)
+</footer>
+
+<script src="../../assets/raio-x.js"></script>
+</body>
+</html>

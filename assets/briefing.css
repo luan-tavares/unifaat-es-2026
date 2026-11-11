@@ -35,7 +35,7 @@
     /* bloco de código: claro no tema claro, pra não virar mancha preta no projetor */
     --code-bg: #eef1f8;
     --code-ink: #0b0f1a;
-    --code-cm: #3a4560;
+    --code-cm: #0a6a33;
     --code-pr: #3a49c7;
     --code-border: #7f89a8;
     --font-body: 'IBM Plex Sans', system-ui, sans-serif;
@@ -68,7 +68,7 @@
     --term-bar: #131c36;
     --code-bg: #0a0f1c;
     --code-ink: #ffffff;
-    --code-cm: #c4cbe0;
+    --code-cm: #86efac;
     --code-pr: #b4c2ff;
     --code-border: #4a5a8c;
   }
@@ -190,12 +190,13 @@
     margin:0; padding: 20px 22px; overflow-x:auto;
     background: var(--code-bg); color: var(--code-ink);
     border: 1.5px solid var(--code-border); border-radius: 14px;
-    font-family: var(--font-mono); font-size: .92rem; font-weight: 500; line-height:1.65; tab-size: 2;
+    font-family: var(--font-mono); font-size: .92rem; font-weight: 700; line-height:1.65; tab-size: 2;
   }
   .code-wrap > .code{ margin:0; }
   .doc > .code{ margin: 6px 0 24px; }
   .code code{ background:none; border:0; padding:0; color: inherit; font-size: inherit; white-space: pre; }
-  .code .cm{ color: var(--code-cm); font-style: italic; }
+  /* código em negrito; comentário em peso normal, itálico e verde */
+  .code .cm{ color: var(--code-cm); font-style: italic; font-weight: 400; }
   .code .pr{ color: var(--code-pr); font-weight: 700; }
   .copy{
     position:absolute; top: 10px; right: 10px; opacity:0; transition: opacity .15s;

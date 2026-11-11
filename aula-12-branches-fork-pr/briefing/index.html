@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Briefing · Aula 12 — Branches, Fork e Pull Request</title>
+<link rel="stylesheet" href="../../assets/briefing.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="back" href="../../index.html">← Voltar</a>
+    <details class="toc" open><summary>Nesta página</summary><ol><li class="l1"><a href="#topo">12 - Branches, Fork e Pull Request</a></li><li class="l2"><a href="#s1-introdução">1 - Introdução</a></li><li class="l2"><a href="#s2-revisão-rápida-o-commit">2 - Revisão rápida: o commit</a></li><li class="l2"><a href="#s3-branches-o-multiverso">3 - Branches: o multiverso</a></li><li class="l3"><a href="#s3-1-uma-linha-do-tempo-vários-universos">3.1 - Uma linha do tempo, vários universos</a></li><li class="l3"><a href="#s3-2-criar-e-trocar-de-branch-checkout-e-switch">3.2 - Criar e trocar de branch: `checkout` e `switch`</a></li><li class="l3"><a href="#s3-3-branch-e-push-escolhemos-o-remote-e-a-branch">3.3 - Branch e `push`: escolhemos o remote e a branch</a></li><li class="l2"><a href="#s4-ssh-a-chave-pública-e-o-lugar-onde-ela-vive">4 - SSH: a chave pública e o lugar onde ela vive</a></li><li class="l3"><a href="#s4-1-revisão-o-par-de-chaves">4.1 - Revisão: o par de chaves</a></li><li class="l3"><a href="#s4-2-na-conta-inteira-ou-em-um-repositório-só">4.2 - Na conta inteira ou em um repositório só</a></li><li class="l3"><a href="#s4-3-por-que-ssh-e-não-https">4.3 - Por que SSH e não HTTPS</a></li><li class="l2"><a href="#s5-merge-e-os-cuidados">5 - Merge e os cuidados</a></li><li class="l3"><a href="#s5-1-o-que-é-o-merge">5.1 - O que é o merge</a></li><li class="l3"><a href="#s5-2-conflito">5.2 - Conflito</a></li><li class="l3"><a href="#s5-3-os-cuidados">5.3 - Os cuidados</a></li><li class="l3"><a href="#s5-4-galhos-que-nunca-são-mesclados">5.4 - Galhos que nunca são mesclados</a></li><li class="l2"><a href="#s6-fork-sync-e-pull-request">6 - Fork, sync e Pull Request</a></li><li class="l3"><a href="#s6-1-o-problema-o-repositório-não-é-seu">6.1 - O problema: o repositório não é seu</a></li><li class="l3"><a href="#s6-2-fork-a-sua-cópia-na-sua-conta">6.2 - Fork: a sua cópia, na sua conta</a></li><li class="l3"><a href="#s6-3-sync-trazer-as-aulas-novas">6.3 - Sync: trazer as aulas novas</a></li><li class="l3"><a href="#s6-4-push-só-em-outra-branch-e-o-pull-request">6.4 - Push só em outra branch, e o Pull Request</a></li><li class="l2"><a href="#s7-como-os-tfs-serão-entregues">7 - Como os TFs serão entregues</a></li><li class="l3"><a href="#s7-1-preparação-uma-vez-só">7.1 - Preparação (uma vez só)</a></li><li class="l3"><a href="#s7-2-o-ciclo-de-cada-tf">7.2 - O ciclo de cada TF</a></li><li class="l3"><a href="#s7-3-o-pull-request-do-tf-por-dentro">7.3 - O Pull Request do TF, por dentro</a></li><li class="l3"><a href="#s7-4-quando-o-tf-é-válido-e-onde-está-a-descrição">7.4 - Quando o TF é válido, e onde está a descrição</a></li><li class="l3"><a href="#s7-5-o-contexto-o-que-vocês-já-têm-do-1º-bimestre">7.5 - O contexto: o que vocês já têm do 1º bimestre</a></li><li class="l2"><a href="#s8-conclusão">8 - Conclusão</a></li><li class="l2"><a href="#s9-referências">9 - Referências</a></li><li class="l2"><a href="#questoes">Questões do TA</a></li></ol></details>
+  </aside>
+  <main class="doc">
+    <header class="cover" id="topo">
+      <p class="eyebrow">UNIFAAT · 2026.2 · Briefing para produção de conteúdo</p>
+      <h1><span class="cn">12</span> - Branches, Fork e Pull Request</h1>
+      <dl class="ficha">
+        <div><dt>Professor</dt><dd>Luan Tavares Lourenço</dd></div>
+        <div><dt>Disciplina</dt><dd>Engenharia de Software</dd></div>
+        <div><dt>Aula</dt><dd>12</dd></div>
+        <div><dt>Opção do TA</dt><dd>Texto</dd></div>
+      </dl>
+    </header>
+<h2 id="s1-introdução"><span class="hn">1</span>Introdução</h2>
+<p>Na Aula 05 o Git saiu de dentro de uma única máquina: o histórico ganhou um <strong>remote</strong> (<code>origin</code>), uma <strong>chave SSH</strong> e os comandos <code>push</code> e <code>pull</code>. Naquela aula, porém, a linha do tempo era <strong>uma só</strong>: um <code>main</code>, um autor, commits em sequência. Esta aula volta ao Git e ao GitHub para responder à pergunta que o trabalho em equipe faz: <strong>como várias pessoas mexem no mesmo projeto, ao mesmo tempo, sem pisar umas nas outras?</strong></p>
+<p>A resposta tem quatro peças, e a aula as apresenta nesta ordem. Primeiro, uma <strong>revisão rápida do commit</strong>, porque tudo o que vem depois é construído em cima dele. Segundo, as <strong>branches</strong>: a linha do tempo deixa de ser uma e vira um <strong>multiverso</strong>. Terceiro, o <strong>merge</strong>, que junta universos, e os cuidados que ele exige. Quarto, o <strong>fork</strong> e o <strong>Pull Request</strong>: o jeito de contribuir com um repositório <strong>que não é seu</strong>, e que é exatamente o jeito pelo qual os <strong>TFs</strong> desta disciplina passam a ser entregues.</p>
+<p>No caminho entra um ponto de infraestrutura que a Aula 05 só abriu: <strong>onde a chave SSH é cadastrada</strong> (na conta inteira ou em um único repositório, somente leitura) e <strong>por que usamos SSH e não HTTPS</strong>.</p>
+<h2 id="s2-revisão-rápida-o-commit"><span class="hn">2</span>Revisão rápida: o commit</h2>
+<p>Antes de ramificar, vale rever o que está sendo ramificado. O <strong>commit</strong> é a unidade do Git: uma <strong>fotografia completa</strong> do projeto naquele momento, mais uma mensagem, o autor, a data e um <strong>ponteiro para o commit anterior</strong> (o pai). Encadeados pelos ponteiros, os commits formam a <strong>linha do tempo</strong> que o <code>git log</code> mostra, e que na Aula 10 vimos ser, na verdade, um <strong>grafo</strong>: cada commit é um nó e a aresta aponta para o pai.</p>
+<pre class="code"><code><span class="cm"># cria o repositorio (a pasta oculta .git) nesta pasta</span>
+git init
+
+<span class="cm"># manda o arquivo para a area de preparacao (staging)</span>
+git add anotacoes.txt
+
+<span class="cm"># grava a fotografia permanente, com uma mensagem</span>
+git commit -m "Cria anotacoes.txt"
+
+<span class="cm"># mostra a linha do tempo, um commit por linha</span>
+git log --oneline</code></pre>
+<p>O fluxo de todo commit é sempre o mesmo, em três tempos: <strong>editar</strong> os arquivos, <strong><code>git add</code></strong> (escolher o que entra na foto) e <strong><code>git commit</code></strong> (tirar a foto). E o <code>HEAD</code>, visto na Aula 05, é o ponteiro que diz "estou aqui". Guarde essa imagem, porque a próxima seção só muda <strong>uma</strong> coisa nela: passa a existir mais de um lugar para o <code>HEAD</code> estar.</p>
+<h2 id="s3-branches-o-multiverso"><span class="hn">3</span>Branches: o multiverso</h2>
+<h3 id="s3-1-uma-linha-do-tempo-vários-universos"><span class="hn">3.1</span>Uma linha do tempo, vários universos</h3>
+<p>Até agora a linha do tempo era reta: cada commit tem um pai e um filho. Uma <strong>branch</strong> (ramo, galho) é um <strong>universo paralelo</strong> dessa linha do tempo: a partir de um commit qualquer, o histórico se <strong>bifurca</strong> e cada lado passa a evoluir sozinho, sem afetar o outro. No universo A o arquivo tem uma função nova; no universo B ele continua como estava; os dois existem ao mesmo tempo e nenhum "estraga" o outro.</p>
+<p>Isso resolve o problema central do trabalho em equipe: cada pessoa (ou cada tarefa) trabalha no seu galho, e só depois, <strong>por decisão</strong>, o galho é juntado ao resto.</p>
+<p>O que torna isso viável é que uma branch <strong>não é uma cópia dos arquivos</strong>. Da Aula 05: <code>HEAD</code> aponta para um arquivo, e esse arquivo aponta para um commit. Uma branch é <strong>exatamente esse arquivo</strong>: um texto de uma linha, com o hash de um commit dentro.</p>
+<pre class="code"><code><span class="cm"># a branch "main" e so um arquivo de texto com o hash do commit</span>
+cat .git/refs/heads/main</code></pre>
+<p>Criar uma branch é, portanto, <strong>criar um arquivo de poucos bytes</strong>: instantâneo e barato. Por isso o Git incentiva criar branches à vontade. O nome <code>main</code> não tem nada de especial: é só o nome que, por convenção, a branch inicial recebe (antigamente era <code>master</code>). Ela é o <strong>tronco</strong> do projeto; as demais são os <strong>galhos</strong> que saem dele.</p>
+<div class="tbl"><table><thead><tr><th>Termo</th><th>O que é</th></tr></thead><tbody><tr><td><strong>Tronco</strong> (branch principal, <code>main</code>)</td><td>A linha oficial do projeto: o que está pronto e aceito. Em equipes, só entra nela o que foi revisado.</td></tr><tr><td><strong>Galho</strong> (branch de trabalho, <em>feature branch</em>)</td><td>Uma linha criada a partir do tronco para uma tarefa específica (uma funcionalidade, uma correção, um TF).</td></tr><tr><td><strong><code>HEAD</code></strong></td><td>O ponteiro "estou aqui": aponta para a branch em que você está trabalhando agora.</td></tr></tbody></table></div>
+<h3 id="s3-2-criar-e-trocar-de-branch-checkout-e-switch"><span class="hn">3.2</span>Criar e trocar de branch: <code>checkout</code> e <code>switch</code></h3>
+<p>Dois comandos fazem a viagem entre os universos. Os dois <strong>trocam a branch atual</strong>, ou seja, movem o <code>HEAD</code> para outra branch e fazem os arquivos da pasta passarem a refletir o estado dela.</p>
+<pre class="code"><code><span class="cm"># lista as branches locais; o * marca a atual</span>
+git branch
+
+<span class="cm"># cria a branch "login" mas NAO entra nela</span>
+git branch login
+
+<span class="cm"># entra na branch (jeito classico)</span>
+git checkout login
+
+<span class="cm"># cria e entra de uma vez (jeito classico)</span>
+git checkout -b login
+
+<span class="cm"># entra na branch (jeito moderno)</span>
+git switch login
+
+<span class="cm"># cria e entra de uma vez (jeito moderno)</span>
+git switch -c login</code></pre>
+<p>A diferença entre os dois é de <strong>história e de foco</strong>. O <code>git checkout</code> é o comando antigo e é um "canivete suíço": troca de branch, mas também restaura arquivos e vai para um commit solto. Como o mesmo comando fazia coisas demais, o Git 2.23 (2019) o dividiu: o <strong><code>git switch</code></strong> cuida <strong>só de trocar de branch</strong> e o <strong><code>git restore</code></strong> cuida só de restaurar arquivos. Os dois jeitos funcionam e você vai encontrar os dois em tutoriais e em empresas. A regra prática: <strong><code>switch</code> para trocar de branch</strong> (diz o que faz), e saiba ler <code>checkout</code> quando aparecer.</p>
+<p>A prova de que é só um ponteiro mudando está no <code>HEAD</code>:</p>
+<pre class="code"><code>git switch -c login
+cat .git/HEAD</code></pre>
+<pre class="code"><code>ref: refs/heads/login</code></pre>
+<p>Veja o efeito nos arquivos: o que se commita em um galho <strong>não existe</strong> nos outros.</p>
+<pre class="code"><code><span class="cm"># estamos em "login": cria um arquivo e commita</span>
+git switch -c login
+echo "tela de login" &gt; login.txt
+git add login.txt
+git commit -m "Adiciona login.txt"
+ls
+
+<span class="cm"># voltamos ao tronco: o login.txt DESAPARECE da pasta</span>
+git switch main
+ls
+
+<span class="cm"># voltamos ao galho: ele REAPARECE</span>
+git switch login
+ls</code></pre>
+<p>Não é mágica: ao trocar de branch o Git reescreve os arquivos da pasta para espelhar a fotografia daquele commit. Por isso o <strong>cuidado</strong> da seção: com alterações <strong>não commitadas</strong>, o Git pode recusar a troca, para não perder trabalho. <strong>Commite antes de trocar</strong>.</p>
+<h3 id="s3-3-branch-e-push-escolhemos-o-remote-e-a-branch"><span class="hn">3.3</span>Branch e <code>push</code>: escolhemos o remote e a branch</h3>
+<p>Na Aula 05, <code>git push -u origin main</code> foi apresentado como uma frase pronta. Agora ele pode ser lido em partes: <code>origin</code> é o <strong>remote</strong> (para onde vai) e <code>main</code> é a <strong>branch</strong> (o que vai). <strong>Os dois são escolhas</strong>, e <code>origin</code> e <code>main</code> são apenas os valores mais comuns.</p>
+<pre class="code"><code><span class="cm"># envia a branch "login" para o remote "origin"</span>
+git push origin login
+
+<span class="cm"># na primeira vez, -u guarda o destino: depois basta "git push"</span>
+git push -u origin login
+
+<span class="cm"># lista tambem as branches que existem nos remotes</span>
+git branch -a</code></pre>
+<p>Pontos que decorrem disso:</p>
+<ul><li><strong>Uma branch local não existe no GitHub até o primeiro <code>push</code> dela.</strong> Criar o galho na sua máquina não o publica.</li><li><strong><code>git push</code> envia a branch em que você está</strong>, não "o projeto". Estar na branch errada é o erro mais comum.</li><li>Um repositório pode ter <strong>vários remotes</strong> (por exemplo, <code>origin</code> e <code>upstream</code>, que aparecem na seção 6). Escolher o remote é escolher <strong>para quem</strong> você está enviando.</li><li>No Git local, a branch do GitHub aparece com o prefixo do remote: <code>origin/main</code> é a cópia local da <code>main</code> que está no <code>origin</code>.</li></ul>
+<h2 id="s4-ssh-a-chave-pública-e-o-lugar-onde-ela-vive"><span class="hn">4</span>SSH: a chave pública e o lugar onde ela vive</h2>
+<h3 id="s4-1-revisão-o-par-de-chaves"><span class="hn">4.1</span>Revisão: o par de chaves</h3>
+<p>Na Aula 05 geramos o par com <code>ssh-keygen -t ed25519</code>: a <strong>chave privada</strong> fica na máquina e nunca sai dela; a <strong>chave pública</strong> (<code>id_ed25519.pub</code>) é entregue ao GitHub, que a usa para confirmar que o <code>git push</code> vem de quem diz ser. A dúvida que fica é <strong>onde, no GitHub, essa chave pública é cadastrada</strong>, porque existem dois lugares, com alcances muito diferentes.</p>
+<h3 id="s4-2-na-conta-inteira-ou-em-um-repositório-só"><span class="hn">4.2</span>Na conta inteira ou em um repositório só</h3>
+<div class="tbl"><table><thead><tr><th></th><th>Chave da conta</th><th>Chave de repositório (<em>deploy key</em>)</th></tr></thead><tbody><tr><td><strong>Onde cadastrar</strong></td><td>Foto de perfil → Settings → SSH and GPG keys</td><td>No repositório → Settings → Deploy keys</td></tr><tr><td><strong>Alcance</strong></td><td><strong>Tudo</strong> que a sua conta acessa: seus repositórios, seus forks e os de terceiros em que você é colaborador</td><td><strong>Só aquele repositório</strong></td></tr><tr><td><strong>Permissão</strong></td><td>A mesma que a sua conta tem</td><td><strong>Somente leitura</strong> por padrão; escrita só se marcar "Allow write access"</td></tr><tr><td><strong>Quem usa</strong></td><td>Uma pessoa, no seu computador</td><td>Máquina que só precisa baixar o código: servidor de produção, CI</td></tr><tr><td><strong>Se vazar</strong></td><td>Quem tem a chave privada age <strong>como você</strong> em tudo</td><td>O estrago fica limitado a um repositório (e, sem escrita, a leitura)</td></tr></tbody></table></div>
+<p>A lógica é o <strong>princípio do menor privilégio</strong>: dar a cada chave só o acesso de que ela precisa. Um servidor que apenas faz <code>git pull</code> do projeto não deveria carregar a chave da conta de quem o configurou; ele recebe uma <em>deploy key</em> somente leitura daquele repositório.</p>
+<p>Para o aluno, a <strong>chave da conta</strong> é a certa: ele vai trabalhar em vários repositórios (o próprio, o fork do professor, os projetos das outras matérias), e a chave é de uma pessoa, no computador dela. É a que foi cadastrada na Aula 05.</p>
+<h3 id="s4-3-por-que-ssh-e-não-https"><span class="hn">4.3</span>Por que SSH e não HTTPS</h3>
+<p>O mesmo repositório tem dois endereços de clone, e <strong>a escolha do endereço é a escolha do protocolo</strong>:</p>
+<pre class="code"><code>git@github.com:luan-tavares/unifaat-es-2026.git        # SSH
+https://github.com/luan-tavares/unifaat-es-2026.git    # HTTPS</code></pre>
+<ul><li><strong>SSH:</strong> configura uma vez (a chave) e depois <code>push</code> e <code>pull</code> <strong>não pedem nada</strong>. A autenticação é a posse da chave privada, que não trafega pela rede.</li><li><strong>HTTPS:</strong> pede credencial a cada operação. Desde 2021 o GitHub <strong>não aceita mais a senha da conta</strong> no Git; é preciso um <strong>token de acesso pessoal</strong>, que é um segredo a mais para criar, guardar, renovar e que, se copiado para um script ou um print, vaza.</li></ul>
+<p>HTTPS não é "errado" (existem redes que bloqueiam a porta do SSH), mas <strong>nesta disciplina usamos sempre SSH</strong>: menos fricção e menos segredos soltos. Se o <code>clone</code> já foi feito por HTTPS, não precisa clonar de novo, basta trocar o endereço do remote:</p>
+<pre class="code"><code><span class="cm"># mostra os remotes e as URLs; se aparecer https://, esta no protocolo errado</span>
+git remote -v
+
+<span class="cm"># troca a URL do origin para a versao SSH</span>
+git remote set-url origin git@github.com:SEU-USUARIO/unifaat-es-2026.git
+
+<span class="cm"># testa a autenticacao</span>
+ssh -T git@github.com</code></pre>
+<h2 id="s5-merge-e-os-cuidados"><span class="hn">5</span>Merge e os cuidados</h2>
+<h3 id="s5-1-o-que-é-o-merge"><span class="hn">5.1</span>O que é o merge</h3>
+<p>Os galhos nascem para voltar ao tronco. O <strong>merge</strong> (mesclar) pega os commits de um galho e <strong>os traz para a branch em que você está</strong>. A frase que importa está no final: o merge não "envia o galho para o main"; ele <strong>traz o galho para onde o <code>HEAD</code> está</strong>. Quem decide o destino é a branch atual.</p>
+<pre class="code"><code><span class="cm"># 1. vai para a branch que vai RECEBER (o destino)</span>
+git switch main
+
+<span class="cm"># 2. traz o galho "login" para dentro da main</span>
+git merge login</code></pre>
+<p>Há dois resultados possíveis:</p>
+<ul><li><strong>Fast-forward:</strong> se o <code>main</code> não andou desde que o galho nasceu, o Git só <strong>avança o ponteiro</strong> do <code>main</code> até o fim do galho. Nenhum commit novo, a linha continua reta.</li><li><strong>Commit de merge:</strong> se os dois lados andaram, o Git cria um commit novo com <strong>dois pais</strong>, um de cada lado. É o caso do grafo visto na Aula 10: o merge é o único commit com duas arestas de saída.</li></ul>
+<h3 id="s5-2-conflito"><span class="hn">5.2</span>Conflito</h3>
+<p>Se os dois universos mudaram <strong>a mesma linha do mesmo arquivo</strong>, o Git não sabe qual vale e <strong>para</strong>, pedindo que um humano decida. O arquivo recebe marcadores:</p>
+<pre class="code"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+titulo = "Entrar"
+=======
+titulo = "Login"
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; login</code></pre>
+<p>Entre <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> e <code>=======</code> está a versão da branch atual; entre <code>=======</code> e <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>, a do galho que está entrando. Resolver é <strong>editar o arquivo</strong> até ficar do jeito certo, apagar os três marcadores e concluir:</p>
+<pre class="code"><code><span class="cm"># marca o arquivo como resolvido</span>
+git add arquivo.py
+
+<span class="cm"># conclui o merge (cria o commit de merge)</span>
+git commit
+
+<span class="cm"># desiste do merge e volta ao estado de antes</span>
+git merge --abort</code></pre>
+<p>Conflito não é erro: é o Git dizendo que <strong>duas pessoas tomaram decisões diferentes</strong> e que só uma pessoa pode escolher.</p>
+<h3 id="s5-3-os-cuidados"><span class="hn">5.3</span>Os cuidados</h3>
+<ol><li><strong>Confira o destino antes de mesclar.</strong> <code>git branch</code> (o <code>*</code> marca a atual). Mesclar estando na branch errada é o erro clássico.</li><li><strong>Commite antes.</strong> Merge com arquivos modificados e não commitados mistura trabalho pronto com trabalho pela metade.</li><li><strong>Atualize o tronco antes.</strong> <code>git pull</code> no <code>main</code> antes de mesclar; senão o merge é feito sobre um <code>main</code> velho.</li><li><strong>Mesclar no tronco é publicar.</strong> Em equipe, ninguém comita direto no <code>main</code>: o galho vai para revisão (o Pull Request, seção 6) e só depois é mesclado.</li><li><strong><code>git pull</code> é um <code>fetch</code> mais um <code>merge</code>.</strong> Por isso ele também pode criar commit de merge e dar conflito. O <code>git pull --ff-only</code> só aceita o avanço limpo e <strong>recusa</strong> em vez de criar um merge surpresa.</li><li><strong>Merge não apaga o galho.</strong> Depois de mesclado, o galho continua existindo; apagar é uma decisão separada (<code>git branch -d login</code>).</li><li><strong>Não reescreva histórico já publicado</strong> (<code>git push --force</code>): quem já baixou aquele histórico fica com uma linha do tempo diferente da sua.</li></ol>
+<h3 id="s5-4-galhos-que-nunca-são-mesclados"><span class="hn">5.4</span>Galhos que nunca são mesclados</h3>
+<p>Na prática de equipe, o galho <strong>vira</strong> parte do tronco quando é mesclado. Mas nem todo galho nasce para ser mesclado: um experimento, uma prova de conceito, um trabalho que só será <strong>avaliado</strong>. <strong>Na nossa disciplina, os galhos dos alunos nunca são mesclados</strong>: cada TF vive no seu galho, é lido, comentado e avaliado, e o <code>main</code> do repositório do professor <strong>não recebe</strong> nenhum deles. Guarde isso, porque explica o desenho da seção seguinte.</p>
+<h2 id="s6-fork-sync-e-pull-request"><span class="hn">6</span>Fork, sync e Pull Request</h2>
+<h3 id="s6-1-o-problema-o-repositório-não-é-seu"><span class="hn">6.1</span>O problema: o repositório não é seu</h3>
+<p>O repositório da disciplina (<code>https://github.com/luan-tavares/unifaat-es-2026</code>) pertence à conta do professor. Qualquer pessoa pode <strong>ler</strong> e <strong>clonar</strong> (é público), mas <strong>só o dono e os colaboradores convidados podem escrever</strong> nele. Se você clona direto e tenta <code>git push</code>, o GitHub <strong>recusa</strong> (erro 403). E isso é o desejado: <strong>ninguém, a não ser o professor, tem acesso de escrita ao <code>main</code> da conta do professor</strong>. Se todos pudessem, bastava um engano para bagunçar o material de toda a turma.</p>
+<p>Como contribuir, então, com um projeto que não é seu? É o problema que o <strong>fork</strong> e o <strong>Pull Request</strong> resolvem.</p>
+<h3 id="s6-2-fork-a-sua-cópia-na-sua-conta"><span class="hn">6.2</span>Fork: a sua cópia, na sua conta</h3>
+<p>O <strong>fork</strong> é um botão do GitHub (não um comando do Git) que <strong>cria uma cópia do repositório do professor dentro da sua conta</strong>: <code>github.com/SEU-USUARIO/unifaat-es-2026</code>. Essa cópia é um repositório de verdade, com todo o histórico, e <strong>é seu</strong>: nele você tem permissão de escrita.</p>
+<p>Duas ideias para não confundir:</p>
+<ul><li><strong>Fork não é clone.</strong> O fork acontece <strong>no GitHub</strong> (de uma conta para outra); o clone acontece <strong>entre o GitHub e a sua máquina</strong>. O caminho completo é: fork (professor → você, no GitHub), depois clone (seu fork → seu computador).</li><li><strong>O fork lembra de onde veio</strong>, mas <strong>não se atualiza sozinho</strong>: quando o professor publicar a aula nova, o seu fork continua na aula antiga até você pedir a atualização.</li></ul>
+<p>Com o fork, a sua máquina passa a ter <strong>dois remotes</strong>, cada um com um papel:</p>
+<div class="tbl"><table><thead><tr><th>Remote</th><th>Aponta para</th><th>Para quê</th></tr></thead><tbody><tr><td><code>origin</code></td><td>O <strong>seu fork</strong></td><td><strong>Escrever</strong> (<code>push</code>): é onde você tem permissão</td></tr><tr><td><code>upstream</code></td><td>O repositório do <strong>professor</strong></td><td><strong>Ler</strong> (<code>pull</code>): receber as aulas novas</td></tr></tbody></table></div>
+<pre class="code"><code><span class="cm"># 1. no navegador: botao Fork no repositorio do professor</span>
+
+<span class="cm"># 2. clona o SEU fork (troque SEU-USUARIO)</span>
+git clone git@github.com:SEU-USUARIO/unifaat-es-2026.git
+cd unifaat-es-2026
+
+<span class="cm"># 3. cadastra o repositorio do professor como upstream (so para ler)</span>
+git remote add upstream git@github.com:luan-tavares/unifaat-es-2026.git
+
+<span class="cm"># 4. confere: origin = seu fork, upstream = professor</span>
+git remote -v</code></pre>
+<h3 id="s6-3-sync-trazer-as-aulas-novas"><span class="hn">6.3</span>Sync: trazer as aulas novas</h3>
+<p>O <strong>sync</strong> é manter o seu <code>main</code> igual ao do professor. É possível fazer isso pelo botão <strong>Sync fork</strong> do GitHub (atualiza o fork na nuvem) ou, pelo terminal, direto da fonte:</p>
+<pre class="code"><code><span class="cm"># vai para o main</span>
+git switch main
+
+<span class="cm"># traz as aulas novas do professor; so aceita avanco limpo</span>
+git pull --ff-only upstream main</code></pre>
+<p>O <code>pull</code> aqui tem um destino escolhido, igual ao <code>push</code> da seção 3.3: <code>upstream</code> (o remote) e <code>main</code> (a branch). O <code>--ff-only</code> é a proteção: se o seu <code>main</code> tiver sido alterado, o comando <strong>recusa</strong> em vez de misturar. É uma boa notícia: significa que o seu <code>main</code> deve ser <strong>só uma cópia do professor</strong>, onde ninguém commita.</p>
+<h3 id="s6-4-push-só-em-outra-branch-e-o-pull-request"><span class="hn">6.4</span>Push só em outra branch, e o Pull Request</h3>
+<p>Com o fork e o sync, o <code>pull</code> do professor funciona. O <code>push</code>, não: <strong>não se envia nada ao <code>main</code> do professor</strong>, porque você não tem permissão. O que se faz é:</p>
+<ol><li>Criar um <strong>galho</strong> a partir do <code>main</code> atualizado (<code>git switch -c RA-tf-NN</code>).</li><li>Commitar o trabalho <strong>nesse galho</strong>.</li><li>Enviar o galho para o <strong>seu fork</strong> (<code>git push -u origin RA-tf-NN</code>). Aqui há permissão, porque o <code>origin</code> é seu.</li><li>No GitHub, abrir um <strong>Pull Request</strong>.</li></ol>
+<p>O <strong>Pull Request (PR)</strong> é, literalmente, um <strong>pedido</strong>: "professor, <strong>puxe</strong> este galho do meu fork para o seu repositório". Ele não altera nada sozinho; abre uma página onde o professor vê as diferenças, comenta linha a linha e decide. Por isso o PR é a ponte entre o seu repositório (onde você manda) e o do professor (onde só o professor manda).</p>
+<p><strong>O PR não é um comando do Git.</strong> Nenhum <code>git ...</code> abre um Pull Request, porque o PR não existe dentro do <code>.git</code>: é um recurso do <strong>GitHub</strong> (a página, os comentários, a revisão). O <code>git push</code> só leva os commits para o fork; abrir o pedido é uma <strong>segunda etapa, feita no site do GitHub</strong>. É a mesma divisão da Aula 05: o Git é a ferramenta de versionamento, e o GitHub é o serviço que fica em cima dela. <strong>Na nossa disciplina, o PR é aberto pela interface web do GitHub</strong>: pelo banner <strong>Compare &amp; pull request</strong>, que aparece no seu fork depois do <code>push</code>, ou pelo link de comparação. (Existem outras portas para o mesmo pedido, como o GitHub CLI, a API e extensões de editor, mas todas conversam com o GitHub; o <code>git</code> sozinho não cria PR.)</p>
+<p>Na tela de criação do PR, duas escolhas definem tudo: a <strong>base</strong> (para onde: <code>luan-tavares/unifaat-es-2026</code>, branch <code>main</code>) e a <strong>head</strong> (de onde: o seu fork, o seu galho). Depois de aberto, novos commits enviados ao mesmo galho <strong>entram no mesmo PR</strong> automaticamente.</p>
+<p>Na disciplina, lembre da seção 5.4: o PR <strong>nunca é mesclado</strong>. Ele funciona como <strong>a entrega</strong>: é o registro de que o trabalho existe, o lugar onde o professor lê e comenta.</p>
+<h2 id="s7-como-os-tfs-serão-entregues"><span class="hn">7</span>Como os TFs serão entregues</h2>
+<p>A partir desta aula, a entrega do TF muda: em vez de colar o link de um repositório num formulário, você abre um <strong>Pull Request</strong> com o seu galho. Em engenharia de software, é assim que o trabalho de equipe de verdade é entregue e revisado, e o professor já usa o mesmo fluxo em outras matérias do curso.</p>
+<h3 id="s7-1-preparação-uma-vez-só"><span class="hn">7.1</span>Preparação (uma vez só)</h3>
+<ol><li>Ter a <strong>chave SSH</strong> cadastrada na conta (Aula 05) e testada com <code>ssh -T git@github.com</code>.</li><li>Fazer o <strong>fork</strong> do repositório do professor.</li><li><strong>Clonar o seu fork</strong> (nunca o do professor).</li><li>Cadastrar o <strong><code>upstream</code></strong> e conferir com <code>git remote -v</code>.</li></ol>
+<h3 id="s7-2-o-ciclo-de-cada-tf"><span class="hn">7.2</span>O ciclo de cada TF</h3>
+<div class="tbl"><table><thead><tr><th>Etapa</th><th>O que fazer</th><th>Comando</th></tr></thead><tbody><tr><td>1</td><td>Ir para o <code>main</code> e <strong>trazer a aula nova</strong></td><td><code>git switch main</code> e <code>git pull --ff-only upstream main</code></td></tr><tr><td>2</td><td><strong>Criar o galho do TF</strong>, antes de editar qualquer arquivo</td><td><code>git switch -c RA-tf-NN</code></td></tr><tr><td>3</td><td><strong>Fazer o TF</strong> e commitar nesse galho</td><td><code>git add -A</code> e <code>git commit -m "TF-NN"</code></td></tr><tr><td>4</td><td><strong>Enviar ao seu fork</strong> (Git) e <strong>abrir o Pull Request no site do GitHub</strong> (interface web)</td><td><code>git push -u origin RA-tf-NN</code> e, no navegador, o botão <strong>Compare &amp; pull request</strong></td></tr></tbody></table></div>
+<p>As regras da entrega:</p>
+<ul><li><strong>Um galho por TF</strong>, com o nome <code>RA-tf-NN</code> (o seu RA, <code>-tf-</code>, o número do TF com dois dígitos). Exemplo: <code>6325000-tf-12</code>.</li><li><strong>Uma estrutura de diretórios com o seu RA</strong>, na raiz do repositório: o diretório <code>RA/</code>, o subdiretório <code>tf-NN/</code> e, dentro dele, um arquivo de texto com o nome do seu RA (<code>RA.txt</code>), com o seu <strong>nome, RA e usuário do GitHub</strong>. Exemplo: <code>6325000/tf-12/6325000.txt</code>.</li><li><strong>Nunca commitar no <code>main</code>.</strong> Ele é cópia do professor e só recebe <code>pull</code>. Antes de commitar, confira com <code>git branch</code>.</li><li><strong>Um PR por TF</strong>, do galho do seu fork para o <code>main</code> do professor, <strong>aberto pela interface web do GitHub</strong> (o <code>git push</code> não abre o PR). O PR <strong>não é mesclado</strong>.</li><li><strong>O PR precisa aparecer</strong> na lista de Pull requests do repositório do professor: sem ele, o TF <strong>não é válido</strong> (veja a seção 7.4).</li></ul>
+<h3 id="s7-3-o-pull-request-do-tf-por-dentro"><span class="hn">7.3</span>O Pull Request do TF, por dentro</h3>
+<p>Detalhes do PR que vale combinar desde já:</p>
+<ul><li><strong>Título do PR:</strong> <code>TF-NN · RA · Nome</code> (ex.: <code>TF-12 · 6325000 · Maria da Silva</code>). Na <strong>descrição</strong>, um texto curto dizendo o que foi feito.</li><li><strong>Conferir antes de enviar:</strong> o link de comparação mostra a <strong>base</strong> (<code>luan-tavares/unifaat-es-2026</code>, branch <code>main</code>) e o seu galho. Troque <code>SEU-USUARIO</code> e o nome do galho: <code>https://github.com/luan-tavares/unifaat-es-2026/compare/main...SEU-USUARIO:6325000-tf-12?expand=1</code>.</li><li><strong>A estrutura do TF</strong> (diretório com o RA, subdiretório <code>tf-NN</code> e o arquivo <code>RA.txt</code>) é criada <strong>dentro do galho</strong>, antes do commit:</li></ul>
+<pre class="code"><code><span class="cm"># cria a branch do TF e ja entra nela (troque o RA)</span>
+git switch -c 6325000-tf-12
+
+<span class="cm"># cria o diretorio com o seu RA e o subdiretorio tf-12</span>
+mkdir -p 6325000/tf-12
+
+<span class="cm"># cria o arquivo 6325000.txt com nome, RA e usuario do GitHub</span>
+cat &gt; 6325000/tf-12/6325000.txt &lt;&lt;EOF
+Nome: Maria da Silva
+RA: 6325000
+GitHub: https://github.com/maria-silva
+EOF</code></pre>
+<p>O resultado, na raiz do repositório, é esta árvore:</p>
+<pre class="code"><code>unifaat-es-2026/
+└── 6325000/
+    └── tf-12/
+        └── 6325000.txt</code></pre>
+<ul><li><strong>Depois da entrega:</strong> o professor lê e corrige <strong>abrindo o PR de cada aluno</strong>. O PR não é mesclado: ele é fechado depois da correção. O seu galho continua intacto no seu fork.</li><li><strong>O próximo TF:</strong> nasce do <code>main</code> atualizado (<code>git switch main</code> e <code>git pull --ff-only upstream main</code>), sem arrastar o TF anterior. O galho do TF novo é outro galho, saindo do tronco.</li></ul>
+<p>O repositório tem uma página que mostra esse fluxo <strong>animado</strong>, com a aba de <strong>comandos</strong> (o que cada comando e cada parte dele faz) e a aba de <strong>troubleshooting</strong> (os erros mais comuns, como o <code>403</code> do <code>push</code>): <code>git-fluxo/index.html</code>, na raiz do repositório da disciplina (<a href="https://github.com/luan-tavares/unifaat-es-2026" target="_blank" rel="noopener">https://github.com/luan-tavares/unifaat-es-2026</a>).</p>
+<h3 id="s7-4-quando-o-tf-é-válido-e-onde-está-a-descrição"><span class="hn">7.4</span>Quando o TF é válido, e onde está a descrição</h3>
+<p><strong>O TF só é válido se o Pull Request aparecer</strong> na lista de Pull requests do repositório do professor (<a href="https://github.com/luan-tavares/unifaat-es-2026/pulls" target="_blank" rel="noopener">https://github.com/luan-tavares/unifaat-es-2026/pulls</a>). O <code>push</code> do galho para o seu fork <strong>não é entrega</strong>: ele só leva o código para a sua própria conta. O que o professor enxerga, corrige e registra é o <strong>PR</strong>. Por isso, depois de abrir o PR, <strong>confira que ele aparece nessa lista</strong>. Sem PR, não há TF, mesmo que o galho exista e esteja perfeito no seu fork.</p>
+<p>Não há formulário. A <strong>descrição do TF</strong> fica num <code>README.md</code> dentro da pasta da aula, no GitHub: <a href="https://github.com/luan-tavares/unifaat-es-2026/tree/main/aula-12-branches-fork-pr" target="_blank" rel="noopener">https://github.com/luan-tavares/unifaat-es-2026/tree/main/aula-12-branches-fork-pr</a> (o mesmo link está no último slide e no botão <strong>tf 12</strong> da linha do tempo). O <strong>prazo</strong> do TF 12 é a <strong>quarta-feira, 18/11</strong>.</p>
+<h3 id="s7-5-o-contexto-o-que-vocês-já-têm-do-1º-bimestre"><span class="hn">7.5</span>O contexto: o que vocês já têm do 1º bimestre</h3>
+<p>Nada neste fluxo é ferramenta nova. Tudo foi construído nas primeiras aulas:</p>
+<div class="tbl"><table><thead><tr><th>Peça do fluxo</th><th>De onde vem</th></tr></thead><tbody><tr><td>Terminal do <strong>WSL</strong> (<code>cd</code>, <code>ls</code>, <code>cat</code>)</td><td>Aulas 01 a 03</td></tr><tr><td><code>init</code>, <code>add</code>, <code>commit</code>, <code>log</code>, <code>HEAD</code></td><td>Aula 04</td></tr><tr><td><strong>Remote</strong>, <code>push</code>, <code>pull</code>, <code>clone</code> e a <strong>chave SSH</strong></td><td>Aula 05</td></tr><tr><td><code>.gitignore</code>, para o ambiente virtual não ser commitado</td><td>TFs 05 a 11</td></tr><tr><td>O Git como <strong>grafo</strong> (commit é nó, branch é ponteiro, merge tem dois pais)</td><td>Aula 10</td></tr></tbody></table></div>
+<p>O que esta aula acrescenta é só a <strong>camada de colaboração</strong>: branch, merge, fork e Pull Request. Em todos os TFs até aqui o repositório era seu, e por isso o <code>push</code> sempre funcionou; agora o destino da entrega é o repositório do professor, e é isso que obriga a passar por fork e PR.</p>
+<h2 id="s8-conclusão"><span class="hn">8</span>Conclusão</h2>
+<p>A linha do tempo do Git deixou de ser uma só. A <strong>branch</strong> é um ponteiro barato que cria um universo paralelo; <code>checkout</code> e <code>switch</code> movem o <code>HEAD</code> entre eles; e o <code>push</code> é a escolha de um <strong>remote</strong> e de uma <strong>branch</strong>. O <strong>merge</strong> traz um galho para a branch em que você está, e por isso o primeiro cuidado é <strong>conferir o destino</strong>. O <strong>fork</strong> cria a sua cópia do repositório do professor, onde você tem permissão de escrita; o <strong>sync</strong> (<code>git pull --ff-only upstream main</code>) traz as aulas novas; e como ninguém além do professor escreve no <code>main</code> dele, a contribuição sai por um <strong>galho</strong>, em um <strong>Pull Request</strong>. Tudo isso autenticado por <strong>SSH</strong>: a chave da conta, sem senha e sem token.</p>
+<p>Daqui em diante, <strong>cada TF é um galho com o seu RA, e cada entrega é um Pull Request</strong>.</p>
+<h2 id="s9-referências"><span class="hn">9</span>Referências</h2>
+<p>Scott Chacon e Ben Straub — Pro Git, capítulo 3: Git Branching (<a href="https://git-scm.com/book/pt-br/v2" target="_blank" rel="noopener">https://git-scm.com/book/pt-br/v2</a>)</p>
+<p>Git — documentação dos comandos <code>git switch</code>, <code>git checkout</code>, <code>git merge</code> e <code>git push</code> (<a href="https://git-scm.com/docs" target="_blank" rel="noopener">https://git-scm.com/docs</a>)</p>
+<p>GitHub Docs — Fork a repo (<a href="https://docs.github.com/pt/get-started/quickstart/fork-a-repo" target="_blank" rel="noopener">https://docs.github.com/pt/get-started/quickstart/fork-a-repo</a>)</p>
+<p>GitHub Docs — Sobre pull requests (<a href="https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests" target="_blank" rel="noopener">https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests</a>)</p>
+<p>GitHub Docs — Conectando-se ao GitHub com SSH (<a href="https://docs.github.com/pt/authentication/connecting-to-github-with-ssh" target="_blank" rel="noopener">https://docs.github.com/pt/authentication/connecting-to-github-with-ssh</a>)</p>
+<p>GitHub Docs — Gerenciando chaves de implantação (<a href="https://docs.github.com/pt/authentication/connecting-to-github-with-ssh/managing-deploy-keys" target="_blank" rel="noopener">https://docs.github.com/pt/authentication/connecting-to-github-with-ssh/managing-deploy-keys</a>)</p>
+<p>Material de aulas anteriores: Aula 04 (Versionamento e Git), Aula 05 (Git e GitHub) e Aula 10 (Estrutura de Dados: o Git como grafo).</p>
+<h2 id="questoes"><span class="hn">TA</span>Questões do TA</h2>
+<article class="questao"><h3><span class="qn">Questão 1</span></h3><p>Segundo o texto, o que é uma branch no Git?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Uma cópia completa de todos os arquivos do projeto, guardada em uma pasta separada.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">Um ponteiro: um arquivo de texto com o hash de um commit, o que torna criar uma branch instantâneo e barato.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Um repositório novo, criado no GitHub a cada tarefa.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Uma chave SSH exclusiva de cada tarefa.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O nome do remote para onde o <code>push</code> envia os commits.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 2</span></h3><p>Qual é a diferença entre <code>git checkout</code> e <code>git switch</code>, segundo o texto?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O <code>switch</code> só funciona no GitHub, e o <code>checkout</code> só funciona na máquina local.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Os dois são completamente diferentes: o <code>checkout</code> cria commits e o <code>switch</code> apaga branches.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">O <code>checkout</code> é o comando antigo e faz várias coisas (troca de branch, restaura arquivos); o <code>switch</code> foi criado para cuidar só de trocar de branch.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">O <code>switch</code> é o comando antigo e foi substituído pelo <code>checkout</code>.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O <code>checkout</code> só aceita o nome <code>main</code>.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 3</span></h3><p>Em <code>git push -u origin login</code>, o que representam <code>origin</code> e <code>login</code>?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt"><code>origin</code> é a branch e <code>login</code> é o remote.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt"><code>origin</code> é o remote (para onde vai) e <code>login</code> é a branch (o que vai); os dois são escolhas, e <code>origin</code> e <code>main</code> são só os valores mais comuns.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt"><code>origin</code> é a chave SSH e <code>login</code> é o usuário do GitHub.</span></li><li class="alt"><span class="ltr">D</span><span class="txt"><code>origin</code> é o professor e <code>login</code> é o aluno.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Os dois são palavras reservadas do Git e não podem ser trocadas.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 4</span></h3><p>Sobre onde a chave pública SSH pode ser cadastrada no GitHub, é correto afirmar que:</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Só pode ser cadastrada na conta inteira; não existe cadastro por repositório.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">A chave cadastrada na conta vale para tudo o que a conta acessa; a <em>deploy key</em> vale só para um repositório e é somente leitura por padrão.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">A <em>deploy key</em> vale para todos os repositórios da conta e sempre permite escrita.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">A chave privada é que deve ser cadastrada no GitHub, e a pública fica na máquina.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O cadastro da chave é opcional, pois o HTTPS dispensa qualquer credencial.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 5</span></h3><p>Segundo o texto, qual é a principal vantagem do SSH sobre o HTTPS no dia a dia com o GitHub?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">O SSH torna o <code>git push</code> mais rápido, porque compacta os arquivos.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">O HTTPS é proibido pelo GitHub.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">O SSH dispensa o remote, pois o endereço fica na chave.</span></li><li class="alt ok"><span class="ltr">D</span><span class="txt">Com o SSH a chave é configurada uma vez e o <code>push</code> e o <code>pull</code> não pedem credencial; no HTTPS é preciso um token de acesso pessoal, um segredo a mais para guardar.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O SSH permite escrever no repositório de qualquer pessoa, sem permissão.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 6</span></h3><p>Ao rodar <code>git merge login</code>, o que acontece?</p><ol class="alts"><li class="alt ok"><span class="ltr">A</span><span class="txt">Os commits da branch <code>login</code> são trazidos para a branch em que o <code>HEAD</code> está; por isso é preciso conferir a branch atual antes.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">B</span><span class="txt">A branch <code>main</code> é enviada para o GitHub.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">A branch <code>login</code> é apagada automaticamente.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">O Git sempre cria uma branch nova chamada <code>login-merge</code>.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">O <code>main</code> é trazido para dentro da <code>login</code>, independentemente de onde o <code>HEAD</code> está.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 7</span></h3><p>Por que a contribuição a um repositório que não é seu passa por fork e Pull Request?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Porque o Git não permite criar branches em repositórios públicos.</span></li><li class="alt ok"><span class="ltr">B</span><span class="txt">Porque só o dono e os colaboradores têm permissão de escrita no repositório; o fork cria uma cópia sua, onde você escreve, e o Pull Request pede ao dono que puxe o seu galho.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Porque o Pull Request mescla automaticamente o seu galho no <code>main</code> do professor.</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Porque o fork é a mesma coisa que o clone e baixa o repositório para a máquina.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Porque o GitHub não aceita <code>push</code> por SSH em repositórios de terceiros.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 8</span></h3><p>No fluxo de entrega dos TFs, qual é a ordem correta das etapas de cada TF?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Criar o galho <code>RA-tf-NN</code> no <code>main</code> desatualizado, fazer o TF direto no <code>main</code> e dar <code>push</code> no <code>upstream</code>.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Fazer o TF no <code>main</code>, abrir o Pull Request e só depois criar o galho.</span></li><li class="alt"><span class="ltr">C</span><span class="txt">Dar <code>push</code> no <code>upstream main</code> e depois fazer o fork.</span></li><li class="alt ok"><span class="ltr">D</span><span class="txt">Atualizar o <code>main</code> com <code>git pull --ff-only upstream main</code>, criar o galho <code>RA-tf-NN</code>, fazer e commitar o TF nele, e enviar com <code>git push -u origin RA-tf-NN</code> para abrir o Pull Request.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Clonar o repositório do professor de novo a cada TF e enviar um <code>.zip</code>.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 9</span></h3><p>Segundo o texto, como o Pull Request é aberto na disciplina?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Com o comando <code>git pull-request</code>, depois do <code>git push</code>.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Automaticamente, no momento do <code>git commit</code>.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">Pela interface web do GitHub, depois do <code>git push</code> do galho para o fork: o PR é um recurso do GitHub, e nenhum comando do Git o cria.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Pelo <code>git merge</code>, que envia o galho para o <code>main</code> do professor.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Com o <code>git clone</code> do repositório do professor.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+<article class="questao"><h3><span class="qn">Questão 10</span></h3><p>Segundo o texto, quando o TF 12 é considerado válido?</p><ol class="alts"><li class="alt"><span class="ltr">A</span><span class="txt">Quando o galho <code>RA-tf-12</code> é enviado ao seu fork com <code>git push</code>, mesmo sem abrir o Pull Request.</span></li><li class="alt"><span class="ltr">B</span><span class="txt">Quando o professor recebe o link do repositório por um formulário.</span></li><li class="alt ok"><span class="ltr">C</span><span class="txt">Quando o Pull Request aparece na lista de Pull requests do repositório do professor; o <code>push</code> para o fork sozinho não é entrega.</span><span class="gab">gabarito</span></li><li class="alt"><span class="ltr">D</span><span class="txt">Quando o galho é mesclado (<code>git merge</code>) no <code>main</code> do professor.</span></li><li class="alt"><span class="ltr">E</span><span class="txt">Quando o arquivo é commitado diretamente no <code>main</code> do seu fork.</span></li></ol><p class="mix">Misturar alternativas: sim</p></article>
+  </main>
+</div>
+<script src="../../assets/briefing.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Do fork ao Pull Request · Aula 12</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="stylesheet" href="../../assets/briefing.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="back" href="../../index.html">← Voltar</a>
+    <details class="toc" open><summary>Nesta página</summary><ol><li class="l1"><a href="#topo">12 - Do fork ao Pull Request</a></li><li class="l2"><a href="#s1-o-mapa-quem-é-quem">1 - O mapa: quem é quem</a></li><li class="l2"><a href="#s2-preparação-uma-vez-só">2 - Preparação (uma vez só)</a></li><li class="l3"><a href="#s2-1-criar-o-fork-no-site-do-github">2.1 - Criar o fork (no site do GitHub)</a></li><li class="l3"><a href="#s2-2-chave-ssh">2.2 - Chave SSH</a></li><li class="l3"><a href="#s2-3-clonar-o-seu-fork">2.3 - Clonar o seu fork</a></li><li class="l3"><a href="#s2-4-apontar-o-upstream-para-o-repositório-do-professor">2.4 - Apontar o upstream para o repositório do professor</a></li><li class="l3"><a href="#s2-5-conferir">2.5 - Conferir</a></li><li class="l2"><a href="#s3-o-ciclo-de-cada-tf-passo-a-passo">3 - O ciclo de cada TF, passo a passo</a></li><li class="l3"><a href="#s3-1-passo-1-atualizar-o-main-com-o-que-o-professor-publicou">3.1 - Passo 1: atualizar o main com o que o professor publicou</a></li><li class="l3"><a href="#s3-2-passo-2-criar-a-branch-do-tf-e-entrar-nela">3.2 - Passo 2: criar a branch do TF e entrar nela</a></li><li class="l3"><a href="#s3-3-passo-3-criar-a-pasta-e-o-arquivo-do-tf">3.3 - Passo 3: criar a pasta e o arquivo do TF</a></li><li class="l3"><a href="#s3-4-passo-4-marcar-e-registrar-add-commit">3.4 - Passo 4: marcar e registrar (add + commit)</a></li><li class="l3"><a href="#s3-5-passo-5-enviar-a-branch-para-o-seu-fork">3.5 - Passo 5: enviar a branch para o seu fork</a></li><li class="l3"><a href="#s3-6-passo-6-abrir-o-pull-request-no-site-do-github">3.6 - Passo 6: abrir o Pull Request (no site do GitHub)</a></li><li class="l3"><a href="#s3-7-passo-7-conferir-se-o-pr-existe">3.7 - Passo 7: conferir se o PR existe</a></li><li class="l2"><a href="#s4-variações">4 - Variações</a></li><li class="l3"><a href="#s4-1-atualizar-pelo-botão-sync-fork-em-vez-do-pull-upstream">4.1 - Atualizar pelo botão Sync fork, em vez do pull upstream</a></li><li class="l3"><a href="#s4-2-eu-clonei-o-repositório-do-professor-não-o-meu-fork">4.2 - Eu clonei o repositório do professor (não o meu fork)</a></li><li class="l3"><a href="#s4-3-eu-commitei-no-main-sem-querer">4.3 - Eu commitei no main sem querer</a></li><li class="l3"><a href="#s4-4-esqueci-de-criar-a-branch-e-ainda-não-commitei">4.4 - Esqueci de criar a branch e ainda não commitei</a></li><li class="l3"><a href="#s4-6-preciso-corrigir-um-pr-que-já-abri">4.6 - Preciso corrigir um PR que já abri</a></li><li class="l3"><a href="#s4-7-trabalhar-em-outro-computador">4.7 - Trabalhar em outro computador</a></li><li class="l3"><a href="#s4-8-abrir-o-pr-pela-linha-de-comando-opcional">4.8 - Abrir o PR pela linha de comando (opcional)</a></li><li class="l2"><a href="#s5-troubleshooting">5 - Troubleshooting</a></li><li class="l3"><a href="#s5-1-resumo">5.1 - Resumo</a></li><li class="l3"><a href="#s5-2-permission-denied-publickey">5.2 - Permission denied (publickey)</a></li><li class="l3"><a href="#s5-3-remote-permission-to-luan-tavares-denied-no-push">5.3 - remote: Permission to luan-tavares/... denied no push</a></li><li class="l3"><a href="#s5-4-the-current-branch-has-no-upstream-branch">5.4 - The current branch ... has no upstream branch</a></li><li class="l3"><a href="#s5-5-your-local-changes-would-be-overwritten-by-checkout">5.5 - Your local changes would be overwritten by checkout</a></li><li class="l3"><a href="#s5-6-there-isnt-anything-to-compare">5.6 - &quot;There isn&#x27;t anything to compare&quot;</a></li><li class="l3"><a href="#s5-7-o-pr-foi-aberto-para-o-lugar-errado">5.7 - O PR foi aberto para o lugar errado</a></li><li class="l3"><a href="#s5-8-this-branch-has-conflicts-that-must-be-resolved">5.8 - &quot;This branch has conflicts that must be resolved&quot;</a></li><li class="l3"><a href="#s5-9-repository-not-found">5.9 - Repository not found</a></li><li class="l3"><a href="#s5-10-fatal-not-a-git-repository">5.10 - fatal: not a git repository</a></li><li class="l3"><a href="#s5-11-errei-o-ra-ou-o-nome-da-pasta-e-já-commitei">5.11 - Errei o RA ou o nome da pasta e já commitei</a></li><li class="l3"><a href="#s5-12-entraram-arquivos-que-não-eram-meus-no-commit">5.12 - Entraram arquivos que não eram meus no commit</a></li><li class="l3"><a href="#s5-13-nada-funcionou-como-pedir-ajuda">5.13 - Nada funcionou: como pedir ajuda</a></li><li class="l2"><a href="#s6-checklist-final">6 - Checklist final</a></li></ol></details>
+  </aside>
+  <main class="doc">
+    <header class="cover" id="topo">
+      <p class="eyebrow">UNIFAAT · 2026.2 · Guia passo a passo</p>
+      <h1><span class="cn">12</span> - Do fork ao Pull Request</h1>
+      <dl class="ficha">
+        <div><dt>Professor</dt><dd>Luan Tavares Lourenço</dd></div>
+        <div><dt>Disciplina</dt><dd>Engenharia de Software</dd></div>
+        <div><dt>Aula</dt><dd>12</dd></div>
+        
+        <div><dt>Tipo</dt><dd>Guia passo a passo, variações e troubleshooting</dd></div>
+      </dl>
+    </header>
+<h2 id="s1-o-mapa-quem-é-quem"><span class="hn">1</span>O mapa: quem é quem</h2>
+<p>Antes dos comandos, o mapa. Existem <strong>três lugares</strong> e <strong>dois nomes de remote</strong> que você precisa distinguir; quase todo erro do fluxo vem de confundir um com o outro.</p>
+<div class="tbl"><table><thead><tr><th>Lugar</th><th>Onde fica</th><th>Quem escreve</th><th>Nome no seu computador</th></tr></thead><tbody><tr><td>Repositório do professor</td><td><code>github.com/luan-tavares/unifaat-es-2026</code></td><td><strong>só o professor</strong></td><td><code>upstream</code></td></tr><tr><td>O seu fork</td><td><code>github.com/SEU-USUARIO/unifaat-es-2026</code></td><td><strong>você</strong></td><td><code>origin</code></td></tr><tr><td>Seu computador</td><td>a pasta <code>unifaat-es-2026</code> clonada</td><td><strong>você</strong></td><td>(é onde você digita)</td></tr></tbody></table></div>
+<p>O caminho do TF é sempre o mesmo, em uma direção só:</p>
+<pre class="code"><code>upstream (professor)
+   |  pull
+   v
+seu computador
+   |  push
+   v
+origin (seu fork)
+   |  PR (pedido feito no site do GitHub)
+   v
+upstream (professor)</code></pre>
+<ul><li><strong>Pull</strong> traz as aulas novas do professor para o seu computador.</li><li><strong>Push</strong> leva o seu trabalho para o <strong>seu fork</strong> (nunca para o do professor: você não tem permissão).</li><li><strong>Pull Request</strong> é o <strong>pedido</strong>, feito no site do GitHub, para o professor puxar a sua branch do seu fork. <strong>O PR não é um comando do Git.</strong></li></ul>
+<p>Duas regras que valem para tudo o que vem a seguir:</p>
+<ol><li><strong>Nunca commite no <code>main</code>.</strong> O <code>main</code> só recebe pull do professor. O seu trabalho vive em uma branch própria, <code>RA-tf-12</code>.</li><li><strong>Uma branch por TF.</strong> O TF seguinte nasce de um <code>main</code> atualizado, não da branch do TF anterior.</li></ol>
+<h2 id="s2-preparação-uma-vez-só"><span class="hn">2</span>Preparação (uma vez só)</h2>
+<p>Isto é feito <strong>uma única vez</strong> na disciplina. Depois, só o ciclo da seção 3 se repete a cada TF.</p>
+<h3 id="s2-1-criar-o-fork-no-site-do-github"><span class="hn">2.1</span>Criar o fork (no site do GitHub)</h3>
+<ol><li>Abra <code>github.com/luan-tavares/unifaat-es-2026</code> logado na sua conta.</li><li>Clique em <strong>Fork</strong> (canto superior direito) e depois em <strong>Create fork</strong>.</li><li>O GitHub leva você para <code>github.com/SEU-USUARIO/unifaat-es-2026</code>. <strong>Esse é o seu fork:</strong> uma cópia do repositório do professor, na sua conta, onde você tem permissão de escrita.</li></ol>
+<p>O fork vem <strong>antes do clone</strong> por quatro motivos: só no fork você escreve; ele mantém o vínculo com o original (é isso que permite o botão <strong>Sync fork</strong> e o PR); ele isola os seus erros do repositório da turma; e a cópia em que você trabalha fica na sua conta.</p>
+<h3 id="s2-2-chave-ssh"><span class="hn">2.2</span>Chave SSH</h3>
+<p>O clone e o push usam <strong>SSH</strong>, não HTTPS (veja a Aula 05). Se a sua chave pública ainda não está na conta, cadastre em <strong>GitHub → Settings → SSH and GPG keys → New SSH key</strong>. Para testar:</p>
+<pre class="code"><code><span class="cm"># deve responder: "Hi SEU-USUARIO! You've successfully authenticated"</span>
+ssh -T git@github.com</code></pre>
+<h3 id="s2-3-clonar-o-seu-fork"><span class="hn">2.3</span>Clonar o seu fork</h3>
+<p>Atenção ao endereço: é o do <strong>seu fork</strong>, com o seu usuário, não o do professor.</p>
+<pre class="code"><code><span class="cm"># clona o SEU fork (git@github.com:SEU-USUARIO/...), não o do professor</span>
+git clone git@github.com:SEU-USUARIO/unifaat-es-2026.git
+cd unifaat-es-2026</code></pre>
+<h3 id="s2-4-apontar-o-upstream-para-o-repositório-do-professor"><span class="hn">2.4</span>Apontar o <code>upstream</code> para o repositório do professor</h3>
+<p>O clone já criou o <code>origin</code> (o seu fork). Falta um segundo endereço, o do professor, com o nome <code>upstream</code>:</p>
+<pre class="code"><code><span class="cm"># cadastra o repositório do professor com o nome upstream</span>
+git remote add upstream git@github.com:luan-tavares/unifaat-es-2026.git</code></pre>
+<h3 id="s2-5-conferir"><span class="hn">2.5</span>Conferir</h3>
+<pre class="code"><code><span class="cm"># lista os remotes: precisam aparecer os dois</span>
+git remote -v</code></pre>
+<p>O resultado certo:</p>
+<pre class="code"><code>origin    git@github.com:SEU-USUARIO/unifaat-es-2026.git (fetch)
+origin    git@github.com:SEU-USUARIO/unifaat-es-2026.git (push)
+upstream  git@github.com:luan-tavares/unifaat-es-2026.git (fetch)
+upstream  git@github.com:luan-tavares/unifaat-es-2026.git (push)</code></pre>
+<p>Se o <code>origin</code> mostrar <code>luan-tavares</code>, você clonou o repositório do professor em vez do seu fork: veja a variação 4.2.</p>
+<h2 id="s3-o-ciclo-de-cada-tf-passo-a-passo"><span class="hn">3</span>O ciclo de cada TF, passo a passo</h2>
+<p>Os exemplos usam o <strong>TF-12</strong>, o RA <code>6325000</code> e o nome <code>Maria Silva</code>. Troque pelos seus dados e pelo número do TF da vez.</p>
+<h3 id="s3-1-passo-1-atualizar-o-main-com-o-que-o-professor-publicou"><span class="hn">3.1</span>Passo 1: atualizar o <code>main</code> com o que o professor publicou</h3>
+<pre class="code"><code><span class="cm"># volta para o main (o TF novo sempre sai dele)</span>
+git switch main
+
+<span class="cm"># traz do professor tudo que é novo; --ff-only só aceita avanço limpo</span>
+<span class="cm"># (se o seu main tiver algo diferente, o Git para em vez de fazer um merge sem você pedir)</span>
+git pull --ff-only upstream main</code></pre>
+<p>O <code>--ff-only</code> é uma trava de segurança: o <code>main</code> do seu computador deve ser <strong>idêntico</strong> ao do professor, só mais atrasado. Se o comando falhar, leia a seção 5 antes de qualquer outra coisa.</p>
+<p>Opcional, mas recomendado: atualizar também o <code>main</code> do seu fork no GitHub, para o fork não ficar atrasado.</p>
+<pre class="code"><code><span class="cm"># envia o main atualizado para o seu fork</span>
+git push origin main</code></pre>
+<h3 id="s3-2-passo-2-criar-a-branch-do-tf-e-entrar-nela"><span class="hn">3.2</span>Passo 2: criar a branch do TF e entrar nela</h3>
+<pre class="code"><code><span class="cm"># cria a branch RA-tf-12 e já entra nela (switch -c = criar + entrar)</span>
+git switch -c 6325000-tf-12
+
+<span class="cm"># confere: a branch atual aparece com *</span>
+git branch</code></pre>
+<p>O nome da branch segue o padrão <code>RA-tf-NN</code>: <code>6325000-tf-12</code>. O professor reconhece o TF pela branch e pelo título do PR.</p>
+<h3 id="s3-3-passo-3-criar-a-pasta-e-o-arquivo-do-tf"><span class="hn">3.3</span>Passo 3: criar a pasta e o arquivo do TF</h3>
+<p>A estrutura é <strong><code>RA/tf-NN/RA.txt</code></strong>: uma pasta com o seu RA, dentro dela a pasta do TF, e dentro dela o arquivo.</p>
+<pre class="code"><code><span class="cm"># cria a pasta com o RA e a subpasta do TF de uma vez (-p cria o caminho inteiro)</span>
+mkdir -p 6325000/tf-12
+
+<span class="cm"># cria o arquivo com 3 linhas: nome, RA e GitHub</span>
+cat &gt; 6325000/tf-12/6325000.txt &lt;&lt;'EOF'
+Nome: Maria Silva
+RA: 6325000
+GitHub: https://github.com/maria-silva
+EOF</code></pre>
+<p>O arquivo tem o nome do <strong>seu RA</strong> com a extensão <code>.txt</code> e três linhas: <strong>nome completo</strong>, <strong>RA</strong> e o <strong>link do seu GitHub</strong>.</p>
+<pre class="code"><code>6325000/
+└── tf-12/
+    └── 6325000.txt</code></pre>
+<h3 id="s3-4-passo-4-marcar-e-registrar-add-commit"><span class="hn">3.4</span>Passo 4: marcar e registrar (add + commit)</h3>
+<pre class="code"><code><span class="cm"># marca a pasta nova para entrar no commit</span>
+git add 6325000/
+
+<span class="cm"># confere o que vai entrar: só o seu arquivo deve aparecer</span>
+git status
+
+<span class="cm"># registra, com mensagem curta</span>
+git commit -m "TF-12 - 6325000 - Maria Silva"</code></pre>
+<h3 id="s3-5-passo-5-enviar-a-branch-para-o-seu-fork"><span class="hn">3.5</span>Passo 5: enviar a branch para o seu fork</h3>
+<pre class="code"><code><span class="cm"># envia a branch para o origin (o seu fork); -u grava o vínculo para os próximos pushes</span>
+git push -u origin 6325000-tf-12</code></pre>
+<p>O push vai para o <strong><code>origin</code></strong>, o seu fork. Para o <code>upstream</code> (professor) ele seria recusado, porque você não tem permissão lá. É por isso que existe o Pull Request.</p>
+<p>Na primeira vez, o GitHub imprime no terminal um aviso do tipo <code>Create a pull request for '6325000-tf-12' on GitHub by visiting: ...</code>. É o mesmo pedido do passo seguinte.</p>
+<h3 id="s3-6-passo-6-abrir-o-pull-request-no-site-do-github"><span class="hn">3.6</span>Passo 6: abrir o Pull Request (no site do GitHub)</h3>
+<p>O PR <strong>não se abre pelo terminal</strong> na nossa disciplina: é feito na interface web.</p>
+<ol><li>Abra o <strong>seu fork</strong>: <code>github.com/SEU-USUARIO/unifaat-es-2026</code>.</li><li>O GitHub mostra uma faixa amarela: <strong>"6325000-tf-12 had recent pushes"</strong> com o botão verde <strong>Compare &amp; pull request</strong>. Clique nele.</li><li>Confira os <strong>quatro campos de cima</strong>, que decidem para onde o pedido vai:</li></ol>
+<div class="tbl"><table><thead><tr><th>Campo</th><th>Valor certo</th></tr></thead><tbody><tr><td>base repository</td><td><code>luan-tavares/unifaat-es-2026</code> (o do <strong>professor</strong>)</td></tr><tr><td>base</td><td><code>main</code></td></tr><tr><td>head repository</td><td><code>SEU-USUARIO/unifaat-es-2026</code> (o seu fork)</td></tr><tr><td>compare</td><td><code>6325000-tf-12</code></td></tr></tbody></table></div>
+<ol><li>No <strong>título</strong>, escreva <code>TF-12 · 6325000 · Maria Silva</code>.</li><li>Clique em <strong>Create pull request</strong>.</li></ol>
+<p>Se a faixa amarela não apareceu (ela some depois de algum tempo): no seu fork, abra <strong>Contribute → Open pull request</strong>, ou a aba <strong>Pull requests → New pull request</strong> e escolha as branches nos quatro campos acima.</p>
+<h3 id="s3-7-passo-7-conferir-se-o-pr-existe"><span class="hn">3.7</span>Passo 7: conferir se o PR existe</h3>
+<p>O TF <strong>só vale se o PR aparecer</strong> na lista do professor. Confira você mesmo:</p>
+<ol><li>Abra <code>github.com/luan-tavares/unifaat-es-2026/pulls</code>.</li><li>Procure o seu título (<code>TF-12 · 6325000 · Maria Silva</code>) com o estado <strong>Open</strong>.</li></ol>
+<p>Se o PR não está nessa lista, o TF <strong>não foi entregue</strong>, mesmo que o push tenha dado certo.</p>
+<p>O PR <strong>não precisa ser aceito</strong> nem mesclado: ele fica aberto como o registro da entrega. Para corrigir algo depois de aberto, basta fazer um novo commit na mesma branch e dar <code>git push</code>: o PR se atualiza sozinho.</p>
+<h2 id="s4-variações"><span class="hn">4</span>Variações</h2>
+<h3 id="s4-1-atualizar-pelo-botão-sync-fork-em-vez-do-pull-upstream"><span class="hn">4.1</span>Atualizar pelo botão Sync fork, em vez do <code>pull upstream</code></h3>
+<p>Tem dois caminhos para ter o <code>main</code> em dia, e eles não se misturam:</p>
+<div class="tbl"><table><thead><tr><th>Caminho</th><th>O que faz</th><th>Quando usar</th></tr></thead><tbody><tr><td><code>git pull --ff-only upstream main</code></td><td>traz o <code>main</code> do professor <strong>direto</strong> para o seu computador</td><td>o caminho padrão do ciclo (passo 1)</td></tr><tr><td><strong>Sync fork</strong> (botão no GitHub)</td><td>atualiza o <code>main</code> do <strong>seu fork</strong>, no site</td><td>quando você quer o fork em dia sem abrir o terminal</td></tr></tbody></table></div>
+<p>Se usar o botão, depois é preciso trazer o resultado para o computador:</p>
+<pre class="code"><code><span class="cm"># depois do Sync fork no site: baixa o main atualizado do seu fork</span>
+git switch main
+git pull --ff-only origin main</code></pre>
+<p>Os dois chegam ao mesmo lugar. O que não se faz é commitar no <code>main</code>: com <code>--ff-only</code>, o Git avisa se isso aconteceu.</p>
+<h3 id="s4-2-eu-clonei-o-repositório-do-professor-não-o-meu-fork"><span class="hn">4.2</span>Eu clonei o repositório do professor (não o meu fork)</h3>
+<p>Sintoma: <code>git remote -v</code> mostra <code>luan-tavares</code> no <code>origin</code>, e o push dá <code>permission denied</code>. Não precisa clonar de novo: troque os nomes dos remotes.</p>
+<pre class="code"><code><span class="cm"># o que era origin (professor) passa a se chamar upstream</span>
+git remote rename origin upstream
+
+<span class="cm"># cadastra o seu fork como origin</span>
+git remote add origin git@github.com:SEU-USUARIO/unifaat-es-2026.git
+
+<span class="cm"># confere: origin = seu fork, upstream = professor</span>
+git remote -v</code></pre>
+<p>Se você ainda não fez o fork, faça pelo passo 2.1 antes.</p>
+<h3 id="s4-3-eu-commitei-no-main-sem-querer"><span class="hn">4.3</span>Eu commitei no <code>main</code> sem querer</h3>
+<p>Sintoma: o <code>git pull --ff-only upstream main</code> falha com <code>Not possible to fast-forward</code>. Salve o seu trabalho em uma branch nova e devolva o <code>main</code> ao estado do professor:</p>
+<pre class="code"><code><span class="cm"># cria a branch do TF a partir de onde você está (o commit vai junto)</span>
+git branch 6325000-tf-12
+
+<span class="cm"># traz o estado atual do professor, sem mexer em nada ainda</span>
+git fetch upstream
+
+<span class="cm"># faz o main ficar idêntico ao do professor (descarta só o commit que estava nele)</span>
+git reset --hard upstream/main
+
+<span class="cm"># entra na branch que guardou o seu commit</span>
+git switch 6325000-tf-12</code></pre>
+<p>O seu commit <strong>não se perde</strong>: ele já está na <code>6325000-tf-12</code>. O <code>reset --hard</code> só afeta o <code>main</code>. Depois siga do passo 5 (push).</p>
+<h3 id="s4-4-esqueci-de-criar-a-branch-e-ainda-não-commitei"><span class="hn">4.4</span>Esqueci de criar a branch e ainda não commitei</h3>
+<p>É o caso mais fácil: crie a branch agora, e os arquivos modificados vão junto.</p>
+<pre class="code"><code><span class="cm"># cria a branch e entra nela; os arquivos não commitados vêm junto</span>
+git switch -c 6325000-tf-12</code></pre>
+<p>4.5 - Segundo TF, terceiro TF...</p>
+<p>Cada TF tem <strong>a sua própria branch</strong>, nascida do <code>main</code> atualizado. Não continue na branch do TF anterior.</p>
+<pre class="code"><code><span class="cm"># volta ao main e atualiza</span>
+git switch main
+git pull --ff-only upstream main
+
+<span class="cm"># branch nova do TF seguinte</span>
+git switch -c 6325000-tf-13
+
+<span class="cm"># pasta do TF novo, dentro da pasta que você já tem</span>
+mkdir -p 6325000/tf-13</code></pre>
+<p>A estrutura vai acumulando: <code>6325000/tf-12/</code> e <code>6325000/tf-13/</code>, cada TF em um PR separado.</p>
+<h3 id="s4-6-preciso-corrigir-um-pr-que-já-abri"><span class="hn">4.6</span>Preciso corrigir um PR que já abri</h3>
+<p>Não abra outro: corrija na mesma branch e envie de novo.</p>
+<pre class="code"><code><span class="cm"># estando na branch do TF: ajuste os arquivos, depois</span>
+git add 6325000/
+git commit -m "TF-12 - corrige o RA.txt"
+
+<span class="cm"># o -u já foi dado na primeira vez, então basta</span>
+git push</code></pre>
+<p>O PR aberto mostra o commit novo automaticamente.</p>
+<h3 id="s4-7-trabalhar-em-outro-computador"><span class="hn">4.7</span>Trabalhar em outro computador</h3>
+<p>Faça de novo a preparação (seção 2), clonando o <strong>seu fork</strong>: a branch do TF vem junto, porque ela já está no seu fork.</p>
+<pre class="code"><code><span class="cm"># depois do clone e do remote add upstream: baixa a branch que você já enviou</span>
+git switch 6325000-tf-12</code></pre>
+<h3 id="s4-8-abrir-o-pr-pela-linha-de-comando-opcional"><span class="hn">4.8</span>Abrir o PR pela linha de comando (opcional)</h3>
+<p>O GitHub oferece uma ferramenta própria, a <code>gh</code>, que abre o PR pelo terminal. É <strong>da plataforma GitHub, não do Git</strong>, e não é o caminho que usamos na disciplina. Se você já a tem instalada e logada:</p>
+<pre class="code"><code><span class="cm"># abre o PR da branch atual para o repositório do professor</span>
+gh pr create --repo luan-tavares/unifaat-es-2026 --base main --title "TF-12 · 6325000 · Maria Silva" --body ""</code></pre>
+<p>Se <code>gh</code> for um termo novo para você, ignore: o site do GitHub faz exatamente a mesma coisa.</p>
+<h2 id="s5-troubleshooting"><span class="hn">5</span>Troubleshooting</h2>
+<p>Cada caso tem o <strong>sintoma</strong> (o que aparece), a <strong>causa</strong> (por que acontece) e a <strong>correção</strong>.</p>
+<h3 id="s5-1-resumo"><span class="hn">5.1</span>Resumo</h3>
+<div class="tbl"><table><thead><tr><th>Sintoma</th><th>Causa provável</th><th>Vá para</th></tr></thead><tbody><tr><td><code>Permission denied (publickey)</code></td><td>chave SSH não cadastrada na sua conta</td><td>5.2</td></tr><tr><td><code>remote rejected ... permission denied</code> no push</td><td>você tentou enviar para o repositório do professor</td><td>5.3</td></tr><tr><td><code>fatal: The current branch ... has no upstream branch</code></td><td>primeiro push de uma branch, sem <code>-u</code></td><td>5.4</td></tr><tr><td><code>Not possible to fast-forward, aborting</code></td><td>o seu <code>main</code> tem commit que o do professor não tem</td><td>4.3</td></tr><tr><td><code>Your local changes ... would be overwritten</code></td><td>arquivos modificados sem commit ao trocar de branch</td><td>5.5</td></tr><tr><td>Faixa amarela "Compare &amp; pull request" não aparece</td><td>o aviso expira</td><td>3.6 (último parágrafo)</td></tr><tr><td>"There isn't anything to compare"</td><td>base e compare iguais, ou branch errada</td><td>5.6</td></tr><tr><td>PR aberto para o repositório errado</td><td><code>base repository</code> apontando para o seu fork</td><td>5.7</td></tr><tr><td>"This branch has conflicts that must be resolved"</td><td>o <code>main</code> do professor mudou nos mesmos arquivos</td><td>5.8</td></tr><tr><td><code>Repository not found</code></td><td>usuário errado no endereço, ou fork inexistente</td><td>5.9</td></tr><tr><td><code>fatal: not a git repository</code></td><td>você não está dentro da pasta do projeto</td><td>5.10</td></tr><tr><td>Pasta com RA ou nome errado já commitada</td><td>erro de digitação</td><td>5.11</td></tr><tr><td>Aparecem arquivos que não eram seus no commit</td><td><code>git add .</code> na pasta errada</td><td>5.12</td></tr><tr><td>O professor não vê o meu PR</td><td>o PR não foi criado ou está no repositório errado</td><td>3.7 e 5.7</td></tr></tbody></table></div>
+<h3 id="s5-2-permission-denied-publickey"><span class="hn">5.2</span><code>Permission denied (publickey)</code></h3>
+<p><strong>Causa:</strong> a chave SSH não está cadastrada na sua conta do GitHub (ou foi colada a chave privada em vez da pública).</p>
+<pre class="code"><code><span class="cm"># mostra a chave PÚBLICA para copiar (termina em .pub; a que não tem .pub é a privada e nunca se compartilha)</span>
+cat ~/.ssh/id_ed25519.pub</code></pre>
+<p>Cole o resultado em <strong>GitHub → Settings → SSH and GPG keys → New SSH key</strong> e teste de novo com <code>ssh -T git@github.com</code>.</p>
+<h3 id="s5-3-remote-permission-to-luan-tavares-denied-no-push"><span class="hn">5.3</span><code>remote: Permission to luan-tavares/... denied</code> no push</h3>
+<p><strong>Causa:</strong> o <code>origin</code> está apontando para o repositório do professor (clone errado), ou você rodou <code>git push upstream ...</code>.</p>
+<pre class="code"><code><span class="cm"># confere para onde o origin aponta</span>
+git remote -v</code></pre>
+<p>Se o <code>origin</code> mostrar <code>luan-tavares</code>, siga a variação 4.2. Se o <code>origin</code> está certo, o erro foi digitar <code>upstream</code> no push: o comando certo é <code>git push -u origin 6325000-tf-12</code>.</p>
+<h3 id="s5-4-the-current-branch-has-no-upstream-branch"><span class="hn">5.4</span><code>The current branch ... has no upstream branch</code></h3>
+<p><strong>Causa:</strong> primeiro push de uma branch nova, sem dizer para onde ela vai.</p>
+<pre class="code"><code><span class="cm"># diz para onde enviar e grava o vínculo (o git até imprime este comando para você)</span>
+git push -u origin 6325000-tf-12</code></pre>
+<h3 id="s5-5-your-local-changes-would-be-overwritten-by-checkout"><span class="hn">5.5</span><code>Your local changes would be overwritten by checkout</code></h3>
+<p><strong>Causa:</strong> você tem arquivos modificados sem commit e tentou trocar de branch.</p>
+<pre class="code"><code><span class="cm"># opção 1: registrar o trabalho antes de trocar</span>
+git add 6325000/
+git commit -m "TF-12 - andamento"
+
+<span class="cm"># opção 2: guardar de lado, sem commit, e recuperar depois</span>
+git stash
+git switch main
+git switch 6325000-tf-12
+git stash pop</code></pre>
+<h3 id="s5-6-there-isnt-anything-to-compare"><span class="hn">5.6</span>"There isn't anything to compare"</h3>
+<p><strong>Causa:</strong> o GitHub não encontrou diferença entre as duas pontas. Três origens comuns: você abriu o PR <strong>antes</strong> de enviar a branch com <code>git push</code>; escolheu <code>compare</code> igual a <code>base</code>; ou fez o commit na branch errada.</p>
+<pre class="code"><code><span class="cm"># a branch está no seu fork? (precisa listar origin/6325000-tf-12)</span>
+git branch -r
+
+<span class="cm"># o commit do TF está nela? (a mensagem do TF deve aparecer no topo)</span>
+git log --oneline -3</code></pre>
+<p>Se a branch não aparece no <code>-r</code>, falta o push do passo 3.5. Se o commit não está nela, veja 4.3.</p>
+<h3 id="s5-7-o-pr-foi-aberto-para-o-lugar-errado"><span class="hn">5.7</span>O PR foi aberto para o lugar errado</h3>
+<p><strong>Causa:</strong> em <strong>base repository</strong>, o GitHub trouxe o <strong>seu fork</strong> em vez do repositório do professor. Nesse caso o PR "existe", mas <strong>o professor não o vê</strong>: ele é um pedido do seu fork para o seu próprio fork.</p>
+<p>Correção: feche esse PR (botão <strong>Close pull request</strong>), volte para <strong>New pull request</strong> e, no primeiro campo, troque <strong>base repository</strong> para <code>luan-tavares/unifaat-es-2026</code>. Confira a lista <code>github.com/luan-tavares/unifaat-es-2026/pulls</code>: o seu PR precisa estar lá.</p>
+<h3 id="s5-8-this-branch-has-conflicts-that-must-be-resolved"><span class="hn">5.8</span>"This branch has conflicts that must be resolved"</h3>
+<p><strong>Causa:</strong> o <code>main</code> do professor mudou nos mesmos arquivos que a sua branch. No TF isso é raro, porque cada aluno mexe numa pasta com o próprio RA. Se acontecer, traga o <code>main</code> novo para a sua branch e resolva.</p>
+<pre class="code"><code><span class="cm"># atualiza o main</span>
+git switch main
+git pull --ff-only upstream main
+
+<span class="cm"># volta para a branch do TF e traz o main para dentro dela</span>
+git switch 6325000-tf-12
+git merge main</code></pre>
+<p>O Git marca os pontos em conflito dentro dos arquivos (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>). Edite deixando a versão final, remova as marcas e feche:</p>
+<pre class="code"><code><span class="cm"># marca os arquivos resolvidos e conclui o merge</span>
+git add 6325000/
+git commit -m "Resolve conflito com o main"
+
+<span class="cm"># atualiza o PR</span>
+git push</code></pre>
+<h3 id="s5-9-repository-not-found"><span class="hn">5.9</span><code>Repository not found</code></h3>
+<p><strong>Causa:</strong> o endereço está com o usuário errado, ou o fork ainda não existe (você pulou o passo 2.1), ou você não está logado na conta certa.</p>
+<pre class="code"><code><span class="cm"># mostra os endereços atuais; confira o seu usuário e o nome do repositório</span>
+git remote -v
+
+<span class="cm"># corrige o endereço do origin, se estiver errado</span>
+git remote set-url origin git@github.com:SEU-USUARIO/unifaat-es-2026.git</code></pre>
+<h3 id="s5-10-fatal-not-a-git-repository"><span class="hn">5.10</span><code>fatal: not a git repository</code></h3>
+<p><strong>Causa:</strong> o terminal está em outra pasta.</p>
+<pre class="code"><code><span class="cm"># mostra onde você está</span>
+pwd
+
+<span class="cm"># entra na pasta do projeto (ajuste o caminho para onde você clonou)</span>
+cd ~/unifaat-es-2026</code></pre>
+<h3 id="s5-11-errei-o-ra-ou-o-nome-da-pasta-e-já-commitei"><span class="hn">5.11</span>Errei o RA ou o nome da pasta e já commitei</h3>
+<p><strong>Causa:</strong> erro de digitação. Renomeie com o <code>git mv</code> (e não pelo explorador de arquivos, para o Git acompanhar), registre e envie de novo; o PR aberto se atualiza.</p>
+<pre class="code"><code><span class="cm"># renomeia a pasta errada para a certa</span>
+git mv 6325001 6325000
+
+<span class="cm"># registra e envia</span>
+git commit -m "TF-12 - corrige a pasta do RA"
+git push</code></pre>
+<h3 id="s5-12-entraram-arquivos-que-não-eram-meus-no-commit"><span class="hn">5.12</span>Entraram arquivos que não eram meus no commit</h3>
+<p><strong>Causa:</strong> <code>git add .</code> marca <strong>tudo</strong> que mudou na pasta. Veja o que está marcado antes de commitar:</p>
+<pre class="code"><code><span class="cm"># o que vai entrar no commit</span>
+git status
+
+<span class="cm"># tira um arquivo da marcação (o arquivo continua na pasta)</span>
+git restore --staged caminho/do/arquivo</code></pre>
+<p>Se o commit já foi feito, mas ainda não houve push:</p>
+<pre class="code"><code><span class="cm"># desfaz o commit e mantém os arquivos para você refazer a marcação</span>
+git reset --soft HEAD~1</code></pre>
+<h3 id="s5-13-nada-funcionou-como-pedir-ajuda"><span class="hn">5.13</span>Nada funcionou: como pedir ajuda</h3>
+<p>Mande ao professor, no lugar de uma descrição, a <strong>saída</strong> destes três comandos (copie e cole do terminal):</p>
+<pre class="code"><code><span class="cm"># em que branch você está e o que mudou</span>
+git status
+
+<span class="cm"># para onde os remotes apontam</span>
+git remote -v
+
+<span class="cm"># os últimos commits</span>
+git log --oneline -5</code></pre>
+<h2 id="s6-checklist-final"><span class="hn">6</span>Checklist final</h2>
+<p>Antes de dizer que entregou, confirme cada item:</p>
+<ul><li>Você trabalhou em uma branch <code>RA-tf-NN</code>, não no <code>main</code>.</li><li>A estrutura está certa: <code>RA/tf-NN/RA.txt</code>, com nome, RA e GitHub.</li><li>O push foi para o <strong><code>origin</code></strong> (o seu fork).</li><li>O PR foi aberto <strong>para o repositório do professor</strong> (<code>base repository</code> = <code>luan-tavares/unifaat-es-2026</code>).</li><li>O título é <code>TF-NN · RA · Nome</code>.</li><li>O seu PR aparece, com estado <strong>Open</strong>, na lista <code>github.com/luan-tavares/unifaat-es-2026/pulls</code>.</li></ul>
+<p>Se os seis itens estão certos, o TF está entregue. <strong>Se o PR não aparece na lista do professor, o TF não vale</strong>, mesmo que o resto esteja perfeito.</p>
+
+  </main>
+</div>
+<script src="../../assets/briefing.js"></script>
+</body>
+</html>

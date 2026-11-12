@@ -1,0 +1,134 @@
+/* Linha do tempo do Git animada (ES, Aula 12): commits, branches, merge, fork, sync, pull e PR.
+   O gitviz.js monta tudo a partir de <div data-gitviz="chave">. Cores só por variável,
+   nas duas paletas (claro e escuro). */
+:root{
+  --gv-tr: #04483a;   --gv-tr-bg: #d7efe6;   /* tronco (main) */
+  --gv-gl: #8a4b00;   --gv-gl-bg: #ffe8cc;   /* galho */
+  --gv-pf: #1d4ed8;   --gv-pf-bg: #dbe6fe;   /* professor / aula */
+  --gv-mg: #6d28d9;   --gv-mg-bg: #ede4ff;   /* merge */
+  --gv-no: #b91c1c;   --gv-no-bg: #fee2e2;   /* recusado */
+  --gv-band: #eef2ec;
+}
+:root[data-theme="dark"]{
+  --gv-tr: #7dd3b0;   --gv-tr-bg: #12301e;
+  --gv-gl: #fdba74;   --gv-gl-bg: #3b1a08;
+  --gv-pf: #8fb1f5;   --gv-pf-bg: #172a4d;
+  --gv-mg: #c4a8ff;   --gv-mg-bg: #2a1a52;
+  --gv-no: #f87171;   --gv-no-bg: #3b1212;
+  --gv-band: #14211b;
+}
+
+.gv{ display: flex; flex-direction: column; gap: 8px; font-family: var(--font-body); }
+.gv svg{ display: block; width: 100%; height: auto; background: var(--surface); border: 2px solid var(--rule); border-radius: 10px; }
+
+.gv .off{ opacity: 0; pointer-events: none; }
+.gv .ban{ fill: var(--gv-band); stroke: var(--rule); stroke-width: 1; }
+.gv .ban-t{ font: 700 14px var(--font-mono); fill: var(--ink); letter-spacing: .02em; }
+.gv .ban-s{ font: 500 12px var(--font-mono); fill: var(--muted-2); }
+
+.gv .cm, .gv .tg, .gv .ed, .gv .ar, .gv .bn, .gv .nd, .gv .ban, .gv .ban-t, .gv .ban-s, .gv .tx{ transition: opacity .5s, transform .6s ease; }
+
+/* commit */
+.gv .cm circle{ fill: var(--surface); stroke: var(--ink); stroke-width: 3; }
+.gv .cm text{ font: 700 13px var(--font-mono); fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+.gv .cm.tr circle{ stroke: var(--gv-tr); fill: var(--gv-tr-bg); }
+.gv .cm.gl circle{ stroke: var(--gv-gl); fill: var(--gv-gl-bg); }
+.gv .cm.pf circle{ stroke: var(--gv-pf); fill: var(--gv-pf-bg); }
+.gv .cm.mg circle{ stroke: var(--gv-mg); fill: var(--gv-mg-bg); }
+.gv .cm.loc circle{ stroke-dasharray: 5 4; }
+
+/* seta para o pai */
+.gv .ed path{ fill: none; stroke: var(--muted-2); stroke-width: 3; }
+.gv .ed polygon{ fill: var(--muted-2); stroke: none; }
+.gv .ed path.mg{ stroke: var(--gv-mg); }
+.gv .ed polygon.mg{ fill: var(--gv-mg); }
+
+/* etiqueta (branch, HEAD, remote) */
+.gv .tg rect{ stroke-width: 2; rx: 6; }
+.gv .tg text{ font: 700 13px var(--font-mono); text-anchor: middle; dominant-baseline: central; }
+.gv .tg.b rect{ fill: var(--gv-tr-bg); stroke: var(--gv-tr); }
+.gv .tg.b text{ fill: var(--gv-tr); }
+.gv .tg.g rect{ fill: var(--gv-gl-bg); stroke: var(--gv-gl); }
+.gv .tg.g text{ fill: var(--gv-gl); }
+.gv .tg.h rect{ fill: var(--ink); stroke: var(--ink); }
+.gv .tg.h text{ fill: var(--bg); }
+.gv .tg.r rect{ fill: var(--gv-pf-bg); stroke: var(--gv-pf); stroke-dasharray: 4 3; }
+.gv .tg.r text{ fill: var(--gv-pf); }
+
+/* seta entre repositórios */
+.gv .ar path{ fill: none; stroke-width: 3.5; stroke-dasharray: 9 6; }
+.gv .ar text{ font: 700 13px var(--font-mono); text-anchor: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+.gv .ar.fork path, .gv .ar.pull path{ stroke: var(--gv-pf); }
+.gv .ar.fork text, .gv .ar.pull text{ fill: var(--gv-pf); }
+.gv .ar.push path{ stroke: var(--gv-tr); }
+.gv .ar.push text{ fill: var(--gv-tr); }
+.gv .ar.pr path{ stroke: var(--gv-gl); stroke-width: 4.5; }
+.gv .ar.pr text{ fill: var(--gv-gl); font-size: 15px; }
+.gv .ar.no path{ stroke: var(--gv-no); }
+.gv .ar.no text{ fill: var(--gv-no); }
+.gv .ar polygon{ stroke: none; stroke-dasharray: none; }
+.gv .ar.fork polygon, .gv .ar.pull polygon{ fill: var(--gv-pf); }
+.gv .ar.push polygon{ fill: var(--gv-tr); }
+.gv .ar.pr polygon{ fill: var(--gv-gl); }
+.gv .ar.no polygon{ fill: var(--gv-no); }
+
+/* texto solto */
+.gv .tx{ font: 700 14px var(--font-mono); fill: var(--ink); }
+.gv .tx.ok{ fill: var(--gv-tr); }
+.gv .tx.gl{ fill: var(--gv-gl); }
+.gv .tx.no{ fill: var(--gv-no); }
+.gv .tx.mut{ fill: var(--muted); font-weight: 500; text-anchor: middle; }
+
+/* legenda da etapa */
+.gv .gcap{ display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 14px; border: 2px solid var(--rule); border-radius: 10px; background: var(--surface); }
+.gv .gcmd{ flex: none; max-width: 46%; font: 700 .95rem var(--font-mono); color: var(--code-ink); background: var(--code-bg); border: 2px solid var(--code-border); border-radius: 6px; padding: 3px 10px; overflow-wrap: anywhere; }
+.gv .gcmd:empty{ display: none; }
+.gv .gmsg{ font-size: 1.05rem; line-height: 1.35; color: var(--ink); }
+
+.gv .gctl{ display: flex; align-items: center; gap: 8px; }
+.gv .gctl button{ font: 700 .9rem var(--font-mono); width: 34px; height: 28px; border-radius: 6px; border: 2px solid var(--rule); background: var(--surface); color: var(--ink); cursor: pointer; }
+.gv .gctl button:hover{ border-color: var(--ink); }
+.gv .gdots{ display: flex; gap: 6px; align-items: center; margin-left: 6px; }
+.gv .gdots i{ width: 10px; height: 10px; border-radius: 50%; background: var(--rule); cursor: pointer; }
+.gv .gdots i.on{ background: var(--ink); transform: scale(1.25); }
+.gv .gn{ font: 700 .85rem var(--font-mono); color: var(--muted); margin-left: 6px; }
+.gv .ghint{ margin-left: auto; font: 500 .8rem var(--font-mono); color: var(--muted-2); }
+
+@media print{
+  .gv .gctl{ display: none; }
+}
+
+/* caixa de repositório (fluxo visual do PR) */
+.gv .nd rect{ fill: var(--gv-band); stroke-width: 3; }
+.gv .nd .nd-t{ font: 700 20px var(--font-mono); text-anchor: middle; fill: var(--ink); }
+.gv .nd .nd-s{ font: 500 12px var(--font-mono); text-anchor: middle; fill: var(--muted); }
+.gv .nd.pf rect{ stroke: var(--gv-pf); fill: var(--gv-pf-bg); }
+.gv .nd.tr rect{ stroke: var(--gv-tr); fill: var(--gv-tr-bg); }
+.gv .nd.ink rect{ stroke: var(--ink); fill: var(--surface); }
+
+/* a solicitação que o GitHub mostra no seu fork depois do push (réplica simplificada, sem marca) */
+.gh-banner{ display: flex; align-items: center; gap: 14px; padding: 12px 18px; border: 2px solid var(--gh-ban-bd); border-radius: 8px; background: var(--gh-ban-bg); font-family: var(--font-body); }
+.gh-banner .gh-txt{ flex: 1; font-size: 1.15rem; color: var(--gh-ban-ink); }
+.gh-banner .gh-txt b{ font-family: var(--font-mono); }
+.gh-banner .gh-btn{ flex: none; font: 700 1.05rem var(--font-body); color: #ffffff; background: var(--gh-btn); border-radius: 6px; padding: 8px 16px; }
+.gh-cap{ font: 700 .95rem var(--font-mono); color: var(--muted); margin: 6px 0 4px; }
+:root{ --gh-ban-bg: #fff8c5; --gh-ban-bd: #bf8700; --gh-ban-ink: #3d2e00; --gh-btn: #1a7f37; }
+:root[data-theme="dark"]{ --gh-ban-bg: #3a2f08; --gh-ban-bd: #d4a72c; --gh-ban-ink: #ffe9a6; --gh-btn: #2ea043; }
+
+/* ===== modo vertical (celular, janela estreita, tela em pé): letra maior, legenda embaixo ===== */
+.gv.vert .cm text{ font-size: 17px; }
+.gv.vert .tg text{ font-size: 17px; }
+.gv.vert .ban-t{ font-size: 16px; }
+.gv.vert .ban-s{ font-size: 15px; }
+.gv.vert .ar text{ font-size: 17px; }
+.gv.vert .ar.pr text{ font-size: 19px; }
+.gv.vert .tx{ font-size: 18px; }
+.gv.vert .nd .nd-t{ font-size: 24px; }
+.gv.vert .nd .nd-s{ font-size: 15px; }
+.gv.vert svg{ cursor: pointer; }
+.gv.vert .gcap{ flex-direction: column; align-items: flex-start; gap: 8px; }
+.gv.vert .gcmd{ max-width: 100%; font-size: .9rem; }
+.gv.vert .gmsg{ font-size: 1.02rem; }
+.gv.vert .gctl button{ width: 44px; height: 40px; }
+.gv.vert .ghint{ display: none; }
+.gh-banner{ flex-wrap: wrap; }

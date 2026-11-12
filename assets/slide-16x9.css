@@ -1,8 +1,10 @@
 /* Palco 16:9 (opt-in): o miolo do slide vive num palco fixo de 1280x720, o mesmo das
    miniaturas, e o palco inteiro é escalado para caber na tela/projetor (slide-16x9.js
    define --escala). A proporção da janela não muda; só o miolo passa a caber nela.
-   Só vale na tela: a impressão (PDF) continua com o CSS compacto de slide.css. */
-@media screen{
+   Só vale na tela, em paisagem e com pelo menos 720px de largura: em tela estreita ou em pé
+   vale o layout vertical fluido do slide.css (cada slide uma coluna). A impressão (PDF)
+   continua com o CSS compacto de slide.css. */
+@media screen and (orientation: landscape) and (min-width: 720px){
   .deck{
     display: flex;
     justify-content: center;

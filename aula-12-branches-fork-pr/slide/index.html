@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 12 — Branches, Fork e Pull Request</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<link rel="stylesheet" href="../../assets/slide-16x9.css">
+<link rel="stylesheet" href="../../assets/gitviz.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">12</span> - Branches, Fork e Pull Request</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <section class="slide" data-eyebrow="revisão · commit">
+    <h2>Revisão rápida: <span class="accent">o commit</span></h2>
+    <div data-gitviz="commit"></div>
+    <p class="payoff">Commit = <strong>foto do projeto + ponteiro para o pai</strong>. O fluxo é sempre <code>editar</code> → <code>git add</code> → <code>git commit</code>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="branches">
+    <h2>Branch: <span class="accent">o multiverso</span> da linha do tempo</h2>
+    <div data-gitviz="branch"></div>
+    <p class="payoff">Uma branch <strong>não é cópia de arquivos</strong>: é um ponteiro (um texto com o hash de um commit). Criar é de graça.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="branches · checkout e switch">
+    <h2><code>checkout</code> e <code>switch</code>: <span class="accent">viajar entre os universos</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># o antigo: git checkout</span><br>
+        <code>git checkout login</code><br>
+        <code>git checkout -b login</code> (cria e entra)<br>
+        <br>
+        <span class="dim"># canivete suíço</span><br>
+        troca de branch, restaura arquivo, vai para commit solto
+      </div>
+      <div class="tree">
+        <span class="dim"># o moderno: git switch (Git 2.23)</span><br>
+        <code>git switch login</code><br>
+        <code>git switch -c login</code> (cria e entra)<br>
+        <br>
+        <span class="dim"># faz uma coisa só</span><br>
+        troca de branch. Arquivo: <code>git restore</code>
+      </div>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># cria a branch e entra nela (o HEAD muda de lugar)</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git switch -c login</span></div>
+        <div class="term-line comment"># o HEAD aponta para a branch nova</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">cat .git/HEAD</span></div>
+        <div class="term-line out hl">ref: refs/heads/login</div>
+      </div>
+    </div>
+    <p class="payoff">Os dois funcionam e aparecem por aí. Use <strong>switch</strong> (diz o que faz) e saiba ler <strong>checkout</strong>. Ao trocar, os arquivos da pasta mudam: <strong>commite antes</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="branches · push">
+    <h2><code>git push</code>: <span class="accent">escolhemos o remote e a branch</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># o formato</span><br>
+        <code>git push</code> <strong>&lt;remote&gt;</strong> <strong>&lt;branch&gt;</strong><br>
+        <br>
+        <span class="dim"># o mais comum</span><br>
+        remote <code>origin</code>, branch <code>main</code>
+      </div>
+      <div class="tree">
+        <span class="dim"># mas é escolha, e dá para mudar</span><br>
+        outro remote: <code>upstream</code>, <code>origin</code>...<br>
+        outra branch: <code>login</code>, <code>meu-tf</code>...
+      </div>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># envia a branch login para o remote origin (-u guarda o destino)</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git push -u origin login</span></div>
+        <div class="term-line comment"># lista também as branches que existem nos remotes</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git branch -a</span></div>
+      </div>
+    </div>
+    <ul class="points">
+      <li>O galho <strong>só existe no GitHub depois do primeiro push</strong> dele</li>
+      <li>O <code>push</code> envia a <strong>branch em que você está</strong>: confira antes</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-eyebrow="ssh · onde a chave vive">
+    <h2>Chave SSH: <span class="accent">na conta inteira ou em um repositório só</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># chave da conta</span><br>
+        Settings → <strong>SSH and GPG keys</strong><br>
+        alcance: <strong>tudo</strong> que a conta acessa<br>
+        se vazar: age <strong>como você</strong> em tudo
+      </div>
+      <div class="tree">
+        <span class="dim"># chave do repositório (deploy key)</span><br>
+        repo → Settings → <strong>Deploy keys</strong><br>
+        alcance: <strong>só aquele repositório</strong><br>
+        <strong>somente leitura</strong> por padrão (escrita só se marcar)
+      </div>
+    </div>
+    <ul class="points">
+      <li><strong>Deploy key:</strong> para uma máquina que só precisa baixar o código (servidor, CI)</li>
+      <li><strong>Chave da conta:</strong> para vocês, no próprio computador, com vários repositórios (é a da Aula 05)</li>
+    </ul>
+    <p class="payoff">Princípio do <strong>menor privilégio</strong>: cada chave com só o acesso de que precisa.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="ssh · e não https">
+    <h2>Sempre <span class="accent">SSH</span>, e não HTTPS</h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># a URL SSH: a autenticação é a chave, sem digitar nada</div>
+        <div class="term-line out">git@github.com:luan-tavares/unifaat-es-2026.git</div>
+        <div class="term-line comment"># a URL HTTPS: pede credencial</div>
+        <div class="term-line out">https://github.com/luan-tavares/unifaat-es-2026.git</div>
+        <div class="term-line comment"># clonou por HTTPS? troque o remote, sem clonar de novo</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git remote set-url origin git@github.com:SEU-USUARIO/unifaat-es-2026.git</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">ssh -T git@github.com</span></div>
+      </div>
+    </div>
+    <ul class="points">
+      <li><strong>SSH:</strong> configura uma vez e <code>push</code>/<code>pull</code> não pedem nada</li>
+      <li><strong>HTTPS:</strong> desde 2021 o GitHub não aceita mais a senha da conta: exige um <strong>token</strong>, um segredo a mais para guardar</li>
+    </ul>
+    <p class="payoff">Na disciplina: <strong>sempre SSH</strong>. A URL do clone é a escolha do protocolo.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="merge · fast-forward">
+    <h2>Merge: <span class="accent">trazer o galho</span> para onde o HEAD está</h2>
+    <div data-gitviz="ff"></div>
+    <p class="payoff">Se a main <strong>não andou</strong>, o merge é só mover o ponteiro (<strong>fast-forward</strong>): nenhum commit novo.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="merge · commit de merge">
+    <h2>Merge: <span class="accent">quando os dois lados andaram</span></h2>
+    <div data-gitviz="merge"></div>
+    <p class="payoff">O commit de merge tem <strong>dois pais</strong>. Mesclar <strong>não apaga o galho</strong>: apagar é outra decisão.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="merge · cuidados">
+    <h2>Merge: <span class="accent">os cuidados</span></h2>
+    <ul class="points">
+      <li><strong>Confira o destino:</strong> o merge traz o galho para a branch <strong>atual</strong> (<code>git branch</code>)</li>
+      <li><strong>Commite antes</strong> e <strong>atualize o tronco</strong> (<code>git pull</code>) antes de mesclar</li>
+      <li><strong>Mesclar no main é publicar:</strong> em equipe, passa por revisão (o Pull Request)</li>
+      <li><strong>Conflito:</strong> mesma linha mudada nos dois lados. Um humano decide</li>
+      <li><strong>Não reescreva histórico publicado</strong> (<code>push --force</code>)</li>
+    </ul>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">projeto/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># conflito: edite o arquivo, apague os marcadores e conclua</div>
+        <div class="term-line out">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD   (a branch atual)</div>
+        <div class="term-line out">=======              (separa os dois lados)</div>
+        <div class="term-line out">&gt;&gt;&gt;&gt;&gt;&gt;&gt; login  (o galho que entra)</div>
+        <div class="term-line comment"># desistiu? volta ao estado de antes</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git merge --abort</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-eyebrow="tronco e galhos">
+    <h2>Tronco, galhos e <span class="accent">o galho que nunca é mesclado</span></h2>
+    <div data-gitviz="historico"></div>
+    <p class="payoff"><strong>Tronco</strong> = a <code>main</code> (o oficial). <strong>Galho</strong> = branch de trabalho. Na disciplina, o galho do aluno <strong>nunca é mesclado</strong>: fica como <strong>histórico</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="fork x clone x pull">
+    <h2><span class="accent">Fork</span> x <span class="accent">clone</span> x <span class="accent">pull</span></h2>
+    <div class="two-col" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="tree">
+        <span class="dim"># fork</span><br>
+        <strong>onde:</strong> no GitHub, de conta para conta<br>
+        <strong>faz:</strong> copia o repositório do professor para a <strong>sua conta</strong><br>
+        <strong>quando:</strong> 1 vez<br>
+        <strong>como:</strong> botão <strong>Fork</strong> (não é comando do Git)
+      </div>
+      <div class="tree">
+        <span class="dim"># clone</span><br>
+        <strong>onde:</strong> do GitHub para a sua máquina<br>
+        <strong>faz:</strong> baixa o repositório <strong>inteiro</strong> e já configura o <code>origin</code><br>
+        <strong>quando:</strong> 1 vez por máquina<br>
+        <strong>como:</strong> <code>git clone &lt;url&gt;</code>
+      </div>
+      <div class="tree">
+        <span class="dim"># pull</span><br>
+        <strong>onde:</strong> de um remote para a sua branch local<br>
+        <strong>faz:</strong> traz <strong>só o que é novo</strong> (fetch + merge)<br>
+        <strong>quando:</strong> todo dia, em repo já clonado<br>
+        <strong>como:</strong> <code>git pull --ff-only upstream main</code>
+      </div>
+    </div>
+    <p class="lede">Um não impede o outro: é um caminho só, <strong>fork → clone → pull</strong>. <strong>Por que o fork vem primeiro?</strong></p>
+    <ul class="points">
+      <li><strong>Escrita:</strong> sem fork, você clona e dá <code>pull</code> do professor, mas o <code>push</code> é <strong>recusado</strong>. O fork é o <strong>seu</strong> lugar com permissão</li>
+      <li><strong>Vínculo com o original:</strong> o fork lembra de onde veio. Por isso existem o <strong>Sync fork</strong>, o aviso "commits behind" e o <strong>PR</strong> para o repositório do professor</li>
+      <li><strong>Isolamento:</strong> o <code>main</code> do professor fica intocado; o seu trabalho mora no seu fork</li>
+      <li><strong>Cópia sua no GitHub:</strong> o TF fica guardado na sua conta (backup e portfólio)</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-eyebrow="fork">
+    <h2>Fork: <span class="accent">a sua cópia</span> do repositório</h2>
+    <div data-gitviz="fork"></div>
+    <p class="payoff">Fork <strong>não é clone</strong>: o fork é de conta para conta (no GitHub); o clone é do GitHub para a sua máquina. No <code>main</code> do professor, <strong>só o professor escreve</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="sync e pull">
+    <h2>Sync e pull: <span class="accent">as aulas novas</span></h2>
+    <div data-gitviz="sync"></div>
+    <p class="payoff">O fork <strong>não se atualiza sozinho</strong>. O seu <code>main</code> só recebe <code>pull</code> do <code>upstream</code>. <code>--ff-only</code> = <strong>só avanço limpo</strong> (fast-forward): se alguém mexeu no seu <code>main</code>, o Git <strong>recusa</strong> em vez de criar um merge.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="pull request">
+    <h2>Push em outro galho e <span class="accent">Pull Request</span></h2>
+    <div data-gitviz="pr"></div>
+    <p class="payoff">O PR é um <strong>pedido</strong>: "professor, puxe o meu galho". <strong>Não é comando do Git</strong>: o <code>push</code> é no terminal, o PR é <strong>no site do GitHub</strong> (interface web).</p>
+  </section>
+
+  <section class="slide" data-eyebrow="o fluxo visual">
+    <h2>O fluxo inteiro: <span class="accent">fork, pull, push e PR</span></h2>
+    <div data-gitviz="fluxopr"></div>
+    <p class="payoff"><strong>Azul:</strong> receber (fork, clone, pull). <strong>Verde:</strong> enviar (push, só para o <strong>seu</strong> fork). <strong>Laranja:</strong> pedir (PR para o professor). Você escreve no fork; o professor só <strong>recebe o pedido</strong>.</p>
+  </section>
+
+  <section class="slide" data-eyebrow="os comandos do pr">
+    <h2>Os comandos, e <span class="accent">o pedido que aparece</span></h2>
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+        <span class="term-path">unifaat-es-2026/</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line comment"># 1) traz a aula nova do professor para o seu main</div>
+        <div class="term-line comment"># --ff-only = "fast-forward only": só aceita avanço limpo (o main é cópia do professor).</div>
+        <div class="term-line comment"># se você mexeu no main, ele RECUSA, em vez de criar um merge surpresa</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git switch main &amp;&amp; git pull --ff-only upstream main</span></div>
+        <div class="term-line comment"># 2) cria o galho do TF, com o seu RA, e entra nele</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git switch -c 6325000-tf-12</span></div>
+        <div class="term-line comment"># 3) cria a estrutura do TF: RA/tf-12/RA.txt (com nome, RA e GitHub) e grava no galho</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">mkdir -p 6325000/tf-12</span></div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git add -A &amp;&amp; git commit -m "TF-12"</span></div>
+        <div class="term-line comment"># 4) envia o galho para o SEU fork (origin), nunca para o professor</div>
+        <div class="term-line"><span class="prompt">$</span> <span class="cmd">git push -u origin 6325000-tf-12</span></div>
+      </div>
+    </div>
+    <p class="gh-cap">5) depois do push, no site do seu fork, o GitHub mostra:</p>
+    <div class="gh-banner">
+      <span class="gh-txt"><b>6325000-tf-12</b> had recent pushes <em>less than a minute ago</em></span>
+      <span class="gh-btn">Compare &amp; pull request</span>
+    </div>
+    <p class="payoff">Clique no botão e confira: <strong>base</strong> = repositório do professor (<code>main</code>), <strong>head</strong> = o seu fork e o seu galho. Título <code>TF-12 · RA · Nome</code> → <strong>Create pull request</strong>.</p>
+  </section>
+
+
+  <section class="slide" data-eyebrow="tf 12 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 12: <span class="accent">o seu PR é a entrega</span></h2>
+    <ul class="points">
+      <li><strong>Branch</strong> <code>RA-tf-12</code> (ex.: <code>6325000-tf-12</code>), criada a partir do <code>main</code> atualizado</li>
+      <li><strong>Estrutura:</strong> <code>RA/tf-12/RA.txt</code> (ex.: <code>6325000/tf-12/6325000.txt</code>) com <strong>nome, RA e usuário do GitHub</strong></li>
+      <li><strong>Pull Request</strong> aberto <strong>no site do GitHub</strong>, do seu fork para o <code>main</code> do professor. Título <code>TF-12 · RA · Nome</code></li>
+      <li><strong>O TF só é válido se o PR aparecer</strong> na lista de Pull requests do professor. <code>push</code> sem PR não é entrega</li>
+    </ul>
+    <p class="body-text">Descrição completa do TF (README):
+    <a href="https://github.com/luan-tavares/unifaat-es-2026/tree/main/aula-12-branches-fork-pr" target="_blank" rel="noopener noreferrer"><code>https://github.com/luan-tavares/unifaat-es-2026/tree/main/aula-12-branches-fork-pr</code></a></p>
+    <p class="payoff">Prazo: <strong>quarta-feira, 18/11</strong>.</p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">18</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">← → ou espaço: slides · P pausa a animação · , . etapas · T tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+
+<script src="../../assets/gitviz.js"></script>
+<script src="../../assets/slide.js"></script>
+<script src="../../assets/slide-16x9.js"></script>
+</body>
+</html>

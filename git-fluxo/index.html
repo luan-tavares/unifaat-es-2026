@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluxo Git do aluno</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/rede-docker.css">
+<link rel="stylesheet" href="../assets/git-fluxo.css">
+<script src="../assets/tema.js"></script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="topbar"><a class="back" href="../index.html">← Voltar</a></nav>
+
+  <p class="eyebrow">Engenharia de Software · 2026.2 · documentação</p>
+  <h1>Fluxo <span class="accent">Git</span> do aluno</h1>
+  <p class="lede">O aluno só precisa do <code>main</code> (cópia do professor, só <code>pull</code>) e de uma branch por TF, <code>RA-tf-NN</code>, que vira Pull Request e nunca é mergeada. A preparação acontece uma vez; depois é um ciclo de 4 etapas que se repete a cada aula.</p>
+
+  <p class="rule" role="note"><b>ANTES DE CLONAR:</b> faça o <b>FORK</b> do repositório do professor (botão <b>Fork</b> no GitHub) e clone o <b>seu fork</b>. Clonar o repo do professor direto <b>não funciona</b>: o push é recusado.</p>
+
+  <p class="rule" role="note"><b>REGRA DA ENTREGA:</b> criar <b>UMA BRANCH POR TF</b>, com a nomenclatura certa: <code>RA-tf-NN</code> (ex.: <code>6325000-tf-12</code>), com, na raiz, o diretório <code>RA/tf-NN/</code> contendo o <code>RA.txt</code> (nome, RA e GitHub). <b>O TF só vale se o PR aparecer no repositório do professor.</b></p>
+
+  <div class="tabs" role="tablist" aria-label="Seções">
+    <button type="button" class="tab" role="tab" id="tab-fluxo" aria-controls="view-fluxo" aria-selected="true">Fluxo do aluno</button>
+    <button type="button" class="tab" role="tab" id="tab-cmds" aria-controls="view-cmds" aria-selected="false">Comandos Git <span class="tab-count" id="cmds-count"></span></button>
+    <button type="button" class="tab" role="tab" id="tab-erros" aria-controls="view-erros" aria-selected="false">Troubleshooting <span class="tab-count" id="erros-count"></span></button>
+  </div>
+
+  <section id="view-fluxo" role="tabpanel" aria-labelledby="tab-fluxo">
+
+    <p class="hint-line">Clique em <b>próximo</b> (ou use as setas ← → do teclado) para a timeline evoluir um passo por vez.</p>
+
+    <div class="controls stepper">
+      <button type="button" class="btn" id="prev">← anterior</button>
+      <div class="dots" id="dots" role="group" aria-label="Passos de 1 a 11"></div>
+      <button type="button" class="btn primary" id="next">próximo →</button>
+      <button type="button" class="btn" id="restart">recomeçar</button>
+    </div>
+
+    <div class="phases">
+      <div class="phase">
+        <span class="phase-title">Preparação · uma vez só</span>
+        <div class="chips">
+          <button type="button" class="btn" data-go="0">repo do professor</button>
+          <button type="button" class="btn" data-go="1">FORK → clone</button>
+        </div>
+      </div>
+      <div class="phase ring-phase">
+        <span class="phase-title">Ciclo · repete a cada aula</span>
+        <svg id="ring" viewBox="0 0 430 200" role="group" aria-label="Ciclo de 4 etapas que se repete a cada aula"></svg>
+      </div>
+      <div class="phase">
+        <span class="phase-title">Deu erro?</span>
+        <div class="chips">
+          <button type="button" class="btn" id="go-erros">abrir o troubleshooting →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel" aria-live="polite">
+        <p class="step-count" id="step-count"></p>
+        <h2 id="step-title"></h2>
+        <p id="step-text"></p>
+        <p class="callout" id="step-warn" hidden></p>
+      </div>
+      <div class="panel">
+        <h2>Comandos</h2>
+        <pre><code id="step-cmd"></code></pre>
+        <button type="button" class="btn" id="copy">copiar</button>
+      </div>
+    </div>
+
+    <div class="scroller">
+      <div class="gstage">
+        <svg id="git" role="img" aria-label="Timeline de commits e branches do professor e dos forks dos alunos"></svg>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="lg-c lg-base"></i>commit da aula (a solução do TF anterior vem dentro dele)</span>
+      <span><i class="lg-c lg-tf"></i>commit do TF do aluno (folha)</span>
+      <span><i class="lg-tag"></i>ponteiro de branch (<code>main</code>, <code>RA-tf-12</code>...)</span>
+      <span><i class="lg-tag lg-tag-push"></i>folha já enviada ao GitHub (↑); tracejada = só na máquina do aluno</span>
+      <span><i class="lg-tie"></i>linha tracejada vertical = o <b>mesmo commit</b> (mesmo hash) copiado por fork ou pull</span>
+      <span><i class="lg-pr"></i>seta verde = Pull Request da folha para o <code>main</code> do professor</span>
+      <span>os hashes são ilustrativos</span>
+    </div>
+
+  </section>
+
+  <section id="view-cmds" role="tabpanel" aria-labelledby="tab-cmds" hidden></section>
+
+  <section id="view-erros" role="tabpanel" aria-labelledby="tab-erros" hidden></section>
+
+</div>
+<script src="../assets/git-fluxo.js"></script>
+<script src="../assets/git-troubleshooting.js"></script>
+<script src="../assets/git-comandos.js"></script>
+</body>
+</html>

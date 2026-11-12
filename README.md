@@ -1,7 +1,11 @@
 # Engenharia de Software — UNIFAAT 2026.2
 
 Repositório base da disciplina de Engenharia de Software (ADS, Prof. Luan Tavares).
+<<<<<<< HEAD
+Aqui ficam os slides, os briefings e o código visto em aula, na pasta `src/`.
+=======
 Aqui ficam os slides, os briefings e o código visto em aula, na pasta `src/`, com uma subpasta por aula.
+>>>>>>> 2e2f26c1dbf6cdb79885e006f230d309f6848149
 
 Linha do tempo das aulas: abra o arquivo `index.html` no navegador.
 
@@ -63,10 +67,17 @@ aqui, porque são dois ambientes isolados, cada um com o seu binário (Aulas 02 
 
 ## Como executar os arquivos Python
 
+<<<<<<< HEAD
+1. Dentro do diretório do repositório (`cd unifaat-es-2026`), entre na pasta `src/`:
+
+   ```bash
+   cd src
+=======
 1. Dentro do diretório do repositório (`cd unifaat-es-2026`), entre na pasta da aula, dentro de `src/` (por exemplo, a `07`):
 
    ```bash
    cd src/07
+>>>>>>> 2e2f26c1dbf6cdb79885e006f230d309f6848149
    ```
 
 2. Rode o arquivo passando o nome dele para o `python3`:
@@ -75,7 +86,11 @@ aqui, porque são dois ambientes isolados, cada um com o seu binário (Aulas 02 
    python3 binario.py
    ```
 
+<<<<<<< HEAD
+   O resultado aparece direto no terminal. Para rodar outro arquivo, troque só o nome:
+=======
    O resultado aparece direto no terminal. Para rodar outro arquivo da mesma aula, troque só o nome:
+>>>>>>> 2e2f26c1dbf6cdb79885e006f230d309f6848149
 
    ```bash
    python3 estruturas.py
@@ -83,8 +98,11 @@ aqui, porque são dois ambientes isolados, cada um com o seu binário (Aulas 02 
    python3 merge_sort.py
    ```
 
+<<<<<<< HEAD
+=======
    Para as outras aulas, entre na pasta delas (`cd ../08`) e rode os arquivos de lá.
 
+>>>>>>> 2e2f26c1dbf6cdb79885e006f230d309f6848149
 Para ler e alterar o código, abra o projeto no VS Code de dentro do WSL:
 
 ```bash
@@ -93,8 +111,11 @@ code .
 
 ## O que tem em `src/`
 
+<<<<<<< HEAD
+=======
 ### `src/07/`: Introdução ao Python
 
+>>>>>>> 2e2f26c1dbf6cdb79885e006f230d309f6848149
 | Arquivo | Assunto |
 |---|---|
 | `estruturas.py` | Tipos básicos e estruturas nativas: int, float, bool, str, list, tuple, dict e set |
@@ -102,6 +123,9 @@ code .
 | `binario.py` | Conversão decimal → binário (divisão por 2) e binário → decimal |
 | `merge_sort.py` | Ordenação por dividir para conquistar |
 
+<<<<<<< HEAD
+O `src/` cresce a cada aula: novos arquivos entram aqui ao longo do semestre.
+=======
 ### `src/08/`: Paradigma Orientado a Objetos
 
 | Arquivo | Assunto |
@@ -112,3 +136,4 @@ code .
 | `arvore_arquivos.py` | A classe `Item`: uma árvore de pastas e arquivos, cada item com o seu pai |
 
 O `src/` cresce a cada aula: cada aula nova ganha a sua subpasta (`src/09/`, `src/10/`...), até haver um projeto unificado.
+>>>>>>> 2e2f26c1dbf6cdb79885e006f230d309f6848149

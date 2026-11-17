@@ -1,0 +1,30 @@
+pedido 2 recusado: cpf invalido
+pedido 4 recusado: email invalido
+pedido 7 recusado: cep invalido
+pagar 1: True
+pagar 3: True
+pagar 5: False
+pagar 6: True
+cancelar 5: True
+cancelar 1: False
+Pedido 1 - Ana Souza - Sorocaba
+  status: pago
+   2 x Caderno = R$ 31.00
+   5 x Caneta = R$ 12.50
+  total: R$ 43.50 | desconto: R$ 4.35 | a pagar: R$ 39.15
+Pedido 3 - Ana Souza - Sorocaba
+  status: pago
+   1 x Livro = R$ 89.50
+  total: R$ 89.50 | desconto: R$ 8.95 | a pagar: R$ 80.55
+Pedido 5 - Diego Rocha - Itu
+  status: cancelado
+Pedido 6 - Eva Nunes - Itu
+  status: pago
+   1 x Fone = R$ 60.00
+  total: R$ 60.00 | desconto: R$ 12.00 | a pagar: R$ 48.00
+Pedido 8 - Gil Alves - Sorocaba
+  status: aberto
+   2 x Fone = R$ 120.00
+  total: R$ 120.00 | desconto: R$ 0.00 | a pagar: R$ 120.00
+arrecadado: R$ 167.70
+abertos: 1

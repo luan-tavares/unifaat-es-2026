@@ -149,14 +149,14 @@ Questões respondidas: 6 de 6
 ## As 6 questões (resumo)
 
 O enunciado completo está no `modelo-tf-13.md`. Resposta em texto corrido, de 5 a 10 linhas
-cada, **com as suas palavras**.
+cada, **com as suas palavras** e fundamentando o que afirmar.
 
-1. Por que existe Engenharia de Software e não existe Arquitetura de Software como matéria?
-2. Arquitetura como decisão cara de desfazer: exemplo fácil e difícil de reverter.
-3. Código x IA: o que passa a valer mais e a opinião "a IA não vai nivelar o conhecimento".
-4. Os dois chapéus (Tech Lead e PO) e o cão de guarda do produto.
-5. Domínio (DDD), regra de negócio do cliente e o papel da spec.
-6. Caso da pizzaria: MVP, prazo, escalabilidade e repertório (EDA, DDD ou SDD).
+1. Definição de arquitetura de software e a diferença para a engenharia de software.
+2. Por que não existe uma disciplina de Arquitetura de Software e onde ela é estudada.
+3. Custo de reversão e decisões arquiteturais: exemplo fácil e difícil de reverter.
+4. Código x IA: competências que ganham importância e a afirmação "a IA vai nivelar o conhecimento".
+5. Tech Lead x PO, domínio do cliente (DDD) e spec.
+6. MVP, estimativa de prazo e escalabilidade, e uma abordagem do repertório (EDA, DDD ou SDD).
 
 ## Entrega
 

@@ -4,16 +4,16 @@ Nome: (seu nome completo)
 RA: (seu RA)
 GitHub: (link do seu perfil, ex.: https://github.com/maria-silva)
 
-> Responda com as suas palavras, em texto corrido (de 5 a 10 linhas por questão).
-> Não copie o slide nem o briefing. Apague as linhas entre parênteses ao responder.
+> Responda cada questão em texto corrido, de 5 a 10 linhas, com as suas palavras e
+> fundamentando o que afirmar. Não copie o slide nem o briefing. Apague as linhas entre
+> parênteses ao responder.
 
 ---
 
 ## Questão 1
 
-Por que existe uma matéria chamada Engenharia de Software e não existe uma chamada
-Arquitetura de Software? Explique onde a arquitetura aparece no curso e como ela se
-relaciona com a engenharia.
+Defina arquitetura de software e explique a diferença entre arquitetura e engenharia de
+software. Por que as duas precisam andar juntas em um projeto?
 
 **Resposta:**
 
@@ -23,9 +23,9 @@ relaciona com a engenharia.
 
 ## Questão 2
 
-Arquitetura é o conjunto de decisões **caras de desfazer**. Explique essa frase.
-Dê um exemplo de decisão fácil de reverter e um de decisão difícil de reverter em um
-sistema que você conheça ou imagine, e diga por que a diferença de custo existe.
+Existe uma disciplina chamada Engenharia de Software, mas não existe uma chamada
+Arquitetura de Software. Explique por que isso acontece e em que momentos do curso a
+arquitetura passa a ser estudada.
 
 **Resposta:**
 
@@ -35,10 +35,9 @@ sistema que você conheça ou imagine, e diga por que a diferença de custo exis
 
 ## Questão 3
 
-Com a IA, no mercado de trabalho se coda menos. O que passa a valer mais para o
-profissional? Depois, discuta a opinião do professor: "a IA não vai nivelar o
-conhecimento". Você concorda ou discorda? Use os dois argumentos vistos em aula
-(a IA como proxy de informação e o prompt como direção) ou os seus próprios.
+Explique o conceito de custo de reversão e por que as decisões arquiteturais são as mais
+difíceis de desfazer. Apresente um exemplo de decisão fácil de reverter e um de decisão
+difícil de reverter, justificando a diferença.
 
 **Resposta:**
 
@@ -48,9 +47,9 @@ conhecimento". Você concorda ou discorda? Use os dois argumentos vistos em aula
 
 ## Questão 4
 
-Explique os dois chapéus, o do **Tech Lead** e o do **PO**: o que cada um decide e
-onde eles entram em conflito. Em seguida, explique o que significa ser o "cão de
-guarda do produto", usando como exemplo uma dependência externa que atrasa.
+Com o uso de IA, o profissional passa a escrever menos código. Quais competências ganham
+importância nesse cenário e por quê? Avalie criticamente a afirmação "a IA vai nivelar o
+conhecimento entre os profissionais".
 
 **Resposta:**
 
@@ -60,10 +59,9 @@ guarda do produto", usando como exemplo uma dependência externa que atrasa.
 
 ## Questão 5
 
-Explique o que é **domínio** (DDD) e por que conhecer a regra de negócio do cliente
-é o diferencial de quem coda menos. Dê um exemplo de regra de negócio (como a do
-frete grátis) e explique por que deixar essa regra só na cabeça das pessoas é um
-risco. Como uma **spec** ajuda a resolver isso?
+Descreva as responsabilidades do Tech Lead e do PO e explique onde elas podem entrar em
+conflito. Em seguida, explique por que o conhecimento do domínio do cliente (DDD) e a
+escrita de uma especificação (spec) são tão importantes para quem trabalha com IA.
 
 **Resposta:**
 
@@ -73,12 +71,9 @@ risco. Como uma **spec** ajuda a resolver isso?
 
 ## Questão 6
 
-Um cliente quer um aplicativo para a pizzaria dele receber pedidos. Responda:
-
-1. Qual seria o **MVP** que você combinaria com ele e o que ficaria de fora?
-2. Como você **estimaria o prazo** e o que você diria ao cliente sobre incerteza?
-3. O que mudaria se a pizzaria virasse uma rede com 200 lojas (**escalabilidade**)?
-4. Qual item do repertório (**EDA**, **DDD** ou **SDD**) você usaria e por quê?
+Defina MVP, estimativa de prazo e escalabilidade e explique como cada um influencia as
+decisões de arquitetura. Escolha uma abordagem do repertório de arquitetura vista em aula
+(EDA, DDD ou SDD) e diga em que tipo de problema você a aplicaria.
 
 **Resposta:**
 

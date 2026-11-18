@@ -1,0 +1,90 @@
+O QUE FAZER
+
+Criar, no seu fork, uma branch com o seu RA, com um arquivo seu dentro de um diretorio com o seu RA, e abrir um Pull Request para o repositorio do professor.
+
+
+1. PREPARACAO (se ainda nao fez)
+
+Chave SSH cadastrada na sua conta do GitHub (Aula 05), testada com ssh -T git@github.com.
+
+Fork do repositorio do professor: no navegador, abra https://github.com/luan-tavares/unifaat-es-2026 e clique em Fork.
+
+Clone do seu fork (nao o do professor) e o upstream:
+
+  # troque SEU-USUARIO pelo seu usuario do GitHub
+  git clone git@github.com:SEU-USUARIO/unifaat-es-2026.git
+  cd unifaat-es-2026
+
+  # cadastra o repositorio do professor com o apelido upstream (so para ler)
+  git remote add upstream git@github.com:luan-tavares/unifaat-es-2026.git
+
+  # confere: origin = seu fork, upstream = professor
+  git remote -v
+
+
+2. TRAZER A AULA E CRIAR A SUA BRANCH
+
+  # vai para o main (a copia do professor)
+  git switch main
+
+  # traz as aulas novas do professor (so avanco limpo)
+  git pull --ff-only upstream main
+
+  # cria a branch do TF, com o seu RA, e entra nela
+  git switch -c 6325000-tf-12
+
+O nome da branch e RA-tf-12 (o seu RA, -tf- e o numero da aula).
+
+
+3. CRIAR O DIRETORIO, O SUBDIRETORIO E O ARQUIVO
+
+Na raiz do repositorio, crie um diretorio com o seu RA, dentro dele o subdiretorio tf-12, e dentro dele um arquivo de texto com o nome do seu RA (RA.txt):
+
+  # cria o diretorio do RA com o subdiretorio tf-12
+  mkdir -p 6325000/tf-12
+
+  # cria o arquivo 6325000.txt com nome, RA e usuario do GitHub
+  cat > 6325000/tf-12/6325000.txt <<EOF
+  Nome: Maria da Silva
+  RA: 6325000
+  GitHub: https://github.com/maria-silva
+  EOF
+
+A estrutura final fica assim (troque 6325000 pelo seu RA):
+
+  unifaat-es-2026/
+  └── 6325000/
+      └── tf-12/
+          └── 6325000.txt
+
+O arquivo 6325000.txt tem tres linhas: o seu nome completo, o seu RA e o seu usuario do GitHub (o link do seu perfil).
+
+
+4. COMMITAR E ENVIAR PARA O SEU FORK
+
+  # confira que voce esta na sua branch (o * marca a atual), e nao no main
+  git branch
+
+  # marca tudo e grava o commit
+  git add -A
+  git commit -m "TF-12"
+
+  # envia a branch para o SEU fork (origin), nunca para o upstream
+  git push -u origin 6325000-tf-12
+
+
+5. ABRIR O PULL REQUEST (no site do GitHub)
+
+O PR nao e um comando do Git: ele e aberto no site do GitHub, pela interface web.
+
+Abra o seu fork no navegador. Aparece o aviso Compare & pull request: clique nele.
+Se nao aparecer, abra o link (troque SEU-USUARIO e o RA):
+https://github.com/luan-tavares/unifaat-es-2026/compare/main...SEU-USUARIO:6325000-tf-12?expand=1
+
+Confira os dois lados:
+- base repository: luan-tavares/unifaat-es-2026, branch main (o repositorio do professor);
+- head repository: o seu fork, branch RA-tf-12.
+
+Titulo: TF-12 · RA · Nome (ex.: TF-12 · 6325000 · Maria da Silva).
+
+Clique em Create pull request.

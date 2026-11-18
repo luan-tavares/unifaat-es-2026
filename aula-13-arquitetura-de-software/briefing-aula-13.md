@@ -25,9 +25,9 @@ Nas aulas anteriores o curso construiu a **base**: terminal e Linux, Git e GitHu
 
 A resposta surpreende quem está começando: **no mercado, escreve-se menos código do que se imagina**. Cada vez mais, o tempo vai para **entender o problema do cliente, decidir como o sistema se organiza, combinar escopo e prazo, ler e revisar o que outras pessoas (e a IA) escreveram, e manter tudo funcionando em equipe**. Digitar código é uma parte da profissão, e é a parte que mais se automatiza.
 
-O caminho da aula tem nove passos. Primeiro, **por que a disciplina se chama Engenharia de Software e não Arquitetura de Software**: uma base única, e uma arquitetura que começa em cada assunto e depois se junta às outras. Segundo, **código x IA**: o que muda quando gerar código fica barato, com uma **opinião polêmica do professor** sobre a IA nivelar (ou não) o conhecimento. Terceiro, **o que é arquitetura de software** e **como ela se diferencia da engenharia de software**, e por que as duas precisam andar juntas. Quarto, **o domínio**: o diferencial de quem conhece a **regra de negócio** do cliente, com a ideia do **DDD**. Quinto, a **spec**: o que vira importante quando se coda menos. Sexto, **o lado combinado com o cliente**: MVP, estimativa de prazo e escalabilidade. Sétimo, **trabalhar em equipe**: código limpo e Git. Oitavo, **o poder do terminal e dos servidores**. Nono, **automação**, que é uma ideia anterior à IA e que a sustenta.
+O caminho da aula tem seis passos. Primeiro, **por que não existe uma matéria de Arquitetura de Software, como existe a de Engenharia**: uma base única, e uma arquitetura que começa em cada assunto e depois se junta às outras. Segundo, **código x IA**: o que muda quando gerar código fica barato, com uma **opinião polêmica do professor** sobre a IA nivelar (ou não) o conhecimento. Terceiro, **o que é arquitetura de software** e **como ela se diferencia da engenharia de software**, e por que as duas precisam andar juntas. Quarto, **Tech Lead x PO**: os dois chapéus de quem cuida do produto. Quinto, o **chapéu do PO**: o domínio e o DDD, a spec, o MVP e a estimativa de prazo. Sexto, o **chapéu do Tech Lead**: o repertório de arquitetura (EDA, DDD, SDD), a escalabilidade, a equipe (código limpo e Git), o poder do terminal e dos servidores, e a automação, que é uma ideia anterior à IA e que a sustenta.
 
-2 - Por que "Engenharia de Software" e não "Arquitetura de Software"
+2 - Por que não existe uma matéria de "Arquitetura de Software", como existe a de Engenharia?
 
 2.1 - A pergunta
 
@@ -93,6 +93,7 @@ Um código é **escrito uma vez e lido muitas vezes**, quase sempre por outra pe
 | Tempo gasto | Digitando | Entendendo, decidindo, revisando |
 | Gargalo | Escrever | Saber o que pedir e o que aceitar |
 | Habilidade valorizada | Sintaxe | Julgamento e domínio do negócio |
+| Tempo com o cliente | Pouco: o código come a agenda | Mais: construir relacionamento e entender o domínio dele |
 | Erro típico | Bug de digitação | Estrutura errada que "funciona" |
 
 3.3 - A ironia da automação
@@ -126,6 +127,8 @@ mesma ferramenta, mesma IA
   pouca base  -->  pedido vago     -->  resposta generica    -->  "funciona... ate nao funcionar"
   muita base  -->  pedido dirigido -->  resposta util        -->  revisa, corrige, decide
 ```
+
+A IA recombina o que já existe e **não é criativa**. Nas palavras de Fabio Akita: **“Se você der todo o conhecimento de física clássica para a IA, ela não é capaz de derivar a física moderna.”** A decisão e a criação continuam com a pessoa.
 
 A IA funciona como um **multiplicador**: ela multiplica o que você já tem. Quem tem base ganha **alavanca**; quem não tem ganha, no máximo, a **ilusão de competência**, que é pior, porque não avisa quando está errada.
 
@@ -231,15 +234,43 @@ Na engenharia tradicional ninguém projeta uma ponte sem pensar em carga, fadiga
 - O que eu estou travando com essa escolha?
 - Quanto custaria desfazer?
 
-6 - O domínio: o diferencial é a regra de negócio
+6 - Tech Lead x PO: os dois chapéus
 
-6.1 - O que é o domínio
+6.1 - Metodologias: só os termos
+
+Metodologias ágeis, como o Scrum, organizam o trabalho em equipe, e esta aula **não vai explicar nenhuma**. Usamos apenas alguns **termos do Scrum**, como **PO** (*Product Owner*), porque ajudam a nomear o que um profissional de software faz além de programar. O **Tech Lead** não é um papel do Scrum: é um papel comum nas equipes, e vale olhar os dois lado a lado.
+
+6.2 - Dois chapéus
+
+| | PO (Product Owner) | Tech Lead |
+| --- | --- | --- |
+| Pergunta | O **quê** e **por quê**? | **Como**? |
+| Ouve | O cliente e o negócio | O time e o código |
+| Decide | O que entra no MVP e a prioridade | A arquitetura e a engenharia |
+| Cuida de | Critério de aceite e valor entregue | Qualidade e do que é difícil de mudar |
+| Com o time | Prioriza e recorta | Revisa e destrava |
+
+No caso do professor, as **duas coisas** acontecem ao mesmo tempo: é preciso decidir o que o produto deve ser e como ele deve ser construído.
+
+6.3 - Com a IA: o cão de guarda do produto
+
+Com a IA escrevendo mais código, **sobra tempo para o produto**. A pessoa passa a ser o **cão de guarda do produto**:
+
+- **Ouvir o cliente e melhorar o produto**, em vez de passar o dia digitando.
+- **Escolher a melhor arquitetura e engenharia** para implementá-lo.
+- **Cobrar terceiros e dependências externas** (uma biblioteca, uma API, um fornecedor) até entregarem, **sem prejudicar o produto**: quem depende de outro precisa acompanhar e cobrar a entrega.
+
+A aula segue os dois chapéus: primeiro o do **PO** (domínio, spec, MVP e prazo) e depois o do **Tech Lead** (repertório de arquitetura, escala, equipe, terminal e automação).
+
+7 - PO: o domínio, o diferencial é a regra de negócio
+
+7.1 - O que é o domínio
 
 **Domínio** é a área de conhecimento do negócio para o qual o software existe: logística, saúde, varejo, educação, finanças. O código de uma loja virtual não é sobre `if` e `for`; é sobre **pedido, frete, estoque, desconto, devolução**. Linguagem e framework se aprendem em semanas; **a regra de negócio do cliente é o que leva meses e o que ninguém consegue gerar por você**, porque não está em lugar nenhum além da cabeça das pessoas do negócio.
 
 Por isso o profissional que **entende o domínio** costuma valer mais do que o que apenas domina uma tecnologia: ele sabe **o que perguntar**, **o que o cliente esqueceu de dizer** e **quando uma regra não faz sentido**.
 
-6.2 - DDD: Domain-Driven Design
+7.2 - DDD: Domain-Driven Design
 
 **DDD** (projeto orientado ao domínio) é uma abordagem apresentada por **Eric Evans** em 2003: o **modelo do software deve refletir o modelo do negócio**, construído em conversa constante com quem conhece o negócio. Três ideias para levar:
 
@@ -259,7 +290,7 @@ contexto VENDAS            contexto ENTREGA          contexto FINANCEIRO
               (fronteiras claras, conversa por eventos/contratos)
 ```
 
-6.3 - Exemplo: a regra num lugar só
+7.3 - Exemplo: a regra num lugar só
 
 Imagine a regra do cliente: **frete grátis para pedidos a partir de R$ 200; abaixo disso, frete de R$ 25**. Se essa regra for copiada em três telas, qualquer mudança vira caça ao tesouro. No domínio, ela existe **uma vez**, com o nome que o negócio usa:
 
@@ -302,23 +333,23 @@ print(pedido.total())     # 205.0
 
 Quando o cliente disser "agora o frete grátis começa em R$ 150", **a mudança é de uma linha**, em um lugar que tem o nome da regra. Isso é arquitetura e engenharia juntas: a **decisão** (a regra mora no domínio) e a **execução** (classe pequena, sem `else`, com nomes do negócio).
 
-7 - Spec: o que vira importante quando se coda menos
+8 - PO: spec, o que vira importante quando se coda menos
 
-7.1 - O que é uma spec
+8.1 - O que é uma spec
 
 **Spec** (especificação) é o texto que descreve **o que o software deve fazer**, sem depender de como será escrito: as regras, os exemplos, os limites e o critério para dizer "está pronto". Ela já existia (requisitos, histórias de usuário, documentos de regras), mas muda de papel: quando a máquina escreve a maior parte do código, **a spec passa a ser o trabalho mais importante que sobra para a pessoa**.
 
 A razão é simples: uma IA, assim como uma equipe nova, **executa o que está escrito, e não o que você tinha na cabeça**. Se a spec é vaga, a ambiguidade não desaparece: ela vira **código plausível e errado**, que parece funcionar e só falha na regra que ninguém escreveu. É o mesmo princípio do prompt da seção 3.4, só que mais sério: quem direciona bem, especifica bem.
 
-7.2 - O que uma boa spec tem
+8.2 - O que uma boa spec tem
 
-- **A regra, em linguagem do negócio:** as mesmas palavras do cliente (a linguagem ubíqua da seção 6.2).
+- **A regra, em linguagem do negócio:** as mesmas palavras do cliente (a linguagem ubíqua da seção 7.2).
 - **Exemplos concretos de entrada e saída:** "subtotal 180 dá frete 25; subtotal 200 dá frete 0". Exemplo vale mais do que adjetivo.
 - **O que está fora do escopo:** o que **não** será feito agora, para ninguém assumir por conta própria.
 - **Critério de aceite:** como saberemos que está pronto, de preferência algo que se possa conferir.
 - **Restrições:** prazo, segurança, volume esperado, o que não pode quebrar.
 
-Veja a regra do frete (seção 6.3) escrita como spec, e a diferença que ela faz no pedido à IA:
+Veja a regra do frete (seção 7.3) escrita como spec, e a diferença que ela faz no pedido à IA:
 
 ```markdown
 ## Frete
@@ -337,7 +368,7 @@ faz o calculo de frete do pedido
 implemente o frete conforme docs/frete.md e escreva um teste para cada exemplo
 ```
 
-7.3 - Spec como parte do código
+8.3 - Spec como parte do código
 
 - **Versionada no Git:** a spec vive no repositório, ao lado do código, e muda por **branch e Pull Request**, como tudo (Aula 12). Mudou a regra do cliente, muda a spec **primeiro**, e a revisão da spec é a revisão mais barata do projeto.
 - **Teste é spec executável:** os exemplos da spec viram testes que a máquina roda sozinha. Se a IA gerar código que não respeita a spec, **o teste falha**, e não o cliente.
@@ -351,9 +382,9 @@ cliente --> conversa --> SPEC --> codigo (voce ou IA) --> teste confere a SPEC
 
 A cadeia vale para a profissão inteira: **domínio** (o que o cliente precisa) vira **spec** (o que combinamos) vira **código** (o que a máquina escreve) vira **teste** (a prova de que bate). Quem domina as duas primeiras pontas é quem dirige as outras.
 
-8 - Combinado com o cliente: MVP, prazo e escala
+9 - PO: combinado com o cliente, MVP e prazo
 
-8.1 - MVP: o menor produto que ensina algo
+9.1 - MVP: o menor produto que ensina algo
 
 **MVP** (*Minimum Viable Product*, produto mínimo viável) é a menor versão do produto que já **entrega valor real** e permite **aprender com o uso**. Termo popularizado por **Eric Ries** (*A Startup Enxuta*). Dois equívocos comuns:
 
@@ -367,7 +398,7 @@ Como acordar um MVP com o cliente:
 - Definir o **critério de aceite**: como saberemos que está pronto? ("o cliente consegue fazer um pedido e pagar por Pix.")
 - Combinar **quando haverá nova conversa**, porque o MVP existe para ser ajustado.
 
-8.2 - Estimar prazos sem prometer o impossível
+9.2 - Estimar prazos sem prometer o impossível
 
 Estimar é prever o que ainda não se conhece, e isso é difícil por natureza. Algumas ideias práticas:
 
@@ -378,7 +409,27 @@ Estimar é prever o que ainda não se conhece, e isso é difícil por natureza. 
 - **Mais gente não acelera automaticamente um projeto atrasado.** É a **Lei de Brooks** (Fred Brooks, *O Mítico Homem-Mês*): colocar pessoas num projeto atrasado costuma atrasá-lo mais, porque o custo de comunicação cresce.
 - **Prazo, escopo e qualidade formam um triângulo:** se o prazo aperta, **o escopo** é o que deve ceder (o MVP de novo), e não a qualidade escondida.
 
-8.3 - Escalabilidade
+10 - Tech Lead: repertório de arquitetura
+
+10.1 - Repertório: saber que a opção existe
+
+A IA só entrega o que você sabe pedir (seção 3.4). Quem não conhece uma arquitetura não vai pedi-la, nem reconhecer que ela cabe no problema. **Repertório de arquitetura** é conhecer as opções, o que cada uma resolve e o que ela cobra de você. A lista abaixo não é completa: são três exemplos.
+
+10.2 - EDA, DDD e SDD
+
+| | Tipo | Ideia | Pede de você |
+| --- | --- | --- | --- |
+| **EDA** (*Event-Driven Architecture*) | Estilo de arquitetura | Serviços se falam por **eventos**: quem publica "pedido criado" não sabe quem reage (estoque, e-mail, cobrança) | Assincronia, fila, consistência eventual |
+| **DDD** (*Domain-Driven Design*) | Abordagem de projeto | O modelo do software **reflete o negócio**: linguagem ubíqua e contextos delimitados (seção 7.2) | Conversar com quem conhece o negócio |
+| **SDD** (*Spec-Driven Development*) | Abordagem de desenvolvimento | A **spec dirige** o código (e a IA), e o teste confere (seção 8) | Escrever bem a spec |
+
+Repare na palavra "arquitetura": a **EDA** é um estilo de arquitetura, enquanto **DDD** e **SDD** são formas de projetar e de desenvolver, que se combinam com um estilo.
+
+10.3 - Nenhuma é melhor sempre
+
+Cada uma **troca custos**. A EDA, por exemplo, ganha desacoplamento entre as partes, mas deixa o fluxo mais difícil de acompanhar e traz consistência eventual. Ter repertório não é escolher a opção da moda, é saber que ela existe e **quando usar**.
+
+11 - Tech Lead: escalabilidade
 
 **Escalabilidade** é a capacidade do sistema de **continuar funcionando bem quando a carga cresce** (mais usuários, mais dados, mais pedidos por segundo).
 
@@ -394,9 +445,9 @@ Duas verdades que parecem contraditórias e não são:
 - **Não otimize cedo demais.** *"A otimização prematura é a raiz de todo o mal"* (Donald Knuth). Construir para um milhão de usuários antes de ter cem é gastar prazo e dinheiro em um problema que talvez nunca exista.
 - **Mas não feche portas sem saber.** A arquitetura deve **permitir** crescer: fronteiras claras entre as partes, regra de negócio isolada, nada que prenda o sistema a uma única máquina por acidente. Decidir quando escalar é adiar uma decisão cara até ter dados.
 
-9 - Trabalhar em equipe: código limpo e Git
+12 - Tech Lead: trabalhar em equipe, código limpo e Git
 
-9.1 - Código limpo é um acordo coletivo
+12.1 - Código limpo é um acordo coletivo
 
 Em equipe, o código é a **forma de comunicação** entre pessoas. O **Object Calisthenics** (Aula 11) e as boas práticas treinam exatamente isso: classes pequenas, nomes que revelam intenção, um nível de indentação, regras no lugar certo. Código limpo **não é gosto pessoal ou vaidade**; é o que permite que a pessoa que entrou na equipe ontem consiga mudar o sistema hoje **sem quebrar o que a outra pessoa fez**.
 
@@ -407,7 +458,7 @@ Dois conceitos que ligam código limpo à arquitetura, e que valem em qualquer e
 
 **Alta coesão e baixo acoplamento** é a mesma ideia em duas escalas: numa classe de dez linhas e numa divisão de módulos.
 
-9.2 - Como o Git sustenta a equipe
+12.2 - Como o Git sustenta a equipe
 
 Tudo o que foi aprendido em Git nas Aulas 04, 05 e 12 é a **infraestrutura do trabalho coletivo**:
 
@@ -422,13 +473,13 @@ Tudo o que foi aprendido em Git nas Aulas 04, 05 e 12 é a **infraestrutura do t
 
 O **Pull Request** merece destaque: ele é o ponto onde a equipe **revisa**. É a mesma habilidade de ler código com critério (seção 3.2), agora como ritual de equipe, e é o lugar natural para a arquitetura se proteger: "isso respeita as fronteiras que combinamos?".
 
-10 - O poder do terminal e dos servidores
+13 - Tech Lead: o poder do terminal e dos servidores
 
-10.1 - Onde o software roda de verdade
+13.1 - Onde o software roda de verdade
 
 Sem entrar nos detalhes do que é um servidor: o software que as pessoas usam **roda em servidores**, e esses servidores quase nunca têm tela, mouse ou janelas. Para entrar neles, olhar o que está acontecendo, consertar algo ou publicar uma versão nova, a porta de entrada é o **terminal**, normalmente por **SSH** (a mesma chave da Aula 05). Quem só sabe usar interface gráfica fica **do lado de fora** da parte onde o sistema realmente vive.
 
-10.2 - Por que saber terminal importa
+13.2 - Por que saber terminal importa
 
 | Motivo | O que significa na prática |
 | --- | --- |
@@ -451,13 +502,13 @@ tail -n 50 /var/log/app.log
 grep ERROR /var/log/app.log | wc -l
 ```
 
-10.3 - Terminal, IA e responsabilidade
+13.3 - Terminal, IA e responsabilidade
 
 Os assistentes de IA que **agem** (que editam arquivos e executam comandos) trabalham **no terminal**. Isso torna o terminal mais importante, e não menos: quem não entende o que um comando faz **não consegue supervisionar** o que a IA executa em seu nome, e um comando errado no servidor errado tem consequências reais. É a ironia da automação (seção 3.3) de novo: a máquina faz, mas **a responsabilidade continua sendo da pessoa**. Por isso a disciplina começou pelo terminal, pelo Linux e pelo Git, e não pela IA.
 
-11 - Automação: uma ideia que vem antes da IA
+14 - Tech Lead: automação, uma ideia que vem antes da IA
 
-11.1 - Automatizar é anterior à inteligência artificial
+14.1 - Automatizar é anterior à inteligência artificial
 
 A IA é a automação mais recente, **não a primeira**. Desde sempre, quem programa **automatiza o que se repete**: um script que prepara o ambiente, um comando que roda os testes, um processo que publica o sistema. A pergunta de fundo não é "qual ferramenta", é **"isso é repetitivo, previsível e sujeito a erro humano? Então a máquina faz."**
 
@@ -472,7 +523,7 @@ A ordem que funciona, e que a disciplina seguiu desde o começo:
 
 **Pular direto para o passo 4** é cair na ironia da automação (seção 3.3): quando algo falhar, ninguém sabe o que o sistema fazia por baixo.
 
-11.2 - Exemplos de automação no dia a dia
+14.2 - Exemplos de automação no dia a dia
 
 - Um **script** que roda tudo o que precisa ser conferido antes de enviar o código:
 
@@ -509,7 +560,7 @@ jobs:
 
 Testes e CI ainda não foram vistos na disciplina; aparecem aqui só para mostrar **a ideia**: a automação cuida do repetitivo para que as pessoas gastem atenção no que exige julgamento (arquitetura, domínio, revisão).
 
-11.3 - Automatizar também é decisão de arquitetura
+14.3 - Automatizar também é decisão de arquitetura
 
 Depender de automação é uma **decisão arquitetural**, e o custo de reversão dela **cresce em silêncio**: se o pipeline de implantação quebra e **ninguém sabe fazer o caminho manual**, a decisão virou irreversível sem que alguém tenha decidido isso. Perguntas de arquitetura que decorrem daí:
 
@@ -517,7 +568,7 @@ Depender de automação é uma **decisão arquitetural**, e o custo de reversão
 - Alguém ainda **sabe fazer à mão**?
 - O processo automatizado está **documentado como código** (versionado no Git), e não só na cabeça de uma pessoa?
 
-12 - Conclusão
+15 - Conclusão
 
 No mercado, **escreve-se menos código e decide-se mais**. Com a IA gerando o repetitivo, o que sobra de valor é **entender o domínio**, **decidir a estrutura** e **julgar o que foi produzido**. **Arquitetura** é o conjunto das decisões difíceis de mudar, e o critério que a define é o **custo de reversão**; **engenharia** é a base de princípios que permite executar bem cada decisão. Uma sem a outra falha: código bom numa estrutura ruim, ou diagrama bonito que o sistema ignora.
 
@@ -525,13 +576,15 @@ O **domínio** (com a ideia do DDD: linguagem ubíqua, contextos delimitados, re
 
 Por isso a base é única e vem primeiro, na Engenharia de Software, enquanto a **arquitetura começa em cada assunto** (banco, web, infraestrutura) e só depois elas se juntam, agregando a arquitetura e a engenharia umas das outras, na arquitetura do sistema.
 
+A pessoa que cuida do produto usa **dois chapéus**: o de **PO** (o quê e por quê: domínio, spec, MVP, prazo) e o de **Tech Lead** (como: repertório de arquitetura, escala, equipe, terminal e automação). Com a IA codando mais, sobra tempo para ser o **cão de guarda do produto**: ouvir o cliente, escolher bem a arquitetura e a engenharia e cobrar quem pode atrapalhar.
+
 Com menos código para escrever, a **spec** passa a ser o trabalho central: ela é o que se combina com o cliente, o que se entrega à IA e o que o teste confere. E o **terminal** continua sendo a porta de entrada dos servidores, de toda ferramenta que usamos e da própria IA que age.
 
 E, ao contrário do que se diz, a IA **não nivela** o conhecimento: ela multiplica o que a pessoa já sabe, e quem a usa como atalho para não aprender vira apenas um proxy de informação.
 
 Em uma frase: **a engenharia é a base sólida; a arquitetura é saber juntar as peças com critério; e o critério vem de conhecer o problema do cliente.**
 
-13 - Referências
+16 - Referências
 
 Martin Fowler — Who Needs an Architect? (https://martinfowler.com/ieeeSoftware/whoNeedsArchitect.pdf)
 Mark Richards e Neal Ford — Fundamentals of Software Architecture (O'Reilly)
@@ -543,7 +596,6 @@ Frederick P. Brooks Jr. — O Mítico Homem-Mês (The Mythical Man-Month)
 Lisanne Bainbridge — Ironies of Automation (Automatica, 1983)
 Betsy Sparrow, Jenny Liu e Daniel M. Wegner — Google Effects on Memory: Cognitive Consequences of Having Information at Our Fingertips (Science, 2011)
 Material de aulas anteriores: Aula 04 (Versionamento e Git), Aula 05 (Git e GitHub), Aula 10 (Estrutura de Dados), Aula 11 (Object Calisthenics) e Aula 12 (Branches, Fork e Pull Request).
-
 
 
 

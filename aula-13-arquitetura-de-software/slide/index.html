@@ -82,7 +82,7 @@
         <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># pedido vago</span></div><div class="w-cap" data-at="1">quem pede pouco recebe <strong>qualquer coisa</strong></div><div class="w-cap" data-at="2"><span class="dim"># pedido dirigido</span></div><div class="w-cap" data-at="3">quem <strong>sabia o que pedir</strong> recebe outra coisa</div><div class="w-cap" data-at="4">mesma ferramenta, <strong>outro resultado</strong></div></div>
       </div>
     </div>
-    <p class="payoff">A IA <strong>multiplica o que você já sabe</strong> e <strong>não é criativa</strong>: com toda a física clássica na mão, ela não criaria a física moderna. Fabio Akita: <strong>“Copiar não é suficiente.”</strong> <span class="w-note">(akitaonrails.com, fev/2026)</span></p>
+    <p class="payoff">A IA <strong>multiplica o que você já sabe</strong>, mas <strong>não é criativa</strong>. Fabio Akita: <strong>“Se você der todo o conhecimento de física clássica para a IA, ela não é capaz de derivar a física moderna.”</strong></p>
   </section>
 
   <!-- 5 · o que é arquitetura -->
@@ -115,8 +115,36 @@
     <p class="payoff">Se o diagrama diz uma coisa e o sistema faz outra, <strong>o sistema ganha</strong>.</p>
   </section>
 
+  <!-- 8b · tech lead x po -->
+  <section class="slide" data-eyebrow="tech lead x po · os dois chapéus">
+    <h2>Tech Lead <span class="accent">x</span> PO: o dono do produto</h2>
+    <div class="w-anim" data-anim data-n="5" data-dur="3600" data-hold="5400" data-labels="termos do Scrum|PO|Tech Lead|a IA|cão de guarda">
+      <div class="metodos"><span class="w-note">aqui estamos usando termos do Scrum (como PO)</span></div>
+      <div class="rl-grid">
+        <div class="rl-card rev" data-from="1" data-at="1">
+          <b>PO · Product Owner</b><small>o quê e por quê</small>
+          <ul><li>ouve o cliente e o negócio</li><li>prioriza e recorta o MVP</li><li>define o critério de aceite</li></ul>
+        </div>
+        <div class="rl-card rev" data-from="2" data-at="2">
+          <b>Tech Lead</b><small>como</small>
+          <ul><li>escolhe a arquitetura e a engenharia</li><li>cuida da qualidade e do que é difícil de mudar</li><li>revisa e destrava o time</li></ul>
+        </div>
+      </div>
+      <div class="guard rev" data-from="3" data-at="3 4">
+        <b>cão de guarda do produto</b><small>com a IA codando mais, sobra tempo para o produto</small>
+        <div class="gchips">
+          <span class="gchip rev" data-from="4" style="transition-delay:.1s">ouvir o cliente e melhorar o produto</span>
+          <span class="gchip rev" data-from="4" style="transition-delay:.5s">escolher a melhor arquitetura e engenharia para implementá-lo</span>
+          <span class="gchip rev" data-from="4" style="transition-delay:.9s">cobrar terceiros e dependências externas até entregarem, sem prejudicar o produto</span>
+        </div>
+      </div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># estamos usando termos do Scrum</span><br>o que interessa: <strong>quem decide pelo produto</strong></div><div class="w-cap" data-at="1"><strong>PO:</strong> o <strong>quê e por quê</strong>. Ouvir o cliente, priorizar, recortar o MVP.</div><div class="w-cap" data-at="2"><strong>Tech Lead:</strong> o <strong>como</strong>. A arquitetura e a engenharia certas para o que o produto precisa.</div><div class="w-cap" data-at="3"><span class="dim"># o professor faz as duas coisas</span><br>com a IA codando mais, <strong>sobra tempo para o produto</strong></div><div class="w-cap" data-at="4"><strong>cão de guarda do produto:</strong> ouvir, melhorar, escolher bem e <strong>cobrar quem pode atrapalhar</strong></div></div>
+    </div>
+    <p class="payoff">Quem coda menos <strong>decide e cobra mais</strong>: o produto passa a ser o seu trabalho.</p>
+  </section>
+
   <!-- 7 · domínio e DDD -->
-  <section class="slide" data-eyebrow="domínio · ddd">
+  <section class="slide" data-eyebrow="po · domínio (ddd)">
     <h2>O diferencial: <span class="accent">o domínio</span></h2>
     <div class="two-col">
       <div class="tree">
@@ -139,7 +167,7 @@
   </section>
 
   <!-- 8 · a regra num lugar só -->
-  <section class="slide" data-eyebrow="domínio · a regra num lugar só">
+  <section class="slide" data-eyebrow="po · a regra num lugar só">
     <h2>A regra do frete: <span class="accent">escrita uma vez</span></h2>
     <div class="w-anim" data-anim data-n="3" data-dur="4200" data-labels="abaixo do limite|no limite|o cliente mudou a regra">
       <div class="two-col">
@@ -159,36 +187,8 @@
     <p class="payoff">Mudou a regra? <strong>Uma linha</strong>, num lugar que tem o nome da regra. Decisão (arquitetura) + execução (engenharia).</p>
   </section>
 
-  <!-- 8b · tech lead x po -->
-  <section class="slide" data-eyebrow="metodologia · tech lead x po">
-    <h2>Tech Lead <span class="accent">x</span> PO: o dono do produto</h2>
-    <div class="w-anim" data-anim data-n="5" data-dur="3600" data-hold="5400" data-labels="metodologias|PO|Tech Lead|a IA|cão de guarda">
-      <div class="metodos"><span class="mpill">Scrum</span><span class="mpill">Kanban</span><span class="mpill">XP</span><span class="mpill">...</span><span class="w-note">organizam o trabalho. Não vamos explicar nenhuma.</span></div>
-      <div class="rl-grid">
-        <div class="rl-card rev" data-from="1" data-at="1">
-          <b>PO · Product Owner</b><small>o quê e por quê</small>
-          <ul><li>ouve o cliente e o negócio</li><li>prioriza e recorta o MVP</li><li>define o critério de aceite</li></ul>
-        </div>
-        <div class="rl-card rev" data-from="2" data-at="2">
-          <b>Tech Lead</b><small>como</small>
-          <ul><li>escolhe a arquitetura e a engenharia</li><li>cuida da qualidade e do que é difícil de mudar</li><li>revisa e destrava o time</li></ul>
-        </div>
-      </div>
-      <div class="guard rev" data-from="3" data-at="3 4">
-        <b>cão de guarda do produto</b><small>com a IA codando mais, sobra tempo para o produto</small>
-        <div class="gchips">
-          <span class="gchip rev" data-from="4" style="transition-delay:.1s">ouvir o cliente e melhorar o produto</span>
-          <span class="gchip rev" data-from="4" style="transition-delay:.5s">escolher a melhor arquitetura e engenharia para implementá-lo</span>
-          <span class="gchip rev" data-from="4" style="transition-delay:.9s">cobrar terceiros e dependências externas até entregarem, sem prejudicar o produto</span>
-        </div>
-      </div>
-      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># metodologias organizam o trabalho</span><br>interessa outra coisa: <strong>quem decide pelo produto</strong></div><div class="w-cap" data-at="1"><strong>PO:</strong> o <strong>quê e por quê</strong>. Ouvir o cliente, priorizar, recortar o MVP.</div><div class="w-cap" data-at="2"><strong>Tech Lead:</strong> o <strong>como</strong>. A arquitetura e a engenharia certas para o que o produto precisa.</div><div class="w-cap" data-at="3"><span class="dim"># o professor faz as duas coisas</span><br>com a IA codando mais, <strong>sobra tempo para o produto</strong></div><div class="w-cap" data-at="4"><strong>cão de guarda do produto:</strong> ouvir, melhorar, escolher bem e <strong>cobrar quem pode atrapalhar</strong></div></div>
-    </div>
-    <p class="payoff">Quem coda menos <strong>decide e cobra mais</strong>: o produto passa a ser o seu trabalho.</p>
-  </section>
-
   <!-- 9 · spec -->
-  <section class="slide" data-eyebrow="spec">
+  <section class="slide" data-eyebrow="po · spec">
     <h2>Com menos código, <span class="accent">a spec</span> vira o trabalho</h2>
     <div class="w-anim" data-anim data-n="5" data-dur="3400" data-labels="sem spec|erro em produção|a spec|o teste falha|o teste passa">
       <div class="sp-grid">
@@ -210,18 +210,8 @@
     <p class="payoff">Spec versionada no Git. <strong>Teste é spec executável.</strong></p>
   </section>
 
-  <!-- 9b · repertório de arquitetura -->
-  <section class="slide" data-eyebrow="repertório de arquitetura">
-    <h2>Repertório de <span class="accent">arquitetura</span></h2>
-    <div class="w-anim" data-anim data-n="4" data-dur="3800" data-hold="5400" data-labels="o repertório|EDA|DDD|SDD">
-      <div class="arq-grid"><div class="arq-card rev" data-from="1" data-at="1"><span class="arq-tag">estilo</span><b>EDA</b><small>Event-Driven Architecture</small><p>Serviços se falam por <strong>eventos</strong>: quem publica "pedido criado" não sabe quem reage (estoque, e-mail, cobrança).</p><p class="pede"><span>pede de você:</span> assincronia, fila, consistência eventual</p></div><div class="arq-card rev" data-from="2" data-at="2"><span class="arq-tag">abordagem</span><b>DDD</b><small>Domain-Driven Design</small><p>O modelo do software <strong>reflete o negócio</strong>: linguagem ubíqua e contextos delimitados.</p><p class="pede"><span>pede de você:</span> conversar com quem conhece o negócio</p></div><div class="arq-card rev" data-from="3" data-at="3"><span class="arq-tag">abordagem</span><b>SDD</b><small>Spec-Driven Development</small><p>A <strong>spec dirige</strong> o código (e a IA): regra, exemplos e critério de aceite; o teste confere.</p><p class="pede"><span>pede de você:</span> escrever bem a spec</p></div></div>
-      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># a IA só entrega o que você sabe pedir</span><br>repertório é <strong>saber que a opção existe</strong>: quem não conhece EDA nunca vai pedir EDA</div><div class="w-cap" data-at="1"><strong>EDA</strong> (estilo): Serviços se falam por eventos: quem publica "pedido criado" não sabe quem reage (estoque, e-mail, cobrança). <span class="dim">Pede assincronia, fila, consistência eventual.</span></div><div class="w-cap" data-at="2"><strong>DDD</strong> (abordagem): O modelo do software reflete o negócio: linguagem ubíqua e contextos delimitados. <span class="dim">Pede conversar com quem conhece o negócio.</span></div><div class="w-cap" data-at="3"><strong>SDD</strong> (abordagem): A spec dirige o código (e a IA): regra, exemplos e critério de aceite; o teste confere. <span class="dim">Pede escrever bem a spec.</span></div></div>
-    </div>
-    <p class="payoff">Nenhuma é melhor sempre: <strong>cada uma troca custos</strong>. Repertório é saber que existem e <strong>quando usar</strong>.</p>
-  </section>
-
   <!-- 10 · MVP -->
-  <section class="slide" data-eyebrow="mvp">
+  <section class="slide" data-eyebrow="po · mvp">
     <h2>MVP: <span class="accent">o menor produto</span> que ensina algo</h2>
     <div class="w-anim" data-anim data-n="9" data-dur="2300" data-labels="o pedido|fazer pedido|frete por CEP|pagar por Pix|cupom|calcular o frete|relatórios|app mobile|aceite">
       <div class="mvp">
@@ -236,7 +226,7 @@
   </section>
 
   <!-- 11 · prazo -->
-  <section class="slide" data-eyebrow="estimar prazos">
+  <section class="slide" data-eyebrow="po · estimar prazos">
     <h2>Estimativa é <span class="accent">faixa</span>, não ponto</h2>
     <div class="two-col">
       <div class="w-anim" data-anim data-n="4" data-dur="3400" data-labels="ideia|requisitos|projeto|código pronto">
@@ -256,8 +246,18 @@
     <p class="payoff">"De 4 a 6 semanas" é mais honesto (e mais útil) do que "5 semanas".</p>
   </section>
 
+  <!-- 9b · repertório de arquitetura -->
+  <section class="slide" data-eyebrow="tech lead · repertório de arquitetura">
+    <h2>Repertório de <span class="accent">arquitetura</span></h2>
+    <div class="w-anim" data-anim data-n="4" data-dur="3800" data-hold="5400" data-labels="o repertório|EDA|DDD|SDD">
+      <div class="arq-grid"><div class="arq-card rev" data-from="1" data-at="1"><span class="arq-tag">estilo</span><b>EDA</b><small>Event-Driven Architecture</small><p>Serviços se falam por <strong>eventos</strong>: quem publica "pedido criado" não sabe quem reage (estoque, e-mail, cobrança).</p><p class="pede"><span>pede de você:</span> assincronia, fila, consistência eventual</p></div><div class="arq-card rev" data-from="2" data-at="2"><span class="arq-tag">abordagem</span><b>DDD</b><small>Domain-Driven Design</small><p>O modelo do software <strong>reflete o negócio</strong>: linguagem ubíqua e contextos delimitados.</p><p class="pede"><span>pede de você:</span> conversar com quem conhece o negócio</p></div><div class="arq-card rev" data-from="3" data-at="3"><span class="arq-tag">abordagem</span><b>SDD</b><small>Spec-Driven Development</small><p>A <strong>spec dirige</strong> o código (e a IA): regra, exemplos e critério de aceite; o teste confere.</p><p class="pede"><span>pede de você:</span> escrever bem a spec</p></div></div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># a IA só entrega o que você sabe pedir</span><br>repertório é <strong>saber que a opção existe</strong>: quem não conhece EDA nunca vai pedir EDA</div><div class="w-cap" data-at="1"><strong>EDA</strong> (estilo): Serviços se falam por eventos: quem publica "pedido criado" não sabe quem reage (estoque, e-mail, cobrança). <span class="dim">Pede assincronia, fila, consistência eventual.</span></div><div class="w-cap" data-at="2"><strong>DDD</strong> (abordagem): O modelo do software reflete o negócio: linguagem ubíqua e contextos delimitados. <span class="dim">Pede conversar com quem conhece o negócio.</span></div><div class="w-cap" data-at="3"><strong>SDD</strong> (abordagem): A spec dirige o código (e a IA): regra, exemplos e critério de aceite; o teste confere. <span class="dim">Pede escrever bem a spec.</span></div></div>
+    </div>
+    <p class="payoff">Nenhuma é melhor sempre: <strong>cada uma troca custos</strong>. Repertório é saber que existem e <strong>quando usar</strong>.</p>
+  </section>
+
   <!-- 12 · escalabilidade -->
-  <section class="slide" data-eyebrow="escalabilidade">
+  <section class="slide" data-eyebrow="tech lead · escalabilidade">
     <h2>Escalar: <span class="accent">maior</span> ou <span class="accent">mais</span> servidores</h2>
     <div class="w-anim" data-anim data-n="6" data-dur="2100" data-hold="4000" data-labels="×1|×2|×3|×4|×5|×6">
       <div class="w-carga stk" style="font-size:1.4rem"><span class="xf" data-from="0" data-to="0">carga ×1</span><span class="xf" data-from="1" data-to="1">carga ×2</span><span class="xf" data-from="2" data-to="2">carga ×3</span><span class="xf" data-from="3" data-to="3">carga ×4</span><span class="xf" data-from="4" data-to="4">carga ×5</span><span class="xf" data-from="5" data-to="5">carga ×6</span></div>
@@ -278,7 +278,7 @@
   </section>
 
   <!-- 13 · equipe -->
-  <section class="slide" data-eyebrow="trabalhar em equipe">
+  <section class="slide" data-eyebrow="tech lead · trabalhar em equipe">
     <h2>Equipe: <span class="accent">código limpo</span> e Git</h2>
     <table class="data-table">
       <thead><tr><th>o que aprendemos</th><th>para que serve numa equipe</th></tr></thead>
@@ -294,7 +294,7 @@
   </section>
 
   <!-- 14 · terminal e servidores -->
-  <section class="slide" data-eyebrow="terminal e servidores">
+  <section class="slide" data-eyebrow="tech lead · terminal e servidores">
     <h2>O poder do <span class="accent">terminal</span> e dos servidores</h2>
     <div class="w-anim" data-anim data-n="4" data-dur="3600" data-hold="4800" data-labels="entrar|ler o log|contar|a IA age no terminal">
       <div class="two-col">
@@ -312,7 +312,7 @@
   </section>
 
   <!-- 15 · automação -->
-  <section class="slide" data-eyebrow="automação antes da ia">
+  <section class="slide" data-eyebrow="tech lead · automação antes da ia">
     <h2>Automatizar vem <span class="accent">antes</span> da IA</h2>
     <div class="w-anim" data-anim data-n="6" data-dur="3000" data-hold="4800" data-labels="entender|fazer à mão|automatizar|delegar à IA|pular direto|a ironia">
       <div class="chn">

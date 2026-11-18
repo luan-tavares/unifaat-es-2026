@@ -32,12 +32,25 @@ Troque `6325000` pelo **seu RA** em todos os lugares:
 
 ## Passo a passo
 
-### 1. Preparação (se ainda não fez, é a mesma da Aula 12)
+### 1. Você já tem o repositório na sua máquina? Então é só `pull`
+
+Todos trabalham no **mesmo repositório**. Quem fez o TF 12 **já tem o clone e o `upstream`**:
+não clone de novo, **atualize** com `pull`. Entre na pasta do repositório e confira:
+
+```bash
+cd unifaat-es-2026
+
+# confere: origin = seu fork, upstream = professor
+git remote -v
+```
+
+Se aparecerem `origin` (o seu fork) e `upstream` (o do professor), pule para o passo 2.
+
+**Só se você ainda não tem o repositório localmente** (não fez o TF 12), faça uma vez só:
 
 1. Chave SSH cadastrada no GitHub (Aula 05), testada com `ssh -T git@github.com`.
-2. **Fork** do repositório do professor: abra https://github.com/luan-tavares/unifaat-es-2026
-   e clique em **Fork**.
-3. **Clone do seu fork** (não o do professor) e o `upstream`:
+2. **Fork**: abra https://github.com/luan-tavares/unifaat-es-2026 e clique em **Fork**.
+3. **Clone do seu fork** (não o do professor) e cadastro do `upstream`:
 
    ```bash
    # troque SEU-USUARIO pelo seu usuario do GitHub
@@ -51,23 +64,24 @@ Troque `6325000` pelo **seu RA** em todos os lugares:
    git remote -v
    ```
 
-   Já tem o clone da Aula 12? **Use o mesmo**, não clone de novo.
+### 2. Dar `pull` para trazer a aula 13 e criar a sua branch
 
-### 2. Trazer a aula e criar a sua branch
+O `modelo-tf-13.md` foi publicado depois da aula: **ele só chega na sua máquina com o `pull`**.
 
 ```bash
 # vai para o main (a copia do professor)
 git switch main
 
-# traz as aulas novas do professor, incluindo o modelo do TF 13
+# PULL: traz as aulas novas do professor, incluindo o modelo do TF 13
 git pull --ff-only upstream main
 
 # cria a branch do TF, com o seu RA, e entra nela
 git switch -c 6325000-tf-13
 ```
 
-Se o `git switch -c` reclamar de alterações, você esqueceu algo na branch anterior: faça o
-commit lá, volte ao `main` e tente de novo.
+Se o `git switch` reclamar de alterações, você esqueceu algo na branch anterior: faça o
+commit lá, volte ao `main` e tente de novo. Se o `pull` reclamar, avise o professor: não
+force nada.
 
 ### 3. Criar o arquivo de resposta a partir do modelo
 

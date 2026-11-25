@@ -198,3 +198,18 @@
   .lx-lanes{ grid-template-columns: 1fr; }
   .lx-bits, .lx-cards, .lx-deps{ grid-template-columns: 1fr; }
 }
+
+/* ---- vim ---- */
+.lx-ed{ background:#0b140f; color:#d7e4dc; border-radius:10px; font-family: var(--font-mono); font-size:1.1rem; line-height:1.45; overflow:hidden; border:2px solid var(--code-border); }
+.lx-ed .txt{ padding:10px 14px; min-height:118px; white-space:pre; }
+.lx-ed .cur{ background:#d7e4dc; color:#0b140f; }
+.lx-ed .til{ color:#4c6a5b; }
+.lx-ed .st{ display:grid; background:#16241e; padding:5px 14px; font-weight:700; }
+.lx-ed .st > span{ grid-area:1/1; opacity:0; transition: opacity .3s ease; }
+.lx-ed .st > span.hot{ opacity:1; }
+.lx-ed .st .n{ color:#8ab4ff; } .lx-ed .st .i{ color:#7dd3b0; } .lx-ed .st .c{ color:#ffd697; }
+.lx-modos{ display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; }
+.lx-modos .lx-box > span{ font-size:1rem; }
+.lx-teclas{ display:flex; flex-wrap:wrap; gap:6px; }
+.lx-teclas code{ border:1.5px solid var(--rule); border-radius:6px; padding:1px 8px; background: var(--surface); font-size:1rem; }
+.payoff a, .w-cap a{ color: var(--accent-2); }

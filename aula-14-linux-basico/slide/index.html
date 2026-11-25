@@ -126,7 +126,16 @@
     </div>
     <p class="payoff">Cada usuário tem os <strong>seus</strong> dot files, e dá para <strong>copiar e versionar</strong>.</p>
   </section>
-  <!-- 14 · usuários e grupos -->
+  <!-- 14 · vim -->
+  <section class="slide" data-eyebrow="vim">
+    <h2><span class="accent">Vim</span>: o editor do terminal</h2>
+    <div class="w-anim" data-anim data-n="5" data-dur="3600" data-hold="6000" data-labels="o que é|modo normal|insert|salvar e sair|vim adventures">
+<div class="two-col"><div class="lx-col"><div class="lx-ed"><div class="txt"><div class="stk"><span class="xf on" data-from="0" data-to="1">olá, mundo<span class="cur"> </span></span><span class="xf" data-from="2" data-to="2">olá, mundo<span class="cur">!</span></span><span class="xf" data-from="3">olá, mundo!</span></div><div class="til">~
+~</div></div><div class="st"><span class="n" data-at="0 1 4">-- NORMAL --  (navegar e dar comandos)</span><span class="i" data-at="2">-- INSERT --  (digitando texto)</span><span class="c" data-at="3">:wq  (grava e sai)</span></div></div><div class="lx-modos"><div class="lx-box c1 " data-at="0 1 3"><b>normal</b><span>Esc</span><small>navega e dá comandos</small></div><div class="lx-box c2 " data-at="2"><b>insert</b><span>i</span><small>digita texto</small></div><div class="lx-box c3 " data-at="3"><b>comando</b><span>:</span><small>:w  :q  :wq  :q!</small></div></div></div><ul class="points"><li data-at="0"><strong>Vim</strong> (Vi IMproved) é um <strong>editor de texto no terminal</strong>, sem mouse</li><li data-at="1">Abre em modo <strong>normal</strong>: as teclas são <strong>comandos</strong>, não texto</li><li data-at="2"><code>i</code> entra no modo <strong>insert</strong>: aí sim se digita</li><li data-at="3"><code>Esc</code> volta; <code>:wq</code> grava e sai, <code>:q!</code> sai sem gravar</li><li data-at="4">Treine jogando: <strong>Vim Adventures</strong></li></ul></div><div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># vim arquivo.txt</span><br>vem em <strong>quase todo servidor</strong>, onde não há VS Code nem interface gráfica</div><div class="w-cap" data-at="1"><span class="dim"># o susto do iniciante</span><br>digitar não escreve nada: no modo normal cada tecla é um <strong>comando</strong></div><div class="w-cap" data-at="2"><span class="dim"># i = insert</span><br>agora o que você digita entra no arquivo</div><div class="w-cap" data-at="3"><span class="dim"># Esc, depois :wq</span><br>o famoso "como sair do vim": <code>Esc</code>, <code>:wq</code> e <code>Enter</code></div><div class="w-cap" data-at="4"><span class="dim"># jogo interativo para aprender os comandos</span><br><a href="https://vim-adventures.com/" target="_blank" rel="noopener noreferrer"><code>https://vim-adventures.com/</code></a></div></div>
+    </div>
+    <p class="payoff">Para estudar: <a href="https://vim-adventures.com/" target="_blank" rel="noopener noreferrer"><strong>vim-adventures.com</strong></a>, um <strong>jogo interativo</strong> que ensina os comandos jogando.</p>
+  </section>
+  <!-- 15 · usuários e grupos -->
   <section class="slide" data-eyebrow="usuários e grupos">
     <h2><span class="accent">Usuários</span>, <span class="accent">grupos</span> e o <span class="accent">root</span></h2>
     <div class="w-anim" data-anim data-n="4" data-dur="3400" data-hold="5200" data-labels="usuário|grupo|root|sudo">
@@ -134,7 +143,7 @@
     </div>
     <p class="payoff">O Linux nasceu <strong>multiusuário</strong>: o kernel decide <strong>quem pode fazer o quê</strong>.</p>
   </section>
-  <!-- 15 · ls -la e rwx -->
+  <!-- 16 · ls -la e rwx -->
   <section class="slide" data-eyebrow="ls -la e rwx">
     <h2>Lendo o <span class="accent">ls -la</span>: a notação rwx</h2>
     <div class="w-anim" data-anim data-n="7" data-dur="3000" data-hold="5000" data-labels="tipo|dono|grupo|outros|usuário dono|grupo dono|a linha inteira">
@@ -142,7 +151,7 @@
     </div>
     <p class="payoff">Em <strong>diretório</strong>: <code>r</code> lista, <code>w</code> cria e apaga, <code>x</code> entra (<code>cd</code>).</p>
   </section>
-  <!-- 16 · chmod e chown -->
+  <!-- 17 · chmod e chown -->
   <section class="slide" data-eyebrow="chmod e chown">
     <h2><span class="accent">chmod</span> muda a permissão, <span class="accent">chown</span> muda o dono</h2>
     <div class="w-anim" data-anim data-n="5" data-dur="3400" data-hold="5200" data-labels="4 2 1|755|644|600|chown">
@@ -150,7 +159,7 @@
     </div>
     <p class="payoff">Deem <strong>só a permissão que é necessária</strong>, a quem precisa.</p>
   </section>
-  <!-- 17 · resumo -->
+  <!-- 18 · resumo -->
   <section class="slide" data-eyebrow="resumo">
     <h2><span class="accent">Linux básico</span> em uma página</h2>
     <div class="two-col">
@@ -177,7 +186,7 @@
     </div>
     <p class="payoff">Na próxima aula: a <strong>revisão</strong> para a prova do 2º bimestre.</p>
   </section>
-  <!-- 18 · tf 14 · entrega -->
+  <!-- 19 · tf 14 · entrega -->
   <section class="slide" data-eyebrow="tf 14 · entrega">
     <h2>TF 14: <span class="accent">o terminal na prática, entregue por PR</span></h2>
     <span class="kicker-badge">tarefa</span>
@@ -200,7 +209,7 @@
   <div class="hud-mid">
     <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
     <div class="hud-meta">
-      <span><span id="counterCurrent">01</span> / <span id="counterTotal">18</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">19</span> — <span id="eyebrowLabel">abertura</span></span>
       <span class="hint">← → ou espaço: slides · P pausa a animação · , . etapas · T tema</span>
     </div>
   </div>

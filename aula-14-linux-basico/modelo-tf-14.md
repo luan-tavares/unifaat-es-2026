@@ -5,7 +5,8 @@ RA: (seu RA)
 GitHub: (link do seu perfil, ex.: https://github.com/maria-silva)
 
 > Rode tudo no **terminal do WSL (Ubuntu)**, no seu computador. Em cada item, cole o **comando** e a
-> **saída** num bloco de código e escreva a explicação em texto corrido, com as suas palavras. Apague
+> **saída** num bloco de código, **tire o print** (com o seu usuário e o prompt visíveis) e salve com o nome
+> indicado **neste diretório**, e escreva a explicação em texto corrido, com as suas palavras. Apague
 > as linhas entre parênteses ao responder. Não cole conteúdo de chaves SSH nem senhas.
 
 ---
@@ -20,6 +21,8 @@ Rode cada comando, cole a saída e explique o que ela mostra.
 (cole a saída aqui)
 ```
 
+![print do uname -a](p1-1-uname.png)
+
 **Explicação:** (qual é o kernel em uso e qual é o nome da máquina?)
 
 ### 1.2 · `id`
@@ -27,6 +30,8 @@ Rode cada comando, cole a saída e explique o que ela mostra.
 ```text
 (cole a saída aqui)
 ```
+
+![print do id](p1-2-id.png)
 
 **Explicação:** (qual é o seu usuário e em quais grupos você está? O que o grupo `sudo` permite?)
 
@@ -36,6 +41,8 @@ Rode cada comando, cole a saída e explique o que ela mostra.
 (cole a saída aqui)
 ```
 
+![print do which git curl unzip](p1-3-which.png)
+
 **Explicação:** (em que diretório está cada binário? Se algum não apareceu, o que isso significa e como instalar?)
 
 ### 1.4 · `echo $PATH`
@@ -43,6 +50,8 @@ Rode cada comando, cole a saída e explique o que ela mostra.
 ```text
 (cole a saída aqui)
 ```
+
+![print do echo $PATH](p1-4-path.png)
 
 **Explicação:** (quantos diretórios há no PATH? Qual vem primeiro e por que a ordem importa?)
 
@@ -52,6 +61,8 @@ Rode cada comando, cole a saída e explique o que ela mostra.
 (cole a saída aqui; não precisa copiar o conteúdo de nenhum arquivo)
 ```
 
+![print do ls -la ~](p1-5-ls.png)
+
 **Explicação:** (escolha **dois** dot files ou dot folders da lista e diga para que servem. Escolha **um** item e leia as suas permissões letra por letra: dono, grupo e outros.)
 
 ### 1.6 · `apt-cache depends git`
@@ -59,6 +70,8 @@ Rode cada comando, cole a saída e explique o que ela mostra.
 ```text
 (cole a saída aqui)
 ```
+
+![print do apt-cache depends git](p1-6-apt-depends.png)
 
 **Explicação:** (cite **três** dependências do git e diga para que serve cada uma. Por que o gerenciador de pacotes traz todas de uma vez?)
 
@@ -90,6 +103,8 @@ ls -l deploy.sh
 (cole aqui a saída de TODOS os comandos acima, na ordem)
 ```
 
+![print das permissões](p2-permissoes.png)
+
 **Explicação:** (1) por que o primeiro `./deploy.sh` deu `Permission denied`? (2) o que o `chmod u+x`
 mudou, em letras, no `ls -l`? (3) leia as permissões de `644`, `755` e `600` (dono, grupo e outros) e
 diga **quando** se usa cada uma. (4) por que a chave SSH privada exige `600`?)
@@ -117,6 +132,8 @@ which tree
 ```text
 (cole aqui a saída dos comandos acima, na ordem)
 ```
+
+![print do apt](p3-apt.png)
 
 **Explicação:** (1) qual é a diferença entre `apt update` e `apt upgrade`, e por que a ordem importa?
 (2) do que o `tree` depende, segundo o `apt-cache depends`? (3) em que diretório o binário foi

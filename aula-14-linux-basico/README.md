@@ -10,12 +10,12 @@ https://github.com/luan-tavares/unifaat-es-2026/tree/main/aula-14-linux-basico
 ## Contexto
 
 Este TF é **prático**: você vai rodar comandos no **terminal do WSL (Ubuntu)** e **colar a saída de
-cada um** num arquivo Markdown (`.md`), explicando com as suas palavras o que ela mostra. São
+cada um** num arquivo Markdown (`.md`), **tirar um print do terminal** e explicar com as suas palavras o que ela mostra. São
 **3 partes**, sobre o que vimos na Aula 14: o terminal e os binários, as permissões e o gerenciador de
 pacotes. A entrega é a mesma das Aulas 12 e 13: o **Pull Request**. Não há formulário: o seu TF só
 existe se o seu PR aparecer no repositório do professor.
 
-As saídas dos comandos trazem o **seu usuário, a sua máquina e os seus arquivos**, e é isso que
+Os **prints** ficam no **diretório do seu TF** e vão no PR junto com o `.md`. As saídas dos comandos trazem o **seu usuário, a sua máquina e os seus arquivos**, e é isso que
 mostra que o trabalho foi feito por você. **Rode no seu computador**; saída copiada de colega não
 bate com o seu usuário e o professor percebe.
 
@@ -26,14 +26,17 @@ comuns (como o `403` no `push`) estão em `git-fluxo/index.html`, na raiz do rep
 
 Troque `6325000` pelo **seu RA** em todos os lugares:
 
-| O quê                | Padrão                    | Exemplo                      |
-| -------------------- | ------------------------- | ---------------------------- |
-| Branch               | `RA-tf-14`                | `6325000-tf-14`              |
-| Arquivo de resposta  | `tf14-RA-nome.md`         | `tf14-6325000-maria-da-silva.md` |
-| Mensagem do commit   | `TF-14`                   | `TF-14`                      |
-| Título do PR         | `TF-14 · RA · Nome`       | `TF-14 · 6325000 · Maria da Silva` |
+| O quê                  | Padrão                         | Exemplo                                  |
+| ---------------------- | ------------------------------ | ---------------------------------------- |
+| Branch                 | `RA-tf-14`                     | `6325000-tf-14`                          |
+| **Diretório do TF**    | `tf14-RA-nome/`                | `tf14-6325000-maria-da-silva/`           |
+| Arquivo de resposta    | `tf14-RA-nome.md` (dentro dele) | `tf14-6325000-maria-da-silva/tf14-6325000-maria-da-silva.md` |
+| Prints (dentro dele)   | `pX-Y-assunto.png`             | `p1-1-uname.png`, `p2-permissoes.png`    |
+| Mensagem do commit     | `TF-14`                        | `TF-14`                                  |
+| Título do PR           | `TF-14 · RA · Nome`            | `TF-14 · 6325000 · Maria da Silva`       |
 
-**Não crie diretório**: o arquivo fica direto na raiz do repositório. No nome do arquivo: tudo minúsculo, sem espaço e sem acento, com hífen entre as palavras (`tf14`, o RA e o seu nome).
+Nos nomes do diretório e dos arquivos: tudo minúsculo, sem espaço e sem acento, com hífen entre as
+palavras (`tf14`, o RA e o seu nome). O diretório do TF fica **na raiz** do repositório.
 
 ## Passo a passo
 
@@ -88,27 +91,54 @@ Se o `git switch` reclamar de alterações, você esqueceu algo na branch anteri
 commit lá, volte ao `main` e tente de novo. Se o `pull` reclamar, avise o professor: não
 force nada.
 
-### 3. Criar o arquivo de resposta a partir do modelo
+### 3. Criar o diretório do TF e o arquivo de resposta a partir do modelo
 
-O modelo com as **3 partes** está em `aula-14-linux-basico/modelo-tf-14.md`.
-Copie-o para a **raiz** do repositório, já com o nome no padrão `tf14-RA-nome.md`:
+O modelo com as **3 partes** está em `aula-14-linux-basico/modelo-tf-14.md`. Crie o **diretório do
+seu TF** na raiz do repositório e copie o modelo para dentro dele, já com o nome no padrão:
 
 ```bash
-# copia o modelo (as perguntas) para a raiz, com o nome do seu arquivo de resposta
-cp aula-14-linux-basico/modelo-tf-14.md tf14-6325000-maria-da-silva.md
+# cria o diretorio do seu TF na raiz do repositorio
+mkdir tf14-6325000-maria-da-silva
+
+# copia o modelo (as perguntas) para dentro dele, com o nome do seu arquivo de resposta
+cp aula-14-linux-basico/modelo-tf-14.md tf14-6325000-maria-da-silva/tf14-6325000-maria-da-silva.md
 ```
 
-A estrutura final fica assim:
+A estrutura final fica assim (os prints entram no passo seguinte):
 
 ```text
 unifaat-es-2026/
 ├── aula-14-linux-basico/
-└── tf14-6325000-maria-da-silva.md
+└── tf14-6325000-maria-da-silva/
+    ├── tf14-6325000-maria-da-silva.md
+    ├── p1-1-uname.png
+    ├── p1-2-id.png
+    ├── ... (um print por item, veja a lista abaixo)
+    ├── p2-permissoes.png
+    └── p3-apt.png
 ```
 
-Abra o arquivo no VS Code (`code tf14-6325000-maria-da-silva.md`), preencha **Nome, RA e GitHub**
-no topo e cole as saídas nos blocos de código e escreva a explicação em cada **Explicação:**. Não altere os
-comandos nem o enunciado.
+Abra o arquivo no VS Code (`code tf14-6325000-maria-da-silva/tf14-6325000-maria-da-silva.md`),
+preencha **Nome, RA e GitHub** no topo, cole as saídas nos blocos de código e escreva a explicação
+em cada **Explicação:**. Não altere os comandos nem o enunciado.
+
+### 3.1. Tirar os prints e salvar no diretório do TF
+
+Cada item do modelo pede **um print do terminal**, mostrando o **prompt com o seu usuário**, o
+**comando** e a **saída** (tudo na mesma imagem). No Windows, use **`Win + Shift + S`**, selecione a
+janela do terminal e salve como `.png` com o **nome exato** pedido no modelo, **dentro do diretório do
+seu TF**.
+
+O diretório do TF está no WSL: para abri-lo no Explorador do Windows, rode dentro dele
+`explorer.exe .` e salve (ou cole) os prints nessa janela. Depois, no `.md`, mostre o print
+logo abaixo da saída com a sintaxe de imagem do Markdown (o modelo já traz as linhas prontas):
+
+```md
+![print do uname -a](p1-1-uname.png)
+```
+
+Print **cortado, sem o seu usuário ou de outra máquina** não vale. Confira no VS Code
+(`Ctrl+Shift+V` abre a pré-visualização do Markdown) se as imagens aparecem.
 
 ### 4. Commitar e enviar para o seu fork
 
@@ -116,7 +146,10 @@ comandos nem o enunciado.
 # confira que voce esta na sua branch (o * marca a atual), e nao no main
 git branch
 
-# marca tudo e grava o commit
+# confira que o .md E os prints aparecem na lista (verde = vai no commit)
+git status
+
+# marca tudo (o .md e as imagens) e grava o commit
 git add -A
 git commit -m "TF-14"
 
@@ -147,11 +180,15 @@ Nome: Maria da Silva
 RA: 6325000
 GitHub: https://github.com/maria-silva
 
+Diretório: tf14-6325000-maria-da-silva/
 Arquivo: tf14-6325000-maria-da-silva.md
+Prints: 8 de 8
 Partes feitas: 3 de 3
 ```
 
 ## As 3 partes (resumo)
+
+**8 prints no total**: um por item da Parte 1 (`p1-1-uname.png`, `p1-2-id.png`, `p1-3-which.png`, `p1-4-path.png`, `p1-5-ls.png`, `p1-6-apt-depends.png`), um da Parte 2 (`p2-permissoes.png`) e um da Parte 3 (`p3-apt.png`).
 
 O enunciado completo, com os comandos de cada parte, está no `modelo-tf-14.md`. Em todas, cole o
 **comando** e a **saída** num bloco de código e escreva a explicação em **texto corrido, com as
@@ -160,20 +197,20 @@ suas palavras**.
 ### Parte 1 · Diário de terminal
 
 Rode estes 6 comandos e cole a saída de cada um: `uname -a`, `id`, `which git curl unzip`,
-`echo $PATH`, `ls -la ~` e `apt-cache depends git`. Para cada saída, 1 a 3 frases dizendo **o que
+`echo $PATH`, `ls -la ~` e `apt-cache depends git`. Para cada saída, o **print** e 1 a 3 frases dizendo **o que
 ela mostra** (qual kernel, em quais grupos você está, em que diretório está cada binário, qual
 diretório do `PATH` vem primeiro, quais dot files existem e para que servem dois deles, três
 dependências do `git`).
 
 ### Parte 2 · Permissões na prática
 
-Crie um script `deploy.sh`, tente executar e veja o `Permission denied`. Corrija com `chmod`, execute
+(1 print com todos os comandos e `ls -l`.) Crie um script `deploy.sh`, tente executar e veja o `Permission denied`. Corrija com `chmod`, execute
 de novo e deixe o arquivo em `644`, `755` e `600`, colando o `ls -l` de cada estado. Explique por
 que deu `Permission denied`, o que cada letra de `rwx` mudou e quando se usa `644`, `755` e `600`.
 
 ### Parte 3 · Gerenciador de pacotes (`apt`)
 
-Atualize o catálogo e os programas (`update` e `upgrade`), veja os dados do pacote `tree`
+(1 print com os comandos; se não couber, mais de um, com sufixo: `p3-apt-2.png`.) Atualize o catálogo e os programas (`update` e `upgrade`), veja os dados do pacote `tree`
 (`apt show` e `apt-cache depends`), **instale**, confira onde o binário foi parar (`which`),
 **remova** e confira de novo. Explique a diferença entre `update` e `upgrade`, a dependência do
 `tree` e o que mudou depois do `remove`.
@@ -191,5 +228,6 @@ Atualize o catálogo e os programas (`update` e `upgrade`), veja os dados do pac
   o PR se atualiza sozinho. Não abra outro.
 - **Não cole o conteúdo de chaves SSH nem senhas.** No `ls -la ~` aparece só o nome do `.ssh`,
   e é só o nome que deve ir para o arquivo.
+- **Prints são obrigatórios** e precisam estar **dentro do diretório do TF, no PR**: print que ficou só no seu computador não conta. Depois de abrir o PR, abra a aba **Files changed** e confira que as imagens aparecem.
 - Saídas copiadas de colega ou inventadas (e explicações de IA sem revisão) valem zero: a aula
   foi sobre **usar** o terminal.

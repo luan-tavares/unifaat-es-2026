@@ -397,3 +397,65 @@
   }
   .back:hover, .back-link:hover, .sidebar-back:hover{ border-color: var(--accent-2); color: var(--accent-2); transform: translateX(-2px); text-decoration:none; }
   .back:focus-visible, .back-link:focus-visible, .sidebar-back:focus-visible{ outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+  /* ── árvore de distros (aula 14): kernel -> famílias -> derivadas, com setas animadas ── */
+  .dt-kernel{ display: flex; flex-direction: column; align-items: center; margin-bottom: 4px; }
+  .dt-kernel .fl-box{ min-width: 260px; align-items: center; text-align: center; }
+  .dt-cols{ display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .dt-col{ display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .dt-col .fl-box{ width: 100%; min-width: 0; align-items: center; text-align: center; }
+  .dt-col .fl-box > span{ font-size: .92rem; }
+  .dt-desce{ position: relative; flex: none; width: 3px; height: 30px; }
+  .dt-desce::before{ content: ""; position: absolute; inset: 0 0 8px; background: repeating-linear-gradient(180deg, var(--cor) 0 7px, transparent 7px 12px); animation: fl-march-v .7s linear infinite; }
+  .dt-desce::after{ content: ""; position: absolute; bottom: 0; left: -5px; border-top: 9px solid var(--cor); border-left: 6.5px solid transparent; border-right: 6.5px solid transparent; }
+  .dt-desce i{ position: absolute; left: -4px; width: 11px; height: 11px; border-radius: 50%; background: var(--cor); animation: fl-bola-v 1.4s linear infinite; }
+  .dt-col:nth-child(2) .dt-desce i{ animation-delay: .25s; } .dt-col:nth-child(3) .dt-desce i{ animation-delay: .5s; }
+  .dt-col:nth-child(4) .dt-desce i{ animation-delay: .75s; } .dt-col:nth-child(5) .dt-desce i{ animation-delay: 1s; }
+  .dt-grupo{ display: flex; flex-direction: column; gap: 6px; width: 100%; }
+  .dt-vazio{ opacity: .55; border-style: dashed; }
+  .dt-col .fl-box.neta{ margin-top: 0; }
+  @media (max-width: 760px){ .dt-cols{ grid-template-columns: 1fr; } .dt-col{ flex-direction: column; } }
+
+  /* ── pilha de camadas (aula 14): aplicativos -> GUI -> distro -> kernel -> hardware ── */
+  .pl{ display: flex; flex-direction: column; align-items: stretch; max-width: 640px; margin-inline: auto; }
+  .pl-cam{ display: flex; align-items: center; gap: 14px; border: 2.5px solid var(--cor); border-radius: 12px; background: var(--surface); padding: 9px 14px; }
+  .pl-cam.opc{ border-style: dashed; }
+  .pl-cam > b{ flex: none; width: 112px; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--cor); }
+  .pl-cam > span{ flex: 1; font-weight: 600; line-height: 1.3; }
+  .pl-cam small{ display: block; font-weight: 400; font-size: .8rem; color: var(--muted-2); }
+  .pl-cam em{ flex: none; font-style: normal; font-family: var(--font-mono); font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 1px 9px; background: var(--cor); color: var(--on-solid); }
+  .pl-liga{ display: flex; justify-content: center; gap: 46px; height: 30px; }
+  .pl-liga > i{ position: relative; width: 3px; height: 100%; }
+  .pl-liga > i::before{ content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, var(--cor) 0 7px, transparent 7px 12px); animation: fl-march-v .7s linear infinite; }
+  .pl-liga > i::after{ content: ""; position: absolute; left: -4px; width: 11px; height: 11px; border-radius: 50%; background: var(--cor); animation: fl-bola-v 1.4s linear infinite; }
+  .pl-liga > i.sobe::before{ animation-direction: reverse; } .pl-liga > i.sobe::after{ animation-direction: reverse; animation-delay: .4s; }
+  .pl-liga > em{ align-self: center; font-style: normal; font-family: var(--font-mono); font-size: .68rem; color: var(--muted-2); }
+  @media (max-width: 760px){ .pl-cam{ flex-wrap: wrap; } .pl-cam > b{ width: auto; } }
+
+  .dt-sub{ display: flex; flex-direction: column; align-items: center; gap: 0; width: 100%; }
+  .dt-sub .fl-box:not(:first-child){ margin-top: 0; }
+  .dt-sub > .dt-desce{ height: 22px; }
+  .dt-kernel .dt-desce{ height: 18px; }
+  .dt-cols{ position: relative; margin-top: 10px; }
+  .dt-cols::before{ content: ""; position: absolute; top: -10px; left: 10%; right: 10%; border-top: 3px dashed var(--r-exch); }
+
+  /* ── ls -la dissecado (aula 14): cada pedaço da linha acende na sua vez, junto com a legenda ── */
+  .ls{ max-width: 760px; margin-inline: auto; }
+  .ls-linha{ display: flex; justify-content: center; gap: 1.1ch; font-family: var(--font-mono); font-size: 1.05rem; font-weight: 600; overflow-x: auto; padding: 10px 4px 14px; }
+  .ls-linha.fixa{ padding-top: 0; opacity: .55; font-weight: 500; font-size: .92rem; }
+  .ls-seg{ flex: none; padding: 4px 7px; border-radius: 8px; border: 2px solid transparent; color: var(--muted-2); white-space: pre; }
+  .ls-seg.on{ --k: 0; border-color: color-mix(in srgb, var(--cor) 45%, transparent); color: var(--cor); animation: ls-hi 18s infinite; animation-delay: calc(var(--k) * 3s); }
+  .ls-leg{ list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .ls-leg li{ --k: 0; display: flex; align-items: center; gap: 12px; border: 2px solid var(--line-strong); border-radius: 10px; padding: 6px 12px; background: var(--surface); animation: ls-leg 18s infinite; animation-delay: calc(var(--k) * 3s); }
+  .ls-leg li > code{ flex: none; min-width: 5.2ch; text-align: center; font-weight: 700; color: var(--cor); }
+  .ls-leg li > span{ font-size: .92rem; line-height: 1.35; }
+  .ls-leg li > span b{ color: var(--cor); }
+  @keyframes ls-hi{
+    0%, 15%{ background: color-mix(in srgb, var(--cor) 20%, transparent); border-color: var(--cor); transform: translateY(-4px); }
+    17%, 100%{ background: transparent; border-color: color-mix(in srgb, var(--cor) 45%, transparent); transform: none; }
+  }
+  @keyframes ls-leg{
+    0%, 15%{ border-color: var(--cor); background: color-mix(in srgb, var(--cor) 14%, var(--surface)); }
+    17%, 100%{ border-color: var(--line-strong); background: var(--surface); }
+  }
+  @media (prefers-reduced-motion: reduce){ .ls-seg.on, .ls-leg li{ animation: none; } .ls-leg li{ border-color: var(--cor); } }

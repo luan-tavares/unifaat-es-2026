@@ -14,16 +14,21 @@
 
   // botão de copiar nos blocos de código
   Array.prototype.forEach.call(document.querySelectorAll('pre.code'), function(pre){
-    var wrap = document.createElement('div');
-    wrap.className = 'code-wrap';
-    pre.parentNode.insertBefore(wrap, pre);
-    wrap.appendChild(pre);
+    var wrap = pre.parentNode;
+    if(!wrap.classList.contains('vsc')){
+      wrap = document.createElement('div');
+      wrap.className = 'code-wrap';
+      pre.parentNode.insertBefore(wrap, pre);
+      wrap.appendChild(pre);
+    }
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'copy';
     btn.textContent = 'copiar';
     btn.addEventListener('click', function(){
-      navigator.clipboard.writeText(pre.innerText).then(function(){
+      var copia = pre.cloneNode(true);
+      Array.prototype.forEach.call(copia.querySelectorAll('.ps'), function(ps){ ps.remove(); });
+      navigator.clipboard.writeText(copia.textContent).then(function(){
         btn.textContent = 'copiado ✓';
         setTimeout(function(){ btn.textContent = 'copiar'; }, 1500);
       });

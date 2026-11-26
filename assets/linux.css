@@ -1,0 +1,215 @@
+/* Animações da Aula 14 (Linux Básico). Só variáveis de slide.css (vale nos dois
+   temas). O linux.js liga/desliga .on (data-from/data-to) e .hot (data-at) a cada etapa e
+   escreve data-step no player; aqui o CSS faz o resto com transições. */
+
+.w-anim{ display:flex; flex-direction:column; gap:10px; min-width:0; }
+.w-stack{ display:flex; flex-direction:column; gap:10px; min-width:0; }
+
+/* ---- controles (⏸ ‹ pontos › ) ---- */
+.w-ctl{ display:flex; align-items:center; gap:8px; }
+.w-btn{
+  font-family: var(--font-mono); font-size: 1rem; font-weight:700; line-height:1;
+  min-width: 34px; height: 28px; padding: 0 10px;
+  color: var(--ink); background: var(--surface);
+  border: 2px solid var(--rule); border-radius: 6px; cursor:pointer;
+}
+.w-btn:hover{ border-color: var(--ink); }
+.w-btn:focus-visible, .w-dot:focus-visible{ outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.w-dot{
+  width: 13px; height: 13px; padding:0; border-radius:50%;
+  border: 2px solid var(--rule); background: var(--surface); cursor:pointer;
+}
+.w-dot[aria-current="true"]{ background: var(--accent); border-color: var(--accent); }
+.w-ghint{ margin-left:auto; font-family: var(--font-mono); font-size:.9rem; color: var(--muted-2); font-style: italic; }
+
+.w-note{ font-family: var(--font-mono); font-size:.95rem; color: var(--muted-2); font-style: italic; }
+
+/* ---- revelar / cruzar ---- */
+.rev{ opacity:0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+.rev.on{ opacity:1; transform:none; }
+.xf{ opacity:0; transition: opacity .6s ease; }
+.xf.on{ opacity:1; }
+.stk{ display:grid; }
+.stk > *{ grid-area: 1 / 1; }
+
+/* ---- legenda (uma por etapa, empilhadas: a altura é a da maior) ---- */
+.w-capbox{
+  display:grid; background: var(--bg-raised); border:1px solid var(--rule);
+  border-radius:8px; padding: 10px 14px;
+}
+.w-cap{ grid-area: 1 / 1; opacity:0; transition: opacity .4s ease;
+  font-family: var(--font-mono); font-size: 1.15rem; line-height:1.4; color: var(--ink); }
+.w-cap.hot{ opacity:1; }
+.w-cap .dim{ color: var(--code-comment); font-style: italic; font-weight:400; }
+
+/* ---- paleta própria da aula (uma cor por papel, nos dois temas) ---- */
+:root{ --lx-1:#1d5fd1; --lx-2:#0f7a4a; --lx-3:#b4530f; --lx-4:#7c3aed; --lx-5:#b4236a; --lx-6:#0e7490; --lx-bad:#b42318; }
+:root[data-theme="dark"]{ --lx-1:#6ea8ff; --lx-2:#6ee7a8; --lx-3:#ffa65c; --lx-4:#c4a1ff; --lx-5:#ff8fc4; --lx-6:#5fd3e8; --lx-bad:#ff8a7a; }
+.c1{ --cor: var(--lx-1); } .c2{ --cor: var(--lx-2); } .c3{ --cor: var(--lx-3); }
+.c4{ --cor: var(--lx-4); } .c5{ --cor: var(--lx-5); } .c6{ --cor: var(--lx-6); } .cb{ --cor: var(--lx-bad); }
+
+.tl{ white-space:pre; }
+.type{ display:inline-block; width:0; overflow:hidden; white-space:nowrap; vertical-align:bottom; }
+.type.on{ width: calc(var(--n) * 1ch); transition: width calc(var(--n) * 40ms) steps(var(--n), end); }
+.xf.on.term-line, .xf.on{ opacity:1; }
+.points li{ transition: color .3s ease; }
+.points li.hot{ color: var(--accent); }
+.lx-col{ min-width:0; display:flex; flex-direction:column; gap:10px; }
+
+/* ---- caixas e setas animadas (fluxos) ---- */
+.lx-box{
+  border:2.5px solid var(--cor, var(--rule)); border-radius:12px; background: var(--surface);
+  padding: 8px 12px; text-align:center; line-height:1.3; transition: opacity .5s ease, transform .5s ease, background .3s ease, box-shadow .3s ease;
+}
+.lx-box > b{ display:block; font-family: var(--font-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color: var(--cor, var(--ink)); }
+.lx-box > span{ display:block; font-family: var(--font-mono); font-weight:700; font-size:1.05rem; }
+.lx-box > small{ display:block; font-size:.9rem; color: var(--muted-2); }
+.lx-box.hot{ background: color-mix(in srgb, var(--cor) 16%, var(--surface)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cor) 45%, transparent); }
+.lx-box.bad{ --cor: var(--lx-bad); }
+.lx-row{ display:flex; align-items:stretch; justify-content:center; gap:0; }
+.lx-row > .lx-box{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; justify-content:center; }
+.lx-seta{ position:relative; flex: 0 0 64px; min-height:34px; opacity:.25; transition: opacity .4s ease; align-self:center; height:34px; }
+.lx-seta.hot{ opacity:1; }
+.lx-seta::before{ content:""; position:absolute; left:0; right:9px; top:50%; height:3px; transform:translateY(-50%);
+  background: repeating-linear-gradient(90deg, var(--cor, var(--accent-2)) 0 8px, transparent 8px 14px); animation: lx-march .7s linear infinite; }
+.lx-seta::after{ content:""; position:absolute; right:0; top:50%; transform:translateY(-50%);
+  border-left:10px solid var(--cor, var(--accent-2)); border-top:7px solid transparent; border-bottom:7px solid transparent; }
+.lx-seta.volta{ transform: scaleX(-1); }
+.lx-seta > i{ position:absolute; top:50%; left:0; width:10px; height:10px; margin-top:-5px; border-radius:50%; background: var(--cor, var(--accent-2)); animation: lx-bola 1.6s linear infinite; }
+@keyframes lx-march{ to{ background-position: 14px 0; } }
+@keyframes lx-bola{ 0%{ left:0; opacity:0; } 15%{ opacity:1; } 85%{ opacity:1; } 100%{ left: calc(100% - 10px); opacity:0; } }
+.lx-desce{ position:relative; width:3px; height:26px; margin-inline:auto; opacity:.25; transition: opacity .4s ease; }
+.lx-desce.hot{ opacity:1; }
+.lx-desce::before{ content:""; position:absolute; inset:0 0 8px; background: repeating-linear-gradient(180deg, var(--cor, var(--accent-2)) 0 7px, transparent 7px 12px); animation: lx-marchv .7s linear infinite; }
+.lx-desce::after{ content:""; position:absolute; bottom:0; left:-5px; border-top:9px solid var(--cor, var(--accent-2)); border-left:6.5px solid transparent; border-right:6.5px solid transparent; }
+@keyframes lx-marchv{ to{ background-position: 0 12px; } }
+
+/* ---- 2 · pilha de camadas ---- */
+.lx-pilha{ display:flex; flex-direction:column; gap:7px; max-width:760px; margin-inline:auto; width:100%; }
+.lx-cam{ display:flex; align-items:center; gap:14px; border:2.5px solid var(--cor); border-radius:12px; background: var(--surface); padding:9px 14px; }
+.lx-cam > b{ flex:none; width:128px; font-family: var(--font-mono); font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color: var(--cor); }
+.lx-cam > span{ flex:1; font-weight:600; line-height:1.3; font-size:1.1rem; }
+.lx-cam small{ display:block; font-weight:400; font-size:.9rem; color: var(--muted-2); }
+.lx-cam.opc{ border-style:dashed; }
+.lx-cam .tag{ flex:none; font-family: var(--font-mono); font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; border-radius:999px; padding:1px 10px; background: var(--cor); color: var(--bg); }
+.lx-cam.hot{ background: color-mix(in srgb, var(--cor) 14%, var(--surface)); }
+
+/* ---- 4 · tabela de sistemas ---- */
+.lx-tab{ display:grid; grid-template-columns: 150px 1.1fr 1.1fr 1.4fr; gap:6px; font-size:1.05rem; }
+.lx-tab > div{ background: var(--surface); border:1.5px solid var(--rule); border-radius:8px; padding:7px 11px; line-height:1.3; }
+.lx-tab .h{ background:none; border:none; font-family: var(--font-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color: var(--muted-2); padding:0 4px; }
+.lx-tab .n{ font-family: var(--font-mono); font-weight:700; border-left:5px solid var(--cor); color: var(--cor); }
+.lx-tab .rv{ opacity:0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+.lx-tab .rv.on{ opacity:1; transform:none; }
+.lx-chip{ display:inline-block; font-family: var(--font-mono); font-size:.85rem; font-weight:700; border-radius:999px; padding:1px 10px; background: var(--cor); color: var(--bg); }
+
+/* ---- 5 · distros ---- */
+.lx-cols{ display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:10px; }
+.lx-cols .lx-box > span{ font-size:1rem; }
+.lx-cols .lx-box.m{ padding:6px 8px; }
+.lx-cols .lx-box.m > span{ font-weight:600; font-size:.95rem; }
+.lx-topo{ display:flex; flex-direction:column; align-items:center; }
+.lx-topo .lx-box{ min-width:280px; }
+
+/* ---- 6 · GUI (a mesma distro, ambientes diferentes) ---- */
+.lx-gui{ display:grid; gap:10px; }
+.lx-gui > .stk{ min-height:230px; }
+.lx-desk{ border:2.5px solid var(--cor); border-radius:12px; background: var(--surface); padding:10px; display:grid; grid-template-rows:auto 1fr; gap:8px; }
+.lx-desk .bar{ height:16px; border-radius:6px; background: color-mix(in srgb, var(--cor) 35%, var(--bg-raised)); }
+.lx-desk .jan{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.lx-desk .jan i{ border:2px solid var(--cor); border-radius:8px; background: color-mix(in srgb, var(--cor) 12%, var(--bg)); min-height:70px; }
+.lx-desk .nome{ font-family: var(--font-mono); font-weight:700; color: var(--cor); font-size:1.2rem; }
+.lx-desk .txt{ font-size:1rem; line-height:1.3; color: var(--muted); }
+.lx-desk.semgui{ background:#0b140f; color:#d7e4dc; border-style:dashed; }
+.lx-desk.semgui .nome{ color:#7dd3b0; } .lx-desk.semgui .txt{ color:#b7c7bf; }
+.lx-desk.semgui pre{ margin:0; font-family: var(--font-mono); font-size:1rem; color:#d7e4dc; }
+
+/* ---- 8 · PATH ---- */
+.lx-path{ display:flex; flex-direction:column; gap:6px; }
+.lx-dir{ display:flex; align-items:center; gap:12px; border:2px solid var(--rule); border-radius:9px; background: var(--surface); padding:6px 12px; font-family: var(--font-mono); font-size:1.05rem; transition: background .3s ease, border-color .3s ease; }
+.lx-dir .res{ margin-left:auto; font-size:.9rem; color: var(--muted-2); }
+.lx-dir .ord{ flex:none; width:1.6rem; height:1.6rem; border-radius:50%; background: var(--rule); color: var(--bg); display:grid; place-items:center; font-weight:700; font-size:.85rem; }
+.lx-dir.hot{ border-color: var(--lx-4); background: color-mix(in srgb, var(--lx-4) 12%, var(--surface)); }
+.lx-dir.ok.hot{ border-color: var(--lx-2); background: color-mix(in srgb, var(--lx-2) 16%, var(--surface)); }
+.lx-dir .res .nao, .lx-dir .res .sim{ opacity:0; transition: opacity .3s ease; position:absolute; }
+.lx-dir .res{ position:relative; min-width:11ch; text-align:right; }
+.lx-dir.hot .res .nao, .lx-dir.hot .res .sim{ position:static; opacity:1; }
+.lx-dir .res .sim{ color: var(--lx-2); font-weight:700; } .lx-dir .res .nao{ color: var(--lx-bad); }
+
+/* ---- 9 · árvore de dependências ---- */
+.lx-deps{ display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:8px; }
+.lx-dep{ border:2px solid var(--lx-6); border-radius:10px; background: var(--surface); padding:6px 8px; text-align:center; font-family: var(--font-mono); font-size:.95rem; font-weight:600; opacity:0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease, background .3s ease; }
+.lx-dep small{ display:block; font-weight:400; font-size:.8rem; color: var(--muted-2); font-family: var(--font-body); }
+.lx-dep.on{ opacity:1; transform:none; }
+.lx-dep.hot{ background: color-mix(in srgb, var(--lx-6) 18%, var(--surface)); }
+.lx-dep.pronto{ border-color: var(--lx-2); }
+
+/* ---- 10 · update x upgrade ---- */
+.lx-lanes{ display:grid; grid-template-columns: 1fr 70px 1fr 70px 1fr; align-items:stretch; }
+
+/* ---- 11 · tabela de gerenciadores ---- */
+.lx-gr{ display:grid; grid-template-columns: 1.1fr 1.5fr .9fr 1.6fr; gap:6px; font-size:1.02rem; }
+.lx-gr > div{ background: var(--surface); border:1.5px solid var(--rule); border-radius:8px; padding:6px 11px; line-height:1.3; }
+.lx-gr .h{ background:none; border:none; font-family: var(--font-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color: var(--muted-2); padding:0 4px; }
+.lx-gr .n{ font-family: var(--font-mono); font-weight:700; border-left:5px solid var(--cor); color: var(--cor); }
+.lx-gr .rv{ opacity:0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+.lx-gr .rv.on{ opacity:1; transform:none; }
+
+/* ---- 12 · diretórios ---- */
+.lx-tree{ font-family: var(--font-mono); font-size:1.05rem; line-height:1.55; background: var(--bg-raised); border:1px solid var(--rule); border-radius:10px; padding:10px 14px; }
+.lx-tree .l{ opacity:0; transition: opacity .5s ease; white-space:pre; }
+.lx-tree .l.on{ opacity:1; }
+.lx-tree .dim{ color: var(--code-comment); font-style:italic; font-weight:400; }
+.lx-tree b{ font-weight:700; }
+.lx-mnt{ display:flex; align-items:center; gap:0; }
+.lx-mnt .lx-box{ flex:1 1 0; min-width:0; }
+
+/* ---- 13 · prompt ---- */
+.lx-ps{ font-family: var(--font-mono); font-size:1.15rem; background:#0b140f; color:#d7e4dc; border-radius:10px; padding:10px 14px; display:grid; gap:4px; }
+.lx-ps .u{ color:#7dd3b0; font-weight:700; } .lx-ps .p{ color:#8ab4ff; font-weight:700; } .lx-ps .br{ color:#ffd697; font-weight:700; }
+
+/* ---- 14/15 · permissões ---- */
+.lx-ls{ display:flex; justify-content:center; gap:1.1ch; font-family: var(--font-mono); font-size:1.3rem; font-weight:600; flex-wrap:wrap; }
+.lx-ls .sg{ padding:4px 8px; border:2px solid transparent; border-radius:8px; color: var(--muted-2); transition: background .3s ease, border-color .3s ease, color .3s ease, transform .3s ease; white-space:pre; }
+.lx-ls .sg.hot{ color: var(--cor); border-color: var(--cor); background: color-mix(in srgb, var(--cor) 18%, transparent); transform: translateY(-4px); }
+.lx-bits{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
+.lx-trio{ border:2px solid var(--cor); border-radius:12px; background: var(--surface); padding:8px 10px; text-align:center; }
+.lx-trio > b{ display:block; font-family: var(--font-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color: var(--cor); }
+.lx-bit3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:6px; margin:6px 0; }
+.lx-bit{ border:2px solid var(--rule); border-radius:8px; padding:4px 0; font-family: var(--font-mono); font-weight:700; font-size:1.2rem; color: var(--muted-2); transition: background .3s ease, color .3s ease, border-color .3s ease; }
+.lx-bit small{ display:block; font-size:.72rem; font-weight:500; }
+.lx-bit.hot{ background: var(--cor); color: var(--bg); border-color: var(--cor); }
+.lx-trio .nn{ display:grid; font-family: var(--font-mono); font-weight:700; font-size:1.5rem; color: var(--cor); }
+.lx-trio .nn > span{ grid-area:1/1; opacity:0; transition: opacity .3s ease; }
+.lx-trio .nn > span.on{ opacity:1; }
+
+/* ---- usuários ---- */
+.lx-cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
+
+/* ---- impressão (PDF): etapa final, sem transições nem controles ---- */
+@media print{
+  .w-ctl{ display:none; }
+  .w-anim *, .w-anim *::before, .w-anim *::after{ transition:none !important; animation:none !important; }
+  .rev, .xf, .lx-dep, .lx-tab .rv, .lx-gr .rv{ transform:none; }
+}
+@media (max-width: 640px){
+  .lx-cols{ grid-template-columns: 1fr; }
+  .lx-tab, .lx-gr{ grid-template-columns: 1fr; }
+  .lx-lanes{ grid-template-columns: 1fr; }
+  .lx-bits, .lx-cards, .lx-deps{ grid-template-columns: 1fr; }
+}
+
+/* ---- vim ---- */
+.lx-ed{ background:#0b140f; color:#d7e4dc; border-radius:10px; font-family: var(--font-mono); font-size:1.1rem; line-height:1.45; overflow:hidden; border:2px solid var(--code-border); }
+.lx-ed .txt{ padding:10px 14px; min-height:118px; white-space:pre; }
+.lx-ed .cur{ background:#d7e4dc; color:#0b140f; }
+.lx-ed .til{ color:#4c6a5b; }
+.lx-ed .st{ display:grid; background:#16241e; padding:5px 14px; font-weight:700; }
+.lx-ed .st > span{ grid-area:1/1; opacity:0; transition: opacity .3s ease; }
+.lx-ed .st > span.hot{ opacity:1; }
+.lx-ed .st .n{ color:#8ab4ff; } .lx-ed .st .i{ color:#7dd3b0; } .lx-ed .st .c{ color:#ffd697; }
+.lx-modos{ display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; }
+.lx-modos .lx-box > span{ font-size:1rem; }
+.lx-teclas{ display:flex; flex-wrap:wrap; gap:6px; }
+.lx-teclas code{ border:1.5px solid var(--rule); border-radius:6px; padding:1px 8px; background: var(--surface); font-size:1rem; }
+.payoff a, .w-cap a{ color: var(--accent-2); }

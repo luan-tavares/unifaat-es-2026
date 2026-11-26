@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 13 — Arquitetura de Software</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="../../assets/slide.css">
+<link rel="stylesheet" href="../../assets/slide-16x9.css">
+<link rel="stylesheet" href="../../assets/arquitetura.css">
+<script src="../../assets/tema.js"></script>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar" aria-label="Miniaturas dos slides">
+  <a class="sidebar-back" href="../../index.html">← Voltar</a>
+</aside>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · capa -->
+  <section class="slide" data-eyebrow="abertura">
+    <div class="cover-top">
+      <span class="cover-uni">Unifaat</span>
+      <span class="cover-sem">2026.2</span>
+    </div>
+    <h1><span class="cover-num">13</span> - Arquitetura de Software</h1>
+    <p class="cover-prof">Prof. Luan Lourenço</p>
+  </section>
+
+  <!-- 2 · por que engenharia e não arquitetura -->
+  <section class="slide" data-eyebrow="por que engenharia e não arquitetura">
+    <h2>Por que não existe uma matéria de <span class="accent">Arquitetura de Software</span>, como existe a de Engenharia?</h2>
+    <div class="w-anim" data-anim data-n="5" data-dur="3000" data-labels="a base|banco|web|infra|o sistema">
+      <div class="lays">
+        <div class="lay sys rev" data-from="4" data-at="4"><b>ARQUITETURA DO SISTEMA</b><small>agrega a arquitetura E a engenharia de cada parte</small></div>
+        <div class="lay-row">
+          <div class="lay rev" data-from="1" data-at="1 4"><b>banco de dados</b><small>arq. + eng. de banco</small></div>
+          <div class="lay rev" data-from="2" data-at="2 4"><b>web</b><small>arq. + eng. de web</small></div>
+          <div class="lay rev" data-from="3" data-at="3 4"><b>infraestrutura</b><small>arq. + eng. de infra</small></div>
+        </div>
+        <div class="lay base" data-at="0"><b>BASE EM COMUM · Engenharia de Software</b><small>terminal, Git, algoritmos, estruturas de dados, OO, código limpo</small></div>
+      </div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># uma base única (e extensa)</span><br>vale para <strong>todos os assuntos de ADS</strong> e vem <strong>antes</strong>, uma vez só: é o que esta disciplina cobre</div><div class="w-cap" data-at="1"><span class="dim"># a arquitetura começa aqui: banco de dados</span><br>Como modelar os dados? Que índices? Qual a consistência necessária? <strong>(a engenharia de banco vem junto)</strong></div><div class="w-cap" data-at="2"><span class="dim"># a arquitetura começa aqui: web</span><br>Como dividir front e back? Que camadas? Como expor a API? <strong>(a engenharia de web vem junto)</strong></div><div class="w-cap" data-at="3"><span class="dim"># a arquitetura começa aqui: infraestrutura</span><br>Onde o sistema roda? Como escala? E se um servidor cair? <strong>(a engenharia de infra vem junto)</strong></div><div class="w-cap" data-at="4"><span class="dim"># depois elas se juntam e se agregam</span><br>quem projeta o todo <strong>entende o que cada parte exige e entrega</strong>: arquitetura e engenharia de cada uma</div></div>
+    </div>
+    <p class="payoff">Esta aula é a <strong>prévia</strong>: o conceito geral. Cada matéria ensina a arquitetura do seu assunto.</p>
+  </section>
+
+  <!-- 3 · código x IA -->
+  <section class="slide" data-eyebrow="código x ia">
+    <h2>No mercado, <span class="accent">se coda menos</span></h2>
+    <div class="w-anim" data-anim data-n="2" data-dur="4500" data-hold="4500" data-labels="antes|cada vez mais">
+      <div class="ttag stk"><span class="xf" data-from="0" data-to="0">ANTES · onde vai o tempo</span><span class="xf" data-from="1">CADA VEZ MAIS · onde vai o tempo</span></div>
+      <div class="tbar"><div class="seg s1">digitando</div><div class="seg s2">entendendo</div><div class="seg s3">decidindo</div><div class="seg s4">revisando</div></div>
+      <div class="w-note">ilustração, não é uma medição</div>
+      <div class="tgrid"><div class="k">tempo gasto</div><div class="v"><span class="xf" data-from="0" data-to="0">digitando código</span><span class="agora xf" data-from="1">entendendo, decidindo, revisando</span></div><div class="k">gargalo</div><div class="v"><span class="xf" data-from="0" data-to="0">escrever</span><span class="agora xf" data-from="1">saber o que pedir e o que aceitar</span></div><div class="k">habilidade valorizada</div><div class="v"><span class="xf" data-from="0" data-to="0">sintaxe</span><span class="agora xf" data-from="1">julgamento e domínio do negócio</span></div><div class="k">tempo com o cliente</div><div class="v"><span class="xf" data-from="0" data-to="0">pouco: o código come a agenda</span><span class="agora xf" data-from="1">mais: construir relacionamento e entender o domínio dele</span></div><div class="k">erro típico</div><div class="v"><span class="xf" data-from="0" data-to="0">bug de digitação</span><span class="agora xf" data-from="1">estrutura errada que "funciona"</span></div></div>
+    </div>
+    <p class="payoff">Sintaxe e código repetitivo viram <strong>commodity</strong>. Escasso: <strong>base, julgamento e domínio</strong>. E a base é <strong>perecível</strong> (Bainbridge, 1983): forma-se fazendo.</p>
+  </section>
+
+  <!-- 4 · opinião polêmica -->
+  <section class="slide" data-eyebrow="opinião polêmica do professor">
+    <span class="kicker-badge">opinião polêmica</span>
+    <h2>A IA <span class="accent">não vai nivelar</span> o conhecimento</h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># o argumento histórico</span><br>
+        buscador, planilha, fóruns: <strong>todo mundo teve acesso</strong>. Nivelou? Não.<br>
+        <br>
+        <span class="dim"># motivo 1: vira "proxy"</span><br>
+        a informação <strong>passa por você</strong> e não fica: acomoda, não acumula<br>
+        <br>
+        <span class="dim"># motivo 2: a IA é o seu prompt</span><br>
+        fazer bem feito é <strong>direcionar</strong>, e isso exige repertório
+      </div>
+      <div class="w-anim" data-anim data-n="5" data-dur="3600" data-labels="pedido vago|resposta vaga|pedido dirigido|resposta útil|o resultado">
+        <div class="term"><div class="term-bar"><span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span><span class="term-path">prompt</span></div><div class="term-body"><div class="stk"><div class="blk xf" data-from="0" data-to="1"><div class="term-line"><span class="prompt">&gt;</span> <span class="cmd"><span class="type" data-from="0" style="--n:22">faz um sistema de loja</span></span></div><div class="term-line comment"># pedido vago</div></div><div class="blk xf" data-from="2"><div class="term-line"><span class="prompt">&gt;</span> <span class="cmd"><span class="type" data-from="2" style="--n:35">separe a regra de frete no domínio,</span></span></div><div class="term-line"><span class="prompt">&gt;</span> <span class="cmd"><span class="type" data-from="2" style="--n:36;transition-delay:1.5s">sem acoplar à tela, nomes do negócio</span></span></div><div class="term-line comment"># pedido dirigido</div></div></div></div></div>
+        <div class="stk" style="min-height:104px">
+          <div class="pr-card generico rev" data-from="1" data-to="1">resposta: <span class="pill q">telas ?</span><span class="pill q">banco ?</span><span class="pill q">regra de frete inventada</span><br>uma loja qualquer, com regras que a IA escolheu</div>
+          <div class="pr-card util rev" data-from="3">resposta: <span class="pill ok">Pedido.frete()</span><span class="pill ok">no domínio</span><span class="pill ok">tela separada</span><br>a regra do cliente, com os nomes do negócio</div>
+        </div>
+        <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># pedido vago</span></div><div class="w-cap" data-at="1">quem pede pouco recebe <strong>qualquer coisa</strong></div><div class="w-cap" data-at="2"><span class="dim"># pedido dirigido</span></div><div class="w-cap" data-at="3">quem <strong>sabia o que pedir</strong> recebe outra coisa</div><div class="w-cap" data-at="4">mesma ferramenta, <strong>outro resultado</strong></div></div>
+      </div>
+    </div>
+    <p class="payoff">A IA <strong>multiplica o que você já sabe</strong>, mas <strong>não é criativa</strong>. Fabio Akita: <strong>“Se você der todo o conhecimento de física clássica para a IA, ela não é capaz de derivar a física moderna.”</strong></p>
+  </section>
+
+  <!-- 5 · o que é arquitetura -->
+  <section class="slide" data-eyebrow="o que é arquitetura">
+    <h2>Arquitetura: decisões <span class="accent">difíceis de mudar</span></h2>
+    <div class="w-anim" data-anim data-n="6" data-dur="2600" data-labels="variável|pastas|fronteiras|serviços|banco|o critério">
+      <div class="cst"><div class="cst-row rev" data-from="0" data-at="0" style="--v:8%"><span class="cst-name">nome de variável</span><span class="cst-track"><span class="cst-fill"></span></span><span class="cst-tag e">engenharia · segundos</span></div><div class="cst-row rev" data-from="1" data-at="1" style="--v:28%"><span class="cst-name">estrutura de pastas</span><span class="cst-track"><span class="cst-fill"></span></span><span class="cst-tag "></span></div><div class="cst-row rev" data-from="2" data-at="2" style="--v:55%"><span class="cst-name">fronteiras entre módulos</span><span class="cst-track"><span class="cst-fill"></span></span><span class="cst-tag "></span></div><div class="cst-row rev" data-from="3" data-at="3" style="--v:78%"><span class="cst-name">divisão em serviços</span><span class="cst-track"><span class="cst-fill"></span></span><span class="cst-tag "></span></div><div class="cst-row rev" data-from="4" data-at="4" style="--v:100%"><span class="cst-name">banco de dados em produção</span><span class="cst-track"><span class="cst-fill"></span></span><span class="cst-tag a">arquitetura · meses</span></div></div>
+      <div class="cst-axis"><span>barato de mudar</span><span>custo de reversão</span><span>caro de mudar</span></div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><strong>nome de variável:</strong> troca em segundos. Decisão local, do dia a dia.</div><div class="w-cap" data-at="1"><strong>estrutura de pastas:</strong> ainda local, mas já espalha: muda tudo que importa o arquivo.</div><div class="w-cap" data-at="2"><strong>fronteiras entre módulos:</strong> quem fala com quem. Mudar obriga a mexer em vários módulos.</div><div class="w-cap" data-at="3"><strong>divisão em serviços:</strong> decisão estrutural e global. Desfazer custa meses.</div><div class="w-cap" data-at="4"><strong>banco de dados em produção:</strong> trocar depois de um ano custa meses.</div><div class="w-cap" data-at="5">Fowler e Johnson: arquitetura = <strong>o que é difícil de mudar depois</strong>. O critério é o <strong>custo de reversão</strong>.</div></div>
+    </div>
+    <p class="payoff">Quanto maior o custo de reversão, <strong>mais arquitetural</strong> é a decisão.</p>
+  </section>
+
+  <!-- 6 · engenharia x arquitetura -->
+  <section class="slide" data-eyebrow="engenharia x arquitetura">
+    <h2>Engenharia <span class="accent">x</span> Arquitetura</h2>
+    <table class="data-table">
+      <thead><tr><th></th><th>engenharia</th><th>arquitetura</th></tr></thead>
+      <tbody>
+        <tr><td><strong>tipo de decisão</strong></td><td>local, do dia a dia</td><td>estrutural, global</td></tr>
+        <tr><td><strong>se errar...</strong></td><td>conserto em dias</td><td>conserto em meses</td></tr>
+        <tr><td><strong>horizonte</strong></td><td>otimiza o presente</td><td>otimiza o futuro</td></tr>
+        <tr><td><strong>pergunta típica</strong></td><td>"como implemento isso bem?"</td><td>"como organizo isso para poder mudar depois?"</td></tr>
+      </tbody>
+    </table>
+    <div class="two-col">
+      <div class="tree"><span class="dim"># engenharia sem arquitetura</span><br>código bom dentro de uma <strong>estrutura que ninguém decidiu</strong></div>
+      <div class="tree"><span class="dim"># arquitetura sem engenharia</span><br>diagrama bonito que <strong>o código não respeita</strong></div>
+    </div>
+    <p class="payoff">Se o diagrama diz uma coisa e o sistema faz outra, <strong>o sistema ganha</strong>.</p>
+  </section>
+
+  <!-- 8b · tech lead x po -->
+  <section class="slide" data-eyebrow="tech lead x po · os dois chapéus">
+    <h2>Tech Lead <span class="accent">x</span> PO: o dono do produto</h2>
+    <div class="w-anim" data-anim data-n="5" data-dur="3600" data-hold="5400" data-labels="termos do Scrum|PO|Tech Lead|a IA|cão de guarda">
+      <div class="metodos"><span class="w-note">aqui estamos usando termos do Scrum (como PO)</span></div>
+      <div class="rl-grid">
+        <div class="rl-card rev" data-from="1" data-at="1">
+          <b>PO · Product Owner</b><small>o quê e por quê</small>
+          <ul><li>ouve o cliente e o negócio</li><li>prioriza e recorta o MVP</li><li>define o critério de aceite</li></ul>
+        </div>
+        <div class="rl-card rev" data-from="2" data-at="2">
+          <b>Tech Lead</b><small>como</small>
+          <ul><li>escolhe a arquitetura e a engenharia</li><li>cuida da qualidade e do que é difícil de mudar</li><li>revisa e destrava o time</li></ul>
+        </div>
+      </div>
+      <div class="guard rev" data-from="3" data-at="3 4">
+        <b>cão de guarda do produto</b><small>com a IA codando mais, sobra tempo para o produto</small>
+        <div class="gchips">
+          <span class="gchip rev" data-from="4" style="transition-delay:.1s">ouvir o cliente e melhorar o produto</span>
+          <span class="gchip rev" data-from="4" style="transition-delay:.5s">escolher a melhor arquitetura e engenharia para implementá-lo</span>
+          <span class="gchip rev" data-from="4" style="transition-delay:.9s">cobrar terceiros e dependências externas até entregarem, sem prejudicar o produto</span>
+        </div>
+      </div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># estamos usando termos do Scrum</span><br>o que interessa: <strong>quem decide pelo produto</strong></div><div class="w-cap" data-at="1"><strong>PO:</strong> o <strong>quê e por quê</strong>. Ouvir o cliente, priorizar, recortar o MVP.</div><div class="w-cap" data-at="2"><strong>Tech Lead:</strong> o <strong>como</strong>. A arquitetura e a engenharia certas para o que o produto precisa.</div><div class="w-cap" data-at="3"><span class="dim"># o professor faz as duas coisas</span><br>com a IA codando mais, <strong>sobra tempo para o produto</strong></div><div class="w-cap" data-at="4"><strong>cão de guarda do produto:</strong> ouvir, melhorar, escolher bem e <strong>cobrar quem pode atrapalhar</strong></div></div>
+    </div>
+    <p class="payoff">Quem coda menos <strong>decide e cobra mais</strong>: o produto passa a ser o seu trabalho.</p>
+  </section>
+
+  <!-- 7 · domínio e DDD -->
+  <section class="slide" data-eyebrow="po · domínio (ddd)">
+    <h2>O diferencial: <span class="accent">o domínio</span></h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># linguagem ubíqua</span><br>
+        as <strong>mesmas palavras</strong> do cliente viram nomes de classes<br>
+        <br>
+        <span class="dim"># contexto delimitado</span><br>
+        a mesma palavra muda de sentido conforme a área<br>
+        <br>
+        <span class="dim"># regra de negócio</span><br>
+        mora <strong>num lugar só</strong>, no domínio
+      </div>
+      <div class="w-anim" data-anim data-n="3" data-dur="3200" data-labels="Vendas|Entrega|Financeiro">
+        <div class="ctx"><div class="ctx-b" data-at="0">Vendas</div><div class="ctx-b" data-at="1">Entrega</div><div class="ctx-b" data-at="2">Financeiro</div></div>
+        <div class="ctx-word">a mesma palavra no negócio: <b>"cliente"</b></div>
+        <div class="stk"><div class="tree xf" data-from="0" data-to="0"><strong>Cliente</strong><br>nome, carrinho<br><span class="dim"># quem compra</span></div><div class="tree xf" data-from="1" data-to="1"><strong>Destinatário</strong><br>endereço<br><span class="dim"># quem recebe</span></div><div class="tree xf" data-from="2" data-to="2"><strong>Pagador</strong><br>limite de crédito, dívida<br><span class="dim"># quem paga</span></div></div>
+      </div>
+    </div>
+    <p class="payoff">Linguagem e framework se aprendem em semanas. <strong>A regra de negócio do cliente</strong> ninguém gera por você.</p>
+  </section>
+
+  <!-- 8 · a regra num lugar só -->
+  <section class="slide" data-eyebrow="po · a regra num lugar só">
+    <h2>A regra do frete: <span class="accent">escrita uma vez</span></h2>
+    <div class="w-anim" data-anim data-n="3" data-dur="4200" data-labels="abaixo do limite|no limite|o cliente mudou a regra">
+      <div class="two-col">
+        <div class="term"><div class="term-bar"><span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span><span class="term-path">pedido.py</span></div><div class="term-body"><div class="term-line"><span class="cmd">class Pedido:</span></div><div class="term-line"><span class="cmd">    LIMITE = </span><span class="hl" data-out="lim">200</span></div><div class="term-line"><span class="cmd">    VALOR_FRETE = 25</span></div><div class="term-line"> </div><div class="term-line"><span class="cmd">    def frete(self):</span></div><div class="term-line comment">        # regra do cliente, uma única vez</div><div class="term-line"><span class="cmd">        if self.subtotal() &gt;= self.LIMITE:</span></div><div class="term-line"><span class="cmd">            return 0</span></div><div class="term-line"><span class="cmd">        return self.VALOR_FRETE</span></div></div></div>
+        <div class="w-frete" data-frete data-limite="200" data-script="180@200,200@200,160@150|a regra mudou: só a constante muda (uma linha)">
+          <label>subtotal <input type="range" min="0" max="400" step="10" value="180" aria-label="subtotal do pedido"> <b data-out="sub">R$ 180</b></label>
+          <div class="res">
+            <div>subtotal<b data-out="sub">R$ 180</b></div>
+            <div class="frete">frete<b data-out="frete">R$ 25</b></div>
+            <div>total<b data-out="total">R$ 205</b></div>
+          </div>
+          <div class="msg" data-out="msg">faltam R$ 20 para o frete grátis</div>
+          <div class="w-note">arraste o subtotal para testar a regra</div>
+        </div>
+      </div>
+    </div>
+    <p class="payoff">Mudou a regra? <strong>Uma linha</strong>, num lugar que tem o nome da regra. Decisão (arquitetura) + execução (engenharia).</p>
+  </section>
+
+  <!-- 9 · spec -->
+  <section class="slide" data-eyebrow="po · spec">
+    <h2>Com menos código, <span class="accent">a spec</span> vira o trabalho</h2>
+    <div class="w-anim" data-anim data-n="5" data-dur="3400" data-labels="sem spec|erro em produção|a spec|o teste falha|o teste passa">
+      <div class="sp-grid">
+        <div class="term"><div class="term-bar"><span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span><span class="term-path">prompt</span></div><div class="term-body"><div class="stk"><div class="blk xf" data-from="0" data-to="1"><div class="term-line"><span class="prompt">&gt;</span> <span class="cmd">faz o calculo de frete do pedido</span></div><div class="term-line comment"># a IA adivinhou a regra</div><div class="term-line"><span class="cmd">if subtotal &gt; 200: return 0</span></div><div class="term-line"><span class="cmd">return 25</span></div></div><div class="blk xf" data-from="2" data-to="3"><div class="term-line"><span class="prompt">&gt;</span> <span class="cmd">implemente o frete conforme docs/frete.md</span></div><div class="term-line comment"># a IA errou o "a partir de"</div><div class="term-line"><span class="cmd">if subtotal &gt; 200: return 0</span></div><div class="term-line"><span class="cmd">return 25</span></div></div><div class="blk xf" data-from="4"><div class="term-line"><span class="prompt">&gt;</span> <span class="cmd">implemente o frete conforme docs/frete.md</span></div><div class="term-line comment"># a IA seguiu a spec</div><div class="term-line"><span class="cmd">if subtotal &gt;= 200: return 0</span></div><div class="term-line"><span class="cmd">return 25</span></div></div></div></div></div>
+        <div class="w-stack">
+          <div class="stk">
+            <div class="sp-alert xf" data-from="1" data-to="1">200 → 25 vai para produção: <br>quem descobre é o cliente</div>
+            <div class="sp-spec rev" data-from="2"><b>docs/frete.md</b><br>regra: subtotal a partir de R$ 200 = frete grátis; abaixo, R$ 25<br>exemplos: 180 → 25 · 200 → 0 · 350 → 0<br>fora do escopo: CEP e transportadora<br>aceite: os 3 exemplos passam</div>
+          </div>
+          <div class="w-tests">
+            <div class="ok rev" data-from="3"><b>✓</b> 180 → 25</div>
+            <div class="stk"><div class="no xf" data-from="3" data-to="3"><b>✗</b> 200 → 0 (devolveu 25)</div><div class="ok xf" data-from="4"><b>✓</b> 200 → 0</div></div>
+            <div class="ok rev" data-from="3"><b>✓</b> 350 → 0</div>
+          </div>
+        </div>
+      </div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># sem spec</span> a IA adivinha a regra</div><div class="w-cap" data-at="1">ninguém escreveu o que é "certo": o <strong>cliente</strong> descobre o erro</div><div class="w-cap" data-at="2"><span class="dim"># com spec</span> regra, exemplos, fora do escopo, critério de aceite</div><div class="w-cap" data-at="3">a IA errou o "a partir de": <strong>o teste falha, não o cliente</strong></div><div class="w-cap" data-at="4">a IA corrigiu: o <strong>critério de aceite</strong> passa</div></div>
+    </div>
+    <p class="payoff">Spec versionada no Git. <strong>Teste é spec executável.</strong></p>
+  </section>
+
+  <!-- 10 · MVP -->
+  <section class="slide" data-eyebrow="po · mvp">
+    <h2>MVP: <span class="accent">o menor produto</span> que ensina algo</h2>
+    <div class="w-anim" data-anim data-n="9" data-dur="2300" data-labels="o pedido|fazer pedido|frete por CEP|pagar por Pix|cupom|calcular o frete|relatórios|app mobile|aceite">
+      <div class="mvp">
+        <div class="mvp-zone z0">o pedido do cliente</div>
+        <div class="mvp-zone z1">entra no MVP</div>
+        <div class="mvp-zone z2">fica de fora</div>
+        <div class="mv in" data-from="1" data-at="1" style="left:12px;top:44px;--dx:408px;--dy:0px">fazer pedido</div><div class="mv out" data-from="2" data-at="2" style="left:12px;top:80px;--dx:816px;--dy:-36px">frete por CEP</div><div class="mv in" data-from="3" data-at="3" style="left:12px;top:116px;--dx:408px;--dy:-28px">pagar por Pix</div><div class="mv out" data-from="4" data-at="4" style="left:12px;top:152px;--dx:816px;--dy:-64px">cupom de desconto</div><div class="mv in" data-from="5" data-at="5" style="left:12px;top:188px;--dx:408px;--dy:-56px">calcular o frete</div><div class="mv out" data-from="6" data-at="6" style="left:12px;top:224px;--dx:816px;--dy:-92px">painel de relatórios</div><div class="mv out" data-from="7" data-at="7" style="left:12px;top:260px;--dx:816px;--dy:-84px">app mobile</div>
+      </div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># tudo o que o cliente pediu</span></div><div class="w-cap" data-at="1"><strong>"fazer pedido"</strong>: se ficar de fora, o negócio para? <strong>SIM</strong> → entra</div><div class="w-cap" data-at="2"><strong>"frete por CEP"</strong>: se ficar de fora, o negócio para? <strong>não</strong> → fica de fora</div><div class="w-cap" data-at="3"><strong>"pagar por Pix"</strong>: se ficar de fora, o negócio para? <strong>SIM</strong> → entra</div><div class="w-cap" data-at="4"><strong>"cupom de desconto"</strong>: se ficar de fora, o negócio para? <strong>não</strong> → fica de fora</div><div class="w-cap" data-at="5"><strong>"calcular o frete"</strong>: se ficar de fora, o negócio para? <strong>SIM</strong> → entra</div><div class="w-cap" data-at="6"><strong>"painel de relatórios"</strong>: se ficar de fora, o negócio para? <strong>não</strong> → fica de fora</div><div class="w-cap" data-at="7"><strong>"app mobile"</strong>: se ficar de fora, o negócio para? <strong>não</strong> → fica de fora</div><div class="w-cap" data-at="8"><strong>critério de aceite:</strong> o cliente consegue fazer um pedido e pagar por Pix</div></div>
+    </div>
+    <p class="payoff">MVP é <strong>recorte</strong>, não versão ruim: pequeno, mas funciona e ensina algo com o uso.</p>
+  </section>
+
+  <!-- 11 · prazo -->
+  <section class="slide" data-eyebrow="po · estimar prazos">
+    <h2>Estimativa é <span class="accent">faixa</span>, não ponto</h2>
+    <div class="two-col">
+      <div class="w-anim" data-anim data-n="4" data-dur="3400" data-labels="ideia|requisitos|projeto|código pronto">
+        <div class="fx-ph"><span data-at="0">ideia</span><span data-at="1">requisitos</span><span data-at="2">projeto</span><span data-at="3">código pronto</span></div>
+        <div class="fx-track"><i></i></div>
+        <div class="fx-scale"><span>menos tempo</span><span>faixa da estimativa (ilustração)</span><span>mais tempo</span></div>
+        <div class="w-capbox"><div class="w-cap" data-at="0">pouco se sabe: a faixa é <strong>larga</strong></div><div class="w-cap" data-at="1">o que fica de fora ficou claro: a faixa <strong>estreita</strong></div><div class="w-cap" data-at="2">as partes e as fronteiras estão definidas: <strong>mais estreita</strong></div><div class="w-cap" data-at="3">incerteza quase zero: é o <strong>cone da incerteza</strong> (McConnell)</div></div>
+      </div>
+      <ul class="points">
+        <li><strong>Quebre em pedaços:</strong> "tela de login" se estima, "o sistema" não</li>
+        <li><strong>Inclua o que não é código:</strong> conversa, revisão, testes, implantação</li>
+        <li><strong>Dado real</strong> vale mais que palpite</li>
+        <li><strong>Lei de Brooks:</strong> mais gente num projeto atrasado costuma atrasar mais</li>
+        <li><strong>Prazo, escopo, qualidade:</strong> se o prazo aperta, cede o <strong>escopo</strong></li>
+      </ul>
+    </div>
+    <p class="payoff">"De 4 a 6 semanas" é mais honesto (e mais útil) do que "5 semanas".</p>
+  </section>
+
+  <!-- 9b · repertório de arquitetura -->
+  <section class="slide" data-eyebrow="tech lead · repertório de arquitetura">
+    <h2>Repertório de <span class="accent">arquitetura</span></h2>
+    <div class="w-anim" data-anim data-n="4" data-dur="3800" data-hold="5400" data-labels="o repertório|EDA|DDD|SDD">
+      <div class="arq-grid"><div class="arq-card rev" data-from="1" data-at="1"><span class="arq-tag">estilo</span><b>EDA</b><small>Event-Driven Architecture</small><p>Serviços se falam por <strong>eventos</strong>: quem publica "pedido criado" não sabe quem reage (estoque, e-mail, cobrança).</p><p class="pede"><span>pede de você:</span> assincronia, fila, consistência eventual</p></div><div class="arq-card rev" data-from="2" data-at="2"><span class="arq-tag">abordagem</span><b>DDD</b><small>Domain-Driven Design</small><p>O modelo do software <strong>reflete o negócio</strong>: linguagem ubíqua e contextos delimitados.</p><p class="pede"><span>pede de você:</span> conversar com quem conhece o negócio</p></div><div class="arq-card rev" data-from="3" data-at="3"><span class="arq-tag">abordagem</span><b>SDD</b><small>Spec-Driven Development</small><p>A <strong>spec dirige</strong> o código (e a IA): regra, exemplos e critério de aceite; o teste confere.</p><p class="pede"><span>pede de você:</span> escrever bem a spec</p></div></div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><span class="dim"># a IA só entrega o que você sabe pedir</span><br>repertório é <strong>saber que a opção existe</strong>: quem não conhece EDA nunca vai pedir EDA</div><div class="w-cap" data-at="1"><strong>EDA</strong> (estilo): Serviços se falam por eventos: quem publica "pedido criado" não sabe quem reage (estoque, e-mail, cobrança). <span class="dim">Pede assincronia, fila, consistência eventual.</span></div><div class="w-cap" data-at="2"><strong>DDD</strong> (abordagem): O modelo do software reflete o negócio: linguagem ubíqua e contextos delimitados. <span class="dim">Pede conversar com quem conhece o negócio.</span></div><div class="w-cap" data-at="3"><strong>SDD</strong> (abordagem): A spec dirige o código (e a IA): regra, exemplos e critério de aceite; o teste confere. <span class="dim">Pede escrever bem a spec.</span></div></div>
+    </div>
+    <p class="payoff">Nenhuma é melhor sempre: <strong>cada uma troca custos</strong>. Repertório é saber que existem e <strong>quando usar</strong>.</p>
+  </section>
+
+  <!-- 12 · escalabilidade -->
+  <section class="slide" data-eyebrow="tech lead · escalabilidade">
+    <h2>Escalar: <span class="accent">maior</span> ou <span class="accent">mais</span> servidores</h2>
+    <div class="w-anim" data-anim data-n="6" data-dur="2100" data-hold="4000" data-labels="×1|×2|×3|×4|×5|×6">
+      <div class="w-carga stk" style="font-size:1.4rem"><span class="xf" data-from="0" data-to="0">carga ×1</span><span class="xf" data-from="1" data-to="1">carga ×2</span><span class="xf" data-from="2" data-to="2">carga ×3</span><span class="xf" data-from="3" data-to="3">carga ×4</span><span class="xf" data-from="4" data-to="4">carga ×5</span><span class="xf" data-from="5" data-to="5">carga ×6</span></div>
+      <div class="w-escala">
+        <div class="w-esc-col">
+          <h3>escala vertical</h3>
+          <div class="w-esc-stage vert"><span class="srv"><i class="red" data-from="4"></i><span>servidor</span></span></div>
+          <div class="w-esc-note"><span class="xf" data-from="0" data-to="3">um servidor maior: simples, não muda o código</span><span class="xf" data-from="4">limite: não existe servidor maior que o maior servidor</span></div>
+        </div>
+        <div class="w-esc-col">
+          <h3>escala horizontal</h3>
+          <div class="w-esc-stage hor"><span class="srv hs" data-from="0"><span>srv</span></span><span class="srv hs" data-from="1"><span>srv</span></span><span class="srv hs" data-from="2"><span>srv</span></span><span class="srv hs" data-from="3"><span>srv</span></span><span class="srv hs" data-from="4"><span>srv</span></span><span class="srv hs" data-from="5"><span>srv</span></span></div>
+          <div class="w-esc-note"><span class="xf" data-from="0" data-to="0">um servidor só: igual ao da esquerda</span><span class="xf" data-from="1">mais servidores: passa do limite, mas é preciso coordenar as partes</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="payoff"><strong>Não otimize cedo demais</strong> (Knuth), mas <strong>não feche portas</strong>: a arquitetura deve permitir crescer.</p>
+  </section>
+
+  <!-- 13 · equipe -->
+  <section class="slide" data-eyebrow="tech lead · trabalhar em equipe">
+    <h2>Equipe: <span class="accent">código limpo</span> e Git</h2>
+    <table class="data-table">
+      <thead><tr><th>o que aprendemos</th><th>para que serve numa equipe</th></tr></thead>
+      <tbody>
+        <tr><td><strong>commit</strong> (Aula 04)</td><td>histórico: quem mudou o quê, e por quê</td></tr>
+        <tr><td><strong>remote, push, pull, SSH</strong> (Aula 05)</td><td>todos sobre a mesma fonte da verdade</td></tr>
+        <tr><td><strong>branch e merge</strong> (Aula 12)</td><td>cada pessoa numa tarefa, e depois juntar</td></tr>
+        <tr><td><strong>fork e Pull Request</strong> (Aula 12)</td><td>propor a mudança e <strong>abrir para revisão</strong></td></tr>
+        <tr><td><strong>código limpo</strong> (Aula 11)</td><td>quem chegou ontem muda o sistema hoje sem quebrar</td></tr>
+      </tbody>
+    </table>
+    <p class="payoff"><strong>Alta coesão</strong> (o que muda junto fica junto) e <strong>baixo acoplamento</strong>. O PR é onde a arquitetura se protege: "isso respeita as fronteiras?"</p>
+  </section>
+
+  <!-- 14 · terminal e servidores -->
+  <section class="slide" data-eyebrow="tech lead · terminal e servidores">
+    <h2>O poder do <span class="accent">terminal</span> e dos servidores</h2>
+    <div class="w-anim" data-anim data-n="4" data-dur="3600" data-hold="4800" data-labels="entrar|ler o log|contar|a IA age no terminal">
+      <div class="two-col">
+        <ul class="points">
+          <li data-at="0"><strong>Servidores não têm interface</strong>: o terminal é a porta de entrada</li>
+          <li data-at="1"><strong>Repetível e automatizável:</strong> comando vira script</li>
+          <li data-at="2"><strong>Rápido e combinável:</strong> um comando alimenta o outro (pipe)</li>
+          <li data-at="3">É a <strong>língua das ferramentas</strong>: Git, Python, Docker, CI, deploy</li>
+          <li data-at="3">A IA que <strong>age</strong> trabalha no terminal: sem entender, <strong>você não supervisiona</strong></li>
+        </ul>
+        <div class="term"><div class="term-bar"><span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span><span class="term-path">servidor</span></div><div class="term-body"><div class="tl term-line xf" data-from="0"><span class="comment"># entra no servidor (chave SSH da Aula 05)</span></div><div class="tl term-line xf" data-from="0"><span class="prompt">$</span> <span class="cmd"><span class="type" data-from="0" style="--n:20;transition-delay:.3s">ssh usuario@servidor</span></span></div><div class="tl term-line xf" data-from="1"><span class="comment"># últimas linhas do log (saída de exemplo)</span></div><div class="tl term-line xf" data-from="1"><span class="prompt">$</span> <span class="cmd"><span class="type" data-from="1" style="--n:26;transition-delay:.3s">tail -n 2 /var/log/app.log</span></span></div><div class="tl term-line xf" data-from="1" style="transition-delay:1.5s"><span class="out">10:02:13 ERROR falha ao cobrar o pedido</span></div><div class="tl term-line xf" data-from="1" style="transition-delay:1.7s"><span class="out">10:02:14 INFO  pedido criado</span></div><div class="tl term-line xf" data-from="2"><span class="comment"># quantos erros? (saída de exemplo)</span></div><div class="tl term-line xf" data-from="2"><span class="prompt">$</span> <span class="cmd"><span class="type" data-from="2" style="--n:35;transition-delay:.3s">grep ERROR /var/log/app.log | wc -l</span></span></div><div class="tl term-line xf" data-from="2" style="transition-delay:1.8s"><span class="hl">17</span></div></div></div>
+      </div>
+    </div>
+    <p class="payoff">A máquina faz, mas <strong>a responsabilidade continua sendo da pessoa</strong>.</p>
+  </section>
+
+  <!-- 15 · automação -->
+  <section class="slide" data-eyebrow="tech lead · automação antes da ia">
+    <h2>Automatizar vem <span class="accent">antes</span> da IA</h2>
+    <div class="w-anim" data-anim data-n="6" data-dur="3000" data-hold="4800" data-labels="entender|fazer à mão|automatizar|delegar à IA|pular direto|a ironia">
+      <div class="chn">
+        <div class="stp" data-from="0" data-at="0">1 · entender<small>terminal, Git, binário</small></div>
+        <div class="stp" data-from="1" data-at="1">2 · fazer à mão<small>até dominar</small></div>
+        <div class="stp" data-from="2" data-at="2">3 · automatizar<small>script, CI</small></div>
+        <div class="stp" data-from="3" data-at="3" data-bad="4 5">4 · delegar à IA<small>e conferir</small></div>
+      </div>
+      <div class="byp rev" data-from="4" data-to="5"><span>⚠ pular direto</span></div>
+      <div class="w-capbox"><div class="w-cap" data-at="0"><strong>1 · entender:</strong> saber o que o processo faz. É aqui que o modelo mental se forma.</div><div class="w-cap" data-at="1"><strong>2 · fazer à mão:</strong> executar o passo a passo, até dominar, antes de pensar em ferramenta.</div><div class="w-cap" data-at="2"><strong>3 · automatizar:</strong> o repetitivo, previsível e sujeito a erro humano vira script; o CI roda a cada Pull Request.</div><div class="w-cap" data-at="3"><strong>4 · delegar à IA:</strong> sobre o que você já entende e <strong>consegue conferir</strong>.</div><div class="w-cap" data-at="4"><strong>⚠ pular direto pro 4:</strong> quando algo falhar, ninguém sabe o que o sistema fazia por baixo.</div><div class="w-cap" data-at="5"><strong>ironia da automação</strong> (Bainbridge, 1983): quem assume precisa ser melhor do que antes, e está menos treinado.</div></div>
+    </div>
+    <p class="payoff">Automação também é <strong>decisão de arquitetura</strong>: existe modo degradado? Alguém ainda sabe fazer à mão?</p>
+  </section>
+
+  <!-- 16 · conclusão -->
+  <section class="slide" data-eyebrow="resumo">
+    <h2>No mercado, <span class="accent">decide-se mais</span> do que se digita</h2>
+    <div class="two-col">
+      <div class="tree">
+        <span class="dim"># a base</span><br>
+        <strong>engenharia</strong> = princípios, a base sólida, <strong>única</strong> e primeiro<br>
+        <br>
+        <span class="dim"># a arquitetura</span><br>
+        <strong>decisões difíceis de desfazer</strong>: começa em cada assunto e depois se junta<br>
+        <br>
+        <span class="dim"># o diferencial</span><br>
+        <strong>domínio</strong> (DDD) → <strong>spec</strong> → código → teste
+      </div>
+      <div class="tree">
+        <span class="dim"># com o cliente</span><br>
+        <strong>MVP</strong>, estimativa em faixa, escala sem otimizar cedo<br>
+        <br>
+        <span class="dim"># em equipe</span><br>
+        código limpo, Git, Pull Request, terminal e automação<br>
+        <br>
+        <span class="dim"># com a IA</span><br>
+        ela <strong>multiplica</strong> o que você sabe, não nivela
+      </div>
+    </div>
+    <p class="payoff">Engenharia é a base sólida. Arquitetura é <strong>juntar as peças com critério</strong>. O critério vem de <strong>conhecer o problema do cliente</strong>.</p>
+  </section>
+
+  <!-- 17 · TF -->
+  <section class="slide" data-eyebrow="tf 13 · entrega">
+    <span class="kicker-badge">tarefa</span>
+    <h2>TF 13: <span class="accent">6 questões dissertativas, entregues por PR</span></h2>
+    <ul class="points">
+      <li><strong>Branch</strong> <code>RA-tf-13</code> (ex.: <code>6325000-tf-13</code>), criada depois de um <code>git pull --ff-only upstream main</code> (sem clonar de novo; clone só quem ainda não tem o repositório)</li>
+      <li><strong>Resposta:</strong> copie <code>modelo-tf-13.md</code> para a raiz como <code>tf13-RA-nome.md</code> (ex.: <code>tf13-6325000-maria-da-silva.md</code>), sem diretório, e responda as 6 questões</li>
+      <li><strong>Pull Request</strong> no site do GitHub, do seu fork para o <code>main</code> do professor. Título <code>TF-13 · RA · Nome</code></li>
+      <li><strong>O TF só é válido se o PR aparecer</strong> na lista de Pull requests do professor</li>
+    </ul>
+    <p class="body-text">Descrição completa do TF (README):
+    <a href="https://github.com/luan-tavares/unifaat-es-2026/tree/main/aula-13-arquitetura-de-software" target="_blank" rel="noopener noreferrer"><code>https://github.com/luan-tavares/unifaat-es-2026/tree/main/aula-13-arquitetura-de-software</code></a></p>
+    <p class="payoff">Prazo: <strong>quarta-feira, 25/11</strong>.</p>
+  </section>
+
+</div>
+
+<nav class="hud">
+  <button id="prevBtn" aria-label="Slide anterior">‹</button>
+  <div class="hud-mid">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="hud-meta">
+      <span><span id="counterCurrent">01</span> / <span id="counterTotal">19</span> — <span id="eyebrowLabel">abertura</span></span>
+      <span class="hint">← → ou espaço: slides · P pausa a animação · , . etapas · T tema</span>
+    </div>
+  </div>
+  <button id="nextBtn" aria-label="Próximo slide">›</button>
+</nav>
+
+<script src="../../assets/arquitetura.js"></script>
+<script src="../../assets/slide.js"></script>
+<script src="../../assets/slide-16x9.js"></script>
+</body>
+</html>
